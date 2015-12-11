@@ -1,5 +1,6 @@
 package rpg;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -32,6 +33,10 @@ public class AbilityHandler extends Mechanism {
 		return abilities.get(i).getFirst();
 	}
 
+	public List<Pair<Ability, Double>> getAbilities() {
+		return new ArrayList<>(abilities);
+	}
+
 	public void put(Ability ability, double cooldown) {
 		for (int i = 0; i < abilities.size(); i++) {
 			if (ability == abilities.get(i).getFirst()) {
@@ -51,9 +56,6 @@ public class AbilityHandler extends Mechanism {
 						if (!caster.isRequireable(r.getFirst(), r.getSecond())) {
 							return false;
 						}
-					}
-					for (Pair<String, Double> r : ability.getRequirements()) {
-						caster.tryRequire(r.getFirst(), r.getSecond());
 					}
 					return true;
 				}
