@@ -1,6 +1,21 @@
 package rpg;
 
+import java.awt.Color;
+import java.util.HashMap;
+
 public class Bar {
+
+	private static java.util.Map<String, Pair<Color, Color>> colors;
+
+	static {
+		colors = new HashMap<>();
+		bindColor("health", Color.GREEN, Color.RED);
+		bindColor("mana", Color.BLUE, new Color(0, 100, 255, 200));
+	}
+
+	public static void bindColor(String name, Color mainColor, Color secondColor) {
+		colors.put(name, new Pair<>(mainColor, secondColor));
+	}
 
 	private double value, maximum;
 
@@ -36,5 +51,13 @@ public class Bar {
 	public void setMaximum(double maximum) {
 		this.maximum = maximum;
 		this.value = Math.min(value, maximum);
+	}
+
+	public static boolean isBound(String key) {
+		return colors.containsKey(key);
+	}
+
+	public static Pair<Color, Color> getColors(String key) {
+		return colors.get(key);
 	}
 }
