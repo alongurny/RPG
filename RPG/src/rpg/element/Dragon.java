@@ -8,10 +8,12 @@ import java.io.IOException;
 
 import javax.swing.ImageIcon;
 
-import rpg.AttributeSet;
-import rpg.Bar;
-import rpg.FireballSpell;
-import rpg.Race;
+import rpg.ability.FireballSpell;
+import rpg.element.entity.AttributeSet;
+import rpg.element.entity.Bar;
+import rpg.element.entity.Entity;
+import rpg.element.entity.Player;
+import rpg.element.entity.Race;
 import rpg.level.Level;
 import rpg.physics.Vector2D;
 
@@ -32,7 +34,7 @@ public class Dragon extends Entity {
 
 	public Dragon(Vector2D location, AttributeSet basicAttributes) {
 		super(location, basicAttributes, Race.DRAGON);
-		getAbilityHandler().addAbility(new FireballSpell(this, 5));
+		getAbilityHandler().addAbility(new FireballSpell(10));
 		putBar("mana", new Bar(100));
 	}
 

@@ -1,4 +1,4 @@
-package rpg;
+package rpg.element.entity;
 
 public class Race {
 

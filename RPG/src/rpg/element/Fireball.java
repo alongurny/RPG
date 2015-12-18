@@ -9,6 +9,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import rpg.element.entity.Entity;
 import rpg.level.Level;
 import rpg.physics.Vector2D;
 
@@ -34,8 +35,8 @@ public class Fireball extends DynamicElement {
 		try {
 			image = ImageIO.read(new File("img/fireball.gif"));
 
-			width = image.getWidth(null) / 4;
-			height = image.getHeight(null) / 4;
+			width = image.getWidth(null) / 2;
+			height = image.getHeight(null) / 2;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,7 +48,7 @@ public class Fireball extends DynamicElement {
 		AffineTransform at = new AffineTransform();
 		at.rotate(theta + defaultAngle, image.getWidth(null) / 2, image.getHeight(null) / 2);
 		AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-		g.drawImage(op.filter(image, null), -image.getWidth(null) / 2, -image.getHeight(null) / 2, null);
+		g.drawImage(op.filter(image, null), -width / 2, -height / 2, width, height, null);
 	}
 
 	@Override

@@ -1,11 +1,11 @@
-package rpg;
+package rpg.element.entity;
 
 import java.awt.Color;
 import java.util.HashMap;
 
 public class Bar {
 
-	private static java.util.Map<String, Pair<Color, Color>> colors;
+	private static java.util.Map<String, Color[]> colors;
 
 	static {
 		colors = new HashMap<>();
@@ -14,7 +14,7 @@ public class Bar {
 	}
 
 	public static void bindColor(String name, Color mainColor, Color secondColor) {
-		colors.put(name, new Pair<>(mainColor, secondColor));
+		colors.put(name, new Color[] { mainColor, secondColor });
 	}
 
 	private double value, maximum;
@@ -57,7 +57,7 @@ public class Bar {
 		return colors.containsKey(key);
 	}
 
-	public static Pair<Color, Color> getColors(String key) {
+	public static Color[] getColors(String key) {
 		return colors.get(key);
 	}
 }

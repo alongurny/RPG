@@ -1,5 +1,6 @@
 package rpg.ui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -17,12 +18,12 @@ import java.util.Queue;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import rpg.AbilityHandler;
 import rpg.Game;
 import rpg.Map;
+import rpg.ability.AbilityHandler;
 import rpg.element.DynamicElement;
-import rpg.element.Player;
 import rpg.element.StaticElement;
+import rpg.element.entity.Player;
 import rpg.physics.Vector2D;
 
 public class GamePanel extends JPanel {
@@ -84,6 +85,9 @@ public class GamePanel extends JPanel {
 				if (e.getKeyCode() == KeyEvent.VK_1) {
 					AbilityHandler ah = player.getAbilityHandler();
 					ah.tryCast(game.getLevel(), ah.getAbility(0));
+				} else if (e.getKeyCode() == KeyEvent.VK_2) {
+					AbilityHandler ah = player.getAbilityHandler();
+					ah.tryCast(game.getLevel(), ah.getAbility(1));
 				}
 
 			}
@@ -91,11 +95,9 @@ public class GamePanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				int px = (int) player.getLocation().getX();
-				int py = (int) player.getLocation().getY();
-				int x = e.getX() - px;
-				int y = e.getY() - py;
-				Rectangle rect = player.getRelativeRect();
+				int x = e.getX();
+				int y = e.getY();
+				Rectangle rect = player.getAbsoluteRect();
 				if (rect.contains(new Point(x, y))) {
 					player.removeBarValue(10, "health");
 				}
@@ -146,11 +148,17 @@ public class GamePanel extends JPanel {
 	}
 
 	public void drawStaticElement(Graphics g, StaticElement e) {
-		int x = e.getX() * game.getLevel().getMap().getColumnWidth() - sourceX;
-		int y = e.getY() * game.getLevel().getMap().getRowHeight() - sourceY;
+		int x = e.getColumn() * game.getLevel().getMap().getColumnWidth() - sourceX;
+		int y = e.getRow() * game.getLevel().getMap().getRowHeight() - sourceY;
 		g.translate(x, y);
 		e.draw(g);
+		g.setColor(Color.BLACK);
+		g.drawRect(0, 0, 32, 32);
+		g.setColor(Color.WHITE);
+		if (e.getColumn() == 0)
+			g.drawString(e.toString(), 8, 16);
 		g.translate(-x, -y);
+
 	}
 
 	public void drawDynamicElement(Graphics g, DynamicElement e) {

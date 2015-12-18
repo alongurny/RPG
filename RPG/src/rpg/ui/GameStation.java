@@ -1,10 +1,14 @@
 package rpg.ui;
 
-import rpg.AttributeSet;
-import rpg.FireballSpell;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
 import rpg.Game;
-import rpg.Race;
-import rpg.element.Player;
+import rpg.ability.FireballSpell;
+import rpg.element.entity.AttributeSet;
+import rpg.element.entity.Player;
+import rpg.element.entity.Profession;
+import rpg.element.entity.Race;
 import rpg.level.Level;
 import rpg.level.Level1;
 import rpg.physics.Vector2D;
@@ -16,10 +20,32 @@ public class GameStation {
 	private Game game;
 
 	public GameStation(Game game, Player player) {
-		metaBoard = new MetaBoard(480, 480, game, player);
-		metaBoard.setLocation(100, 100);
+		metaBoard = new MetaBoard(480, 120, game, player);
 		gameBoard = new GameBoard(480, 480, game, player);
-		gameBoard.setLocation(600, 100);
+		gameBoard.addComponentListener(new ComponentListener() {
+
+			@Override
+			public void componentShown(ComponentEvent e) {
+			}
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				metaBoard.setLocation(gameBoard.getLocation().x,
+						gameBoard.getLocation().y + (int) gameBoard.getSize().getHeight());
+			}
+
+			@Override
+			public void componentHidden(ComponentEvent e) {
+
+			}
+		});
+		gameBoard.setLocation(500, 100);
+		metaBoard.setFocusableWindowState(false);
 		this.game = game;
 	}
 
@@ -42,12 +68,11 @@ public class GameStation {
 	}
 
 	public static void main(String[] args) {
-		Player player = new Player(new Vector2D(100, 100), new AttributeSet(13, 13, 13), Race.HUMAN);
-		player.getAbilityHandler().addAbility(new FireballSpell(player, 7));
+		Player player = new Player(new Vector2D(100, 100), new AttributeSet(13, 13, 13), Race.HUMAN, Profession.MAGE);
+		player.getAbilityHandler().addAbility(new FireballSpell(7));
 		Level level = new Level1(player);
 		Game game = new Game(level);
 		GameStation gs = new GameStation(game, player);
-		level.setNextLevel(new Level1(player));
 		gs.start();
 
 	}

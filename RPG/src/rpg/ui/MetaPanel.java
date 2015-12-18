@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import rpg.Game;
-import rpg.element.Player;
+import rpg.element.entity.Player;
 
 public class MetaPanel extends JPanel {
 

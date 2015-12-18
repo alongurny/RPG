@@ -3,7 +3,7 @@ package rpg.ui;
 import javax.swing.JFrame;
 
 import rpg.Game;
-import rpg.element.Player;
+import rpg.element.entity.Player;
 
 public class GameBoard extends JFrame {
 
@@ -15,10 +15,6 @@ public class GameBoard extends JFrame {
 		add(gamePanel);
 		setSize(width, height);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-	}
-
-	public static void main(String[] args) {
-
 	}
 
 }

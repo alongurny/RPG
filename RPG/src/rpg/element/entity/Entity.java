@@ -1,4 +1,4 @@
-package rpg.element;
+package rpg.element.entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,11 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import rpg.AbilityHandler;
-import rpg.AttributeSet;
-import rpg.Bar;
-import rpg.Pair;
-import rpg.Race;
+import rpg.ability.AbilityHandler;
+import rpg.element.DynamicElement;
+import rpg.element.Inventory;
+import rpg.item.Item;
 import rpg.level.Level;
 import rpg.physics.Vector2D;
 
@@ -22,19 +21,19 @@ public abstract class Entity extends DynamicElement {
 	private AttributeSet basicAttributes;
 	private Race race;
 	private Map<String, Bar> bars;
-	private Vector2D velocity;
 	private boolean interacting;
 	private AbilityHandler abilityHandler;
+	private Inventory inventory;
 
 	public Entity(Vector2D location, AttributeSet basicAttributes, Race race) {
 		super(location);
 		this.basicAttributes = basicAttributes;
 		this.race = race;
-		this.velocity = Vector2D.ZERO;
 		this.direction = Vector2D.NORTH;
 		this.bars = new HashMap<>();
 		abilityHandler = new AbilityHandler(this);
 		bars.put("health", new Bar(race.getDefaultHealth()));
+		inventory = new Inventory();
 	}
 
 	public AbilityHandler getAbilityHandler() {
@@ -58,21 +57,13 @@ public abstract class Entity extends DynamicElement {
 		abilityHandler.update(level);
 		if (isAlive()) {
 			act(level);
-			level.tryMoveBy(this, velocity);
+
 		} else {
 			onDeath(level);
 		}
 	}
 
 	public abstract void act(Level level);
-
-	public Vector2D getVelocity() {
-		return velocity;
-	}
-
-	public void setVelocity(Vector2D velocity) {
-		this.velocity = velocity;
-	}
 
 	public void addBarValue(double dvalue, String name) {
 		bars.get(name).addValue(dvalue);
@@ -109,10 +100,10 @@ public abstract class Entity extends DynamicElement {
 		for (String key : keys) {
 			if (Bar.isBound(key)) {
 				double percentage = getBarValue(key) / getBarMaximum(key);
-				Pair<Color, Color> colors = Bar.getColors(key);
-				g.setColor(colors.getFirst());
+				Color[] colors = Bar.getColors(key);
+				g.setColor(colors[0]);
 				g.fillRect(rect.x, (int) rect.height + 8 * counter - 4, (int) (rect.width * percentage), 4);
-				g.setColor(colors.getSecond());
+				g.setColor(colors[1]);
 				g.fillRect((int) (rect.width * percentage) + rect.x, (int) rect.height + 8 * counter - 4,
 						rect.width - (int) (rect.width * percentage), 4);
 				counter++;
@@ -122,6 +113,11 @@ public abstract class Entity extends DynamicElement {
 
 	public double getBarValue(String name) {
 		return bars.get(name).getValue();
+	}
+
+	public double getBarValue(String name, double defaultValue) {
+		Bar bar = bars.get(name);
+		return bar != null ? bar.getValue() : defaultValue;
 	}
 
 	public double getBarMaximum(String name) {
@@ -140,6 +136,10 @@ public abstract class Entity extends DynamicElement {
 
 	public void putBar(String name, Bar bar) {
 		bars.put(name, bar);
+	}
+
+	public void pick(Item item) {
+		inventory.add(item);
 	}
 
 	public abstract void onDeath(Level level);

@@ -9,8 +9,7 @@ import java.net.MalformedURLException;
 import javax.swing.ImageIcon;
 
 import rpg.Interactive;
-import rpg.Map;
-import rpg.Pair;
+import rpg.element.entity.Entity;
 import rpg.level.Level;
 
 public class Portal extends StaticElement implements Interactive {
@@ -21,23 +20,23 @@ public class Portal extends StaticElement implements Interactive {
 	static {
 		try {
 			image = new ImageIcon(new File("img/portal.gif").toURI().toURL()).getImage();
-			width = image.getWidth(null);
-			height = image.getHeight(null);
+			width = 64;
+			height = 64;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static Pair<Portal, Portal> getPair(int y1, int x1, int y2, int x2) {
+	public static Portal[] getPair(int y1, int x1, int y2, int x2) {
 		Portal p1 = new Portal(y1, x1, y2, x2);
 		Portal p2 = new Portal(y2, x2, y1, x1);
-		return new Pair<>(p1, p2);
+		return new Portal[] { p1, p2 };
 	}
 
 	private int yTarget, xTarget;
 
 	public Portal(int y, int x, int yTarget, int xTarget) {
-		super(y, x);
+		super(y, x, 2, 2);
 		this.yTarget = yTarget;
 		this.xTarget = xTarget;
 	}
@@ -49,7 +48,7 @@ public class Portal extends StaticElement implements Interactive {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(image, 0, 0, 32, 32, null);
+		g.drawImage(image, 0, 0, width, height, null);
 	}
 
 	@Override
@@ -65,15 +64,13 @@ public class Portal extends StaticElement implements Interactive {
 	@Override
 	public void onInteract(Level level, Entity entity) {
 		level.tryMove(entity, StaticElement.getLocation(level, yTarget, xTarget).add(entity.getLocation())
-				.subtract(StaticElement.getLocation(level, getY(), getX())));
+				.subtract(StaticElement.getLocation(level, getRow(), getColumn())));
 	}
 
 	@Override
 	public boolean isInteractable(Level level, Entity entity) {
 		Rectangle entityRect = entity.getAbsoluteRect();
-		Map map = level.getMap();
-		Rectangle myRect = new Rectangle(map.getColumnWidth() * getX(), map.getRowHeight() * getY(),
-				map.getColumnWidth(), map.getRowHeight());
+		Rectangle myRect = StaticElement.getRect(level, this);
 		Rectangle intersect = entityRect.intersection(myRect);
 		return intersect.width >= 0.6 * entityRect.width && intersect.height >= 0.6 * entityRect.height;
 	}

@@ -2,9 +2,8 @@ package rpg.ui;
 
 import javax.swing.JFrame;
 
-import rpg.AbilityDrawer;
 import rpg.Game;
-import rpg.element.Player;
+import rpg.element.entity.Player;
 
 public class MetaBoard extends JFrame {
 
@@ -14,8 +13,9 @@ public class MetaBoard extends JFrame {
 		setSize(width, height);
 		setResizable(false);
 		metaPanel = new MetaPanel(game, player);
-		metaPanel.addDrawable(new AbilityDrawer(0, 0, player.getAbilityHandler()));
+		metaPanel.addDrawable(player.getAbilityHandler());
 		add(metaPanel);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
 }

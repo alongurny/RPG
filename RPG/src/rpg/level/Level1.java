@@ -1,11 +1,11 @@
 package rpg.level;
 
-import rpg.Pair;
 import rpg.element.Block;
-import rpg.element.HealthPotion;
+import rpg.element.Dragon;
 import rpg.element.ManaPotion;
-import rpg.element.Player;
 import rpg.element.Portal;
+import rpg.element.entity.AttributeSet;
+import rpg.element.entity.Player;
 import rpg.physics.Vector2D;
 
 public class Level1 extends Level {
@@ -16,10 +16,7 @@ public class Level1 extends Level {
 	public Level1(Player player) {
 		super(ROWS, COLUMNS);
 		addElement(player);
-		addElement(new HealthPotion(new Vector2D(300, 100)));
-		addElement(new ManaPotion(new Vector2D(150, 300)));
-		// addElement(new Dragon(new Vector2D(420, 300), new AttributeSet(100,
-		// 100, 100)));
+		addElement(new Dragon(new Vector2D(420, 300), new AttributeSet(100, 100, 100)));
 		addElement(new ManaPotion(new Vector2D(300, 200)));
 		for (int i = 0; i < COLUMNS; i++) {
 			getMap().put(new Block(0, i));
@@ -33,9 +30,9 @@ public class Level1 extends Level {
 			getMap().put(new Block(j, COLUMNS - 1));
 		}
 
-		Pair<Portal, Portal> portals = Portal.getPair(4, 2, 9, 5);
-		getMap().put(portals.getFirst());
-		getMap().put(portals.getSecond());
+		Portal[] portals = Portal.getPair(4, 2, 8, 7);
+		getMap().put(portals[0]);
+		getMap().put(portals[1]);
 	}
 
 }

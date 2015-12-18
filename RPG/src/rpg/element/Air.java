@@ -30,6 +30,7 @@ public class Air extends StaticElement {
 	public void draw(Graphics g) {
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, 32, 32);
+
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import rpg.element.entity.Entity;
 import rpg.level.Level;
 import rpg.physics.Vector2D;
 

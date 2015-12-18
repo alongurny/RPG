@@ -2,6 +2,8 @@ package rpg.item;
 
 import java.awt.Graphics;
 
+import rpg.element.entity.Entity;
+
 public class MasterKey extends Item {
 
 	public MasterKey() {
@@ -15,6 +17,12 @@ public class MasterKey extends Item {
 	@Override
 	public int getIndex() {
 		return 0;
+	}
+
+	@Override
+	public void onUse(Entity user) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

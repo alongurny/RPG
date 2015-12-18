@@ -1,4 +1,4 @@
-package rpg;
+package rpg.ability;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -9,8 +9,10 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import rpg.element.Entity;
+import rpg.Requirement;
+import rpg.Requirement.BarRequirement;
 import rpg.element.Fireball;
+import rpg.element.entity.Entity;
 import rpg.level.Level;
 import rpg.physics.Vector2D;
 
@@ -32,15 +34,10 @@ public class FireballSpell extends Spell {
 	private double distance;
 	private double speed;
 
-	public FireballSpell(Entity caster, double speed) {
-		super(caster);
+	public FireballSpell(double speed) {
+		super(2);
 		distance = 32;
 		this.speed = speed;
-	}
-
-	@Override
-	public double getCooldown() {
-		return 2;
 	}
 
 	@Override
@@ -52,8 +49,8 @@ public class FireballSpell extends Spell {
 	}
 
 	@Override
-	public List<Pair<String, Double>> getRequirements() {
-		return Arrays.asList(new Pair<>("mana", 1.0));
+	public List<Requirement> getRequirements() {
+		return Arrays.asList(new BarRequirement("mana", 1.0));
 
 	}
 

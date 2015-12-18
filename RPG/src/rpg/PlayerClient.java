@@ -3,7 +3,7 @@ package rpg;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import rpg.element.Player;
+import rpg.element.entity.Player;
 
 public class PlayerClient implements KeyListener {
 

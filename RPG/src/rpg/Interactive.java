@@ -1,6 +1,6 @@
 package rpg;
 
-import rpg.element.Entity;
+import rpg.element.entity.Entity;
 import rpg.level.Level;
 
 public interface Interactive {

@@ -8,6 +8,7 @@ import rpg.element.Air;
 import rpg.element.StaticElement;
 
 public class Map {
+
 	private StaticElement[][] staticElements;
 
 	public Map(int rows, int cols) {
@@ -30,7 +31,7 @@ public class Map {
 	}
 
 	public void put(StaticElement e) {
-		staticElements[e.getY()][e.getX()] = Objects.requireNonNull(e);
+		staticElements[e.getRow()][e.getColumn()] = Objects.requireNonNull(e);
 	}
 
 	public StaticElement get(int y, int x) {
