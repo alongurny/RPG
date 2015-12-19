@@ -8,8 +8,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import rpg.Interactive;
 import rpg.Map;
 import rpg.element.DynamicElement;
-import rpg.element.Element;
-import rpg.element.StaticElement;
 import rpg.element.entity.Entity;
 import rpg.physics.Vector2D;
 
@@ -51,11 +49,9 @@ public class Level {
 				return false;
 			}
 		}
-		for (StaticElement s : getNearElements(element)) {
-			Rectangle r = new Rectangle(s.getColumn() * map.getColumnWidth(), s.getRow() * map.getRowHeight(),
-					map.getColumnWidth(), map.getRowHeight());
+		for (DynamicElement s : getNearElements(element)) {
+			Rectangle r = s.getAbsoluteRect();
 			if (r.intersects(newRect) && !s.isPassable(this, element)) {
-
 				return false;
 			}
 		}
@@ -96,9 +92,8 @@ public class Level {
 					}
 				}
 			}
-			for (StaticElement s : getNearElements(e)) {
-				Rectangle r = new Rectangle(s.getColumn() * map.getColumnWidth(), s.getRow() * map.getRowHeight(),
-						s.getRowSpan() * map.getColumnWidth(), s.getColumnSpan() * map.getRowHeight());
+			for (DynamicElement s : getNearElements(e)) {
+				Rectangle r = s.getAbsoluteRect();
 				if (r.intersects(e.getAbsoluteRect())) {
 					s.onCollision(this, e);
 					e.onCollision(this, s);
@@ -114,7 +109,7 @@ public class Level {
 	}
 
 	public boolean tryInteract(Entity entity) {
-		for (Element e : dynamicElements) {
+		for (DynamicElement e : dynamicElements) {
 			if (e instanceof Interactive) {
 				Interactive i = (Interactive) e;
 				if (i.isInteractable(this, entity)) {
@@ -123,7 +118,7 @@ public class Level {
 				}
 			}
 		}
-		for (Element e : getNearElements(entity)) {
+		for (DynamicElement e : getNearElements(entity)) {
 			if (e instanceof Interactive) {
 				Interactive i = (Interactive) e;
 				if (i.isInteractable(this, entity)) {
@@ -147,15 +142,15 @@ public class Level {
 		this.nextLevel = nextLevel;
 	}
 
-	public List<StaticElement> getNearElements(
-			Element e) { /*
-							 * int y = e., x; List<StaticElement> list = new
-							 * ArrayList<>(); for (int i = -1; i <= 1; i++) {
-							 * for (int j = -1; j <= 1; j++) { if (0 <= y + i &&
-							 * y + i <= map.getRows()) { if (0 <= x + j && x + j
-							 * <= map.getColumns()) { list.add(map.get(y + i, x
-							 * + j)); } } } }
-							 */
+	public List<DynamicElement> getNearElements(
+			DynamicElement e) { /*
+								 * int y = e., x; List<StaticElement> list = new
+								 * ArrayList<>(); for (int i = -1; i <= 1; i++)
+								 * { for (int j = -1; j <= 1; j++) { if (0 <= y
+								 * + i && y + i <= map.getRows()) { if (0 <= x +
+								 * j && x + j <= map.getColumns()) {
+								 * list.add(map.get(y + i, x + j)); } } } }
+								 */
 		return map.getElements();
 	}
 }

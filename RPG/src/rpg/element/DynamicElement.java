@@ -1,11 +1,14 @@
 package rpg.element;
 
 import java.awt.Rectangle;
+import java.util.HashMap;
+import java.util.Map;
 
+import rpg.level.Level;
 import rpg.physics.Vector2D;
 import rpg.ui.Drawable;
 
-public abstract class DynamicElement extends Element implements Drawable {
+public abstract class DynamicElement implements Drawable {
 
 	private Vector2D location;
 
@@ -31,6 +34,25 @@ public abstract class DynamicElement extends Element implements Drawable {
 		return new Rectangle((int) (location.getX() + rel.getX()), (int) (location.getY() + rel.getY()),
 				(int) rel.getWidth(), (int) rel.getHeight());
 	}
+
+	private static Map<Integer, Class<? extends DynamicElement>> ids;
+
+	static {
+		ids = new HashMap<>();
+		put(0, Air.class);
+		put(1, Block.class);
+		put(2, Portal.class);
+	}
+
+	public static void put(int id, Class<? extends DynamicElement> cls) {
+		ids.put(id, cls);
+	}
+
+	public abstract void update(Level level);
+
+	public abstract void onCollision(Level level, DynamicElement other);
+
+	public abstract boolean isPassable(Level level, DynamicElement other);
 
 	@Override
 	public String toString() {

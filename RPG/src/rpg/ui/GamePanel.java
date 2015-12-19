@@ -1,6 +1,5 @@
 package rpg.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -22,7 +21,6 @@ import rpg.Game;
 import rpg.Map;
 import rpg.ability.AbilityHandler;
 import rpg.element.DynamicElement;
-import rpg.element.StaticElement;
 import rpg.element.entity.Player;
 import rpg.physics.Vector2D;
 
@@ -116,20 +114,20 @@ public class GamePanel extends JPanel {
 		List<DynamicElement> dynamics = game.getLevel().getDynamicElements();
 		dynamics.sort((a, b) -> a.getIndex() - b.getIndex());
 		Queue<DynamicElement> dyn = new ArrayDeque<>(dynamics);
-		List<StaticElement> statics = game.getLevel().getMap().getElements();
+		List<DynamicElement> statics = game.getLevel().getMap().getElements();
 		statics.sort((a, b) -> a.getIndex() - b.getIndex());
-		Queue<StaticElement> stt = new ArrayDeque<>(statics);
+		Queue<DynamicElement> stt = new ArrayDeque<>(statics);
 		while (!dyn.isEmpty() && !stt.isEmpty()) {
-			StaticElement s = stt.peek();
+			DynamicElement s = stt.peek();
 			DynamicElement d = dyn.peek();
 			if (s.getIndex() < d.getIndex()) {
-				drawStaticElement(g, stt.remove());
+				drawDynamicElement(g, stt.remove());
 			} else {
 				drawDynamicElement(g, dyn.remove());
 			}
 		}
 		while (!stt.isEmpty()) {
-			drawStaticElement(g, stt.remove());
+			drawDynamicElement(g, stt.remove());
 		}
 		while (!dyn.isEmpty()) {
 			drawDynamicElement(g, dyn.remove());
@@ -145,20 +143,6 @@ public class GamePanel extends JPanel {
 			return max;
 		}
 		return value;
-	}
-
-	public void drawStaticElement(Graphics g, StaticElement e) {
-		int x = e.getColumn() * game.getLevel().getMap().getColumnWidth() - sourceX;
-		int y = e.getRow() * game.getLevel().getMap().getRowHeight() - sourceY;
-		g.translate(x, y);
-		e.draw(g);
-		g.setColor(Color.BLACK);
-		g.drawRect(0, 0, 32, 32);
-		g.setColor(Color.WHITE);
-		if (e.getColumn() == 0)
-			g.drawString(e.toString(), 8, 16);
-		g.translate(-x, -y);
-
 	}
 
 	public void drawDynamicElement(Graphics g, DynamicElement e) {

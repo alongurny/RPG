@@ -54,12 +54,12 @@ public class Dragon extends Entity {
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Level level, DynamicElement other) {
 
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Level level, DynamicElement other) {
 		if (other instanceof Entity) {
 			return false;
 		}

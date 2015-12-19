@@ -11,14 +11,10 @@ import rpg.element.entity.Player;
 
 public class MetaPanel extends JPanel {
 
-	private Player player;
 	private List<Drawable> drawables;
-	private Game game;
 
 	public MetaPanel(Game game, Player player) {
 		drawables = new ArrayList<>();
-		this.player = player;
-		this.game = game;
 	}
 
 	public void addDrawable(Drawable drawable) {

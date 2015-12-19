@@ -11,8 +11,9 @@ import javax.swing.ImageIcon;
 import rpg.Interactive;
 import rpg.element.entity.Entity;
 import rpg.level.Level;
+import rpg.physics.Vector2D;
 
-public class Portal extends StaticElement implements Interactive {
+public class Portal extends DynamicElement implements Interactive {
 
 	private static Image image;
 	private static int width, height;
@@ -27,18 +28,17 @@ public class Portal extends StaticElement implements Interactive {
 		}
 	}
 
-	public static Portal[] getPair(int y1, int x1, int y2, int x2) {
-		Portal p1 = new Portal(y1, x1, y2, x2);
-		Portal p2 = new Portal(y2, x2, y1, x1);
+	public static Portal[] getPair(Vector2D v1, Vector2D v2) {
+		Portal p1 = new Portal(v1, v2);
+		Portal p2 = new Portal(v2, v1);
 		return new Portal[] { p1, p2 };
 	}
 
-	private int yTarget, xTarget;
+	private Vector2D target;
 
-	public Portal(int y, int x, int yTarget, int xTarget) {
-		super(y, x, 2, 2);
-		this.yTarget = yTarget;
-		this.xTarget = xTarget;
+	public Portal(Vector2D location, Vector2D target) {
+		super(location);
+		this.target = target;
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class Portal extends StaticElement implements Interactive {
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Level level, DynamicElement other) {
 
 	}
 
@@ -63,21 +63,25 @@ public class Portal extends StaticElement implements Interactive {
 
 	@Override
 	public void onInteract(Level level, Entity entity) {
-		level.tryMove(entity, StaticElement.getLocation(level, yTarget, xTarget).add(entity.getLocation())
-				.subtract(StaticElement.getLocation(level, getRow(), getColumn())));
+		level.tryMove(entity, target.add(entity.getLocation()).subtract(getLocation()));
 	}
 
 	@Override
 	public boolean isInteractable(Level level, Entity entity) {
 		Rectangle entityRect = entity.getAbsoluteRect();
-		Rectangle myRect = StaticElement.getRect(level, this);
+		Rectangle myRect = this.getAbsoluteRect();
 		Rectangle intersect = entityRect.intersection(myRect);
 		return intersect.width >= 0.6 * entityRect.width && intersect.height >= 0.6 * entityRect.height;
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Level level, DynamicElement other) {
 		return true;
+	}
+
+	@Override
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-width / 2, -height / 2, width, height);
 	}
 
 }

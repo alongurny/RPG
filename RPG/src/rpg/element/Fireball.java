@@ -64,7 +64,7 @@ public class Fireball extends DynamicElement {
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Level level, DynamicElement other) {
 		if (other instanceof Entity && other != caster) {
 			Entity entity = (Entity) other;
 			entity.removeBarValue(10, "health");
@@ -80,7 +80,7 @@ public class Fireball extends DynamicElement {
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Level level, DynamicElement other) {
 		return true;
 	}
 

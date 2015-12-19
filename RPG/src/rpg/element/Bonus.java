@@ -11,7 +11,7 @@ public abstract class Bonus extends DynamicElement {
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Level level, DynamicElement other) {
 		if (other instanceof Entity) {
 			onPick((Entity) other);
 			level.removeElement(this);
@@ -21,7 +21,7 @@ public abstract class Bonus extends DynamicElement {
 	protected abstract void onPick(Entity picker);
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Level level, DynamicElement other) {
 		return true;
 	}
 }

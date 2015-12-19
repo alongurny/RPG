@@ -2,14 +2,16 @@ package rpg.element;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import rpg.level.Level;
+import rpg.physics.Vector2D;
 
-public class Block extends StaticElement {
+public class Block extends DynamicElement {
 
 	private static Image image;
 	private static final String imagePath = "img/block.png";
@@ -25,8 +27,8 @@ public class Block extends StaticElement {
 		}
 	}
 
-	public Block(int y, int x) {
-		super(y, x);
+	public Block(Vector2D location) {
+		super(location);
 	}
 
 	@Override
@@ -45,8 +47,18 @@ public class Block extends StaticElement {
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Level level, DynamicElement other) {
 		return false;
+	}
+
+	@Override
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-16, -16, 32, 32);
+	}
+
+	@Override
+	public void onCollision(Level level, DynamicElement other) {
+
 	}
 
 }

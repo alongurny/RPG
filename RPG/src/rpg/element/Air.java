@@ -2,13 +2,15 @@ package rpg.element;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import rpg.level.Level;
+import rpg.physics.Vector2D;
 
-public class Air extends StaticElement {
+public class Air extends DynamicElement {
 
-	public Air(int y, int x) {
-		super(y, x);
+	public Air(Vector2D location) {
+		super(location);
 	}
 
 	@Override
@@ -17,12 +19,12 @@ public class Air extends StaticElement {
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Level level, DynamicElement other) {
 
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Level level, DynamicElement other) {
 		return true;
 	}
 
@@ -36,6 +38,11 @@ public class Air extends StaticElement {
 	@Override
 	public int getIndex() {
 		return 0;
+	}
+
+	@Override
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-16, -16, 32, 32);
 	}
 
 }
