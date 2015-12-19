@@ -70,8 +70,8 @@ public class Level {
 		return elements.remove(element);
 	}
 
-	public void update() {
-		elements.forEach(e -> e.update(this));
+	public void update(double d) {
+		elements.forEach(e -> e.update(this, d));
 		handleCollisions();
 	}
 
@@ -129,7 +129,7 @@ public class Level {
 	}
 
 	public void addStaticElement(Element e) {
-		map.put(e);
+		map.add(e);
 	}
 
 	public Map getMap() {
@@ -158,5 +158,9 @@ public class Level {
 
 	public List<Element> getStaticElements() {
 		return map.getElements();
+	}
+
+	public boolean removeStaticElement(Element e) {
+		return map.remove(e);
 	}
 }

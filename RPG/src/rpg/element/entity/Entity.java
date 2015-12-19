@@ -53,17 +53,16 @@ public abstract class Entity extends Element {
 	}
 
 	@Override
-	public void update(Level level) {
+	public void update(Level level, double dt) {
 		abilityHandler.update(level);
 		if (isAlive()) {
-			act(level);
-
+			act(level, dt);
 		} else {
 			onDeath(level);
 		}
 	}
 
-	public abstract void act(Level level);
+	public abstract void act(Level level, double dt);
 
 	public void addBarValue(double dvalue, String name) {
 		bars.get(name).addValue(dvalue);

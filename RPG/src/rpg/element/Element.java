@@ -48,7 +48,7 @@ public abstract class Element implements Drawable {
 		ids.put(id, cls);
 	}
 
-	public abstract void update(Level level);
+	public abstract void update(Level level, double d);
 
 	public abstract void onCollision(Level level, Element other);
 

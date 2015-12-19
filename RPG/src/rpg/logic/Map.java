@@ -31,7 +31,7 @@ public class Map {
 		return list;
 	}
 
-	public void put(Element e) {
+	public void add(Element e) {
 		elements[getRow(e)][getColumn(e)].add(e);
 	}
 
@@ -73,6 +73,10 @@ public class Map {
 
 	public Vector2D getLocation(int row, int column) {
 		return new Vector2D(getColumnWidth() * column, getRowHeight() * row);
+	}
+
+	public boolean remove(Element e) {
+		return elements[getRow(e)][getColumn(e)].remove(e);
 	}
 
 }

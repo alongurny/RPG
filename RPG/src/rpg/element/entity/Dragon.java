@@ -31,7 +31,7 @@ public class Dragon extends Entity {
 
 	public Dragon(Vector2D location, AttributeSet basicAttributes) {
 		super(location, basicAttributes, Race.DRAGON);
-		getAbilityHandler().addAbility(new FireballSpell(10));
+		getAbilityHandler().addAbility(new FireballSpell(192));
 		putBar("mana", new Bar(100));
 	}
 
@@ -64,7 +64,7 @@ public class Dragon extends Entity {
 	}
 
 	@Override
-	public void act(Level level) {
+	public void act(Level level, double dt) {
 		for (Element d : level.getDynamicElements()) {
 			if (d instanceof Player) {
 				setDirection(d.getLocation().subtract(getLocation()));

@@ -53,7 +53,7 @@ public class HealthPotion extends Bonus {
 	}
 
 	@Override
-	public void update(Level level) {
+	public void update(Level level, double dt) {
 		// TODO Auto-generated method stub
 
 	}

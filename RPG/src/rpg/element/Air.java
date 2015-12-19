@@ -14,7 +14,7 @@ public class Air extends Element {
 	}
 
 	@Override
-	public void update(Level level) {
+	public void update(Level level, double dt) {
 
 	}
 

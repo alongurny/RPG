@@ -53,8 +53,7 @@ public class ManaPotion extends Bonus {
 	}
 
 	@Override
-	public void update(Level level) {
-		// TODO Auto-generated method stub
+	public void update(Level level, double dt) {
 
 	}
 

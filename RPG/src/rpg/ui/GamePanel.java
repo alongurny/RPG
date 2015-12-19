@@ -1,12 +1,6 @@
 package rpg.ui;
 
 import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +11,6 @@ import java.util.Queue;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import rpg.ability.AbilityHandler;
 import rpg.element.Element;
 import rpg.element.entity.Player;
 import rpg.logic.Game;
@@ -44,63 +37,10 @@ public class GamePanel extends JPanel {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		keyTracker.addMultiKeyListener(new MultiKeyListener() {
+		PlayerClient client = new PlayerClient(game, player);
+		keyTracker.addMultiKeyListener(client);
+		addKeyListener(client);
 
-			@Override
-			public void keysChange(MultiKeyEvent e) {
-				Vector2D velocity = Vector2D.ZERO;
-
-				if (e.get(KeyEvent.VK_UP)) {
-					velocity = velocity.add(Vector2D.NORTH);
-				}
-				if (e.get(KeyEvent.VK_DOWN)) {
-					velocity = velocity.add(Vector2D.SOUTH);
-				}
-				if (e.get(KeyEvent.VK_LEFT)) {
-					velocity = velocity.add(Vector2D.WEST);
-				}
-				if (e.get(KeyEvent.VK_RIGHT)) {
-					velocity = velocity.add(Vector2D.EAST);
-				}
-
-				player.setVelocity(velocity.multiply(3));
-				if (!velocity.equals(Vector2D.ZERO)) {
-					player.setDirection(velocity);
-				}
-			}
-		});
-		addKeyListener(new KeyAdapter() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-					game.getLevel().tryInteract(player);
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_1) {
-					AbilityHandler ah = player.getAbilityHandler();
-					ah.tryCast(game.getLevel(), ah.getAbility(0));
-				} else if (e.getKeyCode() == KeyEvent.VK_2) {
-					AbilityHandler ah = player.getAbilityHandler();
-					ah.tryCast(game.getLevel(), ah.getAbility(1));
-				}
-
-			}
-		});
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-				Rectangle rect = player.getAbsoluteRect();
-				if (rect.contains(new Point(x, y))) {
-					player.removeBarValue(10, "health");
-				}
-			}
-		});
 	}
 
 	@Override
@@ -121,16 +61,16 @@ public class GamePanel extends JPanel {
 			Element s = stt.peek();
 			Element d = dyn.peek();
 			if (s.getIndex() < d.getIndex()) {
-				drawDynamicElement(g, stt.remove());
+				drawElement(g, stt.remove());
 			} else {
-				drawDynamicElement(g, dyn.remove());
+				drawElement(g, dyn.remove());
 			}
 		}
 		while (!stt.isEmpty()) {
-			drawDynamicElement(g, stt.remove());
+			drawElement(g, stt.remove());
 		}
 		while (!dyn.isEmpty()) {
-			drawDynamicElement(g, dyn.remove());
+			drawElement(g, dyn.remove());
 		}
 
 	}
@@ -145,7 +85,7 @@ public class GamePanel extends JPanel {
 		return value;
 	}
 
-	public void drawDynamicElement(Graphics g, Element e) {
+	public void drawElement(Graphics g, Element e) {
 		int x = (int) (e.getLocation().getX()) - sourceX;
 		int y = (int) (e.getLocation().getY()) - sourceY;
 		g.translate(x, y);

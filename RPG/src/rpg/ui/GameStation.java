@@ -4,6 +4,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import rpg.ability.FireballSpell;
+import rpg.ability.RocketSpell;
 import rpg.element.entity.AttributeSet;
 import rpg.element.entity.Player;
 import rpg.element.entity.Profession;
@@ -53,15 +54,19 @@ public class GameStation {
 		metaBoard.setVisible(true);
 		gameBoard.setVisible(true);
 		new Thread(() -> {
+			long last = System.currentTimeMillis();
 			while (true) {
-				game.update();
-				gameBoard.repaint();
-				metaBoard.repaint();
 				try {
 					Thread.sleep(16);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				gameBoard.repaint();
+				metaBoard.repaint();
+				long now = System.currentTimeMillis();
+				game.update((now - last) / 1000.0);
+				last = now;
+
 			}
 		}).start();
 
@@ -69,7 +74,8 @@ public class GameStation {
 
 	public static void main(String[] args) {
 		Player player = new Player(new Vector2D(80, 100), new AttributeSet(13, 13, 13), Race.HUMAN, Profession.MAGE);
-		player.getAbilityHandler().addAbility(new FireballSpell(7));
+		player.getAbilityHandler().addAbility(new FireballSpell(192));
+		player.getAbilityHandler().addAbility(new RocketSpell(160));
 		Level level = new Level1(player);
 		Game game = new Game(level);
 		GameStation gs = new GameStation(game, player);

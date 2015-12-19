@@ -64,13 +64,13 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public void act(Level level) {
+	public void act(Level level, double dt) {
 		boolean success;
-		success = level.tryMoveBy(this, velocity).isEmpty();
+		success = level.tryMoveBy(this, velocity.multiply(dt)).isEmpty();
 		if (!success) {
-			success = level.tryMoveBy(this, new Vector2D(velocity.getX(), 0)).isEmpty();
+			success = level.tryMoveBy(this, new Vector2D(velocity.getX() * dt, 0)).isEmpty();
 			if (!success) {
-				level.tryMoveBy(this, new Vector2D(0, velocity.getY()));
+				level.tryMoveBy(this, new Vector2D(0, velocity.getY() * dt));
 			}
 		}
 	}

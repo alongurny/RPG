@@ -6,37 +6,34 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import rpg.element.entity.Entity;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
 
-public class Fireball extends Element {
+public class Rocket extends Element {
 
-	private Entity caster;
-
-	public Fireball(Entity caster, Vector2D location, Vector2D direction, double speed) {
+	public Rocket(Vector2D location, Vector2D direction, double speed) {
 		super(location);
 		this.direction = direction;
 		this.speed = speed;
-		this.caster = caster;
 	}
 
 	private static BufferedImage image;
 	public static int width, height;
 
-	private static double defaultAngle = Math.toRadians(-90);
+	private static double defaultAngle = Math.toRadians(90);
 	private Vector2D direction;
 	private double speed;
 
 	static {
 		try {
-			image = ImageIO.read(new File("img/fireball.gif"));
+			image = ImageIO.read(new File("img/rocket.png"));
 
-			width = image.getWidth(null) / 2;
-			height = image.getHeight(null) / 2;
+			width = 20;
+			height = 20;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,18 +55,24 @@ public class Fireball extends Element {
 
 	@Override
 	public void update(Level level, double dt) {
-		if (!level.tryMoveBy(this, direction.getUnitalVector().multiply(speed * dt)).isEmpty()) {
+		Vector2D v = direction.getUnitalVector().multiply(speed * dt);
+		List<Element> obstacles = level.tryMoveBy(this, v);
+		if (!obstacles.isEmpty()) {
+			for (Element obstacle : obstacles) {
+				if (obstacle instanceof Block) {
+					level.removeStaticElement(obstacle);
+				}
+			}
 			level.removeDynamicElement(this);
 		}
+
 	}
 
 	@Override
 	public void onCollision(Level level, Element other) {
-		if (other instanceof Entity && other != caster) {
-			Entity entity = (Entity) other;
-			entity.removeBarValue(10, "health");
-			level.removeDynamicElement(this);
-		} else if (!other.isPassable(level, this)) {
+		if (other instanceof Block) {
+			Block b = (Block) other;
+			level.getMap().add(new Air(b.getLocation()));
 			level.removeDynamicElement(this);
 		}
 	}

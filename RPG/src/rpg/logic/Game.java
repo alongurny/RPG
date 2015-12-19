@@ -7,12 +7,12 @@ public class Game {
 		this.level = firstLevel;
 	}
 
-	public void update() {
+	public void update(double d) {
 		if (level != null) {
 			if (level.isFinished() && level.getNextLevel() != null) {
 				level = level.getNextLevel();
 			} else {
-				level.update();
+				level.update(d);
 			}
 		}
 	}

@@ -42,7 +42,7 @@ public class Block extends Element {
 	}
 
 	@Override
-	public void update(Level level) {
+	public void update(Level level, double dt) {
 
 	}
 

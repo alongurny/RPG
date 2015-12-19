@@ -24,7 +24,7 @@ public class Level1 extends Level {
 			addStaticElement(new Block(map.getLocation(ROWS - 1, i)));
 		}
 		for (int j = 1; j < ROWS - 1; j++) {
-			map.put(new Block(map.getLocation(j, 0)));
+			map.add(new Block(map.getLocation(j, 0)));
 			if (j != 12 && j != 13) {
 				addStaticElement(new Block(map.getLocation(j, 4)));
 			}
