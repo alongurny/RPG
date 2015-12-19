@@ -15,25 +15,25 @@ public class Level1 extends Level {
 
 	public Level1(Player player) {
 		super(ROWS, COLUMNS);
-		addElement(player);
-		addElement(new Dragon(new Vector2D(420, 300), new AttributeSet(100, 100, 100)));
-		addElement(new ManaPotion(new Vector2D(300, 200)));
+		addDynamicElement(player);
+		addDynamicElement(new Dragon(new Vector2D(420, 300), new AttributeSet(100, 100, 100)));
+		addDynamicElement(new ManaPotion(new Vector2D(300, 200)));
 		Map map = getMap();
 		for (int i = 0; i < COLUMNS; i++) {
-			map.put(new Block(map.getLocation(0, i)));
-			map.put(new Block(map.getLocation(ROWS - 1, i)));
+			addStaticElement(new Block(map.getLocation(0, i)));
+			addStaticElement(new Block(map.getLocation(ROWS - 1, i)));
 		}
 		for (int j = 1; j < ROWS - 1; j++) {
 			map.put(new Block(map.getLocation(j, 0)));
 			if (j != 12 && j != 13) {
-				getMap().put(new Block(map.getLocation(j, 4)));
+				addStaticElement(new Block(map.getLocation(j, 4)));
 			}
-			map.put(new Block(map.getLocation(j, COLUMNS - 1)));
+			addStaticElement(new Block(map.getLocation(j, COLUMNS - 1)));
 		}
 
 		Portal[] portals = Portal.getPair(map.getLocation(2, 2), map.getLocation(10, 6));
-		addElement(portals[0]);
-		addElement(portals[1]);
+		addDynamicElement(portals[0]);
+		addDynamicElement(portals[1]);
 	}
 
 }

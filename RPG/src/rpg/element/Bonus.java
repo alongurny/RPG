@@ -14,7 +14,7 @@ public abstract class Bonus extends Element {
 	public void onCollision(Level level, Element other) {
 		if (other instanceof Entity) {
 			onPick((Entity) other);
-			level.removeElement(this);
+			level.removeDynamicElement(this);
 		}
 	}
 

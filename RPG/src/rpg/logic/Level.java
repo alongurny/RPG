@@ -61,12 +61,12 @@ public class Level {
 		return new ArrayList<>(elements);
 	}
 
-	public void addElement(Element element) {
+	public void addDynamicElement(Element element) {
 		elements.add(element);
 	}
 
-	public void removeElement(Element element) {
-		elements.remove(element);
+	public boolean removeDynamicElement(Element element) {
+		return elements.remove(element);
 	}
 
 	public void update() {
@@ -129,6 +129,10 @@ public class Level {
 		return false;
 	}
 
+	public void addStaticElement(Element e) {
+		map.put(e);
+	}
+
 	public Map getMap() {
 		return map;
 	}
@@ -143,13 +147,17 @@ public class Level {
 
 	public List<Element> getNearElements(
 			Element e) { /*
-								 * int y = e., x; List<StaticElement> list = new
-								 * ArrayList<>(); for (int i = -1; i <= 1; i++)
-								 * { for (int j = -1; j <= 1; j++) { if (0 <= y
-								 * + i && y + i <= map.getRows()) { if (0 <= x +
-								 * j && x + j <= map.getColumns()) {
-								 * list.add(map.get(y + i, x + j)); } } } }
-								 */
+							 * int y = e., x; List<StaticElement> list = new
+							 * ArrayList<>(); for (int i = -1; i <= 1; i++) {
+							 * for (int j = -1; j <= 1; j++) { if (0 <= y + i &&
+							 * y + i <= map.getRows()) { if (0 <= x + j && x + j
+							 * <= map.getColumns()) { list.add(map.get(y + i, x
+							 * + j)); } } } }
+							 */
+		return map.getElements();
+	}
+
+	public List<Element> getStaticElements() {
 		return map.getElements();
 	}
 }

@@ -75,8 +75,8 @@ public class Dragon extends Entity {
 
 	@Override
 	public void onDeath(Level level) {
-		level.addElement(new HealthPotion(getLocation()));
-		level.removeElement(this);
+		level.addDynamicElement(new HealthPotion(getLocation()));
+		level.removeDynamicElement(this);
 		level.finish();
 	}
 

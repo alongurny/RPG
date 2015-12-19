@@ -2,7 +2,6 @@ package rpg.logic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import rpg.element.Air;
 import rpg.element.Element;
@@ -10,29 +9,30 @@ import rpg.physics.Vector2D;
 
 public class Map {
 
-	private Element[][] staticElements;
+	private ElementContainer[][] elements;
 
 	public Map(int rows, int cols) {
-		staticElements = new Element[rows][cols];
+		elements = new ElementContainer[rows][cols];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				staticElements[i][j] = new Air(getLocation(i, j));
+				elements[i][j] = new ElementContainer();
+				elements[i][j].add(new Air(getLocation(i, j)));
 			}
 		}
 	}
 
 	public List<Element> getElements() {
 		List<Element> list = new ArrayList<>();
-		for (int i = 0; i < staticElements.length; i++) {
-			for (int j = 0; j < staticElements[i].length; j++) {
-				list.add(staticElements[i][j]);
+		for (int i = 0; i < elements.length; i++) {
+			for (int j = 0; j < elements[i].length; j++) {
+				list.addAll(elements[i][j]);
 			}
 		}
 		return list;
 	}
 
 	public void put(Element e) {
-		staticElements[getRow(e)][getColumn(e)] = Objects.requireNonNull(e);
+		elements[getRow(e)][getColumn(e)].add(e);
 	}
 
 	public int getRow(Element e) {
@@ -43,16 +43,16 @@ public class Map {
 		return (int) (e.getLocation().getX() / getColumnWidth());
 	}
 
-	public Element get(int y, int x) {
-		return staticElements[y][x];
+	public List<Element> get(int y, int x) {
+		return new ArrayList<>(elements[y][x]);
 	}
 
 	public int getRows() {
-		return staticElements.length;
+		return elements.length;
 	}
 
 	public int getColumns() {
-		return staticElements[0].length;
+		return elements[0].length;
 	}
 
 	public int getRowHeight() {

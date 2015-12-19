@@ -114,7 +114,7 @@ public class GamePanel extends JPanel {
 		List<Element> dynamics = game.getLevel().getDynamicElements();
 		dynamics.sort((a, b) -> a.getIndex() - b.getIndex());
 		Queue<Element> dyn = new ArrayDeque<>(dynamics);
-		List<Element> statics = game.getLevel().getMap().getElements();
+		List<Element> statics = game.getLevel().getStaticElements();
 		statics.sort((a, b) -> a.getIndex() - b.getIndex());
 		Queue<Element> stt = new ArrayDeque<>(statics);
 		while (!dyn.isEmpty() && !stt.isEmpty()) {

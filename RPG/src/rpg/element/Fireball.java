@@ -59,7 +59,7 @@ public class Fireball extends Element {
 	@Override
 	public void update(Level level) {
 		if (!level.tryMoveBy(this, direction.getUnitalVector().multiply(speed))) {
-			level.removeElement(this);
+			level.removeDynamicElement(this);
 		}
 	}
 
@@ -68,9 +68,9 @@ public class Fireball extends Element {
 		if (other instanceof Entity && other != caster) {
 			Entity entity = (Entity) other;
 			entity.removeBarValue(10, "health");
-			level.removeElement(this);
+			level.removeDynamicElement(this);
 		} else if (!other.isPassable(level, this)) {
-			level.removeElement(this);
+			level.removeDynamicElement(this);
 		}
 	}
 
