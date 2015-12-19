@@ -66,9 +66,9 @@ public class Player extends Entity {
 	@Override
 	public void act(Level level) {
 		boolean success;
-		success = level.tryMoveBy(this, velocity);
+		success = level.tryMoveBy(this, velocity).isEmpty();
 		if (!success) {
-			success = level.tryMoveBy(this, new Vector2D(velocity.getX(), 0));
+			success = level.tryMoveBy(this, new Vector2D(velocity.getX(), 0)).isEmpty();
 			if (!success) {
 				level.tryMoveBy(this, new Vector2D(0, velocity.getY()));
 			}

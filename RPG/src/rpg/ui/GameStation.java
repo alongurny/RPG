@@ -58,7 +58,7 @@ public class GameStation {
 				gameBoard.repaint();
 				metaBoard.repaint();
 				try {
-					Thread.sleep(10);
+					Thread.sleep(16);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

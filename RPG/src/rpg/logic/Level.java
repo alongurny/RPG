@@ -22,39 +22,40 @@ public class Level {
 		map = new Map(rows, cols);
 	}
 
-	public boolean tryMoveBy(Element element, Vector2D displacement) {
+	public List<Element> tryMoveBy(Element element, Vector2D displacement) {
 		return tryMove(element, element.getLocation().add(displacement));
 	}
 
-	public boolean tryMove(Element element, Vector2D target) {
-		if (isPassable(element, target)) {
+	public List<Element> tryMove(Element element, Vector2D target) {
+		List<Element> obstacles = getObstacles(element, target);
+		if (obstacles.isEmpty()) {
 			element.setLocation(target);
-			return true;
 		}
-		return false;
+		return obstacles;
 	}
 
 	public void interact(Entity entity, Interactive interactive) {
 		interactive.onInteract(this, entity);
 	}
 
-	private boolean isPassable(Element element, Vector2D target) {
+	private List<Element> getObstacles(Element element, Vector2D target) {
 		Rectangle oldRect = element.getAbsoluteRect();
 		int x = (int) (target.getX() - element.getLocation().getX() + oldRect.getX());
 		int y = (int) (target.getY() - element.getLocation().getY() + oldRect.getY());
 		Rectangle newRect = new Rectangle(x, y, oldRect.width, oldRect.height);
+		List<Element> obstacles = new ArrayList<>();
 		for (Element e : elements) {
 			if (e.getAbsoluteRect().intersects(newRect) && !e.isPassable(this, element)) {
-				return false;
+				obstacles.add(e);
 			}
 		}
 		for (Element s : getNearElements(element)) {
 			Rectangle r = s.getAbsoluteRect();
 			if (r.intersects(newRect) && !s.isPassable(this, element)) {
-				return false;
+				obstacles.add(s);
 			}
 		}
-		return true;
+		return obstacles;
 	}
 
 	public List<Element> getDynamicElements() {
@@ -102,9 +103,7 @@ public class Level {
 	}
 
 	public boolean checkCollision(Element e, Element f) {
-		Rectangle r1 = e.getAbsoluteRect();
-		Rectangle r2 = f.getAbsoluteRect();
-		return r1.intersects(r2);
+		return e.getAbsoluteRect().intersects(f.getAbsoluteRect());
 	}
 
 	public boolean tryInteract(Entity entity) {

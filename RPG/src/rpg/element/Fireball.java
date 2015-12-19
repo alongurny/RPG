@@ -58,7 +58,7 @@ public class Fireball extends Element {
 
 	@Override
 	public void update(Level level) {
-		if (!level.tryMoveBy(this, direction.getUnitalVector().multiply(speed))) {
+		if (!level.tryMoveBy(this, direction.getUnitalVector().multiply(speed)).isEmpty()) {
 			level.removeDynamicElement(this);
 		}
 	}
