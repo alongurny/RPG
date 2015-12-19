@@ -31,9 +31,9 @@ public class Level1 extends Level {
 			map.put(new Block(map.getLocation(j, COLUMNS - 1)));
 		}
 
-		Portal[] portals = Portal.getPair(new Vector2D(250, 130), new Vector2D(600, 400));
-		getMap().put(portals[0]);
-		getMap().put(portals[1]);
+		Portal[] portals = Portal.getPair(map.getLocation(2, 2), map.getLocation(10, 6));
+		addElement(portals[0]);
+		addElement(portals[1]);
 	}
 
 }

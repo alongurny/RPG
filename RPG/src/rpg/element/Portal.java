@@ -21,8 +21,8 @@ public class Portal extends Element implements Interactive {
 	static {
 		try {
 			image = new ImageIcon(new File("img/portal.gif").toURI().toURL()).getImage();
-			width = 64;
-			height = 64;
+			width = 32;
+			height = 32;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -48,7 +48,7 @@ public class Portal extends Element implements Interactive {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(image, 0, 0, width, height, null);
+		g.drawImage(image, -width / 2, -height / 2, width, height, null);
 	}
 
 	@Override

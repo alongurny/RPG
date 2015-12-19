@@ -33,7 +33,7 @@ public class Block extends Element {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(image, 0, 0, 32, 32, null);
+		g.drawImage(image, -16, -16, 32, 32, null);
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class Air extends Element {
 	@Override
 	public void draw(Graphics g) {
 		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, 0, 32, 32);
+		g.fillRect(-16, -16, 32, 32);
 
 	}
 
