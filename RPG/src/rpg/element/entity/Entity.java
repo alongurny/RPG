@@ -10,7 +10,7 @@ import java.util.Map;
 
 import rpg.ability.AbilityHandler;
 import rpg.element.Element;
-import rpg.element.Inventory;
+import rpg.item.Inventory;
 import rpg.item.Item;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;

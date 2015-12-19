@@ -1,4 +1,4 @@
-package rpg.element;
+package rpg.element.entity;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -9,11 +9,8 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 
 import rpg.ability.FireballSpell;
-import rpg.element.entity.AttributeSet;
-import rpg.element.entity.Bar;
-import rpg.element.entity.Entity;
-import rpg.element.entity.Player;
-import rpg.element.entity.Race;
+import rpg.element.Element;
+import rpg.element.HealthPotion;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
 

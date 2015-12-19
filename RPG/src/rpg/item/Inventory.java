@@ -1,9 +1,7 @@
-package rpg.element;
+package rpg.item;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import rpg.item.Item;
 
 public class Inventory {
 	private List<Item> items;

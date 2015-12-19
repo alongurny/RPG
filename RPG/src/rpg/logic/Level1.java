@@ -1,10 +1,10 @@
 package rpg.logic;
 
 import rpg.element.Block;
-import rpg.element.Dragon;
 import rpg.element.ManaPotion;
 import rpg.element.Portal;
 import rpg.element.entity.AttributeSet;
+import rpg.element.entity.Dragon;
 import rpg.element.entity.Player;
 import rpg.physics.Vector2D;
 
