@@ -27,19 +27,19 @@ public class PlayerClient implements KeyListener, MultiKeyListener {
 		Vector2D velocity = Vector2D.ZERO;
 
 		if (e.get(KeyEvent.VK_UP)) {
-			velocity = velocity.add(Vector2D.NORTH.multiply(96));
+			velocity = velocity.add(Vector2D.NORTH);
 		}
 		if (e.get(KeyEvent.VK_DOWN)) {
-			velocity = velocity.add(Vector2D.SOUTH.multiply(96));
+			velocity = velocity.add(Vector2D.SOUTH);
 		}
 		if (e.get(KeyEvent.VK_LEFT)) {
-			velocity = velocity.add(Vector2D.WEST.multiply(96));
+			velocity = velocity.add(Vector2D.WEST);
 		}
 		if (e.get(KeyEvent.VK_RIGHT)) {
-			velocity = velocity.add(Vector2D.EAST.multiply(96));
+			velocity = velocity.add(Vector2D.EAST);
 		}
 
-		player.setVelocity(velocity);
+		player.setVelocityDirection(velocity);
 		if (!velocity.equals(Vector2D.ZERO)) {
 			player.setDirection(velocity);
 		}
@@ -60,6 +60,9 @@ public class PlayerClient implements KeyListener, MultiKeyListener {
 		} else if (e.getKeyCode() == KeyEvent.VK_2) {
 			AbilityHandler ah = player.getAbilityHandler();
 			ah.tryCast(game.getLevel(), ah.getAbility(1));
+		} else if (e.getKeyCode() == KeyEvent.VK_3) {
+			AbilityHandler ah = player.getAbilityHandler();
+			ah.tryCast(game.getLevel(), ah.getAbility(2));
 		}
 
 	}

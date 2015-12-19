@@ -4,6 +4,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import rpg.ability.FireballSpell;
+import rpg.ability.HasteSpell;
 import rpg.ability.RocketSpell;
 import rpg.element.entity.AttributeSet;
 import rpg.element.entity.Player;
@@ -76,6 +77,7 @@ public class GameStation {
 		Player player = new Player(new Vector2D(80, 100), new AttributeSet(13, 13, 13), Race.HUMAN, Profession.MAGE);
 		player.getAbilityHandler().addAbility(new FireballSpell(192));
 		player.getAbilityHandler().addAbility(new RocketSpell(160));
+		player.getAbilityHandler().addAbility(new HasteSpell());
 		Level level = new Level1(player);
 		Game game = new Game(level);
 		GameStation gs = new GameStation(game, player);

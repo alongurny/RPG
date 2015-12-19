@@ -54,7 +54,7 @@ public abstract class Entity extends Element {
 
 	@Override
 	public void update(Level level, double dt) {
-		abilityHandler.update(level);
+		abilityHandler.update(level, dt);
 		if (isAlive()) {
 			act(level, dt);
 		} else {

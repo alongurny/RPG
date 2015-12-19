@@ -28,14 +28,16 @@ public class Player extends Entity {
 		}
 	}
 
-	private Vector2D velocity;
+	private Vector2D velocityDirection;
+	private double speed;
 	private Profession profession;
 
 	public Player(Vector2D location, AttributeSet basicAttributes, Race race, Profession profession) {
 		super(location, basicAttributes, race);
 		this.profession = profession;
-		this.velocity = Vector2D.ZERO;
+		this.velocityDirection = Vector2D.ZERO;
 		this.profession.init(this);
+		this.speed = 32;
 	}
 
 	@Override
@@ -66,11 +68,11 @@ public class Player extends Entity {
 	@Override
 	public void act(Level level, double dt) {
 		boolean success;
-		success = level.tryMoveBy(this, velocity.multiply(dt)).isEmpty();
+		success = level.tryMoveBy(this, getVelocity().multiply(dt)).isEmpty();
 		if (!success) {
-			success = level.tryMoveBy(this, new Vector2D(velocity.getX() * dt, 0)).isEmpty();
+			success = level.tryMoveBy(this, new Vector2D(getVelocity().getX() * dt, 0)).isEmpty();
 			if (!success) {
-				level.tryMoveBy(this, new Vector2D(0, velocity.getY() * dt));
+				level.tryMoveBy(this, new Vector2D(0, getVelocity().getY() * dt));
 			}
 		}
 	}
@@ -80,11 +82,19 @@ public class Player extends Entity {
 	}
 
 	public Vector2D getVelocity() {
-		return velocity;
+		return velocityDirection.multiply(speed);
 	}
 
-	public void setVelocity(Vector2D velocity) {
-		this.velocity = velocity;
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+	public void setVelocityDirection(Vector2D velocity) {
+		this.velocityDirection = velocity;
 	}
 
 }

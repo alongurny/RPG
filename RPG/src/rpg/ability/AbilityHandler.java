@@ -18,7 +18,6 @@ public class AbilityHandler extends Mechanism implements Drawable {
 
 	private List<Ability> abilities;
 	private Entity caster;
-	private long lastUpdate;
 
 	private static Point[] ps = { new Point(16, 0), new Point(32, 0), new Point(32, 16), new Point(32, 32),
 			new Point(16, 32), new Point(0, 32), new Point(0, 16), new Point(0, 0) };
@@ -26,13 +25,10 @@ public class AbilityHandler extends Mechanism implements Drawable {
 	public AbilityHandler(Entity caster) {
 		this.caster = caster;
 		abilities = new CopyOnWriteArrayList<>();
-		lastUpdate = System.currentTimeMillis();
 	}
 
-	public void update(Level level) {
-		long now = System.currentTimeMillis();
-		abilities.forEach(p -> p.reduceCooldown((now - lastUpdate) / 1000.0));
-		lastUpdate = now;
+	public void update(Level level, double dt) {
+		abilities.forEach(p -> p.reduceCooldown(dt));
 	}
 
 	public void addAbility(Ability ability) {

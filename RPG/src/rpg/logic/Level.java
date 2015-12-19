@@ -16,10 +16,12 @@ public class Level {
 	private Map map;
 	private boolean finished;
 	private Level nextLevel;
+	private Timer timer;
 
 	public Level(int rows, int cols) {
 		elements = new CopyOnWriteArrayList<>();
 		map = new Map(rows, cols);
+		timer = new Timer();
 	}
 
 	public List<Element> tryMoveBy(Element element, Vector2D displacement) {
@@ -73,6 +75,7 @@ public class Level {
 	public void update(double d) {
 		elements.forEach(e -> e.update(this, d));
 		handleCollisions();
+		timer.update(this, d);
 	}
 
 	public boolean isFinished() {
@@ -162,5 +165,9 @@ public class Level {
 
 	public boolean removeStaticElement(Element e) {
 		return map.remove(e);
+	}
+
+	public void addTimer(double time, Runnable run) {
+		timer.add(time, run);
 	}
 }
