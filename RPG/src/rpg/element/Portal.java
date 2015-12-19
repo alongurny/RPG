@@ -13,7 +13,7 @@ import rpg.element.entity.Entity;
 import rpg.level.Level;
 import rpg.physics.Vector2D;
 
-public class Portal extends DynamicElement implements Interactive {
+public class Portal extends Element implements Interactive {
 
 	private static Image image;
 	private static int width, height;
@@ -52,7 +52,7 @@ public class Portal extends DynamicElement implements Interactive {
 	}
 
 	@Override
-	public void onCollision(Level level, DynamicElement other) {
+	public void onCollision(Level level, Element other) {
 
 	}
 
@@ -75,7 +75,7 @@ public class Portal extends DynamicElement implements Interactive {
 	}
 
 	@Override
-	public boolean isPassable(Level level, DynamicElement other) {
+	public boolean isPassable(Level level, Element other) {
 		return true;
 	}
 

@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Objects;
 
 import rpg.element.Air;
-import rpg.element.DynamicElement;
+import rpg.element.Element;
 import rpg.physics.Vector2D;
 
 public class Map {
 
-	private DynamicElement[][] staticElements;
+	private Element[][] staticElements;
 
 	public Map(int rows, int cols) {
-		staticElements = new DynamicElement[rows][cols];
+		staticElements = new Element[rows][cols];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				staticElements[i][j] = new Air(getLocation(i, j));
@@ -21,8 +21,8 @@ public class Map {
 		}
 	}
 
-	public List<DynamicElement> getElements() {
-		List<DynamicElement> list = new ArrayList<>();
+	public List<Element> getElements() {
+		List<Element> list = new ArrayList<>();
 		for (int i = 0; i < staticElements.length; i++) {
 			for (int j = 0; j < staticElements[i].length; j++) {
 				list.add(staticElements[i][j]);
@@ -31,19 +31,19 @@ public class Map {
 		return list;
 	}
 
-	public void put(DynamicElement e) {
+	public void put(Element e) {
 		staticElements[getRow(e)][getColumn(e)] = Objects.requireNonNull(e);
 	}
 
-	public int getRow(DynamicElement e) {
+	public int getRow(Element e) {
 		return (int) (e.getLocation().getY() / getRowHeight());
 	}
 
-	public int getColumn(DynamicElement e) {
+	public int getColumn(Element e) {
 		return (int) (e.getLocation().getX() / getColumnWidth());
 	}
 
-	public DynamicElement get(int y, int x) {
+	public Element get(int y, int x) {
 		return staticElements[y][x];
 	}
 

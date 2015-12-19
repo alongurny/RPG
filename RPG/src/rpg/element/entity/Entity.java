@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 import rpg.ability.AbilityHandler;
-import rpg.element.DynamicElement;
+import rpg.element.Element;
 import rpg.element.Inventory;
 import rpg.item.Item;
 import rpg.level.Level;
 import rpg.physics.Vector2D;
 
-public abstract class Entity extends DynamicElement {
+public abstract class Entity extends Element {
 
 	private Vector2D direction;
 	private AttributeSet basicAttributes;

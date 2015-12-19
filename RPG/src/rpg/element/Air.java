@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import rpg.level.Level;
 import rpg.physics.Vector2D;
 
-public class Air extends DynamicElement {
+public class Air extends Element {
 
 	public Air(Vector2D location) {
 		super(location);
@@ -19,12 +19,12 @@ public class Air extends DynamicElement {
 	}
 
 	@Override
-	public void onCollision(Level level, DynamicElement other) {
+	public void onCollision(Level level, Element other) {
 
 	}
 
 	@Override
-	public boolean isPassable(Level level, DynamicElement other) {
+	public boolean isPassable(Level level, Element other) {
 		return true;
 	}
 

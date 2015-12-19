@@ -8,11 +8,11 @@ import rpg.level.Level;
 import rpg.physics.Vector2D;
 import rpg.ui.Drawable;
 
-public abstract class DynamicElement implements Drawable {
+public abstract class Element implements Drawable {
 
 	private Vector2D location;
 
-	public DynamicElement(Vector2D location) {
+	public Element(Vector2D location) {
 		this.location = location;
 	}
 
@@ -35,7 +35,7 @@ public abstract class DynamicElement implements Drawable {
 				(int) rel.getWidth(), (int) rel.getHeight());
 	}
 
-	private static Map<Integer, Class<? extends DynamicElement>> ids;
+	private static Map<Integer, Class<? extends Element>> ids;
 
 	static {
 		ids = new HashMap<>();
@@ -44,15 +44,15 @@ public abstract class DynamicElement implements Drawable {
 		put(2, Portal.class);
 	}
 
-	public static void put(int id, Class<? extends DynamicElement> cls) {
+	public static void put(int id, Class<? extends Element> cls) {
 		ids.put(id, cls);
 	}
 
 	public abstract void update(Level level);
 
-	public abstract void onCollision(Level level, DynamicElement other);
+	public abstract void onCollision(Level level, Element other);
 
-	public abstract boolean isPassable(Level level, DynamicElement other);
+	public abstract boolean isPassable(Level level, Element other);
 
 	@Override
 	public String toString() {

@@ -13,7 +13,7 @@ import rpg.element.entity.Entity;
 import rpg.level.Level;
 import rpg.physics.Vector2D;
 
-public class Fireball extends DynamicElement {
+public class Fireball extends Element {
 
 	private Entity caster;
 
@@ -64,7 +64,7 @@ public class Fireball extends DynamicElement {
 	}
 
 	@Override
-	public void onCollision(Level level, DynamicElement other) {
+	public void onCollision(Level level, Element other) {
 		if (other instanceof Entity && other != caster) {
 			Entity entity = (Entity) other;
 			entity.removeBarValue(10, "health");
@@ -80,7 +80,7 @@ public class Fireball extends DynamicElement {
 	}
 
 	@Override
-	public boolean isPassable(Level level, DynamicElement other) {
+	public boolean isPassable(Level level, Element other) {
 		return true;
 	}
 

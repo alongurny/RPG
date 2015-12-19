@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import rpg.Game;
 import rpg.Map;
 import rpg.ability.AbilityHandler;
-import rpg.element.DynamicElement;
+import rpg.element.Element;
 import rpg.element.entity.Player;
 import rpg.physics.Vector2D;
 
@@ -111,15 +111,15 @@ public class GamePanel extends JPanel {
 		sourceX = limit(-32, map.getWidth() - getWidth() + 32, (int) loc.getX() - getWidth() / 2);
 		sourceY = limit(-32, map.getHeight() - getHeight() + 32, (int) loc.getY() - getHeight() / 2);
 		g.drawImage(background, 0, 0, null);
-		List<DynamicElement> dynamics = game.getLevel().getDynamicElements();
+		List<Element> dynamics = game.getLevel().getDynamicElements();
 		dynamics.sort((a, b) -> a.getIndex() - b.getIndex());
-		Queue<DynamicElement> dyn = new ArrayDeque<>(dynamics);
-		List<DynamicElement> statics = game.getLevel().getMap().getElements();
+		Queue<Element> dyn = new ArrayDeque<>(dynamics);
+		List<Element> statics = game.getLevel().getMap().getElements();
 		statics.sort((a, b) -> a.getIndex() - b.getIndex());
-		Queue<DynamicElement> stt = new ArrayDeque<>(statics);
+		Queue<Element> stt = new ArrayDeque<>(statics);
 		while (!dyn.isEmpty() && !stt.isEmpty()) {
-			DynamicElement s = stt.peek();
-			DynamicElement d = dyn.peek();
+			Element s = stt.peek();
+			Element d = dyn.peek();
 			if (s.getIndex() < d.getIndex()) {
 				drawDynamicElement(g, stt.remove());
 			} else {
@@ -145,7 +145,7 @@ public class GamePanel extends JPanel {
 		return value;
 	}
 
-	public void drawDynamicElement(Graphics g, DynamicElement e) {
+	public void drawDynamicElement(Graphics g, Element e) {
 		int x = (int) (e.getLocation().getX()) - sourceX;
 		int y = (int) (e.getLocation().getY()) - sourceY;
 		g.translate(x, y);

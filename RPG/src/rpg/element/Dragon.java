@@ -54,12 +54,12 @@ public class Dragon extends Entity {
 	}
 
 	@Override
-	public void onCollision(Level level, DynamicElement other) {
+	public void onCollision(Level level, Element other) {
 
 	}
 
 	@Override
-	public boolean isPassable(Level level, DynamicElement other) {
+	public boolean isPassable(Level level, Element other) {
 		if (other instanceof Entity) {
 			return false;
 		}
@@ -68,7 +68,7 @@ public class Dragon extends Entity {
 
 	@Override
 	public void act(Level level) {
-		for (DynamicElement d : level.getDynamicElements()) {
+		for (Element d : level.getDynamicElements()) {
 			if (d instanceof Player) {
 				setDirection(d.getLocation().subtract(getLocation()));
 				getAbilityHandler().tryCast(level, 0);
