@@ -1,7 +1,7 @@
 package rpg.element;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
+import rpg.ui.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

@@ -2,7 +2,6 @@ package rpg.element;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 
@@ -10,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
+import rpg.ui.Rectangle;
 
 public class Block extends Element {
 
@@ -20,8 +20,8 @@ public class Block extends Element {
 	static {
 		try {
 			image = ImageIO.read(new File(imagePath));
-			width = image.getWidth(null);
-			height = image.getHeight(null);
+			width = 32;
+			height = 32;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -33,7 +33,7 @@ public class Block extends Element {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(image, -16, -16, 32, 32, null);
+		g.drawImage(image, -width / 2, -height / 2, width, height, null);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class Block extends Element {
 
 	@Override
 	public Rectangle getRelativeRect() {
-		return new Rectangle(-16, -16, 32, 32);
+		return new Rectangle(-width / 2, -height / 2, width, height);
 	}
 
 	@Override

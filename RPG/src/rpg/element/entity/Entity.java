@@ -2,7 +2,6 @@ package rpg.element.entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +13,7 @@ import rpg.item.Inventory;
 import rpg.item.Item;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
+import rpg.ui.Rectangle;
 
 public abstract class Entity extends Element {
 
@@ -101,10 +101,11 @@ public abstract class Entity extends Element {
 				double percentage = getBarValue(key) / getBarMaximum(key);
 				Color[] colors = Bar.getColors(key);
 				g.setColor(colors[0]);
-				g.fillRect(rect.x, (int) rect.height + 8 * counter - 4, (int) (rect.width * percentage), 4);
+				g.fillRect((int) rect.getX(), (int) rect.getHeight() + 8 * counter - 4,
+						(int) (rect.getWidth() * percentage), 4);
 				g.setColor(colors[1]);
-				g.fillRect((int) (rect.width * percentage) + rect.x, (int) rect.height + 8 * counter - 4,
-						rect.width - (int) (rect.width * percentage), 4);
+				g.fillRect((int) (rect.getWidth() * percentage + rect.getX()), (int) rect.getHeight() + 8 * counter - 4,
+						(int) (rect.getWidth() - rect.getWidth() * percentage), 4);
 				counter++;
 			}
 		}

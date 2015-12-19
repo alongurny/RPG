@@ -2,7 +2,6 @@ package rpg.element;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.io.File;
 import java.net.MalformedURLException;
 
@@ -12,6 +11,7 @@ import rpg.Interactive;
 import rpg.element.entity.Entity;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
+import rpg.ui.Rectangle;
 
 public class Portal extends Element implements Interactive {
 
@@ -70,8 +70,9 @@ public class Portal extends Element implements Interactive {
 	public boolean isInteractable(Level level, Entity entity) {
 		Rectangle entityRect = entity.getAbsoluteRect();
 		Rectangle myRect = this.getAbsoluteRect();
-		Rectangle intersect = entityRect.intersection(myRect);
-		return intersect.width >= 0.6 * entityRect.width && intersect.height >= 0.6 * entityRect.height;
+		Rectangle intersect = Rectangle.intersect(entityRect, myRect);
+		return intersect.getWidth() >= 0.6 * entityRect.getWidth()
+				&& intersect.getHeight() >= 0.6 * entityRect.getHeight();
 	}
 
 	@Override

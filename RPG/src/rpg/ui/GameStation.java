@@ -22,7 +22,7 @@ public class GameStation {
 	private Game game;
 
 	public GameStation(Game game, Player player) {
-		metaBoard = new MetaBoard(480, 120, game, player);
+		metaBoard = new MetaBoard(480, 200, game, player);
 		gameBoard = new GameBoard(480, 480, game, player);
 		gameBoard.addComponentListener(new ComponentListener() {
 
@@ -46,8 +46,7 @@ public class GameStation {
 
 			}
 		});
-		gameBoard.setLocation(500, 100);
-		metaBoard.setFocusableWindowState(false);
+		gameBoard.setLocation(500, 40);
 		this.game = game;
 	}
 
@@ -65,7 +64,15 @@ public class GameStation {
 				gameBoard.repaint();
 				metaBoard.repaint();
 				long now = System.currentTimeMillis();
-				game.update((now - last) / 1000.0);
+				game.update(20e-3);
+				long diff = (now - last);
+				if (diff < 20) {
+					try {
+						Thread.sleep(19 - diff);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 				last = now;
 
 			}

@@ -1,6 +1,5 @@
 package rpg.logic;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -9,6 +8,7 @@ import rpg.Interactive;
 import rpg.element.Element;
 import rpg.element.entity.Entity;
 import rpg.physics.Vector2D;
+import rpg.ui.Rectangle;
 
 public class Level {
 
@@ -42,19 +42,18 @@ public class Level {
 
 	private List<Element> getObstacles(Element element, Vector2D target) {
 		Rectangle oldRect = element.getAbsoluteRect();
-		int x = (int) (target.getX() - element.getLocation().getX() + oldRect.getX());
-		int y = (int) (target.getY() - element.getLocation().getY() + oldRect.getY());
-		Rectangle newRect = new Rectangle(x, y, oldRect.width, oldRect.height);
+		double x = target.getX() - element.getLocation().getX() + oldRect.getX();
+		double y = target.getY() - element.getLocation().getY() + oldRect.getY();
+		Rectangle newRect = new Rectangle(x, y, oldRect.getWidth(), oldRect.getHeight());
 		List<Element> obstacles = new ArrayList<>();
 		for (Element e : elements) {
 			if (e.getAbsoluteRect().intersects(newRect) && !e.isPassable(this, element)) {
 				obstacles.add(e);
 			}
 		}
-		for (Element s : getNearElements(element)) {
-			Rectangle r = s.getAbsoluteRect();
-			if (r.intersects(newRect) && !s.isPassable(this, element)) {
-				obstacles.add(s);
+		for (Element e : getNearElements(element)) {
+			if (e.getAbsoluteRect().intersects(newRect) && !e.isPassable(this, element)) {
+				obstacles.add(e);
 			}
 		}
 		return obstacles;

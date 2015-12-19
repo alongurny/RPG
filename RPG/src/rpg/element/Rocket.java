@@ -1,7 +1,6 @@
 package rpg.element;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -12,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
+import rpg.ui.Rectangle;
 
 public class Rocket extends Element {
 

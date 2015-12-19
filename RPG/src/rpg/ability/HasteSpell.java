@@ -4,12 +4,13 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import rpg.Requirement;
+import rpg.Requirement.BarRequirement;
 import rpg.element.entity.Entity;
 import rpg.element.entity.Player;
 import rpg.logic.Level;
@@ -43,7 +44,7 @@ public class HasteSpell extends DurationSpell {
 	public void onStart(Level level, Entity caster) {
 		if (caster instanceof Player) {
 			Player p = (Player) caster;
-			double speed = p.getSpeed();
+			speed = p.getSpeed();
 			p.setSpeed(2.5 * speed);
 		}
 	}
@@ -52,13 +53,13 @@ public class HasteSpell extends DurationSpell {
 	public void onEnd(Level level, Entity caster) {
 		if (caster instanceof Player) {
 			Player p = (Player) caster;
-			level.addTimer(2, () -> p.setSpeed(speed));
+			p.setSpeed(speed);
 		}
 	}
 
 	@Override
 	public List<Requirement> getRequirements() {
-		return new ArrayList<>();
+		return Arrays.asList((new BarRequirement("mana", 1)));
 	}
 
 }

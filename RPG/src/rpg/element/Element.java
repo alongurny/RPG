@@ -1,12 +1,12 @@
 package rpg.element;
 
-import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
 
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
 import rpg.ui.Drawable;
+import rpg.ui.Rectangle;
 
 public abstract class Element implements Drawable {
 
@@ -31,8 +31,8 @@ public abstract class Element implements Drawable {
 	public Rectangle getAbsoluteRect() {
 		Rectangle rel = getRelativeRect();
 		Vector2D location = getLocation();
-		return new Rectangle((int) (location.getX() + rel.getX()), (int) (location.getY() + rel.getY()),
-				(int) rel.getWidth(), (int) rel.getHeight());
+		return new Rectangle(location.getX() + rel.getX(), location.getY() + rel.getY(), rel.getWidth(),
+				rel.getHeight());
 	}
 
 	private static Map<Integer, Class<? extends Element>> ids;

@@ -2,10 +2,10 @@ package rpg.element;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
+import rpg.ui.Rectangle;
 
 public class Air extends Element {
 

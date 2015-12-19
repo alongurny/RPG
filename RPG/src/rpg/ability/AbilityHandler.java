@@ -94,9 +94,9 @@ public class AbilityHandler extends Mechanism implements Drawable {
 	public void draw(Graphics g) {
 		for (Ability ability : abilities) {
 			double cooldown = ability.getCooldown();
+			ability.draw(g);
 			g.setColor(Color.BLACK);
 			g.drawRect(0, 0, 32, 32);
-			ability.draw(g);
 			if (cooldown > 0) {
 				g.setColor(new Color(63, 63, 63, 100));
 				double percentage = 1 - cooldown / ability.getMaxCooldown();

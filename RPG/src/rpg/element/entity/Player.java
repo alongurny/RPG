@@ -2,7 +2,7 @@ package rpg.element.entity;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
+import rpg.ui.Rectangle;
 import java.io.File;
 import java.io.IOException;
 
@@ -37,7 +37,7 @@ public class Player extends Entity {
 		this.profession = profession;
 		this.velocityDirection = Vector2D.ZERO;
 		this.profession.init(this);
-		this.speed = 32;
+		this.speed = 80;
 	}
 
 	@Override
@@ -47,7 +47,9 @@ public class Player extends Entity {
 
 	@Override
 	public void onCollision(Level level, Element other) {
-
+		if (!other.isPassable(level, this)) {
+			System.out.println(other);
+		}
 	}
 
 	@Override
