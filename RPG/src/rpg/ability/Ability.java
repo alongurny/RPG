@@ -4,7 +4,7 @@ import java.util.List;
 
 import rpg.Requirement;
 import rpg.element.entity.Entity;
-import rpg.level.Level;
+import rpg.logic.Level;
 import rpg.ui.Drawable;
 
 public abstract class Ability implements Drawable {

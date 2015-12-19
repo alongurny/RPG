@@ -1,4 +1,4 @@
-package rpg;
+package rpg.logic;
 
 import java.util.ArrayList;
 import java.util.List;

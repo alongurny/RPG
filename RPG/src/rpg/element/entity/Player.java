@@ -9,7 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import rpg.element.Element;
-import rpg.level.Level;
+import rpg.logic.Level;
 import rpg.physics.Vector2D;
 
 public class Player extends Entity {

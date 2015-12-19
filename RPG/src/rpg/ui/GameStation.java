@@ -3,14 +3,14 @@ package rpg.ui;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import rpg.Game;
 import rpg.ability.FireballSpell;
 import rpg.element.entity.AttributeSet;
 import rpg.element.entity.Player;
 import rpg.element.entity.Profession;
 import rpg.element.entity.Race;
-import rpg.level.Level;
-import rpg.level.Level1;
+import rpg.logic.Game;
+import rpg.logic.Level;
+import rpg.logic.Level1;
 import rpg.physics.Vector2D;
 
 public class GameStation {

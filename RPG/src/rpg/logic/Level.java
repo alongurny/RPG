@@ -1,4 +1,4 @@
-package rpg.level;
+package rpg.logic;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import rpg.Interactive;
-import rpg.Map;
 import rpg.element.Element;
 import rpg.element.entity.Entity;
 import rpg.physics.Vector2D;

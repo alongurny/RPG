@@ -1,6 +1,5 @@
-package rpg.level;
+package rpg.logic;
 
-import rpg.Map;
 import rpg.element.Block;
 import rpg.element.Dragon;
 import rpg.element.ManaPotion;

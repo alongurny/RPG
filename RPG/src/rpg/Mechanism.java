@@ -1,6 +1,6 @@
 package rpg;
 
-import rpg.level.Level;
+import rpg.logic.Level;
 
 public abstract class Mechanism {
 	public abstract void update(Level level);

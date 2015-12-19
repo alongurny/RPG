@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
 
-import rpg.level.Level;
+import rpg.logic.Level;
 import rpg.physics.Vector2D;
 import rpg.ui.Drawable;
 

@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 
 import rpg.Interactive;
 import rpg.element.entity.Entity;
-import rpg.level.Level;
+import rpg.logic.Level;
 import rpg.physics.Vector2D;
 
 public class Portal extends Element implements Interactive {

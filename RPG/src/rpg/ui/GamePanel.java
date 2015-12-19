@@ -17,11 +17,11 @@ import java.util.Queue;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import rpg.Game;
-import rpg.Map;
 import rpg.ability.AbilityHandler;
 import rpg.element.Element;
 import rpg.element.entity.Player;
+import rpg.logic.Game;
+import rpg.logic.Map;
 import rpg.physics.Vector2D;
 
 public class GamePanel extends JPanel {

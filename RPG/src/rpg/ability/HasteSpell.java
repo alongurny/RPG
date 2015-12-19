@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 
 import rpg.Requirement;
 import rpg.element.entity.Entity;
-import rpg.level.Level;
+import rpg.logic.Level;
 
 public class HasteSpell extends Spell {
 

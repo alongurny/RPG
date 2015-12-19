@@ -12,7 +12,7 @@ import rpg.ability.AbilityHandler;
 import rpg.element.Element;
 import rpg.element.Inventory;
 import rpg.item.Item;
-import rpg.level.Level;
+import rpg.logic.Level;
 import rpg.physics.Vector2D;
 
 public abstract class Entity extends Element {

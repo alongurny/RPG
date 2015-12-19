@@ -2,8 +2,8 @@ package rpg.ui;
 
 import javax.swing.JFrame;
 
-import rpg.Game;
 import rpg.element.entity.Player;
+import rpg.logic.Game;
 
 public class MetaBoard extends JFrame {
 

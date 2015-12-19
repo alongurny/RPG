@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import rpg.level.Level;
+import rpg.logic.Level;
 import rpg.physics.Vector2D;
 
 public class Block extends Element {

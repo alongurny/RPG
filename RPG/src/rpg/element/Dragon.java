@@ -14,7 +14,7 @@ import rpg.element.entity.Bar;
 import rpg.element.entity.Entity;
 import rpg.element.entity.Player;
 import rpg.element.entity.Race;
-import rpg.level.Level;
+import rpg.logic.Level;
 import rpg.physics.Vector2D;
 
 public class Dragon extends Entity {

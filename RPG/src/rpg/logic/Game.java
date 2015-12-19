@@ -1,6 +1,4 @@
-package rpg;
-
-import rpg.level.Level;
+package rpg.logic;
 
 public class Game {
 	private Level level;
