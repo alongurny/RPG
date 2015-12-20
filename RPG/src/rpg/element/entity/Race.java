@@ -2,8 +2,8 @@ package rpg.element.entity;
 
 public class Race {
 
-	public static final Race HUMAN = new Race(AttributeSet.read("race/human.race"));
-	public static final Race DRAGON = new Race(AttributeSet.read("race/dragon.race"));
+	public static final Race HUMAN = new Race(AttributeSet.read("race/human.attr"));
+	public static final Race DRAGON = new Race(AttributeSet.read("race/dragon.attr"));
 
 	private AttributeSet attributeSet;
 

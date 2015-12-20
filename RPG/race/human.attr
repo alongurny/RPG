@@ -1,0 +1,6 @@
+maxHealth = 42 : continuous
+intelligence = 14 : discrete
+stamina = 14 : discrete
+speed = 80 : continuous
+healthRegen = 0.1 : continuous
+manaRegen = 0.1 : continuous

@@ -8,6 +8,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import rpg.element.entity.AttributeSet;
 import rpg.element.entity.Entity;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
@@ -34,7 +35,6 @@ public class Fireball extends Element {
 	static {
 		try {
 			image = ImageIO.read(new File("img/fireball.gif"));
-
 			width = image.getWidth(null) / 2;
 			height = image.getHeight(null) / 2;
 		} catch (Exception e) {
@@ -67,7 +67,7 @@ public class Fireball extends Element {
 	public void onCollision(Level level, Element other) {
 		if (other instanceof Entity && other != caster) {
 			Entity entity = (Entity) other;
-			entity.removeBarValue("health", 10);
+			entity.removeBarValue("health", 10 + AttributeSet.getModifier(caster.getDiscrete("intelligence")));
 			level.removeDynamicElement(this);
 		} else if (!other.isPassable(level, this)) {
 			level.removeDynamicElement(this);

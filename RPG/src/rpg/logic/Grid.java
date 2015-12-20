@@ -7,11 +7,11 @@ import rpg.element.Air;
 import rpg.element.Element;
 import rpg.physics.Vector2D;
 
-public class Map {
+public class Grid {
 
 	private ElementContainer[][] elements;
 
-	public Map(int rows, int cols) {
+	public Grid(int rows, int cols) {
 		elements = new ElementContainer[rows][cols];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {

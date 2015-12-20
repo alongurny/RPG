@@ -9,6 +9,7 @@ import java.util.Map;
 
 import rpg.ability.AbilityHandler;
 import rpg.element.Element;
+import rpg.exception.AttributeException;
 import rpg.item.Inventory;
 import rpg.item.Item;
 import rpg.logic.Level;
@@ -49,14 +50,23 @@ public abstract class Entity extends Element {
 	}
 
 	public double getContinuous(String name) {
+		if (!basicAttributes.hasContinuous(name) && !race.getAttributeSet().hasContinuous(name)) {
+			throw new AttributeException(name);
+		}
 		return basicAttributes.getContinuous(name) + race.getAttributeSet().getContinuous(name);
 	}
 
 	public int getDiscrete(String name) {
+		if (!basicAttributes.hasDiscrete(name) && !race.getAttributeSet().hasDiscrete(name)) {
+			throw new AttributeException(name);
+		}
 		return basicAttributes.getDiscrete(name) + race.getAttributeSet().getDiscrete(name);
 	}
 
 	public boolean getBoolean(String name) {
+		if (!basicAttributes.hasBoolean(name) && !race.getAttributeSet().hasBoolean(name)) {
+			throw new AttributeException(name);
+		}
 		return basicAttributes.getBoolean(name) || race.getAttributeSet().getBoolean(name);
 	}
 

@@ -13,14 +13,14 @@ import rpg.ui.Rectangle;
 public class Level {
 
 	private List<Element> elements;
-	private Map map;
+	private Grid grid;
 	private boolean finished;
 	private Level nextLevel;
 	private Timer timer;
 
 	public Level(int rows, int cols) {
 		elements = new CopyOnWriteArrayList<>();
-		map = new Map(rows, cols);
+		grid = new Grid(rows, cols);
 		timer = new Timer();
 	}
 
@@ -131,11 +131,11 @@ public class Level {
 	}
 
 	public void addStaticElement(Element e) {
-		map.add(e);
+		grid.add(e);
 	}
 
-	public Map getMap() {
-		return map;
+	public Grid getMap() {
+		return grid;
 	}
 
 	public Level getNextLevel() {
@@ -155,15 +155,15 @@ public class Level {
 							 * <= map.getColumns()) { list.add(map.get(y + i, x
 							 * + j)); } } } }
 							 */
-		return map.getElements();
+		return grid.getElements();
 	}
 
 	public List<Element> getStaticElements() {
-		return map.getElements();
+		return grid.getElements();
 	}
 
 	public boolean removeStaticElement(Element e) {
-		return map.remove(e);
+		return grid.remove(e);
 	}
 
 	public void addTimer(double time, Runnable run) {

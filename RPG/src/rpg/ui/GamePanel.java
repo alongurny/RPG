@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import rpg.element.Element;
 import rpg.element.entity.Player;
 import rpg.logic.Game;
-import rpg.logic.Map;
+import rpg.logic.Grid;
 import rpg.physics.Vector2D;
 
 public class GamePanel extends JPanel {
@@ -22,7 +22,6 @@ public class GamePanel extends JPanel {
 	private Player player;
 	private KeyTracker keyTracker;
 	private static BufferedImage background;
-
 	private int sourceX, sourceY;
 	private Game game;
 
@@ -47,9 +46,9 @@ public class GamePanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Vector2D loc = player.getLocation();
-		Map map = game.getLevel().getMap();
-		sourceX = limit(-32, map.getWidth() - getWidth() + 32, (int) loc.getX() - getWidth() / 2);
-		sourceY = limit(-32, map.getHeight() - getHeight() + 32, (int) loc.getY() - getHeight() / 2);
+		Grid grid = game.getLevel().getMap();
+		sourceX = limit(-32, grid.getWidth() - getWidth() + 32, (int) loc.getX() - getWidth() / 2);
+		sourceY = limit(-32, grid.getHeight() - getHeight() + 32, (int) loc.getY() - getHeight() / 2);
 		g.drawImage(background, 0, 0, null);
 		List<Element> dynamics = game.getLevel().getDynamicElements();
 		dynamics.sort((a, b) -> a.getIndex() - b.getIndex());

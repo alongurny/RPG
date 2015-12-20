@@ -37,7 +37,7 @@ public class Player extends Entity {
 		this.profession = profession;
 		this.velocityDirection = Vector2D.ZERO;
 		this.profession.init(this);
-		this.speed = 80;
+		this.speed = getContinuous("speed");
 	}
 
 	@Override
@@ -69,13 +69,9 @@ public class Player extends Entity {
 
 	@Override
 	public void act(Level level, double dt) {
-		boolean success;
-		success = level.tryMoveBy(this, getVelocity().multiply(dt)).isEmpty();
-		if (!success) {
-			success = level.tryMoveBy(this, new Vector2D(getVelocity().getX() * dt, 0)).isEmpty();
-			if (!success) {
-				level.tryMoveBy(this, new Vector2D(0, getVelocity().getY() * dt));
-			}
+		if (!level.tryMoveBy(this, getVelocity().multiply(dt)).isEmpty()
+				&& !level.tryMoveBy(this, new Vector2D(getVelocity().getX() * dt, 0)).isEmpty()) {
+			level.tryMoveBy(this, new Vector2D(0, getVelocity().getY() * dt));
 		}
 		addBarValue("health", dt * getContinuous("healthRegen"));
 		addBarValue("mana", dt * getContinuous("manaRegen"));
