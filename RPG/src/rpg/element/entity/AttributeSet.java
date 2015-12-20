@@ -1,48 +1,104 @@
 package rpg.element.entity;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class AttributeSet {
 
-	private int strength, dexterity, intelligence;
+	private Map<String, Double> continuousAttributes;
+	private Map<String, Integer> discreteAttributes;
+	private Map<String, Boolean> booleanAttributes;
 
-	public AttributeSet(int strength, int dexterity, int intelligence) {
-		this.strength = strength;
-		this.dexterity = dexterity;
-		this.intelligence = intelligence;
+	public AttributeSet() {
+		continuousAttributes = new HashMap<>();
+		discreteAttributes = new HashMap<>();
+		booleanAttributes = new HashMap<>();
 	}
 
-	public int getStrength() {
-		return strength;
+	public void setContinuous(String name, double value) {
+		continuousAttributes.put(name, value);
 	}
 
-	public int getStrengthModifier() {
-		return getModifier(strength);
+	public void setDiscrete(String name, int value) {
+		discreteAttributes.put(name, value);
 	}
 
-	public int getDexterity() {
-		return dexterity;
+	public void setBoolean(String name, boolean value) {
+		booleanAttributes.put(name, value);
 	}
 
-	public int getDexterityModifier() {
-		return getModifier(dexterity);
+	public boolean hasContinuous(String name) {
+		return continuousAttributes.containsKey(name);
 	}
 
-	public int getIntelligence() {
-		return intelligence;
+	public boolean hasDiscrete(String name) {
+		return discreteAttributes.containsKey(name);
 	}
 
-	public int getIntelligenceModifier() {
-		return getModifier(intelligence);
+	public boolean hasBoolean(String name) {
+		return booleanAttributes.containsKey(name);
 	}
 
-	public static int getModifier(int ability) {
-		if (ability % 2 != 0) {
-			ability--;
+	public double getContinuous(String name, double defaultValue) {
+		Double value = continuousAttributes.get(name);
+		return value != null ? value : defaultValue;
+	}
+
+	public int getDiscrete(String name, int defaultValue) {
+		Integer value = discreteAttributes.get(name);
+		return value != null ? value : defaultValue;
+	}
+
+	public boolean getBoolean(String name, boolean defaultValue) {
+		Boolean value = booleanAttributes.get(name);
+		return value != null ? value : defaultValue;
+	}
+
+	public double getContinuous(String name) {
+		return getContinuous(name, 0.0);
+	}
+
+	public int getDiscrete(String name) {
+		return getDiscrete(name, 0);
+	}
+
+	public boolean getBoolean(String name) {
+		return getBoolean(name, false);
+	}
+
+	public static int getModifier(int value) {
+		if (value % 2 != 0) {
+			value--;
 		}
-		return (ability - 10) / 2;
+		return (value - 10) / 2;
 	}
 
-	public AttributeSet add(AttributeSet bonus) {
-		return new AttributeSet(strength + bonus.strength, dexterity + bonus.dexterity, intelligence + bonus.intelligence);
+	public static AttributeSet read(String fileName) {
+		AttributeSet set = new AttributeSet();
+		try (BufferedReader in = new BufferedReader(new FileReader(fileName))) {
+			String line;
+			while ((line = in.readLine()) != null) {
+				String[] arr = line.split(":");
+				String[] brr = arr[0].split("=");
+				switch (arr[1].trim()) {
+				case "continuous":
+					set.setContinuous(brr[0].trim(), Double.valueOf(brr[1].trim()));
+					break;
+				case "discrete":
+					set.setDiscrete(brr[0].trim(), Integer.valueOf(brr[1].trim()));
+					break;
+				case "boolean":
+					set.setBoolean(brr[0].trim(), Boolean.valueOf(brr[1].trim()));
+					break;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return set;
 	}
 
 }

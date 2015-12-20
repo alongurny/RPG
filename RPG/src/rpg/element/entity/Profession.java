@@ -12,7 +12,7 @@ public abstract class Profession {
 		}
 
 		private double getDefaultMana(Player player) {
-			return Math.max(0, player.getTotalAttributeSet().getIntelligenceModifier() * 4);
+			return Math.max(0, AttributeSet.getModifier(player.getDiscrete("intelligence")) * 4);
 		}
 	};
 

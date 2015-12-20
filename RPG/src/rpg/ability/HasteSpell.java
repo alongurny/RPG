@@ -45,7 +45,7 @@ public class HasteSpell extends DurationSpell {
 		if (caster instanceof Player) {
 			Player p = (Player) caster;
 			speed = p.getSpeed();
-			p.setSpeed(2.5 * speed);
+			p.setSpeed(1.5 * speed);
 		}
 	}
 

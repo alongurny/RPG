@@ -3,6 +3,8 @@ package rpg.logic;
 import rpg.element.Block;
 import rpg.element.ManaPotion;
 import rpg.element.Portal;
+import rpg.element.entity.AttributeSet;
+import rpg.element.entity.Dragon;
 import rpg.element.entity.Player;
 import rpg.physics.Vector2D;
 
@@ -14,8 +16,7 @@ public class Level1 extends Level {
 	public Level1(Player player) {
 		super(ROWS, COLUMNS);
 		addDynamicElement(player);
-		// addDynamicElement(new Dragon(new Vector2D(420, 300), new
-		// AttributeSet(100, 100, 100)));
+		addDynamicElement(new Dragon(new Vector2D(420, 300), new AttributeSet()));
 		addDynamicElement(new ManaPotion(new Vector2D(300, 200)));
 		Map map = getMap();
 		for (int i = 0; i < COLUMNS; i++) {

@@ -1,7 +1,6 @@
 package rpg.element;
 
 import java.awt.Graphics;
-import rpg.ui.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +10,7 @@ import javax.imageio.ImageIO;
 import rpg.element.entity.Entity;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
+import rpg.ui.Rectangle;
 
 public class HealthPotion extends Bonus {
 
@@ -39,7 +39,7 @@ public class HealthPotion extends Bonus {
 
 	@Override
 	protected void onPick(Entity picker) {
-		picker.addBarValue(20, "health");
+		picker.addBarValue("health", 20);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package rpg.element;
 
 import java.awt.Graphics;
-import rpg.ui.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -12,6 +11,7 @@ import javax.imageio.ImageIO;
 import rpg.element.entity.Entity;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
+import rpg.ui.Rectangle;
 
 public class Fireball extends Element {
 
@@ -67,7 +67,7 @@ public class Fireball extends Element {
 	public void onCollision(Level level, Element other) {
 		if (other instanceof Entity && other != caster) {
 			Entity entity = (Entity) other;
-			entity.removeBarValue(10, "health");
+			entity.removeBarValue("health", 10);
 			level.removeDynamicElement(this);
 		} else if (!other.isPassable(level, this)) {
 			level.removeDynamicElement(this);

@@ -81,7 +81,7 @@ public class GameStation {
 	}
 
 	public static void main(String[] args) {
-		Player player = new Player(new Vector2D(80, 100), new AttributeSet(13, 13, 13), Race.HUMAN, Profession.MAGE);
+		Player player = new Player(new Vector2D(80, 100), new AttributeSet(), Race.HUMAN, Profession.MAGE);
 		player.getAbilityHandler().addAbility(new FireballSpell(192));
 		player.getAbilityHandler().addAbility(new RocketSpell(160));
 		player.getAbilityHandler().addAbility(new HasteSpell());

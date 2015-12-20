@@ -2,7 +2,6 @@ package rpg.element.entity;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import rpg.ui.Rectangle;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,6 +10,7 @@ import javax.imageio.ImageIO;
 import rpg.element.Element;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
+import rpg.ui.Rectangle;
 
 public class Player extends Entity {
 
@@ -77,6 +77,8 @@ public class Player extends Entity {
 				level.tryMoveBy(this, new Vector2D(0, getVelocity().getY() * dt));
 			}
 		}
+		addBarValue("health", dt * getContinuous("healthRegen"));
+		addBarValue("mana", dt * getContinuous("manaRegen"));
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public abstract class Entity extends Element {
 		this.direction = Vector2D.NORTH;
 		this.bars = new HashMap<>();
 		abilityHandler = new AbilityHandler(this);
-		bars.put("health", new Bar(race.getDefaultHealth()));
+		bars.put("health", new Bar(getContinuous("maxHealth")));
 		inventory = new Inventory();
 	}
 
@@ -48,8 +48,16 @@ public abstract class Entity extends Element {
 		this.direction = direction.getUnitalVector();
 	}
 
-	public AttributeSet getTotalAttributeSet() {
-		return basicAttributes.add(race.getAttributeSet());
+	public double getContinuous(String name) {
+		return basicAttributes.getContinuous(name) + race.getAttributeSet().getContinuous(name);
+	}
+
+	public int getDiscrete(String name) {
+		return basicAttributes.getDiscrete(name) + race.getAttributeSet().getDiscrete(name);
+	}
+
+	public boolean getBoolean(String name) {
+		return basicAttributes.getBoolean(name) || race.getAttributeSet().getBoolean(name);
 	}
 
 	@Override
@@ -64,11 +72,11 @@ public abstract class Entity extends Element {
 
 	public abstract void act(Level level, double dt);
 
-	public void addBarValue(double dvalue, String name) {
+	public void addBarValue(String name, double dvalue) {
 		bars.get(name).addValue(dvalue);
 	}
 
-	public void removeBarValue(double dvalue, String name) {
+	public void removeBarValue(String name, double dvalue) {
 		bars.get(name).addValue(-Math.min(dvalue, getBarValue(name)));
 	}
 
@@ -81,7 +89,7 @@ public abstract class Entity extends Element {
 		if (!isRequireable(name, value)) {
 			return false;
 		}
-		addBarValue(-value, name);
+		addBarValue(name, -value);
 		return true;
 	}
 
@@ -104,8 +112,9 @@ public abstract class Entity extends Element {
 				g.fillRect((int) rect.getX(), (int) rect.getHeight() + 8 * counter - 4,
 						(int) (rect.getWidth() * percentage), 4);
 				g.setColor(colors[1]);
-				g.fillRect((int) (rect.getWidth() * percentage + rect.getX()), (int) rect.getHeight() + 8 * counter - 4,
-						(int) (rect.getWidth() - rect.getWidth() * percentage), 4);
+				g.fillRect((int) (rect.getWidth() * percentage) + (int) (rect.getX()),
+						(int) rect.getHeight() + 8 * counter - 4,
+						(int) rect.getWidth() - (int) (rect.getWidth() * percentage), 4);
 				counter++;
 			}
 		}

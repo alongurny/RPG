@@ -20,7 +20,7 @@ public abstract class Requirement {
 
 		@Override
 		public void require(Entity entity) {
-			entity.addBarValue(-value, name);
+			entity.removeBarValue(name, value);
 		}
 	}
 
