@@ -15,11 +15,6 @@ public class MasterKey extends Item {
 	}
 
 	@Override
-	public int getIndex() {
-		return 0;
-	}
-
-	@Override
 	public void onUse(Entity user) {
 		// TODO Auto-generated method stub
 

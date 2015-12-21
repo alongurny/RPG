@@ -59,10 +59,4 @@ public class RocketSpell extends Spell {
 		g.drawImage(image, 0, 0, width, height, null);
 	}
 
-	@Override
-	public int getIndex() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

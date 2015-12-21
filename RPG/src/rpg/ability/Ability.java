@@ -39,9 +39,4 @@ public abstract class Ability implements Drawable {
 
 	public abstract List<Requirement> getRequirements();
 
-	@Override
-	public int getIndex() {
-		return 0;
-	}
-
 }

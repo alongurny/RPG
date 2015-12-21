@@ -134,9 +134,4 @@ public class AbilityHandler extends Mechanism implements Drawable {
 		}
 	}
 
-	@Override
-	public int getIndex() {
-		return 0;
-	}
-
 }
