@@ -29,4 +29,8 @@ public class Inventory {
 	public Item get(int index) {
 		return items.get(index);
 	}
+
+	public Item removeAt(int index) {
+		return items.remove(index);
+	}
 }

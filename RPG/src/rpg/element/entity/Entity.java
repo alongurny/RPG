@@ -161,6 +161,10 @@ public abstract class Entity extends Element {
 		inventory.add(item);
 	}
 
+	public Inventory getInventory() {
+		return inventory;
+	}
+
 	public abstract void onDeath(Level level);
 
 }
