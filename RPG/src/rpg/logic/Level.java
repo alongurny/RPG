@@ -7,6 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import rpg.Interactive;
 import rpg.element.Element;
 import rpg.element.entity.Entity;
+import rpg.element.entity.Player;
 import rpg.physics.Vector2D;
 import rpg.ui.Rectangle;
 
@@ -168,5 +169,17 @@ public class Level {
 
 	public void addTimer(double time, Runnable run) {
 		timer.add(time, run);
+	}
+
+	public Player getPlayer(int index) {
+		for (Element e : elements) {
+			if (e instanceof Player) {
+				if (index == 0) {
+					return (Player) e;
+				}
+				index--;
+			}
+		}
+		throw new IndexOutOfBoundsException();
 	}
 }

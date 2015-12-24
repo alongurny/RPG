@@ -17,4 +17,8 @@ public class GameBoard extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
+	public GamePanel getPanel() {
+		return gamePanel;
+	}
+
 }

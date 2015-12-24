@@ -20,7 +20,6 @@ import rpg.physics.Vector2D;
 public class GamePanel extends JPanel {
 
 	private Player player;
-	private KeyTracker keyTracker;
 	private static BufferedImage background;
 	private int sourceX, sourceY;
 	private Game game;
@@ -29,16 +28,11 @@ public class GamePanel extends JPanel {
 		this.player = player;
 		this.game = game;
 		setFocusable(true);
-		keyTracker = new KeyTracker();
-		addKeyListener(keyTracker);
 		try {
 			background = ImageIO.read(new File("img/background.jpg"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		PlayerClient client = new PlayerClient(game, player);
-		keyTracker.addMultiKeyListener(client);
-		addKeyListener(client);
 
 	}
 

@@ -2,6 +2,9 @@ package rpg.ui;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.net.Socket;
 
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
@@ -15,7 +18,7 @@ import rpg.logic.Level;
 import rpg.logic.Level1;
 import rpg.physics.Vector2D;
 
-public class GameStation {
+public abstract class GameStation {
 
 	private MetaBoard metaBoard;
 	private GameBoard gameBoard;
@@ -50,6 +53,10 @@ public class GameStation {
 		this.game = game;
 	}
 
+	public void addKeyListener(KeyListener listener) {
+		gameBoard.addKeyListener(listener);
+	}
+
 	public void start() {
 		metaBoard.setVisible(true);
 		gameBoard.setVisible(true);
@@ -61,6 +68,7 @@ public class GameStation {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				doSomething();
 				gameBoard.repaint();
 				metaBoard.repaint();
 				long now = System.currentTimeMillis();
@@ -80,6 +88,8 @@ public class GameStation {
 
 	}
 
+	public abstract void doSomething();
+
 	public static void main(String[] args) {
 		Player player = new Player(new Vector2D(80, 100), new AttributeSet(), Race.HUMAN, Profession.MAGE);
 		player.getAbilityHandler().addAbility(new FireballSpell(192));
@@ -87,7 +97,25 @@ public class GameStation {
 		player.getAbilityHandler().addAbility(new HasteSpell());
 		Level level = new Level1(player);
 		Game game = new Game(level);
-		GameStation gs = new GameStation(game, player);
+
+		Socket s = null;
+		try {
+			s = new Socket("localhost", 1234);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		PlayerClient client = new PlayerClient(game, player, s);
+
+		GameStation gs = new GameStation(game, player) {
+			@Override
+			public void doSomething() {
+				client.run();
+			}
+		};
+		KeyTracker keyTracker = new KeyTracker();
+		keyTracker.addMultiKeyListener(client);
+		gs.addKeyListener(keyTracker);
+		gs.addKeyListener(client);
 		gs.start();
 
 	}

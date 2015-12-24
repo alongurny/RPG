@@ -78,4 +78,15 @@ public final class Vector2D {
 		return false;
 	}
 
+	public static Vector2D valueOf(String string) {
+		if (string.startsWith("(") && string.endsWith(")")) {
+			string = string.substring(1, string.length() - 1);
+			String[] nums = string.split(",");
+			if (nums.length == 2) {
+				return new Vector2D(Double.parseDouble(nums[0].trim()), Double.parseDouble(nums[1].trim()));
+			}
+		}
+		throw new RuntimeException();
+	}
+
 }
