@@ -48,7 +48,7 @@ public final class Vector2D {
 
 	@Override
 	public String toString() {
-		return String.format("(%.4g, %.4g)", x, y);
+		return String.format("(%.4g,%.4g)", x, y);
 	}
 
 	public static Vector2D sum(Vector2D... vectors) {
@@ -86,7 +86,7 @@ public final class Vector2D {
 				return new Vector2D(Double.parseDouble(nums[0].trim()), Double.parseDouble(nums[1].trim()));
 			}
 		}
-		throw new RuntimeException();
+		throw new RuntimeException(string);
 	}
 
 }

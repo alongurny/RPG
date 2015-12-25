@@ -1,10 +1,10 @@
 package tcp.chat;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import event.MessageEvent;
 import event.MessageListener;
@@ -30,7 +30,7 @@ public class GameServer {
 	private Game game;
 
 	public GameServer(Game game) throws IOException {
-		received = new ArrayList<>();
+		received = new CopyOnWriteArrayList<>();
 		timer = new Timer();
 		inner = new ChatServer();
 		inner.addMessageListener(new MessageListener() {
@@ -71,7 +71,6 @@ public class GameServer {
 		try {
 			server = new GameServer(game);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		GameStation gs = new GameStation(game, player) {

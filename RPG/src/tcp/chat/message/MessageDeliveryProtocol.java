@@ -18,7 +18,7 @@ public class MessageDeliveryProtocol implements Protocol<Message, String> {
 				arr = new String[] { arr[0], arr[1], arr[2], "" };
 			}
 			return Message.create(Message.Source.valueOf(arr[0]), Message.Target.valueOf(arr[1]),
-					Message.Type.valueOf(arr[2]), arr[2]);
+					Message.Type.valueOf(arr[2]), arr[3]);
 		} catch (RuntimeException e) {
 			throw new RuntimeException("Error, data = " + data, e);
 		}

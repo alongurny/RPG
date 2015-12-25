@@ -2,6 +2,7 @@ package rpg.ui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,19 +11,27 @@ import rpg.element.entity.Player;
 import rpg.logic.Game;
 import rpg.network.NetworkCommand;
 import rpg.physics.Vector2D;
+import tcp.chat.ChatClient;
+import tcp.chat.message.Message;
+import tcp.chat.message.Message.Source;
 
 public class PlayerClient implements KeyListener, MultiKeyListener {
 
 	private Player player;
 	private Game game;
 	private List<NetworkCommand> commands;
-	private Socket socket;
+	private ChatClient chatClient;
 
 	public PlayerClient(Game game, Player player, Socket socket) {
 		this.player = player;
 		this.game = game;
 		commands = new ArrayList<>();
-		this.socket = socket;
+		try {
+			this.chatClient = new ChatClient(socket, true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public Player getPlayer() {
@@ -32,6 +41,7 @@ public class PlayerClient implements KeyListener, MultiKeyListener {
 	public void run() {
 		for (NetworkCommand c : commands) {
 			c.execute(game);
+			chatClient.send(Message.data(Source.SERVER, c.toString()));
 
 		}
 		commands.clear();
@@ -54,9 +64,9 @@ public class PlayerClient implements KeyListener, MultiKeyListener {
 			velocity = velocity.add(Vector2D.EAST);
 		}
 
-		player.setVelocityDirection(velocity);
+		commands.add(new NetworkCommand("player 0 setVelocityDirection " + velocity));
 		if (!velocity.equals(Vector2D.ZERO)) {
-			player.setDirection(velocity);
+			commands.add(new NetworkCommand("player 0 setDirection " + velocity));
 		}
 	}
 

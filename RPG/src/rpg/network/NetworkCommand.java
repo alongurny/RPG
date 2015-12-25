@@ -31,9 +31,15 @@ public class NetworkCommand {
 			case "interact":
 				game.getLevel().tryInteract(player);
 				break;
+			case "setVelocityDirection":
+				player.setVelocityDirection(Vector2D.valueOf(arr[3]));
+				break;
+			case "setDirection":
+				player.setDirection(Vector2D.valueOf(arr[3]));
+				break;
 			}
 		} else {
-			throw new RuntimeException();
+			throw new RuntimeException(string);
 		}
 	}
 

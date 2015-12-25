@@ -54,6 +54,7 @@ public abstract class GameStation {
 	}
 
 	public void addKeyListener(KeyListener listener) {
+		gameBoard.setFocusable(true);
 		gameBoard.addKeyListener(listener);
 	}
 
