@@ -46,7 +46,6 @@ public class PlayerClient implements KeyListener, MultiKeyListener {
 				String[] objectStrings = e.getMessage().getData().split("<><>");
 				game.getLevel().getDynamicElements().clear();
 				System.out.println("starting to deserialize " + objectStrings.length + " objects");
-				int i = 0;
 				for (String s : objectStrings) {
 					if (s.length() > 1) {
 						s = s.replace("<<newline>>", "\n");
