@@ -2,11 +2,16 @@ package rpg.ui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import event.MessageEvent;
+import event.MessageListener;
+import rpg.element.Element;
 import rpg.element.entity.Player;
 import rpg.logic.Game;
 import rpg.network.NetworkCommand;
@@ -29,9 +34,30 @@ public class PlayerClient implements KeyListener, MultiKeyListener {
 		try {
 			this.chatClient = new ChatClient(socket, true);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.chatClient.addMessageListener(new MessageListener() {
+
+			@Override
+			public void onReceive(MessageEvent e) {
+				String[] objectStrings = e.getMessage().getData().split("\n");
+				game.getLevel().getDynamicElements().clear();
+
+				for (String s : objectStrings) {
+					System.out.println(s);
+					if (s.length() > 1)
+						try {
+							byte b[] = s.getBytes();
+							ByteArrayInputStream bi = new ByteArrayInputStream(b);
+							ObjectInputStream si = new ObjectInputStream(bi);
+							game.getLevel().getDynamicElements().add((Element) si.readObject());
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+				}
+				PlayerClient.this.player = game.getLevel().getPlayer(0);
+			}
+		});
 	}
 
 	public Player getPlayer() {

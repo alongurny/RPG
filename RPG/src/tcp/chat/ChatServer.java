@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import tcp.TcpServer;
-import tcp.chat.message.Message;
 import event.ConnectionListener;
 import event.MessageListener;
+import tcp.TcpServer;
+import tcp.chat.message.Message;
 
 public class ChatServer extends TcpServer {
 
@@ -64,6 +64,12 @@ public class ChatServer extends TcpServer {
 		client.listen();
 	}
 
+	public void send(Message message) {
+		for (ChatClient client : clients) {
+			client.send(message);
+		}
+	}
+
 	private void handleMessage(ChatClient client, Message message) {
 		Message.Target target = message.getTarget();
 		String data = message.getData();
@@ -74,10 +80,8 @@ public class ChatServer extends TcpServer {
 			}
 			if (Message.Target.isFriend(target)) {
 				clients.forEach(c -> {
-					if (c.getInetAddress().getHostAddress()
-							.equals(target.getHostName())
-							|| c.getInetAddress().getHostName()
-									.equals(target.getHostName())) {
+					if (c.getInetAddress().getHostAddress().equals(target.getHostName())
+							|| c.getInetAddress().getHostName().equals(target.getHostName())) {
 						c.send(message);
 					}
 				});

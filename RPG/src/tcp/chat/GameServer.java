@@ -1,6 +1,8 @@
 package tcp.chat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,6 +13,7 @@ import event.MessageListener;
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
 import rpg.ability.RocketSpell;
+import rpg.element.Element;
 import rpg.element.entity.AttributeSet;
 import rpg.element.entity.Player;
 import rpg.element.entity.Profession;
@@ -21,6 +24,8 @@ import rpg.logic.Level1;
 import rpg.network.NetworkCommand;
 import rpg.physics.Vector2D;
 import rpg.ui.GameStation;
+import tcp.chat.message.Message;
+import tcp.chat.message.Message.Source;
 
 public class GameServer {
 
@@ -67,16 +72,31 @@ public class GameServer {
 		player.getAbilityHandler().addAbility(new HasteSpell());
 		Level level = new Level1(player);
 		Game game = new Game(level);
-		GameServer server = null;
+		GameServer _server = null;
 		try {
-			server = new GameServer(game);
+			_server = new GameServer(game);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		final GameServer server = _server;
 		GameStation gs = new GameStation(game, player) {
 			@Override
 			public void doSomething() {
-
+				StringBuilder sb = new StringBuilder();
+				for (Element element : game.getLevel().getDynamicElements()) {
+					try {
+						ByteArrayOutputStream bo = new ByteArrayOutputStream();
+						ObjectOutputStream so = new ObjectOutputStream(bo);
+						so.writeObject(element);
+						so.flush();
+						sb.append(bo.toString() + "\n");
+						System.out.println("here");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				System.out.println(sb.toString());
+				server.inner.send(Message.data(Source.SERVER, sb.toString().trim()));
 			}
 		};
 		gs.start();
