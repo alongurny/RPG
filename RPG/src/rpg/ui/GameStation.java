@@ -17,6 +17,7 @@ import rpg.logic.Game;
 import rpg.logic.Level;
 import rpg.logic.Level1;
 import rpg.physics.Vector2D;
+import tcp.chat.PlayerClient;
 
 public abstract class GameStation {
 

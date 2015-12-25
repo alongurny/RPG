@@ -7,6 +7,8 @@ import rpg.logic.Game;
 
 public class MetaBoard extends JFrame {
 
+	private static final long serialVersionUID = -4709290312794276857L;
+
 	private MetaPanel metaPanel;
 
 	public MetaBoard(int width, int height, Game game, Player player) {

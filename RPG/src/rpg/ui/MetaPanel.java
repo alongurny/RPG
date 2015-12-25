@@ -11,6 +11,8 @@ import rpg.logic.Game;
 
 public class MetaPanel extends JPanel {
 
+	private static final long serialVersionUID = 3459501081963736465L;
+
 	private List<Drawable> drawables;
 
 	public MetaPanel(Game game, Player player) {

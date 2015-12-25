@@ -19,6 +19,8 @@ import rpg.physics.Vector2D;
 
 public class GamePanel extends JPanel {
 
+	private static final long serialVersionUID = -435064221993994993L;
+
 	private Player player;
 	private static BufferedImage background;
 	private int sourceX, sourceY;

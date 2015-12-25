@@ -65,8 +65,11 @@ public class ChatServer extends TcpServer {
 	}
 
 	public void send(Message message) {
+		int counter = 0;
 		for (ChatClient client : clients) {
+			System.out.println("before sending to client " + counter);
 			client.send(message);
+			System.out.println("after sending to client " + counter++);
 		}
 	}
 

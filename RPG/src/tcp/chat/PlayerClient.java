@@ -1,4 +1,4 @@
-package rpg.ui;
+package tcp.chat;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -6,8 +6,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import event.MessageEvent;
 import event.MessageListener;
@@ -16,7 +16,8 @@ import rpg.element.entity.Player;
 import rpg.logic.Game;
 import rpg.network.NetworkCommand;
 import rpg.physics.Vector2D;
-import tcp.chat.ChatClient;
+import rpg.ui.MultiKeyEvent;
+import rpg.ui.MultiKeyListener;
 import tcp.chat.message.Message;
 import tcp.chat.message.Message.Source;
 
@@ -27,35 +28,41 @@ public class PlayerClient implements KeyListener, MultiKeyListener {
 	private List<NetworkCommand> commands;
 	private ChatClient chatClient;
 
-	public PlayerClient(Game game, Player player, Socket socket) {
+	public PlayerClient(Game game, Player player, Socket toServer) {
 		this.player = player;
 		this.game = game;
-		commands = new ArrayList<>();
+		commands = new CopyOnWriteArrayList<>();
 		try {
-			this.chatClient = new ChatClient(socket, true);
+			this.chatClient = new ChatClient(toServer, true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		this.chatClient.addMessageListener(new MessageListener() {
 
 			@Override
 			public void onReceive(MessageEvent e) {
-				String[] objectStrings = e.getMessage().getData().split("\n");
+				System.out.println("receiving");
+				String[] objectStrings = e.getMessage().getData().split("<><>");
 				game.getLevel().getDynamicElements().clear();
-
+				System.out.println("starting to deserialize " + objectStrings.length + " objects");
+				int i = 0;
 				for (String s : objectStrings) {
-					System.out.println(s);
-					if (s.length() > 1)
+					if (s.length() > 1) {
+						s = s.replace("<<newline>>", "\n");
 						try {
 							byte b[] = s.getBytes();
 							ByteArrayInputStream bi = new ByteArrayInputStream(b);
 							ObjectInputStream si = new ObjectInputStream(bi);
 							game.getLevel().getDynamicElements().add((Element) si.readObject());
 						} catch (Exception ex) {
+							System.out.println(s);
 							ex.printStackTrace();
 						}
+					}
 				}
 				PlayerClient.this.player = game.getLevel().getPlayer(0);
+				System.out.println("end of receiving");
 			}
 		});
 	}

@@ -82,21 +82,26 @@ public class GameServer {
 		GameStation gs = new GameStation(game, player) {
 			@Override
 			public void doSomething() {
+				System.out.println("started");
 				StringBuilder sb = new StringBuilder();
+				int i = 0;
 				for (Element element : game.getLevel().getDynamicElements()) {
 					try {
+						System.out.println("object " + i++);
+
 						ByteArrayOutputStream bo = new ByteArrayOutputStream();
 						ObjectOutputStream so = new ObjectOutputStream(bo);
 						so.writeObject(element);
 						so.flush();
-						sb.append(bo.toString() + "\n");
-						System.out.println("here");
+						sb.append(bo.toString().replaceAll("\n", "<<newline>>") + "<><>");
+
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 				}
-				System.out.println(sb.toString());
+				System.out.println("before send");
 				server.inner.send(Message.data(Source.SERVER, sb.toString().trim()));
+				System.out.println("ended");
 			}
 		};
 		gs.start();

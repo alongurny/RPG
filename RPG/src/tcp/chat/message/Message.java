@@ -42,7 +42,7 @@ public class Message {
 				if (str.startsWith("FRIEND ")) {
 					return new FriendSource(str.replace("FRIEND ", ""));
 				}
-				throw new RuntimeException("No match");
+				throw new RuntimeException("No match for " + str);
 			}
 		}
 	}
