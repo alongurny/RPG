@@ -8,18 +8,16 @@ import rpg.ui.Rectangle;
 
 public abstract class Element extends Mechanism implements Drawable {
 
-	private Vector2D location;
-
 	public Element(Vector2D location) {
-		this.location = location;
+		set("location", location);
 	}
 
 	public Vector2D getLocation() {
-		return location;
+		return getVector("location");
 	}
 
 	public void setLocation(Vector2D location) {
-		this.location = location;
+		set("location", location);
 	}
 
 	public abstract Rectangle getRelativeRect();
