@@ -35,16 +35,17 @@ public class Door extends Element implements Interactive {
 		}
 	}
 
-	private boolean open;
-
 	public Door(Vector2D location) {
 		super(location);
-		open = false;
+	}
+
+	public boolean isOpen() {
+		return getBoolean("open");
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		Image image = open ? openImage : closedImage;
+		Image image = isOpen() ? openImage : closedImage;
 		g.drawImage(image, -width / 2, -height / 2, width, height, null);
 	}
 
@@ -70,7 +71,7 @@ public class Door extends Element implements Interactive {
 
 	@Override
 	public boolean isPassable(Level level, Element other) {
-		return open;
+		return isOpen();
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public class Door extends Element implements Interactive {
 	public void onInteract(Level level, Entity other) {
 		for (int i = 0; i < other.getInventory().getSize(); i++) {
 			if (other.getInventory().get(i) instanceof MasterKey) {
-				open = true;
+				setBoolean("open", true);
 				other.getInventory().removeAt(i);
 				return;
 			}

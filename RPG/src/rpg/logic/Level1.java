@@ -1,11 +1,14 @@
 package rpg.logic;
 
+import rpg.ability.FireballSpell;
+import rpg.ability.HasteSpell;
+import rpg.ability.RocketSpell;
 import rpg.element.Block;
 import rpg.element.ManaPotion;
 import rpg.element.Portal;
-import rpg.element.entity.AttributeSet;
 import rpg.element.entity.Dragon;
 import rpg.element.entity.Player;
+import rpg.element.entity.Race;
 import rpg.physics.Vector2D;
 
 public class Level1 extends Level {
@@ -13,10 +16,21 @@ public class Level1 extends Level {
 	private static final int ROWS = 20;
 	private static final int COLUMNS = 20;
 
-	public Level1(Player player) {
+	public Level1() {
 		super(ROWS, COLUMNS);
-		addDynamicElement(player);
-		addDynamicElement(new Dragon(new Vector2D(420, 300), new AttributeSet()));
+
+		Player player1 = new Player(new Vector2D(80, 100), Race.HUMAN);
+		player1.getAbilityHandler().addAbility(new FireballSpell(192, 32));
+		player1.getAbilityHandler().addAbility(new RocketSpell(160));
+		player1.getAbilityHandler().addAbility(new HasteSpell());
+
+		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN);
+		player2.getAbilityHandler().addAbility(new FireballSpell(192, 32));
+		player2.getAbilityHandler().addAbility(new RocketSpell(160));
+		player2.getAbilityHandler().addAbility(new HasteSpell());
+		addDynamicElement(player1);
+		addDynamicElement(player2);
+		addDynamicElement(new Dragon(new Vector2D(420, 300)));
 		addDynamicElement(new ManaPotion(new Vector2D(300, 200)));
 		Grid grid = getMap();
 		for (int i = 0; i < COLUMNS; i++) {

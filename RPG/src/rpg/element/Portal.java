@@ -34,11 +34,9 @@ public class Portal extends Element implements Interactive {
 		return new Portal[] { p1, p2 };
 	}
 
-	private Vector2D target;
-
 	public Portal(Vector2D location, Vector2D target) {
 		super(location);
-		this.target = target;
+		setVector("target", target);
 	}
 
 	@Override
@@ -63,7 +61,7 @@ public class Portal extends Element implements Interactive {
 
 	@Override
 	public void onInteract(Level level, Entity entity) {
-		level.tryMove(entity, target.add(entity.getLocation()).subtract(getLocation()));
+		level.tryMove(entity, getVector("target").add(entity.getLocation()).subtract(getLocation()));
 	}
 
 	@Override

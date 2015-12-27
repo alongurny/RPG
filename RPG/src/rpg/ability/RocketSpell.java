@@ -43,7 +43,7 @@ public class RocketSpell extends Spell {
 	@Override
 	public void onCast(Level level, Entity caster) {
 		Vector2D casterLocation = caster.getLocation();
-		Vector2D casterDirection = caster.getDirection();
+		Vector2D casterDirection = caster.getVector("direction");
 		Vector2D fireballLocation = casterLocation.add(casterDirection.multiply(distance));
 		level.addDynamicElement(new Rocket(fireballLocation, casterDirection, speed));
 	}

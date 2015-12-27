@@ -17,21 +17,18 @@ public class Rocket extends Element {
 
 	public Rocket(Vector2D location, Vector2D direction, double speed) {
 		super(location);
-		this.direction = direction;
-		this.speed = speed;
+		setVector("direction", direction.getUnitalVector());
+		setContinuous("speed", speed);
 	}
 
 	private static BufferedImage image;
 	public static int width, height;
 
 	private static double defaultAngle = Math.toRadians(90);
-	private Vector2D direction;
-	private double speed;
 
 	static {
 		try {
 			image = ImageIO.read(new File("img/rocket.png"));
-
 			width = 20;
 			height = 20;
 		} catch (Exception e) {
@@ -41,6 +38,7 @@ public class Rocket extends Element {
 
 	@Override
 	public void draw(Graphics g) {
+		Vector2D direction = getVector("direction");
 		double theta = Math.atan2(direction.getY(), direction.getX());
 		AffineTransform at = new AffineTransform();
 		at.rotate(theta + defaultAngle, image.getWidth(null) / 2, image.getHeight(null) / 2);
@@ -55,7 +53,7 @@ public class Rocket extends Element {
 
 	@Override
 	public void update(Level level, double dt) {
-		Vector2D v = direction.getUnitalVector().multiply(speed * dt);
+		Vector2D v = getVector("direction").multiply(getContinuous("speed") * dt);
 		List<Element> obstacles = level.tryMoveBy(this, v);
 		if (!obstacles.isEmpty()) {
 			for (Element obstacle : obstacles) {

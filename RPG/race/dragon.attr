@@ -3,3 +3,4 @@ stamina = 20 : discrete
 dexterity = 20 : discrete
 intelligence = 20 : discrete
 maxHealth = 50 : continuous
+maxMana = 100 : continuous

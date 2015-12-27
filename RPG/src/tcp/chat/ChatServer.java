@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import event.ConnectionListener;
+import event.ConnectListener;
+import event.ConnectionEvent;
+import event.DisconnectListener;
 import event.MessageListener;
 import tcp.TcpServer;
 import tcp.chat.message.Message;
@@ -17,29 +19,35 @@ public class ChatServer extends TcpServer {
 
 	private List<ChatClient> clients;
 	private List<MessageListener> messageListeners;
-	private List<ConnectionListener> endListeners;
+	private List<ConnectListener> connectListeners;
+	private List<DisconnectListener> disconnectListeners;
 
 	public ChatServer() throws IOException {
 		super(APPLICATION_PORT);
 		clients = new CopyOnWriteArrayList<>();
 		messageListeners = new ArrayList<>();
-		endListeners = new ArrayList<>();
+		connectListeners = new ArrayList<>();
+		disconnectListeners = new ArrayList<>();
 	}
 
 	public void addMessageListener(MessageListener listener) {
 		messageListeners.add(listener);
 	}
 
-	public void addConnectionEndListener(ConnectionListener listener) {
-		endListeners.add(listener);
+	public void addConnectListener(ConnectListener listener) {
+		connectListeners.add(listener);
+	}
+
+	public void addDisconnectListener(DisconnectListener listener) {
+		disconnectListeners.add(listener);
 	}
 
 	public void removeMessageListener(MessageListener listener) {
 		messageListeners.remove(listener);
 	}
 
-	public void removeConnectionEndListener(ConnectionListener listener) {
-		endListeners.remove(listener);
+	public void removeDisconnectListener(DisconnectListener listener) {
+		disconnectListeners.remove(listener);
 	}
 
 	@Override
@@ -47,13 +55,14 @@ public class ChatServer extends TcpServer {
 		System.out.println("Handling client " + s.getInetAddress());
 		ChatClient client = new ChatClient(s, false);
 		clients.add(client);
+		connectListeners.forEach(cl -> cl.onConnect(new ConnectionEvent()));
 		client.addMessageListener(e -> {
 			handleMessage(client, e.getMessage());
 			messageListeners.forEach(ml -> ml.onReceive(e));
 		});
 		client.addConnectionListener(e -> {
 			System.out.println("End of client " + s.getInetAddress());
-			endListeners.forEach(cl -> cl.onEnd(e));
+			disconnectListeners.forEach(cl -> cl.onDisconnect(e));
 			clients.remove(client);
 			try {
 				client.close();
@@ -65,12 +74,7 @@ public class ChatServer extends TcpServer {
 	}
 
 	public void send(Message message) {
-		int counter = 0;
-		for (ChatClient client : clients) {
-			System.out.println("before sending to client " + counter);
-			client.send(message);
-			System.out.println("after sending to client " + counter++);
-		}
+		clients.forEach(client -> client.send(message));
 	}
 
 	private void handleMessage(ChatClient client, Message message) {

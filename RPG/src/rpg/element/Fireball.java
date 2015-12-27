@@ -8,7 +8,6 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-import rpg.element.entity.AttributeSet;
 import rpg.element.entity.Entity;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
@@ -16,21 +15,11 @@ import rpg.ui.Rectangle;
 
 public class Fireball extends Element {
 
-	private Entity caster;
-
-	public Fireball(Entity caster, Vector2D location, Vector2D direction, double speed) {
-		super(location);
-		this.direction = direction;
-		this.speed = speed;
-		this.caster = caster;
-	}
-
 	private static BufferedImage image;
 	public static int width, height;
+	private Entity caster;
 
 	private static double defaultAngle = Math.toRadians(-90);
-	private Vector2D direction;
-	private double speed;
 
 	static {
 		try {
@@ -42,8 +31,16 @@ public class Fireball extends Element {
 		}
 	}
 
+	public Fireball(Entity caster, Vector2D location, Vector2D direction, double speed) {
+		super(location);
+		setVector("direction", direction.getUnitalVector());
+		setContinuous("speed", speed);
+		this.caster = caster;
+	}
+
 	@Override
 	public void draw(Graphics g) {
+		Vector2D direction = getVector("direction");
 		double theta = Math.atan2(direction.getY(), direction.getX());
 		AffineTransform at = new AffineTransform();
 		at.rotate(theta + defaultAngle, image.getWidth(null) / 2, image.getHeight(null) / 2);
@@ -58,7 +55,7 @@ public class Fireball extends Element {
 
 	@Override
 	public void update(Level level, double dt) {
-		if (!level.tryMoveBy(this, direction.getUnitalVector().multiply(speed * dt)).isEmpty()) {
+		if (!level.tryMoveBy(this, getVector("direction").multiply(getContinuous("speed") * dt)).isEmpty()) {
 			level.removeDynamicElement(this);
 		}
 	}
@@ -67,7 +64,7 @@ public class Fireball extends Element {
 	public void onCollision(Level level, Element other) {
 		if (other instanceof Entity && other != caster) {
 			Entity entity = (Entity) other;
-			entity.removeBarValue("health", 10 + AttributeSet.getModifier(caster.getDiscrete("intelligence")));
+			entity.removeBarValue("health", 10);
 			level.removeDynamicElement(this);
 		} else if (!other.isPassable(level, this)) {
 			level.removeDynamicElement(this);

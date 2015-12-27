@@ -2,33 +2,36 @@ package tcp.chat;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import event.MessageEvent;
 import event.MessageListener;
-import rpg.element.Element;
 import rpg.element.entity.Player;
 import rpg.logic.Game;
+import rpg.logic.Level;
+import rpg.logic.Level1;
 import rpg.network.NetworkCommand;
 import rpg.physics.Vector2D;
+import rpg.ui.GameStation;
+import rpg.ui.KeyTracker;
 import rpg.ui.MultiKeyEvent;
 import rpg.ui.MultiKeyListener;
 import tcp.chat.message.Message;
 import tcp.chat.message.Message.Source;
+import tcp.chat.message.Message.Type;
 
-public class PlayerClient implements KeyListener, MultiKeyListener {
+public class GameClient implements KeyListener, MultiKeyListener {
 
 	private Player player;
 	private Game game;
 	private List<NetworkCommand> commands;
 	private ChatClient chatClient;
+	private int num = -1;
 
-	public PlayerClient(Game game, Player player, Socket toServer) {
+	public GameClient(Game game, Player player, Socket toServer) {
 		this.player = player;
 		this.game = game;
 		commands = new CopyOnWriteArrayList<>();
@@ -37,33 +40,6 @@ public class PlayerClient implements KeyListener, MultiKeyListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		this.chatClient.addMessageListener(new MessageListener() {
-
-			@Override
-			public void onReceive(MessageEvent e) {
-				System.out.println("receiving");
-				String[] objectStrings = e.getMessage().getData().split("<><>");
-				game.getLevel().getDynamicElements().clear();
-				System.out.println("starting to deserialize " + objectStrings.length + " objects");
-				for (String s : objectStrings) {
-					if (s.length() > 1) {
-						s = s.replace("<<newline>>", "\n");
-						try {
-							byte b[] = s.getBytes();
-							ByteArrayInputStream bi = new ByteArrayInputStream(b);
-							ObjectInputStream si = new ObjectInputStream(bi);
-							game.getLevel().getDynamicElements().add((Element) si.readObject());
-						} catch (Exception ex) {
-							System.out.println(s);
-							ex.printStackTrace();
-						}
-					}
-				}
-				PlayerClient.this.player = game.getLevel().getPlayer(0);
-				System.out.println("end of receiving");
-			}
-		});
 	}
 
 	public Player getPlayer() {
@@ -96,29 +72,66 @@ public class PlayerClient implements KeyListener, MultiKeyListener {
 			velocity = velocity.add(Vector2D.EAST);
 		}
 
-		commands.add(new NetworkCommand("player 0 setVelocityDirection " + velocity));
+		commands.add(new NetworkCommand("player " + num + " setVector velocityDirection " + velocity));
 		if (!velocity.equals(Vector2D.ZERO)) {
-			commands.add(new NetworkCommand("player 0 setDirection " + velocity));
+			commands.add(new NetworkCommand("player " + num + " setVector direction " + velocity));
 		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			commands.add(new NetworkCommand(String.format("player 0 interact")));
+			commands.add(new NetworkCommand(String.format("player %s interact", num)));
 		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() - '0' >= 1 && e.getKeyCode() - '0' <= player.getAbilityHandler().getSize()) {
-			commands.add(new NetworkCommand(String.format("player 0 cast %s", e.getKeyCode() - '1')));
+			commands.add(new NetworkCommand(String.format("player %s cast %s", num, e.getKeyCode() - '1')));
 		}
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 
+	}
+
+	public static void main(String[] args) {
+		Level level = new Level1();
+		Game game = new Game(level);
+
+		Socket s = null;
+		try {
+			s = new Socket("localhost", 1234);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		GameClient client = new GameClient(game, null, s);
+		client.chatClient.addMessageListener(new MessageListener() {
+
+			@Override
+			public void onReceive(MessageEvent e) {
+				if (e.getMessage().getType() == Type.METADATA && client.num == -1) {
+					String data = e.getMessage().getData();
+					if (data.startsWith("your number is ")) {
+						client.num = Integer.parseInt(data.replace("your number is ", ""));
+						client.player = level.getPlayer(client.num);
+						GameStation gs = new GameStation(game, client.player) {
+							@Override
+							public void doSomething() {
+								client.run();
+							}
+						};
+						KeyTracker keyTracker = new KeyTracker();
+						keyTracker.addMultiKeyListener(client);
+						gs.addKeyListener(keyTracker);
+						gs.addKeyListener(client);
+						gs.start();
+					}
+				}
+			}
+		});
 	}
 
 }

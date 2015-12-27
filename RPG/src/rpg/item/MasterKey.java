@@ -16,7 +16,6 @@ public class MasterKey extends Item {
 
 	@Override
 	public void onUse(Entity user) {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -6,16 +6,20 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import rpg.physics.Vector2D;
+
 public class AttributeSet {
 
 	private Map<String, Double> continuousAttributes;
 	private Map<String, Integer> discreteAttributes;
 	private Map<String, Boolean> booleanAttributes;
+	private Map<String, Vector2D> vectorAttribues;
 
 	public AttributeSet() {
 		continuousAttributes = new HashMap<>();
 		discreteAttributes = new HashMap<>();
 		booleanAttributes = new HashMap<>();
+		vectorAttribues = new HashMap<>();
 	}
 
 	public void setContinuous(String name, double value) {
@@ -30,6 +34,10 @@ public class AttributeSet {
 		booleanAttributes.put(name, value);
 	}
 
+	public void setVector(String name, Vector2D value) {
+		vectorAttribues.put(name, value);
+	}
+
 	public boolean hasContinuous(String name) {
 		return continuousAttributes.containsKey(name);
 	}
@@ -40,6 +48,10 @@ public class AttributeSet {
 
 	public boolean hasBoolean(String name) {
 		return booleanAttributes.containsKey(name);
+	}
+
+	public boolean hasVector(String name) {
+		return vectorAttribues.containsKey(name);
 	}
 
 	public double getContinuous(String name, double defaultValue) {
@@ -57,6 +69,11 @@ public class AttributeSet {
 		return value != null ? value : defaultValue;
 	}
 
+	public Vector2D getVector(String name, Vector2D defaultValue) {
+		Vector2D value = vectorAttribues.get(name);
+		return value != null ? value : defaultValue;
+	}
+
 	public double getContinuous(String name) {
 		return getContinuous(name, 0.0);
 	}
@@ -67,6 +84,10 @@ public class AttributeSet {
 
 	public boolean getBoolean(String name) {
 		return getBoolean(name, false);
+	}
+
+	public Vector2D getVector(String name) {
+		return getVector(name, Vector2D.ZERO);
 	}
 
 	public static int getModifier(int value) {
@@ -92,6 +113,9 @@ public class AttributeSet {
 					break;
 				case "boolean":
 					set.setBoolean(brr[0].trim(), Boolean.valueOf(brr[1].trim()));
+					break;
+				case "vector":
+					set.setVector(brr[0].trim(), Vector2D.valueOf(brr[1].trim()));
 					break;
 				}
 			}

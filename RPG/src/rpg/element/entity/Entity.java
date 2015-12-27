@@ -18,35 +18,24 @@ import rpg.ui.Rectangle;
 
 public abstract class Entity extends Element {
 
-	private Vector2D direction;
-	private AttributeSet basicAttributes;
 	private Race race;
 	private Map<String, Bar> bars;
-	private boolean interacting;
 	private AbilityHandler abilityHandler;
 	private Inventory inventory;
 
-	public Entity(Vector2D location, AttributeSet basicAttributes, Race race) {
+	public Entity(Vector2D location, Race race) {
 		super(location);
-		this.basicAttributes = basicAttributes;
 		this.race = race;
-		this.direction = Vector2D.NORTH;
+		setVector("direction", Vector2D.NORTH);
 		this.bars = new HashMap<>();
 		abilityHandler = new AbilityHandler(this);
 		bars.put("health", new Bar(getContinuous("maxHealth")));
+		bars.put("mana", new Bar(getContinuous("maxMana")));
 		inventory = new Inventory();
 	}
 
 	public AbilityHandler getAbilityHandler() {
 		return abilityHandler;
-	}
-
-	public Vector2D getDirection() {
-		return direction;
-	}
-
-	public void setDirection(Vector2D direction) {
-		this.direction = direction.getUnitalVector();
 	}
 
 	public double getContinuous(String name) {
@@ -68,6 +57,13 @@ public abstract class Entity extends Element {
 			throw new AttributeException(name);
 		}
 		return basicAttributes.getBoolean(name) || race.getAttributeSet().getBoolean(name);
+	}
+
+	public Vector2D getVector(String name) {
+		if (!basicAttributes.hasVector(name) && !race.getAttributeSet().hasVector(name)) {
+			throw new AttributeException(name);
+		}
+		return basicAttributes.getVector(name).add(race.getAttributeSet().getVector(name));
 	}
 
 	@Override
@@ -145,14 +141,6 @@ public abstract class Entity extends Element {
 
 	protected abstract void drawEntity(Graphics g);
 
-	public boolean isInteracting() {
-		return interacting;
-	}
-
-	public void setInteracting(boolean interacting) {
-		this.interacting = interacting;
-	}
-
 	public void putBar(String name, Bar bar) {
 		bars.put(name, bar);
 	}
@@ -166,5 +154,9 @@ public abstract class Entity extends Element {
 	}
 
 	public abstract void onDeath(Level level);
+
+	public AttributeSet getBasicAttributes() {
+		return basicAttributes;
+	}
 
 }

@@ -2,7 +2,6 @@ package rpg.element.entity;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import rpg.ui.Rectangle;
 import java.io.File;
 import java.io.IOException;
 
@@ -13,6 +12,7 @@ import rpg.element.Element;
 import rpg.element.HealthPotion;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
+import rpg.ui.Rectangle;
 
 public class Dragon extends Entity {
 
@@ -29,9 +29,9 @@ public class Dragon extends Entity {
 		}
 	}
 
-	public Dragon(Vector2D location, AttributeSet basicAttributes) {
-		super(location, basicAttributes, Race.DRAGON);
-		getAbilityHandler().addAbility(new FireballSpell(192));
+	public Dragon(Vector2D location) {
+		super(location, Race.DRAGON);
+		getAbilityHandler().addAbility(new FireballSpell(192, 32));
 		putBar("mana", new Bar(100));
 	}
 
@@ -67,7 +67,7 @@ public class Dragon extends Entity {
 	public void act(Level level, double dt) {
 		for (Element d : level.getDynamicElements()) {
 			if (d instanceof Player) {
-				setDirection(d.getLocation().subtract(getLocation()));
+				setVector("direction", d.getLocation().subtract(getLocation()).getUnitalVector());
 				getAbilityHandler().tryCast(level, 0);
 			}
 		}

@@ -44,8 +44,8 @@ public class HasteSpell extends DurationSpell {
 	public void onStart(Level level, Entity caster) {
 		if (caster instanceof Player) {
 			Player p = (Player) caster;
-			speed = p.getSpeed();
-			p.setSpeed(1.5 * speed);
+			speed = p.getContinuous("speed");
+			p.setContinuous("speed", 0.5 * speed);
 		}
 	}
 
@@ -53,13 +53,13 @@ public class HasteSpell extends DurationSpell {
 	public void onEnd(Level level, Entity caster) {
 		if (caster instanceof Player) {
 			Player p = (Player) caster;
-			p.setSpeed(speed);
+			p.setContinuous("speed", 0);
 		}
 	}
 
 	@Override
 	public List<Requirement> getRequirements() {
-		return Arrays.asList((new BarRequirement("mana", 1)));
+		return Arrays.asList(new BarRequirement("mana", 1));
 	}
 
 }

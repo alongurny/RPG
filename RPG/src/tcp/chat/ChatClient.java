@@ -14,7 +14,7 @@ import protocol.Protocol;
 import tcp.chat.message.Message;
 import tcp.chat.message.MessageDeliveryProtocol;
 import event.ConnectionEvent;
-import event.ConnectionListener;
+import event.DisconnectListener;
 import event.MessageEvent;
 import event.MessageListener;
 
@@ -27,7 +27,7 @@ public class ChatClient implements Closeable {
 	private PrintWriter out;
 	private Protocol<Message, String> protocol = new MessageDeliveryProtocol();
 	private List<MessageListener> messageListeners;
-	private List<ConnectionListener> connectionListeners;
+	private List<DisconnectListener> disconnectListeners;
 	private String name;
 	private boolean listening;
 
@@ -37,7 +37,7 @@ public class ChatClient implements Closeable {
 				socket.getInputStream()));
 		this.out = new PrintWriter(socket.getOutputStream(), true);
 		this.messageListeners = new ArrayList<>();
-		this.connectionListeners = new ArrayList<>();
+		this.disconnectListeners = new ArrayList<>();
 		if (autoListen) {
 			listen();
 		}
@@ -71,7 +71,7 @@ public class ChatClient implements Closeable {
 					ml.onReceive(new MessageEvent(m));
 				}
 			} while (listening);
-			connectionListeners.forEach(cl -> cl.onEnd(new ConnectionEvent()));
+			disconnectListeners.forEach(cl -> cl.onDisconnect(new ConnectionEvent()));
 		}, Thread.currentThread().getName() + "/Client Listen Thread").start();
 	}
 
@@ -79,16 +79,16 @@ public class ChatClient implements Closeable {
 		messageListeners.add(listener);
 	}
 
-	public void addConnectionListener(ConnectionListener listener) {
-		connectionListeners.add(listener);
+	public void addConnectionListener(DisconnectListener listener) {
+		disconnectListeners.add(listener);
 	}
 
 	public void removeMessageListener(MessageListener listener) {
 		messageListeners.remove(listener);
 	}
 
-	public void removeConnectionListener(ConnectionListener listener) {
-		connectionListeners.remove(listener);
+	public void removeConnectionListener(DisconnectListener listener) {
+		disconnectListeners.remove(listener);
 	}
 
 	public void send(Message m) {

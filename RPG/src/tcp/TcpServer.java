@@ -34,7 +34,7 @@ public abstract class TcpServer {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-					} , "Handle " + s.getInetAddress() + "Thread").start();
+					} , "Handle " + s.getInetAddress() + " Thread").start();
 				} catch (IOException e) {
 					System.err.println(e.getMessage());
 				}

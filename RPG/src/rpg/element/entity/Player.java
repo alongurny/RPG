@@ -28,16 +28,8 @@ public class Player extends Entity {
 		}
 	}
 
-	private Vector2D velocityDirection;
-	private double speed;
-	private Profession profession;
-
-	public Player(Vector2D location, AttributeSet basicAttributes, Race race, Profession profession) {
-		super(location, basicAttributes, race);
-		this.profession = profession;
-		this.velocityDirection = Vector2D.ZERO;
-		this.profession.init(this);
-		this.speed = getContinuous("speed");
+	public Player(Vector2D location, Race race) {
+		super(location, race);
 	}
 
 	@Override
@@ -47,9 +39,6 @@ public class Player extends Entity {
 
 	@Override
 	public void onCollision(Level level, Element other) {
-		if (!other.isPassable(level, this)) {
-			System.out.println(other);
-		}
 	}
 
 	@Override
@@ -82,19 +71,7 @@ public class Player extends Entity {
 	}
 
 	public Vector2D getVelocity() {
-		return velocityDirection.multiply(speed);
-	}
-
-	public double getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(double speed) {
-		this.speed = speed;
-	}
-
-	public void setVelocityDirection(Vector2D velocity) {
-		this.velocityDirection = velocity;
+		return getVector("velocityDirection").multiply(getContinuous("speed"));
 	}
 
 }
