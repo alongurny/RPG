@@ -2,25 +2,23 @@ package rpg;
 
 import rpg.element.entity.Entity;
 
-public abstract class Requirement {
+public abstract class Requirement extends Thing {
 
 	public static class BarRequirement extends Requirement {
-		private String name;
-		private double value;
 
 		public BarRequirement(String name, double value) {
-			this.name = name;
-			this.value = value;
+			set("name", name);
+			set("value", value);
 		}
 
 		@Override
 		public boolean isRequireable(Entity entity) {
-			return entity.getBarValue(name, 0) >= value;
+			return entity.getBarValue(getString("name"), 0) >= getContinuous("value");
 		}
 
 		@Override
 		public void require(Entity entity) {
-			entity.removeBarValue(name, value);
+			entity.removeBarValue(getString("name"), getContinuous("value"));
 		}
 	}
 
