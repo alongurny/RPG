@@ -36,7 +36,7 @@ public class Portal extends Element implements Interactive {
 
 	public Portal(Vector2D location, Vector2D target) {
 		super(location);
-		setVector("target", target);
+		set("target", target);
 	}
 
 	@Override

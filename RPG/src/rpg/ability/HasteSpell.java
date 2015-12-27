@@ -45,7 +45,7 @@ public class HasteSpell extends DurationSpell {
 		if (caster instanceof Player) {
 			Player p = (Player) caster;
 			speed = p.getContinuous("speed");
-			p.setContinuous("speed", 0.5 * speed);
+			p.set("speed", 0.5 * speed);
 		}
 	}
 
@@ -53,7 +53,7 @@ public class HasteSpell extends DurationSpell {
 	public void onEnd(Level level, Entity caster) {
 		if (caster instanceof Player) {
 			Player p = (Player) caster;
-			p.setContinuous("speed", 0);
+			p.set("speed", 0.0);
 		}
 	}
 

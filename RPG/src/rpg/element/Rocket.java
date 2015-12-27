@@ -17,8 +17,8 @@ public class Rocket extends Element {
 
 	public Rocket(Vector2D location, Vector2D direction, double speed) {
 		super(location);
-		setVector("direction", direction.getUnitalVector());
-		setContinuous("speed", speed);
+		set("direction", direction.getUnitalVector());
+		set("speed", speed);
 	}
 
 	private static BufferedImage image;

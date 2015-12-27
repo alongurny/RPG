@@ -9,7 +9,6 @@ import java.util.Map;
 
 import rpg.ability.AbilityHandler;
 import rpg.element.Element;
-import rpg.exception.AttributeException;
 import rpg.item.Inventory;
 import rpg.item.Item;
 import rpg.logic.Level;
@@ -26,7 +25,7 @@ public abstract class Entity extends Element {
 	public Entity(Vector2D location, Race race) {
 		super(location);
 		this.race = race;
-		setVector("direction", Vector2D.NORTH);
+		set("direction", Vector2D.NORTH);
 		this.bars = new HashMap<>();
 		abilityHandler = new AbilityHandler(this);
 		bars.put("health", new Bar(getContinuous("maxHealth")));
@@ -38,32 +37,24 @@ public abstract class Entity extends Element {
 		return abilityHandler;
 	}
 
-	public double getContinuous(String name) {
-		if (!basicAttributes.hasContinuous(name) && !race.getAttributeSet().hasContinuous(name)) {
-			throw new AttributeException(name);
-		}
-		return basicAttributes.getContinuous(name) + race.getAttributeSet().getContinuous(name);
+	@Override
+	public double getContinuous(String key) {
+		return super.getContinuous(key, 0.0) + race.getContinuous(key, 0.0);
 	}
 
-	public int getDiscrete(String name) {
-		if (!basicAttributes.hasDiscrete(name) && !race.getAttributeSet().hasDiscrete(name)) {
-			throw new AttributeException(name);
-		}
-		return basicAttributes.getDiscrete(name) + race.getAttributeSet().getDiscrete(name);
+	@Override
+	public int getDiscrete(String key) {
+		return super.getDiscrete(key, 0) + race.getDiscrete(key, 0);
 	}
 
-	public boolean getBoolean(String name) {
-		if (!basicAttributes.hasBoolean(name) && !race.getAttributeSet().hasBoolean(name)) {
-			throw new AttributeException(name);
-		}
-		return basicAttributes.getBoolean(name) || race.getAttributeSet().getBoolean(name);
+	@Override
+	public boolean getBoolean(String key) {
+		return super.getBoolean(key, false) || race.getBoolean(key, false);
 	}
 
-	public Vector2D getVector(String name) {
-		if (!basicAttributes.hasVector(name) && !race.getAttributeSet().hasVector(name)) {
-			throw new AttributeException(name);
-		}
-		return basicAttributes.getVector(name).add(race.getAttributeSet().getVector(name));
+	@Override
+	public Vector2D getVector(String key) {
+		return super.getVector(key, Vector2D.ZERO).add(race.getVector(key, Vector2D.ZERO));
 	}
 
 	@Override
@@ -154,9 +145,5 @@ public abstract class Entity extends Element {
 	}
 
 	public abstract void onDeath(Level level);
-
-	public AttributeSet getBasicAttributes() {
-		return basicAttributes;
-	}
 
 }

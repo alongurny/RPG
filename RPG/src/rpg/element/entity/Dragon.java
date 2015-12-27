@@ -67,7 +67,7 @@ public class Dragon extends Entity {
 	public void act(Level level, double dt) {
 		for (Element d : level.getDynamicElements()) {
 			if (d instanceof Player) {
-				setVector("direction", d.getLocation().subtract(getLocation()).getUnitalVector());
+				set("direction", d.getLocation().subtract(getLocation()).getUnitalVector());
 				getAbilityHandler().tryCast(level, 0);
 			}
 		}

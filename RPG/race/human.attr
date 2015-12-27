@@ -1,8 +1,8 @@
-maxHealth = 42 : continuous
-maxMana = 32 : continuous
-intelligence = 14 : discrete
-stamina = 14 : discrete
-speed = 80 : continuous
+maxHealth = 42 : double
+maxMana = 32 : double
+intelligence = 14 : int
+stamina = 14 : int
+speed = 80 : double
 velocityDirection = (0,0) : vector
-healthRegen = 0.1 : continuous
-manaRegen = 0.1 : continuous
+healthRegen = 0.1 : double
+manaRegen = 0.1 : double

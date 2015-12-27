@@ -33,8 +33,8 @@ public class Fireball extends Element {
 
 	public Fireball(Entity caster, Vector2D location, Vector2D direction, double speed) {
 		super(location);
-		setVector("direction", direction.getUnitalVector());
-		setContinuous("speed", speed);
+		set("direction", direction.getUnitalVector());
+		set("speed", speed);
 		this.caster = caster;
 	}
 

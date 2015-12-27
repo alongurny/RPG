@@ -1,20 +1,17 @@
 package rpg.element.entity;
 
+import java.util.List;
+
+import rpg.Thing;
 import rpg.exception.RPGException;
 
-public class Race {
+public class Race extends Thing {
 
-	public static final Race HUMAN = new Race(AttributeSet.read("race/human.attr"));
-	public static final Race DRAGON = new Race(AttributeSet.read("race/dragon.attr"));
+	public static final Race HUMAN = new Race(read("race/human.attr"));
+	public static final Race DRAGON = new Race(read("race/dragon.attr"));
 
-	private AttributeSet attributeSet;
-
-	public Race(AttributeSet attributeSet) {
-		this.attributeSet = attributeSet;
-	}
-
-	public AttributeSet getAttributeSet() {
-		return attributeSet;
+	public Race(List<Attribute> attributes) {
+		attributes.forEach(a -> set(a.getKey(), a.getValue()));
 	}
 
 	public static Race valueOf(String str) {

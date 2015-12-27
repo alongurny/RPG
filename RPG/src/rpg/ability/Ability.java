@@ -2,37 +2,37 @@ package rpg.ability;
 
 import java.util.List;
 
+import rpg.Mechanism;
 import rpg.Requirement;
 import rpg.element.entity.Entity;
 import rpg.logic.Level;
 import rpg.ui.Drawable;
 
-public abstract class Ability implements Drawable {
+public abstract class Ability extends Mechanism implements Drawable {
 
 	public static final int WIDTH = 32;
 	public static final int HEIGHT = 32;
 
-	private double cooldown, maxCooldown;
-
 	public Ability(double maxCooldown) {
-		this.maxCooldown = maxCooldown;
-		this.cooldown = 0;
+		set("maxCooldown", maxCooldown);
+		set("cooldown", 0.0);
 	}
 
-	public final double getCooldown() {
-		return cooldown;
+	public double getCooldown() {
+		return getContinuous("cooldown");
 	}
 
 	public void setCooldown(double cooldown) {
-		this.cooldown = Math.max(0, Math.min(cooldown, maxCooldown));
+		set("cooldown", Math.max(0, Math.min(cooldown, getContinuous("maxCooldown"))));
 	}
 
 	public void reduceCooldown(double dcooldown) {
-		setCooldown(cooldown - dcooldown);
+		setCooldown(getCooldown() - dcooldown);
 	}
 
-	public double getMaxCooldown() {
-		return maxCooldown;
+	@Override
+	public void update(Level level, double dt) {
+		reduceCooldown(dt);
 	}
 
 	public abstract void onCast(Level level, Entity caster);

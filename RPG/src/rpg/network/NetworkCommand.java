@@ -32,7 +32,7 @@ public class NetworkCommand {
 				game.getLevel().tryInteract(player);
 				break;
 			case "setVector":
-				player.setVector(arr[3], Vector2D.valueOf(arr[4]));
+				player.set(arr[3], Vector2D.valueOf(arr[4]));
 				break;
 			}
 		} else {

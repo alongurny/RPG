@@ -3,7 +3,9 @@ package rpg.item;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Inventory {
+import rpg.Thing;
+
+public class Inventory extends Thing {
 	private List<Item> items;
 
 	public Inventory() {

@@ -28,7 +28,7 @@ public class AbilityHandler extends Mechanism implements Drawable {
 	}
 
 	public void update(Level level, double dt) {
-		abilities.forEach(p -> p.reduceCooldown(dt));
+		abilities.forEach(p -> p.update(level, dt));
 	}
 
 	public void addAbility(Ability ability) {
@@ -76,7 +76,7 @@ public class AbilityHandler extends Mechanism implements Drawable {
 	public boolean tryCast(Level level, Ability ability) {
 		if (makeCastable(ability)) {
 			ability.onCast(level, caster);
-			ability.setCooldown(ability.getMaxCooldown());
+			ability.setCooldown(ability.getContinuous("maxCooldown"));
 			return true;
 		}
 		return false;
@@ -99,7 +99,7 @@ public class AbilityHandler extends Mechanism implements Drawable {
 			g.drawRect(0, 0, 32, 32);
 			if (cooldown > 0) {
 				g.setColor(new Color(63, 63, 63, 100));
-				double percentage = 1 - cooldown / ability.getMaxCooldown();
+				double percentage = 1 - cooldown / ability.getContinuous("maxCooldown");
 				boolean first = true;
 				for (int i = 0; i < 8; i++) {
 					double diff = (i + 1) / 8.0 - percentage;

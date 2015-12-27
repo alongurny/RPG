@@ -90,7 +90,7 @@ public class Door extends Element implements Interactive {
 	public void onInteract(Level level, Entity other) {
 		for (int i = 0; i < other.getInventory().getSize(); i++) {
 			if (other.getInventory().get(i) instanceof MasterKey) {
-				setBoolean("open", true);
+				set("open", true);
 				other.getInventory().removeAt(i);
 				return;
 			}
