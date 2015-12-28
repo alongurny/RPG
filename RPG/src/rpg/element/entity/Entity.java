@@ -17,15 +17,14 @@ import rpg.ui.Rectangle;
 
 public abstract class Entity extends Element {
 
-	private Race race;
 	private Map<String, Bar> bars;
 	private AbilityHandler abilityHandler;
 	private Inventory inventory;
 
 	public Entity(Vector2D location, Race race) {
 		super(location);
-		this.race = race;
 		set("direction", Vector2D.NORTH);
+		race.init(this);
 		this.bars = new HashMap<>();
 		abilityHandler = new AbilityHandler(this);
 		bars.put("health", new Bar(getContinuous("maxHealth")));
@@ -35,26 +34,6 @@ public abstract class Entity extends Element {
 
 	public AbilityHandler getAbilityHandler() {
 		return abilityHandler;
-	}
-
-	@Override
-	public double getContinuous(String key) {
-		return super.getContinuous(key, 0.0) + race.getContinuous(key, 0.0);
-	}
-
-	@Override
-	public int getDiscrete(String key) {
-		return super.getDiscrete(key, 0) + race.getDiscrete(key, 0);
-	}
-
-	@Override
-	public boolean getBoolean(String key) {
-		return super.getBoolean(key, false) || race.getBoolean(key, false);
-	}
-
-	@Override
-	public Vector2D getVector(String key) {
-		return super.getVector(key, Vector2D.ZERO).add(race.getVector(key, Vector2D.ZERO));
 	}
 
 	@Override

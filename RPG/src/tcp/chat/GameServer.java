@@ -62,24 +62,23 @@ public class GameServer {
 	public static void main(String[] args) {
 		Level level = new Level1();
 		Game game = new Game(level);
-		GameServer _server = null;
 		try {
-			_server = new GameServer(game);
+			GameServer server = new GameServer(game);
+			server.inner.addConnectListener(new ConnectListener() {
+
+				@Override
+				public void onConnect(ConnectionEvent e) {
+					server.inner.send(Message.create(Source.SERVER, Target.BROADCAST, Type.METADATA,
+							"your number is " + server.counter++ + ""));
+				}
+			});
+			server.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		final GameServer server = _server;
-		server.inner.addConnectListener(new ConnectListener() {
 
-			@Override
-			public void onConnect(ConnectionEvent e) {
-				server.inner.send(Message.create(Source.SERVER, Target.BROADCAST, Type.METADATA,
-						"your number is " + server.counter++ + ""));
-			}
-		});
 		ServerStation gs = new ServerStation(game);
 		gs.start();
-		server.start();
 
 	}
 

@@ -16,8 +16,8 @@ import rpg.physics.Vector2D;
 
 public abstract class Thing {
 
-	public static final List<Class<?>> TYPES = Arrays.asList(Double.class, Integer.class, Boolean.class,
-			String.class, Vector2D.class);
+	public static final List<Class<?>> TYPES = Arrays.asList(Double.class, Integer.class, Boolean.class, String.class,
+			Vector2D.class);
 
 	public static Object readObject(String value) {
 		String[] brr = value.split(":");
@@ -77,54 +77,63 @@ public abstract class Thing {
 	}
 
 	public double getContinuous(String key) {
-		return (double) get(key);
+		return (double) attributes.get(key);
 	}
 
 	public int getDiscrete(String key) {
-		return (int) get(key);
+		return (int) attributes.get(key);
 	}
 
 	public boolean getBoolean(String key) {
-		return (boolean) get(key);
+		return (boolean) attributes.get(key);
 	}
 
 	public Vector2D getVector(String key) {
-		return (Vector2D) get(key);
+		return (Vector2D) attributes.get(key);
 	}
 
 	public String getString(String key) {
-		return (String) get(key);
+		return (String) attributes.get(key);
 	}
 
 	public double getContinuous(String key, double defaultValue) {
-		return (double) get(key, defaultValue);
+		return hasKey(key) ? (double) attributes.get(key) : defaultValue;
 	}
 
 	public int getDiscrete(String key, int defaultValue) {
-		return (int) get(key, defaultValue);
+		return hasKey(key) ? (int) attributes.get(key) : defaultValue;
 	}
 
 	public boolean getBoolean(String key, boolean defaultValue) {
-		return (boolean) get(key, defaultValue);
+		return hasKey(key) ? (boolean) attributes.get(key) : defaultValue;
 	}
 
 	public Vector2D getVector(String key, Vector2D defaultValue) {
-		return (Vector2D) get(key, defaultValue);
+		return hasKey(key) ? (Vector2D) attributes.get(key) : defaultValue;
 	}
 
 	public String getString(String key, String defaultValue) {
-		return (String) get(key, defaultValue);
+		return hasKey(key) ? (String) attributes.get(key) : defaultValue;
 	}
 
 	public Object get(String key) {
 		if (!hasKey(key)) {
-			throw new RPGException("no key " + key);
+			return null;
 		}
-		return attributes.get(key);
-	}
-
-	public Object get(String key, Object defaultValue) {
-		return attributes.getOrDefault(key, defaultValue);
+		switch (getType(key).getSimpleName()) {
+		case "Double":
+			return getContinuous(key);
+		case "Integer":
+			return getDiscrete(key);
+		case "Boolean":
+			return getBoolean(key);
+		case "Vector2D":
+			return getVector(key);
+		case "String":
+			return getString(key);
+		default:
+			return null;
+		}
 	}
 
 	public static int getModifier(int value) {
