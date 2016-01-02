@@ -1,8 +1,8 @@
-maxHealth = 42 : double
-maxMana = 32 : double
-intelligence = 14 : int
-stamina = 14 : int
-speed = 80 : double
+maxHealth = 42 : number
+maxMana = 32 : number
+intelligence = 14 : number
+stamina = 14 : number
+speed = 80 : number
 velocityDirection = (0,0) : vector
-healthRegen = 0.1 : double
-manaRegen = 0.1 : double
+healthRegen = 0.1 : number
+manaRegen = 0.1 : number

@@ -1,6 +1,6 @@
-strength = 20 : int
-stamina = 20 : int
-dexterity = 20 : int
-intelligence = 20 : int
-maxHealth = 50 : double
-maxMana = 100 : double
+strength = 20 : number
+stamina = 20 : number
+dexterity = 20 : number
+intelligence = 20 : number
+maxHealth = 50 : number
+maxMana = 100 : number

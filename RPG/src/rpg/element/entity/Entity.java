@@ -17,18 +17,20 @@ import rpg.ui.Rectangle;
 
 public abstract class Entity extends Element {
 
+	private Race race;
 	private Map<String, Bar> bars;
 	private AbilityHandler abilityHandler;
 	private Inventory inventory;
 
 	public Entity(Vector2D location, Race race) {
 		super(location);
+		set("race", race.get("race"));
 		set("direction", Vector2D.NORTH);
-		race.init(this);
+		this.race = race;
 		this.bars = new HashMap<>();
-		abilityHandler = new AbilityHandler(this);
-		bars.put("health", new Bar(getContinuous("maxHealth")));
-		bars.put("mana", new Bar(getContinuous("maxMana")));
+		abilityHandler = new AbilityHandler();
+		bars.put("health", new Bar(getTotalNumber("maxHealth")));
+		bars.put("mana", new Bar(getTotalNumber("maxMana")));
 		inventory = new Inventory();
 	}
 
@@ -47,6 +49,10 @@ public abstract class Entity extends Element {
 	}
 
 	public abstract void act(Level level, double dt);
+
+	public Map<String, Bar> getBars() {
+		return new HashMap<>(bars);
+	}
 
 	public void addBarValue(String name, double dvalue) {
 		bars.get(name).addValue(dvalue);
@@ -71,6 +77,14 @@ public abstract class Entity extends Element {
 
 	public boolean isAlive() {
 		return getBarValue("health") > 0;
+	}
+
+	public double getTotalNumber(String key) {
+		return super.getNumber(key, 0.0) + race.getNumber(key, 0.0);
+	}
+
+	public Vector2D getTotalVector(String key) {
+		return super.getVector(key, Vector2D.ZERO).add(race.getVector(key, Vector2D.ZERO));
 	}
 
 	@Override

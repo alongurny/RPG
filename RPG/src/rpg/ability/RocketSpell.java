@@ -31,21 +31,18 @@ public class RocketSpell extends Spell {
 		height = 32;
 	}
 
-	private double distance;
-	private double speed;
-
 	public RocketSpell(double speed) {
-		super(2);
-		distance = 32;
-		this.speed = speed;
+		super(2.0);
+		set("distance", 32.0);
+		set("speed", speed);
 	}
 
 	@Override
 	public void onCast(Level level, Entity caster) {
 		Vector2D casterLocation = caster.getLocation();
 		Vector2D casterDirection = caster.getVector("direction");
-		Vector2D fireballLocation = casterLocation.add(casterDirection.multiply(distance));
-		level.addDynamicElement(new Rocket(fireballLocation, casterDirection, speed));
+		Vector2D fireballLocation = casterLocation.add(casterDirection.multiply(getNumber("distance")));
+		level.addDynamicElement(new Rocket(fireballLocation, casterDirection, getNumber("speed")));
 	}
 
 	@Override

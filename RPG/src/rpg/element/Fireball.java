@@ -17,7 +17,6 @@ public class Fireball extends Element {
 
 	private static BufferedImage image;
 	public static int width, height;
-	private Entity caster;
 
 	private static double defaultAngle = Math.toRadians(-90);
 
@@ -31,11 +30,10 @@ public class Fireball extends Element {
 		}
 	}
 
-	public Fireball(Entity caster, Vector2D location, Vector2D direction, double speed) {
+	public Fireball(Vector2D location, Vector2D direction, double speed) {
 		super(location);
 		set("direction", direction.getUnitalVector());
 		set("speed", speed);
-		this.caster = caster;
 	}
 
 	@Override
@@ -55,14 +53,14 @@ public class Fireball extends Element {
 
 	@Override
 	public void update(Level level, double dt) {
-		if (!level.tryMoveBy(this, getVector("direction").multiply(getContinuous("speed") * dt)).isEmpty()) {
+		if (!level.tryMoveBy(this, getVector("direction").multiply(getNumber("speed") * dt)).isEmpty()) {
 			level.removeDynamicElement(this);
 		}
 	}
 
 	@Override
 	public void onCollision(Level level, Element other) {
-		if (other instanceof Entity && other != caster) {
+		if (other instanceof Entity) {
 			Entity entity = (Entity) other;
 			entity.removeBarValue("health", 10);
 			level.removeDynamicElement(this);

@@ -48,16 +48,25 @@ public class Level {
 		Rectangle newRect = new Rectangle(x, y, oldRect.getWidth(), oldRect.getHeight());
 		List<Element> obstacles = new ArrayList<>();
 		for (Element e : elements) {
-			if (e.getAbsoluteRect().intersects(newRect) && !e.isPassable(this, element)) {
-				obstacles.add(e);
+			if (e != element) {
+				if (e.getAbsoluteRect().intersects(newRect) && !e.isPassable(this, element)) {
+					obstacles.add(e);
+				}
 			}
 		}
 		for (Element e : getNearElements(element)) {
-			if (e.getAbsoluteRect().intersects(newRect) && !e.isPassable(this, element)) {
-				obstacles.add(e);
+			if (e != element) {
+				if (e.getAbsoluteRect().intersects(newRect) && !e.isPassable(this, element)) {
+					obstacles.add(e);
+				}
 			}
 		}
 		return obstacles;
+	}
+
+	public void replaceDynamicElement(List<Element> elements) {
+		this.elements.clear();
+		this.elements.addAll(elements);
 	}
 
 	public List<Element> getDynamicElements() {

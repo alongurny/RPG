@@ -21,14 +21,14 @@ public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = -435064221993994993L;
 
-	private Player player;
 	private static BufferedImage background;
 	private int sourceX, sourceY;
 	private Game game;
+	private int num;
 
-	public GamePanel(Game game, Player player) {
-		this.player = player;
+	public GamePanel(Game game, int num) {
 		this.game = game;
+		this.num = num;
 		setFocusable(true);
 		try {
 			background = ImageIO.read(new File("img/background.jpg"));
@@ -38,10 +38,14 @@ public class GamePanel extends JPanel {
 
 	}
 
+	public Player getPlayer() {
+		return game.getLevel().getPlayer(num);
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Vector2D loc = player.getLocation();
+		Vector2D loc = getPlayer().getLocation();
 		Grid grid = game.getLevel().getMap();
 		sourceX = limit(-32, grid.getWidth() - getWidth() + 32, (int) loc.getX() - getWidth() / 2);
 		sourceY = limit(-32, grid.getHeight() - getHeight() + 32, (int) loc.getY() - getHeight() / 2);

@@ -15,12 +15,6 @@ import rpg.ui.Rectangle;
 
 public class Rocket extends Element {
 
-	public Rocket(Vector2D location, Vector2D direction, double speed) {
-		super(location);
-		set("direction", direction.getUnitalVector());
-		set("speed", speed);
-	}
-
 	private static BufferedImage image;
 	public static int width, height;
 
@@ -34,6 +28,12 @@ public class Rocket extends Element {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Rocket(Vector2D location, Vector2D direction, double speed) {
+		super(location);
+		set("direction", direction.getUnitalVector());
+		set("speed", speed);
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class Rocket extends Element {
 
 	@Override
 	public void update(Level level, double dt) {
-		Vector2D v = getVector("direction").multiply(getContinuous("speed") * dt);
+		Vector2D v = getVector("direction").multiply(getNumber("speed") * dt);
 		List<Element> obstacles = level.tryMoveBy(this, v);
 		if (!obstacles.isEmpty()) {
 			for (Element obstacle : obstacles) {

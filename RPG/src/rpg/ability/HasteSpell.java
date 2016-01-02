@@ -12,14 +12,12 @@ import javax.imageio.ImageIO;
 import rpg.Requirement;
 import rpg.Requirement.BarRequirement;
 import rpg.element.entity.Entity;
-import rpg.element.entity.Player;
 import rpg.logic.Level;
 
 public class HasteSpell extends DurationSpell {
 
 	private static Image image;
 	private static int width, height;
-	private double speed;
 
 	static {
 		try {
@@ -30,6 +28,8 @@ public class HasteSpell extends DurationSpell {
 		width = 32;
 		height = 32;
 	}
+
+	private double speed;
 
 	public HasteSpell() {
 		super(2, 2);
@@ -42,19 +42,13 @@ public class HasteSpell extends DurationSpell {
 
 	@Override
 	public void onStart(Level level, Entity caster) {
-		if (caster instanceof Player) {
-			Player p = (Player) caster;
-			speed = p.getContinuous("speed");
-			p.set("speed", 0.5 * speed);
-		}
+		speed = caster.getNumber("speed", 0);
+		caster.set("speed", speed + 0.5 * caster.getTotalNumber("speed"));
 	}
 
 	@Override
 	public void onEnd(Level level, Entity caster) {
-		if (caster instanceof Player) {
-			Player p = (Player) caster;
-			p.set("speed", 0.0);
-		}
+		caster.set("speed", speed);
 	}
 
 	@Override

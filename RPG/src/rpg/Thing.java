@@ -22,10 +22,8 @@ public abstract class Thing {
 	public static Object readObject(String value) {
 		String[] brr = value.split(":");
 		switch (brr[1].trim()) {
-		case "double":
+		case "number":
 			return Double.valueOf(brr[0].trim());
-		case "int":
-			return Integer.valueOf(brr[0].trim());
 		case "boolean":
 			return Boolean.valueOf(brr[0].trim());
 		case "vector":
@@ -61,6 +59,9 @@ public abstract class Thing {
 		if (!TYPES.contains(value.getClass())) {
 			throw new RPGException("Type not allowed");
 		}
+		if (value instanceof Number) {
+			value = ((Number) value).doubleValue();
+		}
 		attributes.put(key, value);
 	}
 
@@ -76,12 +77,16 @@ public abstract class Thing {
 		return attributes.keySet();
 	}
 
-	public double getContinuous(String key) {
+	public double getNumber(String key) {
 		return (double) attributes.get(key);
 	}
 
-	public int getDiscrete(String key) {
-		return (int) attributes.get(key);
+	public int getInteger(String key) {
+		double value = getNumber(key);
+		if (value % 1 == 0) {
+			return (int) value;
+		}
+		throw new RPGException("Double cannot be ecast to an integer");
 	}
 
 	public boolean getBoolean(String key) {
@@ -96,12 +101,8 @@ public abstract class Thing {
 		return (String) attributes.get(key);
 	}
 
-	public double getContinuous(String key, double defaultValue) {
+	public double getNumber(String key, double defaultValue) {
 		return hasKey(key) ? (double) attributes.get(key) : defaultValue;
-	}
-
-	public int getDiscrete(String key, int defaultValue) {
-		return hasKey(key) ? (int) attributes.get(key) : defaultValue;
 	}
 
 	public boolean getBoolean(String key, boolean defaultValue) {
@@ -122,9 +123,7 @@ public abstract class Thing {
 		}
 		switch (getType(key).getSimpleName()) {
 		case "Double":
-			return getContinuous(key);
-		case "Integer":
-			return getDiscrete(key);
+			return getNumber(key);
 		case "Boolean":
 			return getBoolean(key);
 		case "Vector2D":

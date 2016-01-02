@@ -53,6 +53,9 @@ public class Player extends Entity {
 
 	@Override
 	public boolean isPassable(Level level, Element other) {
+		if (other instanceof Entity) {
+			return false;
+		}
 		return true;
 	}
 
@@ -62,8 +65,8 @@ public class Player extends Entity {
 				&& !level.tryMoveBy(this, new Vector2D(getVelocity().getX() * dt, 0)).isEmpty()) {
 			level.tryMoveBy(this, new Vector2D(0, getVelocity().getY() * dt));
 		}
-		addBarValue("health", dt * getContinuous("healthRegen"));
-		addBarValue("mana", dt * getContinuous("manaRegen"));
+		addBarValue("health", dt * getTotalNumber("healthRegen"));
+		addBarValue("mana", dt * getTotalNumber("manaRegen"));
 	}
 
 	@Override
@@ -71,7 +74,7 @@ public class Player extends Entity {
 	}
 
 	public Vector2D getVelocity() {
-		return getVector("velocityDirection").multiply(getContinuous("speed"));
+		return getTotalVector("velocityDirection").multiply(getTotalNumber("speed"));
 	}
 
 }

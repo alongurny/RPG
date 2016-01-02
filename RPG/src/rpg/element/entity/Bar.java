@@ -3,7 +3,9 @@ package rpg.element.entity;
 import java.awt.Color;
 import java.util.HashMap;
 
-public class Bar {
+import rpg.Thing;
+
+public class Bar extends Thing {
 
 	private static java.util.Map<String, Color[]> colors;
 
@@ -17,40 +19,38 @@ public class Bar {
 		colors.put(name, new Color[] { mainColor, secondColor });
 	}
 
-	private double value, maximum;
-
 	public Bar(double maximum) {
 		this(maximum, maximum);
 	}
 
 	public Bar(double value, double maximum) {
-		this.value = value;
-		this.maximum = maximum;
+		set("value", value);
+		set("maximum", maximum);
 	}
 
 	public double getValue() {
-		return value;
+		return getNumber("value");
 	}
 
 	public void addValue(double dvalue) {
-		setValue(value + dvalue);
+		setValue(getNumber("value") + dvalue);
 	}
 
 	public void setValue(double value) {
-		this.value = Math.min(value, maximum);
+		set("value", Math.min(value, getNumber("maximum")));
 	}
 
 	public double getMaximum() {
-		return maximum;
+		return getNumber("maximum");
 	}
 
 	public void addMaximum(double dmaximum) {
-		setMaximum(maximum + dmaximum);
+		setMaximum(getNumber("maximum") + dmaximum);
 	}
 
 	public void setMaximum(double maximum) {
-		this.maximum = maximum;
-		this.value = Math.min(value, maximum);
+		set("maximum", maximum);
+		set("value", Math.min(getNumber("value"), maximum));
 	}
 
 	public static boolean isBound(String key) {

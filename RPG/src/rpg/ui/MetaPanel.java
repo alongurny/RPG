@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import rpg.element.entity.Player;
 import rpg.logic.Game;
 
 public class MetaPanel extends JPanel {
@@ -15,7 +14,7 @@ public class MetaPanel extends JPanel {
 
 	private List<Drawable> drawables;
 
-	public MetaPanel(Game game, Player player) {
+	public MetaPanel(Game game, int num) {
 		drawables = new ArrayList<>();
 	}
 

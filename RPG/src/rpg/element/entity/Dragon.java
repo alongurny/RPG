@@ -29,8 +29,8 @@ public class Dragon extends Entity {
 		}
 	}
 
-	public Dragon(Vector2D location) {
-		super(location, Race.DRAGON);
+	public Dragon(Vector2D location, Race race) {
+		super(location, race);
 		getAbilityHandler().addAbility(new FireballSpell(192, 32));
 		putBar("mana", new Bar(100));
 	}
@@ -68,7 +68,7 @@ public class Dragon extends Entity {
 		for (Element d : level.getDynamicElements()) {
 			if (d instanceof Player) {
 				set("direction", d.getLocation().subtract(getLocation()).getUnitalVector());
-				getAbilityHandler().tryCast(level, 0);
+				getAbilityHandler().tryCast(level, this, 0);
 			}
 		}
 	}
