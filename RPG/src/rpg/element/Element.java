@@ -40,4 +40,8 @@ public abstract class Element extends Mechanism implements Drawable {
 		return String.format("%s[location=%s]", getClass().getName(), getLocation());
 	}
 
+	public static double distance(Element a, Element b) {
+		return Vector2D.distance(a.getLocation(), b.getLocation());
+	}
+
 }

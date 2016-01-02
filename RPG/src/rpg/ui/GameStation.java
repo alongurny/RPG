@@ -10,7 +10,6 @@ public abstract class GameStation {
 
 	private MetaBoard metaBoard;
 	private GameBoard gameBoard;
-	private Game game;
 
 	public GameStation(Game game, int num) {
 		metaBoard = new MetaBoard(480, 200, game, num);
@@ -25,7 +24,6 @@ public abstract class GameStation {
 		gameBoard.setLocation(500, 40);
 		gameBoard.setAlwaysOnTop(true);
 		metaBoard.setAlwaysOnTop(true);
-		this.game = game;
 	}
 
 	public void addKeyListener(KeyListener listener) {
@@ -37,7 +35,6 @@ public abstract class GameStation {
 		metaBoard.setVisible(true);
 		gameBoard.setVisible(true);
 		new Thread(() -> {
-			long last = System.currentTimeMillis();
 			while (true) {
 				try {
 					Thread.sleep(16);
@@ -47,19 +44,8 @@ public abstract class GameStation {
 				doSomething();
 				gameBoard.repaint();
 				metaBoard.repaint();
-				long now = System.currentTimeMillis();
-				long diff = (now - last);
-				try {
-					Thread.sleep(20);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				game.update(diff);
-				last = now;
-
 			}
 		}).start();
-
 	}
 
 	public abstract void doSomething();

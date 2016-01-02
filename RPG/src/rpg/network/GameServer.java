@@ -1,4 +1,4 @@
-package tcp.chat;
+package rpg.network;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -22,8 +22,8 @@ import rpg.element.Element;
 import rpg.logic.Game;
 import rpg.logic.Level;
 import rpg.logic.Level2;
-import rpg.network.NetworkCommand;
 import rpg.ui.ServerStation;
+import tcp.chat.ChatServer;
 import tcp.chat.message.Message;
 import tcp.chat.message.Message.Source;
 import tcp.chat.message.Message.Target;

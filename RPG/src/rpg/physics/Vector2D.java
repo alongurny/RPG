@@ -2,6 +2,10 @@ package rpg.physics;
 
 public final class Vector2D {
 
+	public static double distance(Vector2D u, Vector2D v) {
+		return u.subtract(v).getMagnitude();
+	}
+
 	public static final Vector2D ZERO = new Vector2D(0, 0);
 
 	public static final Vector2D NORTH = new Vector2D(0, -1);

@@ -13,7 +13,6 @@ import rpg.item.MasterKey;
 import rpg.logic.Level;
 import rpg.physics.Vector2D;
 import rpg.ui.Rectangle;
-import rpg.ui.Util;
 
 public class Door extends Element implements Interactive {
 
@@ -78,7 +77,7 @@ public class Door extends Element implements Interactive {
 	public boolean isInteractable(Level level, Entity other) {
 		for (int i = 0; i < other.getInventory().getSize(); i++) {
 			if (other.getInventory().get(i) instanceof MasterKey) {
-				if (Util.distance(other, this) < 36) {
+				if (Element.distance(other, this) < 36) {
 					return true;
 				}
 			}

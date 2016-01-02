@@ -181,6 +181,7 @@ public class Level {
 	}
 
 	public Player getPlayer(int index) {
+		System.out.println(index + ", " + elements.size());
 		for (Element e : elements) {
 			if (e instanceof Player) {
 				if (index == 0) {

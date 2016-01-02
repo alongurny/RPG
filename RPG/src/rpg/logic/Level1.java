@@ -4,7 +4,6 @@ import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
 import rpg.ability.RocketSpell;
 import rpg.element.Block;
-import rpg.element.Portal;
 import rpg.element.entity.Player;
 import rpg.element.entity.Race;
 import rpg.physics.Vector2D;
@@ -34,7 +33,6 @@ public class Level1 extends Level {
 			}
 			addStaticElement(new Block(grid.getLocation(j, COLUMNS - 1)));
 		}
-		Portal[] portals = Portal.getPair(grid.getLocation(2, 2), grid.getLocation(10, 6));
 
 	}
 
