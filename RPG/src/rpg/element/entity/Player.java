@@ -8,9 +8,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import rpg.element.Element;
+import rpg.geometry.Rectangle;
+import rpg.geometry.Vector2D;
 import rpg.logic.Level;
-import rpg.physics.Vector2D;
-import rpg.ui.Rectangle;
 
 public class Player extends Entity {
 

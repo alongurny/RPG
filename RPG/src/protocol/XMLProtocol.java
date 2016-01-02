@@ -35,9 +35,9 @@ import rpg.element.entity.Entity;
 import rpg.element.entity.Player;
 import rpg.element.entity.Race;
 import rpg.exception.RPGException;
+import rpg.geometry.Vector2D;
 import rpg.item.Inventory;
 import rpg.item.Item;
-import rpg.physics.Vector2D;
 
 public class XMLProtocol implements Protocol<Thing, Node> {
 

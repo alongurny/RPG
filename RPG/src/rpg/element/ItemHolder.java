@@ -4,10 +4,10 @@ import java.awt.Graphics;
 
 import rpg.Interactive;
 import rpg.element.entity.Entity;
+import rpg.geometry.Rectangle;
+import rpg.geometry.Vector2D;
 import rpg.item.Item;
 import rpg.logic.Level;
-import rpg.physics.Vector2D;
-import rpg.ui.Rectangle;
 
 public class ItemHolder extends Element implements Interactive {
 

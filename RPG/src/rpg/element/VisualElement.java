@@ -3,8 +3,8 @@ package rpg.element;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import rpg.physics.Vector2D;
-import rpg.ui.Rectangle;
+import rpg.geometry.Rectangle;
+import rpg.geometry.Vector2D;
 
 public abstract class VisualElement extends Element {
 

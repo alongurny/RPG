@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 
 import rpg.element.Element;
 import rpg.element.entity.Player;
+import rpg.geometry.Vector2D;
 import rpg.logic.Game;
 import rpg.logic.Grid;
-import rpg.physics.Vector2D;
 
 public class GamePanel extends JPanel {
 

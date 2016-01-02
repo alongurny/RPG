@@ -12,7 +12,7 @@ import java.util.Set;
 
 import rpg.element.entity.Attribute;
 import rpg.exception.RPGException;
-import rpg.physics.Vector2D;
+import rpg.geometry.Vector2D;
 
 public abstract class Thing {
 

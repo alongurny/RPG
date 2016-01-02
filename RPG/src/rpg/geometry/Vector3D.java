@@ -1,4 +1,4 @@
-package rpg.physics;
+package rpg.geometry;
 
 public final class Vector3D {
 

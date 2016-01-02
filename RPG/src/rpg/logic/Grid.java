@@ -5,7 +5,7 @@ import java.util.List;
 
 import rpg.element.Air;
 import rpg.element.Element;
-import rpg.physics.Vector2D;
+import rpg.geometry.Vector2D;
 
 public class Grid {
 

@@ -9,11 +9,11 @@ import java.util.Map;
 
 import rpg.ability.AbilityHandler;
 import rpg.element.Element;
+import rpg.geometry.Rectangle;
+import rpg.geometry.Vector2D;
 import rpg.item.Inventory;
 import rpg.item.Item;
 import rpg.logic.Level;
-import rpg.physics.Vector2D;
-import rpg.ui.Rectangle;
 
 public abstract class Entity extends Element {
 

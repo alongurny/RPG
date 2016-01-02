@@ -10,9 +10,9 @@ import javax.swing.ImageIcon;
 import rpg.ability.FireballSpell;
 import rpg.element.Element;
 import rpg.element.HealthPotion;
+import rpg.geometry.Rectangle;
+import rpg.geometry.Vector2D;
 import rpg.logic.Level;
-import rpg.physics.Vector2D;
-import rpg.ui.Rectangle;
 
 public class Dragon extends Entity {
 

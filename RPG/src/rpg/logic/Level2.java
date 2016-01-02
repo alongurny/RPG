@@ -9,7 +9,7 @@ import rpg.element.Portal;
 import rpg.element.entity.Dragon;
 import rpg.element.entity.Player;
 import rpg.element.entity.Race;
-import rpg.physics.Vector2D;
+import rpg.geometry.Vector2D;
 
 public class Level2 extends Level {
 

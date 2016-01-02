@@ -8,8 +8,8 @@ import rpg.Interactive;
 import rpg.element.Element;
 import rpg.element.entity.Entity;
 import rpg.element.entity.Player;
-import rpg.physics.Vector2D;
-import rpg.ui.Rectangle;
+import rpg.geometry.Rectangle;
+import rpg.geometry.Vector2D;
 
 public class Level {
 

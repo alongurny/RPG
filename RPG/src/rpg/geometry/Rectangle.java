@@ -1,4 +1,4 @@
-package rpg.ui;
+package rpg.geometry;
 
 public class Rectangle {
 

@@ -6,7 +6,7 @@ import rpg.ability.RocketSpell;
 import rpg.element.Block;
 import rpg.element.entity.Player;
 import rpg.element.entity.Race;
-import rpg.physics.Vector2D;
+import rpg.geometry.Vector2D;
 
 public class Level1 extends Level {
 

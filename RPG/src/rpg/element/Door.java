@@ -9,10 +9,10 @@ import javax.imageio.ImageIO;
 
 import rpg.Interactive;
 import rpg.element.entity.Entity;
+import rpg.geometry.Rectangle;
+import rpg.geometry.Vector2D;
 import rpg.item.MasterKey;
 import rpg.logic.Level;
-import rpg.physics.Vector2D;
-import rpg.ui.Rectangle;
 
 public class Door extends Element implements Interactive {
 

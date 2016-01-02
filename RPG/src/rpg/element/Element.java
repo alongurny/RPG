@@ -1,10 +1,10 @@
 package rpg.element;
 
 import rpg.Mechanism;
+import rpg.geometry.Rectangle;
+import rpg.geometry.Vector2D;
 import rpg.logic.Level;
-import rpg.physics.Vector2D;
 import rpg.ui.Drawable;
-import rpg.ui.Rectangle;
 
 public abstract class Element extends Mechanism implements Drawable {
 

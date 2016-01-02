@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import rpg.exception.RPGException;
-import rpg.physics.Vector2D;
+import rpg.geometry.Vector2D;
 
 public final class Attribute {
 

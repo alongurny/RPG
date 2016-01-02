@@ -1,8 +1,8 @@
 package rpg.network;
 
 import rpg.element.entity.Player;
+import rpg.geometry.Vector2D;
 import rpg.logic.Game;
-import rpg.physics.Vector2D;
 
 public class NetworkCommand {
 

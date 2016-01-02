@@ -4,7 +4,7 @@ import java.util.List;
 
 import rpg.Thing;
 import rpg.exception.RPGException;
-import rpg.physics.Vector2D;
+import rpg.geometry.Vector2D;
 
 public class Race extends Thing {
 

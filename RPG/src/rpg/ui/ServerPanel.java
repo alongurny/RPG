@@ -12,9 +12,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import rpg.element.Element;
+import rpg.geometry.Vector2D;
 import rpg.logic.Game;
 import rpg.logic.Grid;
-import rpg.physics.Vector2D;
 
 public class ServerPanel extends JPanel {
 
