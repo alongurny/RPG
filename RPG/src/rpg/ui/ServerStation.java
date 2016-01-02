@@ -33,7 +33,7 @@ public abstract class ServerStation {
 				game.update(diff * 1e-3);
 				last = now;
 				try {
-					Thread.sleep(20);
+					Thread.sleep(10);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

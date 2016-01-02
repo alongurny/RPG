@@ -159,11 +159,23 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			abilities.forEach(a -> ah.addAbility(a));
 			return ah;
 		case "FireballSpell":
-			return new FireballSpell(thing.getNumber("speed"), thing.getNumber("distance"));
+			Ability fireballSpell = new FireballSpell(thing.getNumber("speed"), thing.getNumber("distance"));
+			for (String key : thing.getKeys()) {
+				fireballSpell.set(key, thing.get(key));
+			}
+			return fireballSpell;
 		case "HasteSpell":
-			return new HasteSpell();
+			Ability hasteSpell = new HasteSpell();
+			for (String key : thing.getKeys()) {
+				hasteSpell.set(key, thing.get(key));
+			}
+			return hasteSpell;
 		case "RocketSpell":
-			return new RocketSpell(thing.getNumber("speed"));
+			Ability rocketSpell = new RocketSpell(thing.getNumber("speed"));
+			for (String key : thing.getKeys()) {
+				rocketSpell.set(key, thing.get(key));
+			}
+			return rocketSpell;
 
 		}
 		throw new RPGException("No match for " + e.getTagName());
@@ -195,16 +207,13 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			root.appendChild(encode0(entity.getInventory(), document));
 			root.appendChild(encode0(entity.getAbilityHandler(), document));
 			Map<String, Bar> bars = entity.getBars();
-			org.w3c.dom.Element barsNode = document.createElement("Map");
-			barsNode.setAttribute("name", "bars");
 			for (Entry<String, Bar> entry : bars.entrySet()) {
 				org.w3c.dom.Element entryNode = document.createElement("Bar");
 				entryNode.setAttribute("key", entry.getKey());
 				entryNode.setAttribute("value", "" + entry.getValue().getValue());
 				entryNode.setAttribute("maximum", "" + entry.getValue().getMaximum());
-				barsNode.appendChild(entryNode);
+				root.appendChild(entryNode);
 			}
-			root.appendChild(barsNode);
 
 		} else if (thing instanceof Inventory) {
 			Inventory inventory = (Inventory) thing;

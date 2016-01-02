@@ -39,6 +39,11 @@ public abstract class GameStation {
 				doSomething();
 				gameBoard.repaint();
 				metaBoard.repaint();
+				try {
+					Thread.sleep(10);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}).start();
 	}

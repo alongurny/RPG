@@ -22,8 +22,8 @@ public class Dragon extends Entity {
 	static {
 		try {
 			image = new ImageIcon(new File("img/dragon.png").toURI().toURL()).getImage();
-			width = image.getWidth(null);
-			height = image.getHeight(null);
+			width = image.getWidth(null) / 2;
+			height = image.getHeight(null) / 2;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -31,7 +31,7 @@ public class Dragon extends Entity {
 
 	public Dragon(Vector2D location, Race race) {
 		super(location, race);
-		getAbilityHandler().addAbility(new FireballSpell(192, 32));
+		getAbilityHandler().addAbility(new FireballSpell(192, 96));
 		putBar("mana", new Bar(100));
 	}
 

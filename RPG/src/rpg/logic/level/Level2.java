@@ -22,7 +22,6 @@ public class Level2 extends Level {
 
 		Player player1 = new Player(new Vector2D(80, 100), Race.HUMAN);
 		player1.getAbilityHandler().addAbility(new FireballSpell(192, 32));
-		player1.getAbilityHandler().addAbility(new RocketSpell(160));
 		player1.getAbilityHandler().addAbility(new HasteSpell());
 
 		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN);

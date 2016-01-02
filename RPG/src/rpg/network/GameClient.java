@@ -12,7 +12,6 @@ import event.MessageEvent;
 import event.MessageListener;
 import protocol.ThingToStringProtocol;
 import rpg.element.Element;
-import rpg.element.entity.Player;
 import rpg.geometry.Vector2D;
 import rpg.logic.Game;
 import rpg.logic.level.Level;
@@ -28,7 +27,6 @@ import tcp.chat.message.Message.Type;
 
 public class GameClient implements KeyListener, MultiKeyListener {
 
-	private Player player;
 	private Game game;
 	private List<NetworkCommand> commands;
 	private ChatClient chatClient;
@@ -37,8 +35,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 
 	private int num = -1;
 
-	public GameClient(Game game, Player player, Socket toServer) {
-		this.player = player;
+	public GameClient(Game game, Socket toServer) {
 		this.game = game;
 		commands = new CopyOnWriteArrayList<>();
 		protocol = new ThingToStringProtocol();
@@ -67,12 +64,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 		}
 	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
 	public void run() {
-		player = game.getLevel().getPlayer(num);
 		for (NetworkCommand c : commands) {
 			c.execute(game);
 			chatClient.send(Message.data(Source.SERVER, c.toString()));
@@ -83,7 +75,6 @@ public class GameClient implements KeyListener, MultiKeyListener {
 	@Override
 	public void keysChange(MultiKeyEvent e) {
 		Vector2D velocity = Vector2D.ZERO;
-
 		if (e.get(KeyEvent.VK_UP)) {
 			velocity = velocity.add(Vector2D.NORTH);
 		}
@@ -96,7 +87,6 @@ public class GameClient implements KeyListener, MultiKeyListener {
 		if (e.get(KeyEvent.VK_RIGHT)) {
 			velocity = velocity.add(Vector2D.EAST);
 		}
-
 		commands.add(new NetworkCommand("player " + num + " setVector velocityDirection " + velocity));
 		if (!velocity.equals(Vector2D.ZERO)) {
 			commands.add(new NetworkCommand("player " + num + " setVector direction " + velocity));
@@ -112,7 +102,8 @@ public class GameClient implements KeyListener, MultiKeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() - '0' >= 1 && e.getKeyCode() - '0' <= player.getAbilityHandler().getSize()) {
+		if (e.getKeyCode() - '0' >= 1
+				&& e.getKeyCode() - '0' <= game.getLevel().getPlayer(num).getAbilityHandler().getSize()) {
 			commands.add(new NetworkCommand(String.format("player %s cast %s", num, e.getKeyCode() - '1')));
 		}
 	}
@@ -128,7 +119,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 		try {
 			Socket s = new Socket("localhost", 1234);
 
-			GameClient client = new GameClient(game, null, s);
+			GameClient client = new GameClient(game, s);
 			client.chatClient.addMessageListener(new MessageListener() {
 
 				@Override
