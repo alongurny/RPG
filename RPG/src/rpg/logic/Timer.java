@@ -3,6 +3,8 @@ package rpg.logic;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import rpg.logic.level.Level;
+
 public class Timer {
 
 	private java.util.Map<Double, Runnable> actionMap;

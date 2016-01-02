@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import rpg.Requirement;
 import rpg.Requirement.BarRequirement;
 import rpg.element.entity.Entity;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public class HasteSpell extends DurationSpell {
 

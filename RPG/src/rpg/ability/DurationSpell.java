@@ -1,7 +1,7 @@
 package rpg.ability;
 
 import rpg.element.entity.Entity;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public abstract class DurationSpell extends Spell {
 

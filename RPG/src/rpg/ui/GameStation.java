@@ -36,11 +36,6 @@ public abstract class GameStation {
 		gameBoard.setVisible(true);
 		new Thread(() -> {
 			while (true) {
-				try {
-					Thread.sleep(16);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				doSomething();
 				gameBoard.repaint();
 				metaBoard.repaint();

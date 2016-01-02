@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public class ManaPotion extends Bonus {
 

@@ -1,4 +1,4 @@
-package rpg.logic;
+package rpg.logic.level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,8 @@ import rpg.element.entity.Entity;
 import rpg.element.entity.Player;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.logic.Grid;
+import rpg.logic.Timer;
 
 public class Level {
 
@@ -64,9 +66,11 @@ public class Level {
 		return obstacles;
 	}
 
-	public void replaceDynamicElement(List<Element> elements) {
-		this.elements.clear();
-		this.elements.addAll(elements);
+	public void replaceDynamicElements(List<Element> elements) {
+		synchronized (this) {
+			this.elements.clear();
+			this.elements.addAll(elements);
+		}
 	}
 
 	public List<Element> getDynamicElements() {
@@ -181,15 +185,16 @@ public class Level {
 	}
 
 	public Player getPlayer(int index) {
-		System.out.println(index + ", " + elements.size());
-		for (Element e : elements) {
-			if (e instanceof Player) {
-				if (index == 0) {
-					return (Player) e;
+		synchronized (this) {
+			for (Element e : elements) {
+				if (e instanceof Player) {
+					if (index == 0) {
+						return (Player) e;
+					}
+					index--;
 				}
-				index--;
 			}
+			throw new IndexOutOfBoundsException("No player " + index);
 		}
-		throw new IndexOutOfBoundsException();
 	}
 }

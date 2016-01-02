@@ -1,5 +1,7 @@
 package rpg.logic;
 
+import rpg.logic.level.Level;
+
 public class Game {
 	private Level level;
 

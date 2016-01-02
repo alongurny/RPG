@@ -8,4 +8,8 @@ public class RPGException extends RuntimeException {
 		super(message);
 	}
 
+	public RPGException(Throwable t) {
+		super(t);
+	}
+
 }

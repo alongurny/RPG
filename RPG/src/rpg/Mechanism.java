@@ -1,6 +1,6 @@
 package rpg;
 
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public abstract class Mechanism extends Thing {
 

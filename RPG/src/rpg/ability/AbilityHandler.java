@@ -7,7 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import rpg.Mechanism;
 import rpg.Requirement;
 import rpg.element.entity.Entity;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public class AbilityHandler extends Mechanism {
 

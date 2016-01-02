@@ -3,7 +3,7 @@ package rpg.element;
 import rpg.Mechanism;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 import rpg.ui.Drawable;
 
 public abstract class Element extends Mechanism implements Drawable {

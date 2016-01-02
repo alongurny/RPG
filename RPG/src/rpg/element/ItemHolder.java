@@ -7,7 +7,7 @@ import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.item.Item;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public class ItemHolder extends Element implements Interactive {
 

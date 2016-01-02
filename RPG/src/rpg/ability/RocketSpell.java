@@ -14,7 +14,7 @@ import rpg.Requirement.BarRequirement;
 import rpg.element.Rocket;
 import rpg.element.entity.Entity;
 import rpg.geometry.Vector2D;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public class RocketSpell extends Spell {
 

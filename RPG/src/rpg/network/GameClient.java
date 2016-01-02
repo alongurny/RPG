@@ -3,28 +3,20 @@ package rpg.network;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.io.StringReader;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import event.MessageEvent;
 import event.MessageListener;
-import protocol.XMLProtocol;
+import protocol.ThingToStringProtocol;
 import rpg.element.Element;
 import rpg.element.entity.Player;
 import rpg.geometry.Vector2D;
 import rpg.logic.Game;
-import rpg.logic.Level;
-import rpg.logic.Level2;
+import rpg.logic.level.Level;
+import rpg.logic.level.Level2;
 import rpg.ui.GameStation;
 import rpg.ui.KeyTracker;
 import rpg.ui.MultiKeyEvent;
@@ -41,43 +33,31 @@ public class GameClient implements KeyListener, MultiKeyListener {
 	private List<NetworkCommand> commands;
 	private ChatClient chatClient;
 	private List<Element> elements;
-	private XMLProtocol protocol;
-	private DocumentBuilder builder;
-	private boolean inProcess = true;
+	private ThingToStringProtocol protocol;
+
 	private int num = -1;
 
 	public GameClient(Game game, Player player, Socket toServer) {
 		this.player = player;
 		this.game = game;
 		commands = new CopyOnWriteArrayList<>();
-		protocol = new XMLProtocol();
+		protocol = new ThingToStringProtocol();
 		elements = new CopyOnWriteArrayList<>();
-		try {
-			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		} catch (ParserConfigurationException e2) {
-			e2.printStackTrace();
-		}
+
 		try {
 			this.chatClient = new ChatClient(toServer, true);
 			chatClient.addMessageListener(new MessageListener() {
 				@Override
 				public void onReceive(MessageEvent e) {
 					String data = e.getMessage().getData();
-					if (e.getMessage().getType() == Type.DATA && !e.getMessage().getSource().getHostName()
-							.equals(e.getMessage().getTarget().getHostName())) {
+					if (e.getMessage().getType() == Type.DATA) {
 						if (data.equals("start")) {
-							inProcess = true;
 						} else if (data.equals("end")) {
-							inProcess = false;
+							game.getLevel().replaceDynamicElements(new ArrayList<>(elements));
+							elements.clear();
 						} else if (data != null && data.startsWith("xml-element ")) {
-							try {
-								data = data.substring("xml-element ".length());
-								elements.add((Element) protocol.decode(
-										builder.parse(new InputSource(new StringReader(data))).getFirstChild()));
-							} catch (SAXException | IOException e1) {
-								System.out.println(data);
-								e1.printStackTrace();
-							}
+							data = data.substring("xml-element ".length());
+							elements.add((Element) protocol.decode(data));
 						}
 					}
 				}
@@ -97,10 +77,6 @@ public class GameClient implements KeyListener, MultiKeyListener {
 			c.execute(game);
 			chatClient.send(Message.data(Source.SERVER, c.toString()));
 		}
-		while (!inProcess) {
-		}
-		game.getLevel().replaceDynamicElement(new ArrayList<>(elements));
-		elements.clear();
 		commands.clear();
 	}
 

@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public class Block extends Element {
 

@@ -5,7 +5,7 @@ import java.util.List;
 import rpg.Mechanism;
 import rpg.Requirement;
 import rpg.element.entity.Entity;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 import rpg.ui.Drawable;
 
 public abstract class Ability extends Mechanism implements Drawable {

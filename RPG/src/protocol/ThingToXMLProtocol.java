@@ -1,6 +1,5 @@
 package protocol;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +9,6 @@ import java.util.Map.Entry;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,26 +27,22 @@ import rpg.element.Portal;
 import rpg.element.Rocket;
 import rpg.element.entity.Bar;
 import rpg.element.entity.Entity;
-import rpg.element.entity.Player;
 import rpg.element.entity.Race;
 import rpg.exception.RPGException;
 import rpg.geometry.Vector2D;
 import rpg.item.Inventory;
 import rpg.item.Item;
 
-public class XMLProtocol implements Protocol<Thing, Node> {
+public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 
-	private static DocumentBuilder builder;
+	private DocumentBuilder builder;
 
-	static {
+	public ThingToXMLProtocol() {
 		try {
 			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public XMLProtocol() {
 	}
 
 	@Override
@@ -176,26 +167,6 @@ public class XMLProtocol implements Protocol<Thing, Node> {
 
 		}
 		throw new RPGException("No match for " + e.getTagName());
-	}
-
-	public static void main(String[] args) {
-		Player p = new Player(Vector2D.NORTH, Race.HUMAN);
-		p.getAbilityHandler().addAbility(new FireballSpell(3, 32));
-		XMLProtocol protocol = new XMLProtocol();
-		Transformer t;
-		DocumentBuilder db;
-		File f = new File("xml/player.xml");
-		try {
-			t = TransformerFactory.newInstance().newTransformer();
-			t.transform(new DOMSource(protocol.encode(p)), new StreamResult(System.out));
-			db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			System.out.println();
-			t.transform(new DOMSource(protocol.encode(protocol.decode(db.parse(f).getFirstChild()))),
-					new StreamResult(System.out));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	@Override

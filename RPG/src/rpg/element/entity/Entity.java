@@ -13,7 +13,7 @@ import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.item.Inventory;
 import rpg.item.Item;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public abstract class Entity extends Element {
 

@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public class Air extends Element {
 

@@ -14,7 +14,7 @@ import rpg.Requirement.BarRequirement;
 import rpg.element.Fireball;
 import rpg.element.entity.Entity;
 import rpg.geometry.Vector2D;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public class FireballSpell extends Spell {
 

@@ -1,4 +1,4 @@
-package rpg.logic;
+package rpg.logic.level;
 
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
@@ -10,6 +10,7 @@ import rpg.element.entity.Dragon;
 import rpg.element.entity.Player;
 import rpg.element.entity.Race;
 import rpg.geometry.Vector2D;
+import rpg.logic.Grid;
 
 public class Level2 extends Level {
 

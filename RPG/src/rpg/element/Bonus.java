@@ -2,7 +2,7 @@ package rpg.element;
 
 import rpg.element.entity.Entity;
 import rpg.geometry.Vector2D;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public abstract class Bonus extends Element {
 

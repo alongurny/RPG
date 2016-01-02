@@ -12,7 +12,7 @@ import rpg.element.Element;
 import rpg.element.HealthPotion;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.logic.Level;
+import rpg.logic.level.Level;
 
 public class Dragon extends Entity {
 

@@ -4,7 +4,7 @@ import java.awt.event.KeyListener;
 
 import rpg.logic.Game;
 
-public class ServerStation {
+public abstract class ServerStation {
 
 	private ServerBoard gameBoard;
 	private Game game;
@@ -26,26 +26,20 @@ public class ServerStation {
 		new Thread(() -> {
 			long last = System.currentTimeMillis();
 			while (true) {
-				try {
-					Thread.sleep(16);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				doSomething();
 				gameBoard.repaint();
 				long now = System.currentTimeMillis();
-				game.update(20e-3);
-				long diff = (now - last);
-				if (diff < 20) {
-					try {
-						Thread.sleep(19 - diff);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
+				long diff = now - last;
+				game.update(diff * 1e-3);
 				last = now;
-
+				try {
+					Thread.sleep(20);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}).start();
 	}
 
+	public abstract void doSomething();
 }
