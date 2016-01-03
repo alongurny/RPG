@@ -4,12 +4,10 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import rpg.geometry.Rectangle;
-import rpg.ui.Drawable;
 
-public class Sprite implements Drawable {
+public class Sprite {
 
 	private BufferedImage[] images;
-	private int counter = 0;
 
 	public Sprite(BufferedImage... images) {
 		this.images = images;
@@ -23,24 +21,23 @@ public class Sprite implements Drawable {
 		return new Sprite(images);
 	}
 
-	public void reset() {
-		counter = 0;
+	public void draw(Graphics g, int index) {
+		int width = images[index].getWidth();
+		int height = images[index].getHeight();
+		g.drawImage(images[index], -width / 2, -height / 2, width, height, null);
 	}
 
-	@Override
-	public void draw(Graphics g) {
-		int width = images[counter].getWidth();
-		int height = images[counter].getHeight();
-		g.drawImage(images[counter], -width / 2, -height / 2, width, height, null);
+	public BufferedImage get(int index) {
+		return images[index];
 	}
 
-	public void step() {
-		counter = (counter + 1) / images.length;
+	public int getCount() {
+		return images.length;
 	}
 
-	public Rectangle getRelativeRect() {
-		int width = images[counter].getWidth();
-		int height = images[counter].getHeight();
+	public Rectangle getRelativeRect(int index) {
+		int width = images[index].getWidth();
+		int height = images[index].getHeight();
 		return new Rectangle(-width / 2, -height / 2, width, height);
 	}
 

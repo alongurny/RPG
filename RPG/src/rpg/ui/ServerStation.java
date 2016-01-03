@@ -28,15 +28,16 @@ public abstract class ServerStation {
 			while (true) {
 				doSomething();
 				gameBoard.repaint();
-				long now = System.currentTimeMillis();
-				long diff = now - last;
-				game.update(diff * 1e-3);
-				last = now;
 				try {
 					Thread.sleep(10);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				long now = System.currentTimeMillis();
+				long diff = now - last;
+				game.update(diff * 1e-3);
+				last = now;
+
 			}
 		}).start();
 	}

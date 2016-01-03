@@ -11,29 +11,26 @@ import rpg.logic.level.Level;
 
 public class Player extends Entity {
 
-	private Sprite northSprite, southSprite, westSprite, eastSprite;
+	private Sprite[] sprites;
+	private static final int NORTH = 3, SOUTH = 0, WEST = 1, EAST = 2;
 
 	public Player(Vector2D location, Race race) {
 		super(location, race);
-		northSprite = Sprite.get(Tileset.get(1), 3, 0, 1, 2);
-		westSprite = Sprite.get(Tileset.get(1), 1, 0, 1, 2);
-		southSprite = Sprite.get(Tileset.get(1), 0, 0, 1, 2);
-		eastSprite = Sprite.get(Tileset.get(1), 2, 0, 1, 2);
+		sprites = new Sprite[4];
+		for (int i = 0; i < sprites.length; i++) {
+			sprites[i] = Sprite.get(Tileset.get(1), i, 0, 1, 2);
+		}
+		set("spriteNumber", NORTH);
+		set("spriteCounter", 0);
 	}
 
 	@Override
 	public void drawEntity(Graphics g) {
-		double x = getVector("direction").getX();
-		double y = getVector("direction").getY();
-		if (x == 0 && y > 0) {
-			southSprite.draw(g);
-		} else if (x == 0 && y < 0) {
-			northSprite.draw(g);
-		} else if (x > 0 && y == 0) {
-			eastSprite.draw(g);
-		} else if (x < 0 && y == 0) {
-			westSprite.draw(g);
-		}
+		sprites[getInteger("spriteNumber")].draw(g, getInteger("spriteCounter"));
+	}
+
+	public void step() {
+
 	}
 
 	@Override
@@ -60,12 +57,33 @@ public class Player extends Entity {
 
 	@Override
 	public void act(Level level, double dt) {
-		if (!level.tryMoveBy(this, getVelocity().multiply(dt)).isEmpty()
-				&& !level.tryMoveBy(this, new Vector2D(getVelocity().getX() * dt, 0)).isEmpty()) {
-			level.tryMoveBy(this, new Vector2D(0, getVelocity().getY() * dt));
+		Vector2D velocity = getVelocity().multiply(dt);
+		double x = velocity.getX();
+		double y = velocity.getY();
+		if (!level.tryMoveBy(this, velocity).isEmpty()) {
+			if (level.tryMoveBy(this, new Vector2D(0, y)).isEmpty()) {
+				x = 0;
+			} else if (level.tryMoveBy(this, new Vector2D(x, 0)).isEmpty()) {
+				y = 0;
+			} else {
+				x = 0;
+				y = 0;
+			}
 		}
 		addBarValue("health", dt * getTotalNumber("healthRegen"));
 		addBarValue("mana", dt * getTotalNumber("manaRegen"));
+		if (y > 0) {
+			set("spriteNumber", SOUTH);
+		} else if (y < 0) {
+			set("spriteNumber", NORTH);
+		} else if (x > 0) {
+			set("spriteNumber", EAST);
+		} else if (x < 0) {
+			set("spriteNumber", WEST);
+		} else {
+			return;
+		}
+		set("spriteCounter", (getInteger("spriteCounter") + 1) % 3);
 	}
 
 	@Override

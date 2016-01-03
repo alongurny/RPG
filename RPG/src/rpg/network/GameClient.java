@@ -74,17 +74,21 @@ public class GameClient implements KeyListener, MultiKeyListener {
 	@Override
 	public void keysChange(MultiKeyEvent e) {
 		Vector2D velocity = Vector2D.ZERO;
-		if (e.get(KeyEvent.VK_UP)) {
-			velocity = velocity.add(Vector2D.NORTH);
+		if (e.get(KeyEvent.VK_UP) || e.get(KeyEvent.VK_DOWN)) {
+			if (e.get(KeyEvent.VK_UP)) {
+				velocity = velocity.add(Vector2D.NORTH);
+			}
+			if (e.get(KeyEvent.VK_DOWN)) {
+				velocity = velocity.add(Vector2D.SOUTH);
+			}
 		}
-		if (e.get(KeyEvent.VK_DOWN)) {
-			velocity = velocity.add(Vector2D.SOUTH);
-		}
-		if (e.get(KeyEvent.VK_LEFT)) {
-			velocity = velocity.add(Vector2D.WEST);
-		}
-		if (e.get(KeyEvent.VK_RIGHT)) {
-			velocity = velocity.add(Vector2D.EAST);
+		if (e.get(KeyEvent.VK_LEFT) || e.get(KeyEvent.VK_RIGHT)) {
+			if (e.get(KeyEvent.VK_LEFT)) {
+				velocity = velocity.add(Vector2D.WEST);
+			}
+			if (e.get(KeyEvent.VK_RIGHT)) {
+				velocity = velocity.add(Vector2D.EAST);
+			}
 		}
 		commands.add(new NetworkCommand("player " + num + " setVector velocityDirection " + velocity));
 		if (!velocity.equals(Vector2D.ZERO)) {

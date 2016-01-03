@@ -19,7 +19,7 @@ public class HealthPotion extends Bonus {
 
 	@Override
 	public void draw(Graphics g) {
-		sprite.draw(g);
+		sprite.draw(g, 0);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class HealthPotion extends Bonus {
 
 	@Override
 	public Rectangle getRelativeRect() {
-		return sprite.getRelativeRect();
+		return sprite.getRelativeRect(0);
 	}
 
 	@Override
