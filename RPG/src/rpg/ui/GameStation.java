@@ -40,7 +40,7 @@ public abstract class GameStation {
 				gameBoard.repaint();
 				metaBoard.repaint();
 				try {
-					Thread.sleep(10);
+					Thread.sleep(30);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
