@@ -120,7 +120,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 		Level level = new Level2();
 		Game game = new Game(level);
 		try {
-			Socket s = new Socket("localhost", 1234);
+			Socket s = new Socket("192.168.173.207", 1234);
 
 			GameClient client = new GameClient(game, s);
 			client.chatClient.addMessageListener(new MessageListener() {
