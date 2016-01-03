@@ -225,5 +225,4 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 		}
 		return root;
 	}
-
 }

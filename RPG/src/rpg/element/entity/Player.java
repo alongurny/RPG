@@ -1,40 +1,39 @@
 package rpg.element.entity;
 
 import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import rpg.element.Element;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.Sprite;
+import rpg.graphics.Tileset;
 import rpg.logic.level.Level;
 
 public class Player extends Entity {
 
-	private static Image playerImage;
-	private static final String PLAYER_IMAGE_LOCATION = "img/player.png";
-	private static int width, height;
-
-	static {
-		try {
-			playerImage = ImageIO.read(new File(PLAYER_IMAGE_LOCATION));
-			width = 30;
-			height = 30;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	private Sprite northSprite, southSprite, westSprite, eastSprite;
 
 	public Player(Vector2D location, Race race) {
 		super(location, race);
+		northSprite = Sprite.get(Tileset.get(1), 3, 0, 1, 2);
+		westSprite = Sprite.get(Tileset.get(1), 1, 0, 1, 2);
+		southSprite = Sprite.get(Tileset.get(1), 0, 0, 1, 2);
+		eastSprite = Sprite.get(Tileset.get(1), 2, 0, 1, 2);
 	}
 
 	@Override
 	public void drawEntity(Graphics g) {
-		g.drawImage(playerImage, -width / 2, -height / 2, width, height, null);
+		double x = getVector("direction").getX();
+		double y = getVector("direction").getY();
+		if (x == 0 && y > 0) {
+			southSprite.draw(g);
+		} else if (x == 0 && y < 0) {
+			northSprite.draw(g);
+		} else if (x > 0 && y == 0) {
+			eastSprite.draw(g);
+		} else if (x < 0 && y == 0) {
+			westSprite.draw(g);
+		}
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class Player extends Entity {
 
 	@Override
 	public Rectangle getRelativeRect() {
-		return new Rectangle(-width / 2, -height / 2, width, height);
+		return new Rectangle(-16, -16, 32, 32);
 	}
 
 	@Override
