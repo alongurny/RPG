@@ -2,28 +2,30 @@ package rpg.element.entity;
 
 import rpg.Thing;
 
-public abstract class Profession {
+public abstract class Profession extends Thing {
 
-	public abstract void init(Player player);
+	public Profession() {
+		init();
+	}
+
+	public double getDefaultMana(Player player) {
+		return Math.max(0, Thing.getModifier(player.getInteger("intelligence")) * 4);
+	}
+
+	protected abstract void init();
 
 	public static final Profession MAGE = new Profession() {
 
 		@Override
-		public void init(Player player) {
-			player.putBar("mana", new Bar(getDefaultMana(player)));
-		}
-
-		private double getDefaultMana(Player player) {
-			return Math.max(0, Thing.getModifier(player.getInteger("intelligence")) * 4);
+		protected void init() {
 		}
 	};
 
 	public static final Profession WARRIOR = new Profession() {
-
 		@Override
-		public void init(Player player) {
-		}
+		protected void init() {
 
+		}
 	};
 
 }

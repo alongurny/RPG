@@ -2,14 +2,11 @@ package rpg.element;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.Tileset;
 import rpg.logic.level.Level;
 
 public class ManaPotion extends Bonus {
@@ -18,19 +15,9 @@ public class ManaPotion extends Bonus {
 		super(location);
 	}
 
-	private static BufferedImage image;
-	private static final String imagePath = "img/manaPotion.gif";
-	private static int width, height;
-
-	static {
-		try {
-			image = ImageIO.read(new File(imagePath));
-			width = 32;
-			height = 32;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	private static BufferedImage image = Tileset.subimage(24, 29);
+	private static int width = image.getWidth();
+	private static int height = image.getHeight();
 
 	@Override
 	public void draw(Graphics g) {

@@ -2,7 +2,6 @@ package rpg.logic.level;
 
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
-import rpg.ability.RocketSpell;
 import rpg.element.Block;
 import rpg.element.ManaPotion;
 import rpg.element.Portal;
@@ -26,7 +25,6 @@ public class Level2 extends Level {
 
 		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN);
 		player2.getAbilityHandler().addAbility(new FireballSpell(192, 32));
-		player2.getAbilityHandler().addAbility(new RocketSpell(160));
 		player2.getAbilityHandler().addAbility(new HasteSpell());
 		addDynamicElement(player1);
 		addDynamicElement(player2);

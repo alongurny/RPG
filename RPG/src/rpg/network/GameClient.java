@@ -32,7 +32,6 @@ public class GameClient implements KeyListener, MultiKeyListener {
 	private ChatClient chatClient;
 	private List<Element> elements;
 	private ThingToStringProtocol protocol;
-
 	private int num = -1;
 
 	public GameClient(Game game, Socket toServer) {

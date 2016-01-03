@@ -15,6 +15,7 @@ public class ServerBoard extends JFrame {
 		add(gamePanel);
 		setSize(width, height);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+
 	}
 
 }
