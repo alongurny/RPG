@@ -18,7 +18,7 @@ public class Player extends Entity {
 		super(location, race);
 		sprites = new Sprite[4];
 		for (int i = 0; i < sprites.length; i++) {
-			sprites[i] = Sprite.get(Tileset.get(1), i, 0, 1, 2);
+			sprites[i] = Sprite.get(Tileset.get(1), i, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2);
 		}
 		set("spriteNumber", NORTH);
 		set("spriteCounter", 0);
@@ -83,7 +83,7 @@ public class Player extends Entity {
 		} else {
 			return;
 		}
-		set("spriteCounter", (getInteger("spriteCounter") + 1) % 3);
+		set("spriteCounter", (getInteger("spriteCounter") + 1) % 12);
 	}
 
 	@Override

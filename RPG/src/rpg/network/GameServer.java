@@ -39,7 +39,6 @@ public class GameServer {
 		server.addMessageListener(new MessageListener() {
 			@Override
 			public void onReceive(MessageEvent e) {
-				System.out.println(e.getMessage().getData());
 				received.add(new NetworkCommand(e.getMessage().getData()));
 			}
 		});
@@ -57,14 +56,14 @@ public class GameServer {
 				}
 				received.clear();
 			}
-		}, 0, 20);
+		}, 0, 30);
 		timer.schedule(new TimerTask() {
 
 			@Override
 			public void run() {
 				send();
 			}
-		}, 0, 20);
+		}, 0, 30);
 	}
 
 	private void send() {

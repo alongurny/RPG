@@ -41,7 +41,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 		elements = new CopyOnWriteArrayList<>();
 
 		try {
-			this.chatClient = new ChatClient(toServer, true);
+			this.chatClient = new ChatClient(toServer, false);
 			chatClient.addMessageListener(new MessageListener() {
 				@Override
 				public void onReceive(MessageEvent e) {
@@ -58,14 +58,14 @@ public class GameClient implements KeyListener, MultiKeyListener {
 					}
 				}
 			});
+			chatClient.listen();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void run() {
+	public void sendCommands() {
 		for (NetworkCommand c : commands) {
-			c.execute(game);
 			chatClient.send(Message.data(Source.SERVER, c.toString()));
 		}
 		commands.clear();
@@ -74,6 +74,9 @@ public class GameClient implements KeyListener, MultiKeyListener {
 	@Override
 	public void keysChange(MultiKeyEvent e) {
 		Vector2D velocity = Vector2D.ZERO;
+		if (e.get(KeyEvent.VK_SPACE)) {
+			commands.add(new NetworkCommand(String.format("player %s interact", num)));
+		}
 		if (e.get(KeyEvent.VK_UP) || e.get(KeyEvent.VK_DOWN)) {
 			if (e.get(KeyEvent.VK_UP)) {
 				velocity = velocity.add(Vector2D.NORTH);
@@ -98,9 +101,6 @@ public class GameClient implements KeyListener, MultiKeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			commands.add(new NetworkCommand(String.format("player %s interact", num)));
-		}
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 		Level level = new Level2();
 		Game game = new Game(level);
 		try {
-			Socket s = new Socket("192.168.173.207", 1234);
+			Socket s = new Socket("localhost", 1234);
 
 			GameClient client = new GameClient(game, s);
 			client.chatClient.addMessageListener(new MessageListener() {
@@ -134,7 +134,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 							GameStation gs = new GameStation(game, client.num) {
 								@Override
 								public void doSomething() {
-									client.run();
+									client.sendCommands();
 								}
 							};
 							KeyTracker keyTracker = new KeyTracker();

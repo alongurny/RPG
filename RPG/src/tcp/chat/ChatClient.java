@@ -10,13 +10,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import protocol.Protocol;
-import tcp.chat.message.Message;
-import tcp.chat.message.MessageDeliveryProtocol;
 import event.ConnectionEvent;
 import event.DisconnectListener;
 import event.MessageEvent;
 import event.MessageListener;
+import protocol.Protocol;
+import tcp.chat.message.Message;
+import tcp.chat.message.MessageDeliveryProtocol;
 
 public class ChatClient implements Closeable {
 
@@ -33,8 +33,7 @@ public class ChatClient implements Closeable {
 
 	public ChatClient(Socket socket, boolean autoListen) throws IOException {
 		this.socket = socket;
-		this.in = new BufferedReader(new InputStreamReader(
-				socket.getInputStream()));
+		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.out = new PrintWriter(socket.getOutputStream(), true);
 		this.messageListeners = new ArrayList<>();
 		this.disconnectListeners = new ArrayList<>();
@@ -72,7 +71,7 @@ public class ChatClient implements Closeable {
 				}
 			} while (listening);
 			disconnectListeners.forEach(cl -> cl.onDisconnect(new ConnectionEvent()));
-		}, Thread.currentThread().getName() + "/Client Listen Thread").start();
+		} , Thread.currentThread().getName() + "/Client Listen Thread").start();
 	}
 
 	public void addMessageListener(MessageListener listener) {
@@ -101,7 +100,6 @@ public class ChatClient implements Closeable {
 			String line = in.readLine();
 			res = line != null ? protocol.decode(line) : null;
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return res;
 	}
