@@ -22,6 +22,19 @@ public abstract class Requirement extends Thing {
 		}
 	}
 
+	public static class AliveRequirement extends Requirement {
+
+		@Override
+		public boolean isRequireable(Entity entity) {
+			return entity.isAlive();
+		}
+
+		@Override
+		public void require(Entity entity) {
+
+		}
+	}
+
 	public abstract boolean isRequireable(Entity entity);
 
 	public abstract void require(Entity entity);

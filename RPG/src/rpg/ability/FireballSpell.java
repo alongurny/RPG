@@ -10,6 +10,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import rpg.Requirement;
+import rpg.Requirement.AliveRequirement;
 import rpg.Requirement.BarRequirement;
 import rpg.element.Fireball;
 import rpg.element.entity.Entity;
@@ -47,7 +48,7 @@ public class FireballSpell extends Spell {
 
 	@Override
 	public List<Requirement> getRequirements() {
-		return Arrays.asList(new BarRequirement("mana", 1.0));
+		return Arrays.asList(new BarRequirement("mana", 1.0), new AliveRequirement());
 
 	}
 
