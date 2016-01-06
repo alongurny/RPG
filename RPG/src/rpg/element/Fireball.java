@@ -19,6 +19,7 @@ public class Fireball extends Element {
 	public static int width, height;
 
 	private static double defaultAngle = Math.toRadians(-90);
+	private Entity caster;
 
 	static {
 		try {
@@ -28,6 +29,13 @@ public class Fireball extends Element {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Fireball(Entity caster, Vector2D location, Vector2D direction, double speed) {
+		super(location);
+		this.caster = caster;
+		set("direction", direction.getUnitalVector());
+		set("speed", speed);
 	}
 
 	public Fireball(Vector2D location, Vector2D direction, double speed) {
@@ -60,7 +68,7 @@ public class Fireball extends Element {
 
 	@Override
 	public void onCollision(Level level, Element other) {
-		if (other instanceof Entity) {
+		if (other instanceof Entity && caster != other) {
 			Entity entity = (Entity) other;
 			entity.removeBarValue("health", 10);
 			level.removeDynamicElement(this);

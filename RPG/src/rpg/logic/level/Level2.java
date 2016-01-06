@@ -20,11 +20,11 @@ public class Level2 extends Level {
 		super(ROWS, COLUMNS);
 
 		Player player1 = new Player(new Vector2D(80, 100), Race.HUMAN);
-		player1.getAbilityHandler().addAbility(new FireballSpell(192, 48));
+		player1.getAbilityHandler().addAbility(new FireballSpell(192, 0));
 		player1.getAbilityHandler().addAbility(new HasteSpell());
 
 		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN);
-		player2.getAbilityHandler().addAbility(new FireballSpell(192, 48));
+		player2.getAbilityHandler().addAbility(new FireballSpell(192, 0));
 		player2.getAbilityHandler().addAbility(new HasteSpell());
 		addDynamicElement(player1);
 		addDynamicElement(player2);

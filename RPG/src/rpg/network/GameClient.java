@@ -41,7 +41,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 		elements = new CopyOnWriteArrayList<>();
 
 		try {
-			this.chatClient = new ChatClient(toServer, false);
+			chatClient = new ChatClient(toServer);
 			chatClient.addMessageListener(new MessageListener() {
 				@Override
 				public void onReceive(MessageEvent e) {
@@ -58,7 +58,6 @@ public class GameClient implements KeyListener, MultiKeyListener {
 					}
 				}
 			});
-			chatClient.listen();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -74,9 +73,6 @@ public class GameClient implements KeyListener, MultiKeyListener {
 	@Override
 	public void keysChange(MultiKeyEvent e) {
 		Vector2D velocity = Vector2D.ZERO;
-		if (e.get(KeyEvent.VK_SPACE)) {
-			commands.add(new NetworkCommand(String.format("player %s interact", num)));
-		}
 		if (e.get(KeyEvent.VK_UP) || e.get(KeyEvent.VK_DOWN)) {
 			if (e.get(KeyEvent.VK_UP)) {
 				velocity = velocity.add(Vector2D.NORTH);
@@ -105,7 +101,9 @@ public class GameClient implements KeyListener, MultiKeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() - '0' >= 1
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			commands.add(new NetworkCommand(String.format("player %s interact", num)));
+		} else if (e.getKeyCode() - '0' >= 1
 				&& e.getKeyCode() - '0' <= game.getLevel().getPlayer(num).getAbilityHandler().getSize()) {
 			commands.add(new NetworkCommand(String.format("player %s cast %s", num, e.getKeyCode() - '1')));
 		}
@@ -133,7 +131,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 							client.num = Integer.parseInt(data.replace("your number is ", ""));
 							GameStation gs = new GameStation(game, client.num) {
 								@Override
-								public void doSomething() {
+								public void run() {
 									client.sendCommands();
 								}
 							};
@@ -146,6 +144,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 					}
 				}
 			});
+			client.chatClient.listen();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

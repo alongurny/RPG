@@ -1,29 +1,17 @@
 package rpg.ui;
 
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyListener;
 
 import rpg.logic.Game;
 
 public abstract class GameStation {
 
-	private MetaBoard metaBoard;
 	private GameBoard gameBoard;
 
 	public GameStation(Game game, int num) {
-		metaBoard = new MetaBoard(480, 200, game, num);
-		gameBoard = new GameBoard(480, 480, game, num);
-		gameBoard.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentMoved(ComponentEvent e) {
-				metaBoard.setLocation(gameBoard.getLocation().x,
-						gameBoard.getLocation().y + (int) gameBoard.getSize().getHeight());
-			}
-		});
+		gameBoard = new GameBoard(480, 528, game, num);
 		gameBoard.setLocation(500, 40);
 		gameBoard.setAlwaysOnTop(true);
-		metaBoard.setAlwaysOnTop(true);
 	}
 
 	public void addKeyListener(KeyListener listener) {
@@ -32,13 +20,11 @@ public abstract class GameStation {
 	}
 
 	public void start() {
-		metaBoard.setVisible(true);
 		gameBoard.setVisible(true);
 		new Thread(() -> {
 			while (true) {
-				doSomething();
+				run();
 				gameBoard.repaint();
-				metaBoard.repaint();
 				try {
 					Thread.sleep(30);
 				} catch (Exception e) {
@@ -48,6 +34,6 @@ public abstract class GameStation {
 		}).start();
 	}
 
-	public abstract void doSomething();
+	public abstract void run();
 
 }

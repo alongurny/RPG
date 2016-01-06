@@ -25,11 +25,6 @@ public class MetaPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.translate(20, 20);
-		for (Drawable d : drawables) {
-			d.draw(g);
-			g.translate(0, 64);
-		}
 	}
 
 }

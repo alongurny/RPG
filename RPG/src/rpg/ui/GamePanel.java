@@ -1,10 +1,12 @@
 package rpg.ui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
@@ -25,8 +27,10 @@ public class GamePanel extends JPanel {
 	private int sourceX, sourceY;
 	private Game game;
 	private int num;
+	private List<Drawable> drawables;
 
 	public GamePanel(Game game, int num) {
+		this.drawables = new ArrayList<>();
 		this.game = game;
 		this.num = num;
 		setFocusable(true);
@@ -35,7 +39,10 @@ public class GamePanel extends JPanel {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+	}
 
+	public void addDrawable(Drawable drawable) {
+		drawables.add(drawable);
 	}
 
 	public Player getPlayer() {
@@ -71,7 +78,14 @@ public class GamePanel extends JPanel {
 		while (!dyn.isEmpty()) {
 			drawElement(g, dyn.remove());
 		}
-
+		g.translate(0, getHeight() - 48);
+		g.setColor(Color.GREEN);
+		g.fillRect(0, 0, getWidth(), 48);
+		g.translate(10, 10);
+		for (Drawable d : drawables) {
+			d.draw(g);
+			g.translate(0, 64);
+		}
 	}
 
 	private static int limit(int min, int max, int value) {

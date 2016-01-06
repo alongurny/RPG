@@ -53,7 +53,7 @@ public class ChatServer extends TcpServer {
 	@Override
 	protected void handleSocket(Socket s) throws IOException {
 		System.out.println("Handling client " + s.getInetAddress());
-		ChatClient client = new ChatClient(s, false);
+		ChatClient client = new ChatClient(s);
 		clients.add(client);
 		connectListeners.forEach(cl -> cl.onConnect(new ConnectionEvent()));
 		client.addMessageListener(e -> {
