@@ -16,8 +16,23 @@ import rpg.geometry.Vector2D;
 
 public abstract class Thing {
 
-	public static final List<Class<?>> TYPES = Arrays.asList(Double.class, Integer.class, Boolean.class, String.class,
-			Vector2D.class);
+	public enum KeyType {
+		NUMBER(Double.class), INTEGER(Integer.class), BOOLEAN(Boolean.class), VECTOR(Vector2D.class), STRING(
+				String.class);
+
+		private Class<?> enclosingType;
+
+		private KeyType(Class<?> enclosingType) {
+			this.enclosingType = enclosingType;
+		}
+
+		public Class<?> getEnclosingType() {
+			return enclosingType;
+		}
+	}
+
+	private static List<Class<?>> enclosingTypes = Arrays.asList(Double.class, Integer.class, Boolean.class,
+			Vector2D.class, String.class);
 
 	public static Object readObject(String value) {
 		String[] brr = value.split(":");
@@ -56,7 +71,7 @@ public abstract class Thing {
 	}
 
 	public void set(String key, Object value) {
-		if (!TYPES.contains(value.getClass())) {
+		if (!enclosingTypes.contains(value.getClass())) {
 			throw new RPGException("Type not allowed");
 		}
 		if (value instanceof Number) {
@@ -86,7 +101,7 @@ public abstract class Thing {
 		if (value % 1 == 0) {
 			return (int) value;
 		}
-		throw new RPGException("Double cannot be ecast to an integer");
+		throw new RPGException("Double cannot be cast to an integer");
 	}
 
 	public boolean getBoolean(String key) {
@@ -103,6 +118,10 @@ public abstract class Thing {
 
 	public double getNumber(String key, double defaultValue) {
 		return hasKey(key) ? (double) attributes.get(key) : defaultValue;
+	}
+
+	public int getInteger(String key, int defaultValue) {
+		return hasKey(key) ? getInteger(key) : defaultValue;
 	}
 
 	public boolean getBoolean(String key, boolean defaultValue) {
