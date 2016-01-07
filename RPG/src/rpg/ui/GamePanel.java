@@ -79,7 +79,7 @@ public class GamePanel extends JPanel {
 			drawElement(g, dyn.remove());
 		}
 		g.translate(0, getHeight() - 48);
-		g.setColor(Color.GREEN);
+		g.setColor(new Color(0, 255, 0, 127));
 		g.fillRect(0, 0, getWidth(), 48);
 		g.translate(10, 10);
 		for (Drawable d : drawables) {

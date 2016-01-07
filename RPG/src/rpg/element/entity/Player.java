@@ -24,6 +24,10 @@ public class Player extends Entity {
 		set("spriteCounter", 0);
 	}
 
+	public Player(Vector2D location, String race) {
+		this(location, Race.valueOf(race));
+	}
+
 	@Override
 	public void drawEntity(Graphics g) {
 		sprites[getInteger("spriteNumber")].draw(g, getInteger("spriteCounter"));

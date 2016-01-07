@@ -16,6 +16,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import rpg.Thing;
+import rpg.ThingType;
 import rpg.ability.Ability;
 import rpg.ability.AbilityHandler;
 import rpg.ability.FireballSpell;
@@ -27,7 +28,6 @@ import rpg.element.Portal;
 import rpg.element.Rocket;
 import rpg.element.entity.Bar;
 import rpg.element.entity.Entity;
-import rpg.element.entity.Race;
 import rpg.exception.RPGException;
 import rpg.geometry.Vector2D;
 import rpg.item.Inventory;
@@ -73,112 +73,49 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			case "String":
 				thing.set(key, nodeValue);
 				break;
-			case "Bar":
+			case "rpg.element.entity.Bar":
 				bars.put(key, new Bar(Double.valueOf(nodeValue), Double.valueOf(node.getAttribute("maximum"))));
 				break;
-			case "AbilityHandler":
+			case "rpg.ability.AbilityHandler":
 				abilityHandler = (AbilityHandler) decode(node);
 				break;
-			case "FireballSpell":
+			case "rpg.ability.FireballSpell":
 				abilities.add((FireballSpell) decode(node));
 				break;
-			case "HasteSpell":
+			case "rpg.ability.HasteSpell":
 				abilities.add((HasteSpell) decode(node));
 				break;
-			case "RocketSpell":
+			case "rpg.ability.RocketSpell":
 				abilities.add((RocketSpell) decode(node));
 				break;
 			}
 		}
-		switch (e.getTagName()) {
-		case "Block":
-		case "Air":
-		case "ManaPotion":
-		case "HealthPotion":
-			try {
-				Thing element = (Thing) Class.forName("rpg.element." + e.getTagName()).getConstructor(Vector2D.class)
-						.newInstance(thing.getVector("location"));
-				for (String key : thing.getKeys()) {
-					element.set(key, thing.get(key));
-				}
-				return element;
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				break;
+		Thing element;
+		try {
+			element = ThingType.getThing(Class.forName(e.getTagName()), thing);
+			for (String key : thing.getKeys()) {
+				element.set(key, thing.get(key));
 			}
-
-		case "Fireball":
-		case "Rocket":
-			try {
-				Thing element = (Thing) Class.forName("rpg.element." + e.getTagName())
-						.getConstructor(Vector2D.class, Vector2D.class, double.class).newInstance(
-								thing.getVector("location"), thing.getVector("direction"), thing.getNumber("speed"));
-				for (String key : thing.getKeys()) {
-					element.set(key, thing.get(key));
-				}
-				return element;
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				break;
-			}
-		case "Portal":
-			try {
-				Thing element = (Thing) Class.forName("rpg.element." + e.getTagName())
-						.getConstructor(Vector2D.class, Vector2D.class)
-						.newInstance(thing.getVector("location"), thing.getVector("target"));
-				for (String key : thing.getKeys()) {
-					element.set(key, thing.get(key));
-				}
-				return element;
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				break;
-			}
-		case "Player":
-		case "Dragon":
-			try {
-				Entity entity = (Entity) Class.forName("rpg.element.entity." + e.getTagName())
-						.getConstructor(Vector2D.class, Race.class)
-						.newInstance(thing.getVector("location"), Race.valueOf(thing.getString("race")));
-				for (String key : thing.getKeys()) {
-					entity.set(key, thing.get(key));
-				}
+			switch (e.getTagName()) {
+			case "rpg.element.entity.Player":
+			case "rpg.element.entity.Dragon":
+				Entity entity = (Entity) element;
 				for (Entry<String, Bar> entry : bars.entrySet()) {
 					entity.putBar(entry.getKey(), entry.getValue());
 				}
 				if (abilityHandler != null) {
 					abilityHandler.getAbilities().forEach(a -> entity.getAbilityHandler().addAbility(a));
 				}
-				return entity;
-			} catch (Exception ex) {
-				ex.printStackTrace();
+				break;
+			case "rpg.ability.AbilityHandler":
+				AbilityHandler ah = (AbilityHandler) element;
+				abilities.forEach(a -> ah.addAbility(a));
 				break;
 			}
-		case "AbilityHandler":
-			AbilityHandler ah = new AbilityHandler();
-			abilities.forEach(a -> ah.addAbility(a));
-			return ah;
-		case "FireballSpell":
-			Ability fireballSpell = new FireballSpell(thing.getNumber("speed"), thing.getNumber("distance"));
-			for (String key : thing.getKeys()) {
-				fireballSpell.set(key, thing.get(key));
-			}
-			return fireballSpell;
-		case "HasteSpell":
-			Ability hasteSpell = new HasteSpell();
-			for (String key : thing.getKeys()) {
-				hasteSpell.set(key, thing.get(key));
-			}
-			return hasteSpell;
-		case "RocketSpell":
-			Ability rocketSpell = new RocketSpell(thing.getNumber("speed"));
-			for (String key : thing.getKeys()) {
-				rocketSpell.set(key, thing.get(key));
-			}
-			return rocketSpell;
-
+			return element;
+		} catch (ClassNotFoundException e1) {
+			throw new RPGException(e1);
 		}
-		throw new RPGException("No match for " + e.getTagName());
 	}
 
 	@Override
@@ -187,7 +124,7 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 	}
 
 	public Node encode0(Thing thing, Document document) {
-		org.w3c.dom.Element root = document.createElement(thing.getClass().getSimpleName());
+		org.w3c.dom.Element root = document.createElement(thing.getClass().getName());
 		for (String key : thing.getKeys()) {
 			org.w3c.dom.Element node = document.createElement(thing.getType(key).getSimpleName());
 			root.appendChild(node);
@@ -224,5 +161,8 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			throw new RPGException("No match for " + thing.getClass());
 		}
 		return root;
+	}
+
+	public static void main(String[] args) {
 	}
 }

@@ -20,15 +20,15 @@ public class Level2 extends Level {
 		super(ROWS, COLUMNS);
 
 		Player player1 = new Player(new Vector2D(80, 100), Race.HUMAN);
-		player1.getAbilityHandler().addAbility(new FireballSpell(192, 0));
+		player1.getAbilityHandler().addAbility(new FireballSpell(192));
 		player1.getAbilityHandler().addAbility(new HasteSpell());
 
 		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN);
-		player2.getAbilityHandler().addAbility(new FireballSpell(192, 0));
+		player2.getAbilityHandler().addAbility(new FireballSpell(192));
 		player2.getAbilityHandler().addAbility(new HasteSpell());
 		addDynamicElement(player1);
 		addDynamicElement(player2);
-		addDynamicElement(new Dragon(new Vector2D(420, 300), Race.DRAGON));
+		addDynamicElement(new Dragon(new Vector2D(420, 300)));
 		addDynamicElement(new ManaPotion(new Vector2D(300, 200)));
 		Grid grid = getMap();
 		for (int i = 0; i < COLUMNS; i++) {

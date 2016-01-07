@@ -29,9 +29,9 @@ public class Dragon extends Entity {
 		}
 	}
 
-	public Dragon(Vector2D location, Race race) {
-		super(location, race);
-		getAbilityHandler().addAbility(new FireballSpell(192, 0));
+	public Dragon(Vector2D location) {
+		super(location, Race.DRAGON);
+		getAbilityHandler().addAbility(new FireballSpell(192));
 		putBar("mana", new Bar(100));
 	}
 

@@ -32,9 +32,8 @@ public class FireballSpell extends Spell {
 		height = 32;
 	}
 
-	public FireballSpell(double speed, double distance) {
+	public FireballSpell(double speed) {
 		super(2);
-		set("distance", distance);
 		set("speed", speed);
 	}
 
@@ -42,7 +41,7 @@ public class FireballSpell extends Spell {
 	public void onCast(Level level, Entity caster) {
 		Vector2D casterLocation = caster.getLocation();
 		Vector2D casterDirection = caster.getVector("direction");
-		Vector2D fireballLocation = casterLocation.add(casterDirection.multiply(getNumber("distance")));
+		Vector2D fireballLocation = casterLocation;
 		level.addDynamicElement(new Fireball(caster, fireballLocation, casterDirection, getNumber("speed")));
 	}
 
