@@ -19,7 +19,6 @@ import rpg.Attribute;
 import rpg.AttributeSet;
 import rpg.Thing;
 import rpg.ability.Ability;
-import rpg.ability.AbilityHandler;
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
 import rpg.ability.RocketSpell;
@@ -54,7 +53,6 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 		AttributeSet set = new AttributeSet();
 		Map<String, Bar> bars = new HashMap<>();
 		List<Ability> abilities = new ArrayList<>();
-		AbilityHandler abilityHandler = null;
 		for (int i = 0; i < elements.getLength(); i++) {
 			Element node = (Element) elements.item(i);
 			String key = node.getAttribute("key");
@@ -74,9 +72,6 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 				break;
 			case "Bar":
 				bars.put(key, new Bar(Double.parseDouble(nodeValue), Double.parseDouble(node.getAttribute("maximum"))));
-				break;
-			case "rpg.ability.AbilityHandler":
-				abilityHandler = (AbilityHandler) decode(node);
 				break;
 			case "rpg.ability.FireballSpell":
 				abilities.add((FireballSpell) decode(node));
@@ -101,14 +96,9 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 				for (Entry<String, Bar> entry : bars.entrySet()) {
 					entity.putBar(entry.getKey(), entry.getValue());
 				}
-				if (abilityHandler != null) {
-					abilityHandler.getAbilities().forEach(a -> entity.getAbilityHandler().addAbility(a));
-				}
+				abilities.forEach(a -> entity.addAbility(a));
 				break;
-			case "rpg.ability.AbilityHandler":
-				AbilityHandler ah = (AbilityHandler) thing;
-				abilities.forEach(a -> ah.addAbility(a));
-				break;
+
 			}
 			return thing;
 		} catch (ClassNotFoundException ex) {
@@ -132,15 +122,9 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 		if (thing instanceof Ability || thing instanceof Item || thing instanceof Bonus || thing instanceof Portal
 				|| thing instanceof Fireball || thing instanceof Rocket) {
 
-		} else if (thing instanceof AbilityHandler) {
-			AbilityHandler ah = (AbilityHandler) thing;
-			for (Ability a : ah.getAbilities()) {
-				root.appendChild(encode0(a, document));
-			}
 		} else if (thing instanceof Entity) {
 			Entity entity = (Entity) thing;
 			root.appendChild(encode0(entity.getInventory(), document));
-			root.appendChild(encode0(entity.getAbilityHandler(), document));
 			Map<String, Bar> bars = entity.getBars();
 			for (Entry<String, Bar> entry : bars.entrySet()) {
 				org.w3c.dom.Element entryNode = document.createElement("Bar");
@@ -148,6 +132,9 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 				entryNode.setAttribute("value", "" + entry.getValue().getValue());
 				entryNode.setAttribute("maximum", "" + entry.getValue().getMaximum());
 				root.appendChild(entryNode);
+			}
+			for (Ability a : entity.getAbilities()) {
+				root.appendChild(encode0(a, document));
 			}
 
 		} else if (thing instanceof Inventory) {

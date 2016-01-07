@@ -26,7 +26,7 @@ public class NetworkCommand {
 				game.getLevel().tryMoveBy(player, Vector2D.valueOf(arr[3]));
 				break;
 			case "cast":
-				player.getAbilityHandler().tryCast(game.getLevel(), player, Integer.parseInt(arr[3]));
+				player.tryCast(game.getLevel(), Integer.parseInt(arr[3]));
 				break;
 			case "interact":
 				game.getLevel().tryInteract(player);

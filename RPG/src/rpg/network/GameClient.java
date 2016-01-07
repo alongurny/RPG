@@ -103,8 +103,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			commands.add(new NetworkCommand(String.format("player %s interact", num)));
-		} else if (e.getKeyCode() - '0' >= 1
-				&& e.getKeyCode() - '0' <= game.getLevel().getPlayer(num).getAbilityHandler().getSize()) {
+		} else if (e.getKeyCode() - '0' >= 1 && e.getKeyCode() - '0' <= game.getLevel().getPlayer(num).getAbilityCount()) {
 			commands.add(new NetworkCommand(String.format("player %s cast %s", num, e.getKeyCode() - '1')));
 		}
 	}

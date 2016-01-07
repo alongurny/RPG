@@ -25,7 +25,7 @@ public class AbilityHandlerDrawer implements Drawable {
 	@Override
 	public void draw(Graphics g) {
 		Player p = game.getLevel().getPlayer(num);
-		for (Ability ability : p.getAbilityHandler().getAbilities()) {
+		for (Ability ability : p.getAbilities()) {
 			double cooldown = ability.getCooldown();
 			ability.draw(g);
 			g.setColor(Color.BLACK);
@@ -59,7 +59,7 @@ public class AbilityHandlerDrawer implements Drawable {
 					s = "0";
 				}
 				g.drawString(s, dx, dy);
-			} else if (!p.getAbilityHandler().isCastable(ability, p)) {
+			} else if (!p.isCastable(ability)) {
 				g.setColor(new Color(63, 63, 200, 100));
 				g.fillRect(0, 0, Ability.WIDTH, Ability.HEIGHT);
 			}

@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
-import rpg.ability.AbilityHandler;
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
 import rpg.element.Air;
@@ -43,7 +42,6 @@ public class Attribute {
 		register(FireballSpell.class, Attribute.SPEED);
 		register(HasteSpell.class);
 		register(Portal.class, Attribute.LOCATION, Attribute.TARGET);
-		register(AbilityHandler.class);
 	}
 
 	public static void register(Class<? extends Thing> cls, Attribute... attributes) {

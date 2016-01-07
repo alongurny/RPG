@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import rpg.ability.AbilityHandler;
+import rpg.Requirement;
+import rpg.ability.Ability;
 import rpg.element.Element;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
@@ -19,8 +21,8 @@ public abstract class Entity extends Element {
 
 	private Race race;
 	private Map<String, Bar> bars;
-	private AbilityHandler abilityHandler;
 	private Inventory inventory;
+	private List<Ability> abilities;
 
 	public Entity(Vector2D location, Race race) {
 		super(location);
@@ -28,20 +30,16 @@ public abstract class Entity extends Element {
 		set("direction", Vector2D.NORTH);
 		this.race = race;
 		this.bars = new HashMap<>();
-		abilityHandler = new AbilityHandler();
 		bars.put("health", new Bar(getTotalNumber("maxHealth")));
 		bars.put("mana", new Bar(getTotalNumber("maxMana")));
 		inventory = new Inventory();
-	}
-
-	public AbilityHandler getAbilityHandler() {
-		return abilityHandler;
+		abilities = new CopyOnWriteArrayList<>();
 	}
 
 	@Override
 	public void update(Level level, double dt) {
-		abilityHandler.update(level, dt);
 		if (isAlive()) {
+			abilities.forEach(p -> p.update(level, dt));
 			act(level, dt);
 		} else {
 			onDeath(level);
@@ -135,6 +133,65 @@ public abstract class Entity extends Element {
 
 	public Inventory getInventory() {
 		return inventory;
+	}
+
+	public void addAbility(Ability ability) {
+		abilities.add(ability);
+	}
+
+	public Ability getAbility(int i) {
+		return abilities.get(i);
+	}
+
+	public List<Ability> getAbilities() {
+		return new ArrayList<>(abilities);
+	}
+
+	public boolean makeCastable(Ability ability) {
+		boolean noCooldown = ability.getCooldown() == 0;
+		if (noCooldown) {
+			for (Requirement r : ability.getRequirements()) {
+				if (!r.isRequireable(this)) {
+					return false;
+				}
+			}
+			for (Requirement r : ability.getRequirements()) {
+				r.require(this);
+			}
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isCastable(Ability ability) {
+		boolean noCooldown = ability.getCooldown() == 0;
+		if (noCooldown) {
+			for (Requirement r : ability.getRequirements()) {
+				if (!r.isRequireable(this)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public boolean tryCast(Level level, Ability ability) {
+		if (makeCastable(ability)) {
+			ability.onCast(level, this);
+			ability.setCooldown(ability.getNumber("maxCooldown"));
+			return true;
+		}
+		return false;
+	}
+
+	public int getAbilityCount() {
+		return abilities.size();
+	}
+
+	public boolean tryCast(Level level, int i) {
+		return tryCast(level, getAbility(i));
 	}
 
 	public abstract void onDeath(Level level);
