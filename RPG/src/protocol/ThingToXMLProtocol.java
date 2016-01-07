@@ -16,6 +16,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import rpg.Attribute;
+import rpg.AttributeSet;
 import rpg.Thing;
 import rpg.ability.Ability;
 import rpg.ability.AbilityHandler;
@@ -50,8 +51,7 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 		Element e = (Element) d;
 
 		NodeList elements = e.getChildNodes();
-		Thing thing = new Thing() {
-		};
+		AttributeSet set = new AttributeSet();
 		Map<String, Bar> bars = new HashMap<>();
 		List<Ability> abilities = new ArrayList<>();
 		AbilityHandler abilityHandler = null;
@@ -61,16 +61,16 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			String nodeValue = node.getAttribute("value");
 			switch (node.getTagName()) {
 			case "Double":
-				thing.set(key, Double.valueOf(nodeValue));
+				set.set(key, Double.valueOf(nodeValue));
 				break;
 			case "Boolean":
-				thing.set(key, Boolean.valueOf(nodeValue));
+				set.set(key, Boolean.valueOf(nodeValue));
 				break;
 			case "Vector2D":
-				thing.set(key, Vector2D.valueOf(nodeValue));
+				set.set(key, Vector2D.valueOf(nodeValue));
 				break;
 			case "String":
-				thing.set(key, nodeValue);
+				set.set(key, nodeValue);
 				break;
 			case "Bar":
 				bars.put(key, new Bar(Double.parseDouble(nodeValue), Double.parseDouble(node.getAttribute("maximum"))));
@@ -89,16 +89,15 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 				break;
 			}
 		}
-		Thing element;
 		try {
-			element = Attribute.getThing(Class.forName(e.getTagName()), thing);
-			for (String key : thing.getKeys()) {
-				element.set(key, thing.get(key));
+			Thing thing = Attribute.getThing(Class.forName(e.getTagName()), set);
+			for (String key : set.getKeys()) {
+				thing.set(key, set.get(key));
 			}
 			switch (e.getTagName()) {
 			case "rpg.element.entity.Player":
 			case "rpg.element.entity.Dragon":
-				Entity entity = (Entity) element;
+				Entity entity = (Entity) thing;
 				for (Entry<String, Bar> entry : bars.entrySet()) {
 					entity.putBar(entry.getKey(), entry.getValue());
 				}
@@ -107,13 +106,13 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 				}
 				break;
 			case "rpg.ability.AbilityHandler":
-				AbilityHandler ah = (AbilityHandler) element;
+				AbilityHandler ah = (AbilityHandler) thing;
 				abilities.forEach(a -> ah.addAbility(a));
 				break;
 			}
-			return element;
-		} catch (ClassNotFoundException e1) {
-			throw new RPGException(e1);
+			return thing;
+		} catch (ClassNotFoundException ex) {
+			throw new RPGException(ex);
 		}
 	}
 
