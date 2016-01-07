@@ -15,8 +15,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import rpg.Attribute;
 import rpg.Thing;
-import rpg.ThingType;
 import rpg.ability.Ability;
 import rpg.ability.AbilityHandler;
 import rpg.ability.FireballSpell;
@@ -59,7 +59,6 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			Element node = (Element) elements.item(i);
 			String key = node.getAttribute("key");
 			String nodeValue = node.getAttribute("value");
-
 			switch (node.getTagName()) {
 			case "Double":
 				thing.set(key, Double.valueOf(nodeValue));
@@ -73,8 +72,8 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			case "String":
 				thing.set(key, nodeValue);
 				break;
-			case "rpg.element.entity.Bar":
-				bars.put(key, new Bar(Double.valueOf(nodeValue), Double.valueOf(node.getAttribute("maximum"))));
+			case "Bar":
+				bars.put(key, new Bar(Double.parseDouble(nodeValue), Double.parseDouble(node.getAttribute("maximum"))));
 				break;
 			case "rpg.ability.AbilityHandler":
 				abilityHandler = (AbilityHandler) decode(node);
@@ -92,7 +91,7 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 		}
 		Thing element;
 		try {
-			element = ThingType.getThing(Class.forName(e.getTagName()), thing);
+			element = Attribute.getThing(Class.forName(e.getTagName()), thing);
 			for (String key : thing.getKeys()) {
 				element.set(key, thing.get(key));
 			}
@@ -161,8 +160,5 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			throw new RPGException("No match for " + thing.getClass());
 		}
 		return root;
-	}
-
-	public static void main(String[] args) {
 	}
 }

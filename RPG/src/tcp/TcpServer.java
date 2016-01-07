@@ -22,8 +22,8 @@ public abstract class TcpServer {
 		if (running) {
 			throw new IllegalStateException("Server already running");
 		}
+		System.out.println("Server started!");
 		running = true;
-		System.out.println("Server running!");
 		new Thread(() -> {
 			while (running) {
 				try {
@@ -36,7 +36,7 @@ public abstract class TcpServer {
 						}
 					} , "Handle " + s.getInetAddress() + " Thread").start();
 				} catch (IOException e) {
-					System.err.println(e.getMessage());
+					e.printStackTrace();
 				}
 			}
 		} , "Main TCP Server Thread").start();
