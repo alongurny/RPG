@@ -19,11 +19,11 @@ public abstract class Ability extends Mechanism implements Drawable {
 	}
 
 	public double getCooldown() {
-		return getNumber("cooldown");
+		return getDouble("cooldown");
 	}
 
 	public void setCooldown(double cooldown) {
-		set("cooldown", Math.max(0, Math.min(cooldown, getNumber("maxCooldown"))));
+		set("cooldown", Math.max(0, Math.min(cooldown, getDouble("maxCooldown"))));
 	}
 
 	public void reduceCooldown(double dcooldown) {

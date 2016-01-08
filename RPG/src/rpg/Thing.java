@@ -17,8 +17,7 @@ import rpg.geometry.Vector2D;
 public abstract class Thing {
 
 	public enum KeyType {
-		NUMBER(Double.class), INTEGER(Integer.class), BOOLEAN(Boolean.class), VECTOR(Vector2D.class), STRING(
-				String.class);
+		DOUBLE(Double.class), BOOLEAN(Boolean.class), VECTOR(Vector2D.class), STRING(String.class);
 
 		private Class<?> enclosingType;
 
@@ -28,6 +27,10 @@ public abstract class Thing {
 
 		public Class<?> getEnclosingType() {
 			return enclosingType;
+		}
+
+		public String getName() {
+			return toString().toLowerCase();
 		}
 	}
 
@@ -80,8 +83,19 @@ public abstract class Thing {
 		attributes.put(key, value);
 	}
 
-	public Class<?> getType(String key) {
-		return attributes.get(key).getClass();
+	public KeyType getType(String key) {
+		switch (attributes.get(key).getClass().getSimpleName()) {
+		case "Double":
+			return KeyType.DOUBLE;
+		case "Boolean":
+			return KeyType.BOOLEAN;
+		case "Vector2D":
+			return KeyType.VECTOR;
+		case "String":
+			return KeyType.STRING;
+		default:
+			throw new RPGException("");
+		}
 	}
 
 	public boolean hasKey(String key) {
@@ -92,12 +106,12 @@ public abstract class Thing {
 		return attributes.keySet();
 	}
 
-	public double getNumber(String key) {
+	public double getDouble(String key) {
 		return (double) attributes.get(key);
 	}
 
 	public int getInteger(String key) {
-		double value = getNumber(key);
+		double value = getDouble(key);
 		if (value % 1 == 0) {
 			return (int) value;
 		}
@@ -116,7 +130,7 @@ public abstract class Thing {
 		return (String) attributes.get(key);
 	}
 
-	public double getNumber(String key, double defaultValue) {
+	public double getDouble(String key, double defaultValue) {
 		return hasKey(key) ? (double) attributes.get(key) : defaultValue;
 	}
 
@@ -138,19 +152,19 @@ public abstract class Thing {
 
 	public Object get(String key) {
 		if (!hasKey(key)) {
-			return null;
+			throw new RPGException("Key '" + key + "' not contained");
 		}
-		switch (getType(key).getSimpleName()) {
-		case "Double":
-			return getNumber(key);
-		case "Boolean":
+		switch (getType(key)) {
+		case DOUBLE:
+			return getDouble(key);
+		case BOOLEAN:
 			return getBoolean(key);
-		case "Vector2D":
+		case VECTOR:
 			return getVector(key);
-		case "String":
+		case STRING:
 			return getString(key);
 		default:
-			return null;
+			throw new RPGException("");
 		}
 	}
 

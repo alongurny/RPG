@@ -13,12 +13,12 @@ public abstract class Requirement extends Thing {
 
 		@Override
 		public boolean isRequireable(Entity entity) {
-			return entity.getBarValue(getString("name"), 0) >= getNumber("value");
+			return entity.getBarValue(getString("name"), 0) >= getDouble("value");
 		}
 
 		@Override
 		public void require(Entity entity) {
-			entity.removeBarValue(getString("name"), getNumber("value"));
+			entity.removeBarValue(getString("name"), getDouble("value"));
 		}
 	}
 

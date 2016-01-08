@@ -32,7 +32,7 @@ public class AbilityHandlerDrawer implements Drawable {
 			g.drawRect(0, 0, 32, 32);
 			if (cooldown > 0) {
 				g.setColor(new Color(63, 63, 63, 100));
-				double percentage = 1 - cooldown / ability.getNumber("maxCooldown");
+				double percentage = 1 - cooldown / ability.getDouble("maxCooldown");
 				boolean first = true;
 				for (int i = 0; i < 8; i++) {
 					double diff = (i + 1) / 8.0 - percentage;

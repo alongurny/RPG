@@ -43,7 +43,7 @@ public class HasteSpell extends DurationSpell {
 
 	@Override
 	public void onStart(Level level, Entity caster) {
-		speed = caster.getNumber("speed", 0);
+		speed = caster.getDouble("speed", 0);
 		caster.set("speed", speed + 0.5 * caster.getTotalNumber("speed"));
 	}
 

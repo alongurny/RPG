@@ -53,7 +53,7 @@ public class Rocket extends Element {
 
 	@Override
 	public void update(Level level, double dt) {
-		Vector2D v = getVector("direction").multiply(getNumber("speed") * dt);
+		Vector2D v = getVector("direction").multiply(getDouble("speed") * dt);
 		List<Element> obstacles = level.tryMoveBy(this, v);
 		if (!obstacles.isEmpty()) {
 			for (Element obstacle : obstacles) {

@@ -42,7 +42,7 @@ public class FireballSpell extends Spell {
 		Vector2D casterLocation = caster.getLocation();
 		Vector2D casterDirection = caster.getVector("direction");
 		Vector2D fireballLocation = casterLocation;
-		level.addDynamicElement(new Fireball(caster, fireballLocation, casterDirection, getNumber("speed")));
+		level.addDynamicElement(new Fireball(caster, fireballLocation, casterDirection, getDouble("speed")));
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package rpg;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +61,8 @@ public class Attribute {
 			Constructor<?> constructor = cls.getConstructor(classes);
 			return (Thing) constructor.newInstance(values);
 		} catch (Exception e) {
+			System.out.println(Arrays.toString(classes));
+			System.out.println(Arrays.toString(values));
 			e.printStackTrace();
 		}
 		throw new RPGException("Should not reach here exception");

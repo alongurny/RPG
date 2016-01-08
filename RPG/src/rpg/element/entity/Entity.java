@@ -78,7 +78,7 @@ public abstract class Entity extends Element {
 	}
 
 	public double getTotalNumber(String key) {
-		return super.getNumber(key, 0.0) + race.getNumber(key, 0.0);
+		return super.getDouble(key, 0.0) + race.getDouble(key, 0.0);
 	}
 
 	public Vector2D getTotalVector(String key) {
@@ -180,7 +180,7 @@ public abstract class Entity extends Element {
 	public boolean tryCast(Level level, Ability ability) {
 		if (makeCastable(ability)) {
 			ability.onCast(level, this);
-			ability.setCooldown(ability.getNumber("maxCooldown"));
+			ability.setCooldown(ability.getDouble("maxCooldown"));
 			return true;
 		}
 		return false;

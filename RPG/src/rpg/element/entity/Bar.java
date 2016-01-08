@@ -29,28 +29,28 @@ public class Bar extends Thing {
 	}
 
 	public double getValue() {
-		return getNumber("value");
+		return getDouble("value");
 	}
 
 	public void addValue(double dvalue) {
-		setValue(getNumber("value") + dvalue);
+		setValue(getDouble("value") + dvalue);
 	}
 
 	public void setValue(double value) {
-		set("value", Math.min(value, getNumber("maximum")));
+		set("value", Math.min(value, getDouble("maximum")));
 	}
 
 	public double getMaximum() {
-		return getNumber("maximum");
+		return getDouble("maximum");
 	}
 
 	public void addMaximum(double dmaximum) {
-		setMaximum(getNumber("maximum") + dmaximum);
+		setMaximum(getDouble("maximum") + dmaximum);
 	}
 
 	public void setMaximum(double maximum) {
 		set("maximum", maximum);
-		set("value", Math.min(getNumber("value"), maximum));
+		set("value", Math.min(getDouble("value"), maximum));
 	}
 
 	public static boolean isBound(String key) {

@@ -58,17 +58,17 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			String key = node.getAttribute("key");
 			String nodeValue = node.getAttribute("value");
 			switch (node.getTagName()) {
-			case "Double":
+			case "double":
 				set.set(key, Double.valueOf(nodeValue));
 				break;
-			case "Boolean":
+			case "boolean":
 				set.set(key, Boolean.valueOf(nodeValue));
 				break;
-			case "Vector2D":
+			case "vector":
 				set.set(key, Vector2D.valueOf(nodeValue));
 				break;
-			case "String":
-				set.set(key, nodeValue);
+			case "string":
+				set.set(key, String.valueOf(nodeValue));
 				break;
 			case "Bar":
 				bars.put(key, new Bar(Double.parseDouble(nodeValue), Double.parseDouble(node.getAttribute("maximum"))));
@@ -114,7 +114,7 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 	public Node encode0(Thing thing, Document document) {
 		org.w3c.dom.Element root = document.createElement(thing.getClass().getName());
 		for (String key : thing.getKeys()) {
-			org.w3c.dom.Element node = document.createElement(thing.getType(key).getSimpleName());
+			org.w3c.dom.Element node = document.createElement(thing.getType(key).getName());
 			root.appendChild(node);
 			node.setAttribute("key", key);
 			node.setAttribute("value", thing.get(key).toString());
