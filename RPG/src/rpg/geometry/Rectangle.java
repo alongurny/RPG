@@ -50,22 +50,15 @@ public class Rectangle {
 	}
 
 	public boolean intersects(Rectangle r) {
-		double tw = this.width;
-		double th = this.height;
-		double rw = r.width;
-		double rh = r.height;
-		if (rw <= 0 || rh <= 0 || tw <= 0 || th <= 0) {
-			return false;
-		}
+		double tw = this.width + this.x;
+		double th = this.height + this.y;
+		double rw = r.width + r.x;
+		double rh = r.height + r.y;
 		double tx = this.x;
 		double ty = this.y;
 		double rx = r.x;
 		double ry = r.y;
-		rw += rx;
-		rh += ry;
-		tw += tx;
-		th += ty;
-		return ((rw < rx || rw > tx) && (rh < ry || rh > ty) && (tw < tx || tw > rx) && (th < ty || th > ry));
+		return rw > tx && rh > ty && tw > rx && th > ry;
 	}
 
 	public static Rectangle intersect(Rectangle a, Rectangle b) {

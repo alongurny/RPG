@@ -12,7 +12,7 @@ public class GameBoard extends JFrame {
 	public GameBoard(int width, int height, Game game, int num) {
 		setResizable(false);
 		gamePanel = new GamePanel(game, num);
-		gamePanel.addDrawable(new AbilityHandlerDrawer(game, num));
+		gamePanel.addDrawable(new AbilityDrawer(game, num));
 		add(gamePanel);
 		setSize(width, height);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

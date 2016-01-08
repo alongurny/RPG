@@ -81,10 +81,10 @@ public class Player extends Entity {
 			Vector2D velocity = getVelocity().multiply(dt);
 			double x = velocity.getX();
 			double y = velocity.getY();
-			if (!level.tryMoveBy(this, velocity)) {
-				if (level.tryMoveBy(this, new Vector2D(0, y))) {
+			if (!level.tryMoveBy(this, velocity).isEmpty()) {
+				if (level.tryMoveBy(this, new Vector2D(0, y)).isEmpty()) {
 					x = 0;
-				} else if (level.tryMoveBy(this, new Vector2D(x, 0))) {
+				} else if (level.tryMoveBy(this, new Vector2D(x, 0)).isEmpty()) {
 					y = 0;
 				} else {
 					x = 0;

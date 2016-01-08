@@ -1,17 +1,18 @@
 package rpg.logic;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import rpg.logic.level.Level;
 
 public class Timer {
 
-	private java.util.Map<Double, Runnable> actionMap;
+	private Map<Double, Runnable> actionMap;
 	private double time;
 
 	public Timer() {
-		actionMap = new HashMap<>();
+		actionMap = new ConcurrentHashMap<>();
 	}
 
 	public void add(double time, Runnable run) {

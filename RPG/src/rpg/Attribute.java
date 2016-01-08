@@ -1,17 +1,18 @@
 package rpg;
 
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
+import rpg.ability.IceBlockSpell;
 import rpg.element.Air;
 import rpg.element.Block;
 import rpg.element.Door;
 import rpg.element.Fireball;
 import rpg.element.HealthPotion;
+import rpg.element.IceBlock;
 import rpg.element.ManaPotion;
 import rpg.element.Portal;
 import rpg.element.entity.Dragon;
@@ -28,6 +29,7 @@ public class Attribute {
 
 	public static final Attribute[] PLAYER = { new Attribute(Vector2D.class, "location"),
 			new Attribute(String.class, "race") };
+	private static final Attribute SIZE = new Attribute(double.class, "size");
 	private static Map<Class<? extends Thing>, Attribute[]> map = new HashMap<>();
 
 	static {
@@ -40,8 +42,10 @@ public class Attribute {
 		register(ManaPotion.class, Attribute.LOCATION);
 		register(Door.class, Attribute.LOCATION);
 		register(Fireball.class, Attribute.LOCATION, Attribute.DIRECTION, Attribute.SPEED);
+		register(IceBlock.class, Attribute.LOCATION, Attribute.SIZE);
 		register(FireballSpell.class, Attribute.SPEED);
 		register(HasteSpell.class);
+		register(IceBlockSpell.class);
 		register(Portal.class, Attribute.LOCATION, Attribute.TARGET);
 	}
 
@@ -61,8 +65,6 @@ public class Attribute {
 			Constructor<?> constructor = cls.getConstructor(classes);
 			return (Thing) constructor.newInstance(values);
 		} catch (Exception e) {
-			System.out.println(Arrays.toString(classes));
-			System.out.println(Arrays.toString(values));
 			e.printStackTrace();
 		}
 		throw new RPGException("Should not reach here exception");

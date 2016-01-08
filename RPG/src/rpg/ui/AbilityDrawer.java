@@ -9,7 +9,7 @@ import rpg.ability.Ability;
 import rpg.element.entity.Player;
 import rpg.logic.Game;
 
-public class AbilityHandlerDrawer implements Drawable {
+public class AbilityDrawer implements Drawable {
 
 	private static Point[] ps = { new Point(16, 0), new Point(32, 0), new Point(32, 16), new Point(32, 32),
 			new Point(16, 32), new Point(0, 32), new Point(0, 16), new Point(0, 0) };
@@ -17,7 +17,7 @@ public class AbilityHandlerDrawer implements Drawable {
 	private Game game;
 	private int num;
 
-	public AbilityHandlerDrawer(Game game, int num) {
+	public AbilityDrawer(Game game, int num) {
 		this.num = num;
 		this.game = game;
 	}
@@ -60,7 +60,7 @@ public class AbilityHandlerDrawer implements Drawable {
 				}
 				g.drawString(s, dx, dy);
 			} else if (!p.isCastable(ability)) {
-				g.setColor(new Color(255, 63, 200, 100));
+				g.setColor(new Color(63, 63, 63, 100));
 				g.fillRect(0, 0, Ability.WIDTH, Ability.HEIGHT);
 			}
 			g.translate(48, 0);

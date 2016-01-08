@@ -1,35 +1,25 @@
 package rpg.ability;
 
 import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
 import rpg.Cost;
 import rpg.Requirement;
+import rpg.element.IceBlock;
+import rpg.element.entity.DisabledEffect;
 import rpg.element.entity.Entity;
+import rpg.geometry.Rectangle;
+import rpg.graphics.Sprite;
+import rpg.graphics.Tileset;
 import rpg.logic.level.Level;
 
 public class IceBlockSpell extends Spell {
 
-	private static Image image;
-	private static int width, height;
+	private static BufferedImage image = Sprite.get(Tileset.get(0), 16, 27).get(0);
 
-	static {
-		try {
-			image = ImageIO.read(new File("img/haste.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		width = 32;
-		height = 32;
-	}
-
-	private double speed;
+	private IceBlock block;
 
 	public IceBlockSpell() {
 		super(2, 2);
@@ -37,23 +27,27 @@ public class IceBlockSpell extends Spell {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(image, 0, 0, width, height, null);
+		g.drawImage(image, 0, 0, null);
 	}
 
 	@Override
 	public void onStart(Level level, Entity caster) {
-		speed = caster.getDouble("speed", 0);
-		caster.set("speed", speed + 0.5 * caster.getTotalNumber("speed"));
+		Entity target = (Entity) caster.getTarget();
+		Rectangle rect = target.getAbsoluteRect();
+		block = new IceBlock(target.getLocation(), Math.max(rect.getWidth(), rect.getHeight()) * 1.5);
+		level.addDynamicElement(block);
+		target.addEffect(new DisabledEffect(2));
 	}
 
 	@Override
 	public void onEnd(Level level, Entity caster) {
-		caster.set("speed", speed);
+		level.removeDynamicElement(block);
 	}
 
 	@Override
 	public List<Requirement> getRequirements() {
-		return Arrays.asList(Requirement.atLeast("mana", 1), Entity::isAlive);
+		return Arrays.asList(Requirement.atLeast("mana", 1), Entity::isAlive,
+				entity -> entity.hasTarget() && entity.getTarget() instanceof Entity);
 	}
 
 	@Override

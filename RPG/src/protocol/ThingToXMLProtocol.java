@@ -16,10 +16,9 @@ import rpg.Attribute;
 import rpg.AttributeSet;
 import rpg.Thing;
 import rpg.ability.Ability;
-import rpg.ability.FireballSpell;
-import rpg.ability.HasteSpell;
 import rpg.element.Bonus;
 import rpg.element.Fireball;
+import rpg.element.IceBlock;
 import rpg.element.Portal;
 import rpg.element.entity.Entity;
 import rpg.exception.RPGException;
@@ -63,10 +62,9 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 				set.set(key, String.valueOf(nodeValue));
 				break;
 			case "rpg.ability.FireballSpell":
-				abilities.add((FireballSpell) decode(node));
-				break;
 			case "rpg.ability.HasteSpell":
-				abilities.add((HasteSpell) decode(node));
+			case "rpg.ability.IceBlockSpell":
+				abilities.add((Ability) decode(node));
 				break;
 			}
 		}
@@ -103,7 +101,7 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			node.setAttribute("value", thing.get(key).toString());
 		}
 		if (thing instanceof Ability || thing instanceof Item || thing instanceof Bonus || thing instanceof Portal
-				|| thing instanceof Fireball) {
+				|| thing instanceof Fireball || thing instanceof IceBlock) {
 		} else if (thing instanceof Entity) {
 			Entity entity = (Entity) thing;
 			root.appendChild(encode0(entity.getInventory(), document));

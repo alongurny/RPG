@@ -17,6 +17,9 @@ import rpg.logic.Timer;
 public class Level {
 
 	private List<Element> elements;
+
+	private List<Element> toRemove;
+	private List<Element> toAdd;
 	private Grid grid;
 	private boolean finished;
 	private Level nextLevel;
@@ -24,20 +27,22 @@ public class Level {
 
 	public Level(int rows, int cols) {
 		elements = new CopyOnWriteArrayList<>();
+		toRemove = new CopyOnWriteArrayList<>();
+		toAdd = new CopyOnWriteArrayList<>();
 		grid = new Grid(rows, cols);
 		timer = new Timer();
 	}
 
-	public boolean tryMoveBy(Element element, Vector2D displacement) {
+	public List<Element> tryMoveBy(Element element, Vector2D displacement) {
 		return tryMove(element, element.getLocation().add(displacement));
 	}
 
-	public boolean tryMove(Element element, Vector2D target) {
+	public List<Element> tryMove(Element element, Vector2D target) {
 		List<Element> obstacles = getObstacles(element, target);
 		if (obstacles.isEmpty()) {
 			element.setLocation(target);
 		}
-		return obstacles.isEmpty();
+		return obstacles;
 	}
 
 	public void interact(Entity entity, Interactive interactive) {
@@ -79,17 +84,21 @@ public class Level {
 	}
 
 	public void addDynamicElement(Element element) {
-		elements.add(element);
+		toAdd.add(element);
 	}
 
-	public boolean removeDynamicElement(Element element) {
-		return elements.remove(element);
+	public void removeDynamicElement(Element element) {
+		toRemove.add(element);
 	}
 
 	public void update(double d) {
 		elements.forEach(e -> e.update(this, d));
 		handleCollisions();
 		timer.update(this, d);
+		elements.addAll(toAdd);
+		elements.removeAll(toRemove);
+		toAdd.clear();
+		toRemove.clear();
 	}
 
 	public boolean isFinished() {
