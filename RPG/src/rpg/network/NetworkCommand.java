@@ -1,9 +1,11 @@
 package rpg.network;
 
+import java.util.List;
+
 import rpg.element.Element;
 import rpg.element.entity.Player;
 import rpg.geometry.Vector2D;
-import rpg.logic.Game;
+import rpg.logic.level.Level;
 
 public class NetworkCommand {
 
@@ -18,27 +20,28 @@ public class NetworkCommand {
 		return string;
 	}
 
-	public void execute(Game game) {
+	public void execute(Level level) {
 		String[] arr = string.split(" ");
 		if (arr[0].equals("player")) {
-			Player player = game.getLevel().getPlayer(Integer.parseInt(arr[1]));
+			Player player = level.getPlayer(Integer.parseInt(arr[1]));
 			switch (arr[2]) {
 			case "moveBy":
-				game.getLevel().tryMoveBy(player, Vector2D.valueOf(arr[3]));
+				level.tryMoveBy(player, Vector2D.valueOf(arr[3]));
 				break;
 			case "cast":
-				player.tryCast(game.getLevel(), Integer.parseInt(arr[3]));
+				player.tryCast(level, Integer.parseInt(arr[3]));
 				break;
 			case "interact":
-				game.getLevel().tryInteract(player);
+				level.tryInteract(player);
 				break;
 			case "setVector":
 				player.set(arr[3], Vector2D.valueOf(arr[4]));
 				break;
 			case "setTarget":
-				System.out.println("sets Target to " + arr[3]);
-				Element element = arr[3].equals("null") ? null : Element.getByID(Integer.parseInt(arr[3]));
-				player.setTarget(element);
+				Vector2D target = Vector2D.valueOf(arr[3]);
+				List<Element> elements = level.getElements(target);
+				player.setTarget(elements.isEmpty() ? null : elements.get(0));
+				break;
 			}
 
 		} else {

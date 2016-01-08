@@ -38,7 +38,9 @@ public class FireballSpell extends Spell {
 
 	@Override
 	public List<Requirement> getRequirements() {
-		return Arrays.asList(Requirement.atLeast("mana", 1.0), Entity::isAlive, Entity::hasTarget);
+		return Arrays.asList(Requirement.atLeast("mana", 1.0), Entity::isAlive,
+				entity -> entity.hasTarget() && entity.getTarget().getInteger("id") != entity.getInteger("id")
+						&& entity.getTarget() instanceof Entity);
 	}
 
 	@Override

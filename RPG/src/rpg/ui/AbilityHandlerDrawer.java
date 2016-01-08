@@ -60,7 +60,7 @@ public class AbilityHandlerDrawer implements Drawable {
 				}
 				g.drawString(s, dx, dy);
 			} else if (!p.isCastable(ability)) {
-				g.setColor(new Color(63, 63, 200, 100));
+				g.setColor(new Color(255, 63, 200, 100));
 				g.fillRect(0, 0, Ability.WIDTH, Ability.HEIGHT);
 			}
 			g.translate(48, 0);

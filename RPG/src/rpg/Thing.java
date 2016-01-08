@@ -151,6 +151,7 @@ public abstract class Thing {
 
 	public double getDouble(String key) {
 		return (double) attributes.get(key);
+
 	}
 
 	public int getInteger(String key) {

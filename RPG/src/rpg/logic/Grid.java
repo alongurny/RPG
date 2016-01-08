@@ -43,8 +43,8 @@ public class Grid {
 		return (int) (e.getLocation().getX() / getColumnWidth());
 	}
 
-	public List<Element> get(int y, int x) {
-		return new ArrayList<>(elements[y][x]);
+	public List<Element> get(int row, int column) {
+		return new ArrayList<>(elements[row][column]);
 	}
 
 	public int getRows() {

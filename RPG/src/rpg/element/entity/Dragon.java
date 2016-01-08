@@ -68,7 +68,7 @@ public class Dragon extends Entity {
 		if (isAlive()) {
 			for (Element e : level.getDynamicElements()) {
 				if (e instanceof Player) {
-					set("direction", e.getLocation().subtract(getLocation()).getUnitalVector());
+					setTarget(e);
 					tryCast(level, 0);
 				}
 			}

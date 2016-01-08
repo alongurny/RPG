@@ -23,13 +23,13 @@ public abstract class Entity extends Element {
 	private Inventory inventory;
 	private List<Ability> abilities;
 	private List<Effect> effects;
-	private Element target;
 
 	public Entity(Vector2D location, Race race) {
 		super(location);
 		set("race", race.get("race"));
 		set("direction", Vector2D.NORTH);
 		this.race = race;
+		set("targetID", -1);
 		setLimited("health", getTotalNumber("maxHealth"));
 		setLimited("mana", getTotalNumber("maxMana"));
 		inventory = new Inventory();
@@ -186,15 +186,16 @@ public abstract class Entity extends Element {
 	}
 
 	public boolean hasTarget() {
-		return target != null;
+		return getInteger("targetID") != -1;
 	}
 
 	public Element getTarget() {
-		return target;
+		int id = getInteger("targetID");
+		return id > -1 ? Element.getByID(id) : null;
 	}
 
 	public void setTarget(Element target) {
-		this.target = target;
+		set("targetID", target != null ? target.getInteger("id") : -1);
 	}
 
 }

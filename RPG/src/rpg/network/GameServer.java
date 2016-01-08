@@ -52,7 +52,7 @@ public class GameServer {
 			@Override
 			public void run() {
 				for (NetworkCommand c : received) {
-					c.execute(game);
+					c.execute(game.getLevel());
 				}
 				received.clear();
 			}

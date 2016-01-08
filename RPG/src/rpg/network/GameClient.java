@@ -146,7 +146,8 @@ public class GameClient implements KeyListener, MultiKeyListener {
 								@Override
 								public void mouseClicked(MouseEvent e) {
 									Point offset = gs.getBoard().getPanel().getOffset();
-									client.setTarget(e.getX() + offset.x, e.getY() + offset.y);
+									client.commands.add(new NetworkCommand(String.format("player %s setTarget %s",
+											client.num, new Vector2D(e.getX() + offset.x, e.getY() + offset.y))));
 								}
 							});
 							gs.start();
@@ -158,18 +159,5 @@ public class GameClient implements KeyListener, MultiKeyListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	private void setTarget(int x, int y) {
-		for (Element element : game.getLevel().getDynamicElements()) {
-			if (element.getAbsoluteRect().contains(new Vector2D(x, y))) {
-
-				commands.add(
-						new NetworkCommand(String.format("player %s setTarget %s", num, element.getInteger("id"))));
-				return;
-			}
-		}
-		commands.add(new NetworkCommand(String.format("player %s setTarget null", num)));
 	}
 }
