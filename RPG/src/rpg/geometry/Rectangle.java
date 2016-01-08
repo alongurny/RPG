@@ -44,6 +44,11 @@ public class Rectangle {
 		return getY() + getHeight();
 	}
 
+	@Override
+	public String toString() {
+		return String.format("Rectangle {x: %s, y: %s, width: %s, height: %s", x, y, width, height);
+	}
+
 	public boolean intersects(Rectangle r) {
 		double tw = this.width;
 		double th = this.height;
@@ -69,6 +74,10 @@ public class Rectangle {
 		double x2 = Math.min(a.getMaxX(), b.getMaxX());
 		double y2 = Math.min(a.getMaxY(), b.getMaxY());
 		return new Rectangle(x1, y1, x2 - x1, y2 - y1);
+	}
+
+	public boolean contains(Vector2D v) {
+		return getMinX() <= v.getX() && v.getX() <= getMaxX() && getMinY() <= v.getY() && v.getY() <= getMaxY();
 	}
 
 }

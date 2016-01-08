@@ -37,16 +37,8 @@ public class FireballSpell extends Spell {
 	}
 
 	@Override
-	public void onCast(Level level, Entity caster) {
-		Vector2D casterLocation = caster.getLocation();
-		Vector2D casterDirection = caster.getVector("direction");
-		Vector2D fireballLocation = casterLocation;
-		level.addDynamicElement(new Fireball(caster, fireballLocation, casterDirection, getDouble("speed")));
-	}
-
-	@Override
 	public List<Requirement> getRequirements() {
-		return Arrays.asList(Requirement.atLeast("mana", 1.0), Entity::isAlive);
+		return Arrays.asList(Requirement.atLeast("mana", 1.0), Entity::isAlive, Entity::hasTarget);
 	}
 
 	@Override
@@ -57,6 +49,18 @@ public class FireballSpell extends Spell {
 	@Override
 	public void draw(Graphics g) {
 		g.drawImage(image, 0, 0, width, height, null);
+	}
+
+	@Override
+	public void onStart(Level level, Entity caster) {
+		Vector2D location = caster.getLocation();
+		Vector2D direction = caster.getTarget().getLocation().subtract(location).getUnitalVector();
+		level.addDynamicElement(new Fireball(caster, location, direction, getDouble("speed")));
+	}
+
+	@Override
+	public void onEnd(Level level, Entity caster) {
+
 	}
 
 }

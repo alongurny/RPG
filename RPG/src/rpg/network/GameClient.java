@@ -1,7 +1,10 @@
 package rpg.network;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -103,7 +106,8 @@ public class GameClient implements KeyListener, MultiKeyListener {
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			commands.add(new NetworkCommand(String.format("player %s interact", num)));
-		} else if (e.getKeyCode() - '0' >= 1 && e.getKeyCode() - '0' <= game.getLevel().getPlayer(num).getAbilityCount()) {
+		} else if (e.getKeyCode() - '0' >= 1
+				&& e.getKeyCode() - '0' <= game.getLevel().getPlayer(num).getAbilityCount()) {
 			commands.add(new NetworkCommand(String.format("player %s cast %s", num, e.getKeyCode() - '1')));
 		}
 	}
@@ -138,6 +142,13 @@ public class GameClient implements KeyListener, MultiKeyListener {
 							keyTracker.addMultiKeyListener(client);
 							gs.addKeyListener(keyTracker);
 							gs.addKeyListener(client);
+							gs.addMouseListener(new MouseAdapter() {
+								@Override
+								public void mouseClicked(MouseEvent e) {
+									Point offset = gs.getBoard().getPanel().getOffset();
+									client.setTarget(e.getX() + offset.x, e.getY() + offset.y);
+								}
+							});
 							gs.start();
 						}
 					}
@@ -148,5 +159,17 @@ public class GameClient implements KeyListener, MultiKeyListener {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void setTarget(int x, int y) {
+		for (Element element : game.getLevel().getDynamicElements()) {
+			if (element.getAbsoluteRect().contains(new Vector2D(x, y))) {
+
+				commands.add(
+						new NetworkCommand(String.format("player %s setTarget %s", num, element.getInteger("id"))));
+				return;
+			}
+		}
+		commands.add(new NetworkCommand(String.format("player %s setTarget null", num)));
 	}
 }

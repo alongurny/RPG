@@ -23,6 +23,7 @@ public abstract class Entity extends Element {
 	private Inventory inventory;
 	private List<Ability> abilities;
 	private List<Effect> effects;
+	private Element target;
 
 	public Entity(Vector2D location, Race race) {
 		super(location);
@@ -182,6 +183,18 @@ public abstract class Entity extends Element {
 
 	public void addEffect(Effect effect) {
 		effects.add(effect);
+	}
+
+	public boolean hasTarget() {
+		return target != null;
+	}
+
+	public Element getTarget() {
+		return target;
+	}
+
+	public void setTarget(Element target) {
+		this.target = target;
 	}
 
 }

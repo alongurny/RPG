@@ -1,6 +1,7 @@
 package rpg.ui;
 
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 
 import rpg.logic.Game;
 
@@ -12,6 +13,10 @@ public abstract class GameStation {
 		gameBoard = new GameBoard(480, 528, game, num);
 		gameBoard.setLocation(500, 40);
 		gameBoard.setAlwaysOnTop(true);
+	}
+
+	public GameBoard getBoard() {
+		return gameBoard;
 	}
 
 	public void addKeyListener(KeyListener listener) {
@@ -35,5 +40,10 @@ public abstract class GameStation {
 	}
 
 	public abstract void run();
+
+	public void addMouseListener(MouseListener listener) {
+		gameBoard.setFocusable(true);
+		gameBoard.getPanel().addMouseListener(listener);
+	}
 
 }

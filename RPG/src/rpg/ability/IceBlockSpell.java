@@ -14,7 +14,7 @@ import rpg.Requirement;
 import rpg.element.entity.Entity;
 import rpg.logic.level.Level;
 
-public class HasteSpell extends Spell {
+public class IceBlockSpell extends Spell {
 
 	private static Image image;
 	private static int width, height;
@@ -31,7 +31,7 @@ public class HasteSpell extends Spell {
 
 	private double speed;
 
-	public HasteSpell() {
+	public IceBlockSpell() {
 		super(2, 2);
 	}
 

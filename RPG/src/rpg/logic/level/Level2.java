@@ -28,7 +28,7 @@ public class Level2 extends Level {
 		addDynamicElement(player2);
 		addDynamicElement(new Dragon(new Vector2D(420, 300)));
 		addDynamicElement(new ManaPotion(new Vector2D(300, 200)));
-		Grid grid = getMap();
+		Grid grid = getGrid();
 		for (int i = 0; i < COLUMNS; i++) {
 			addStaticElement(new Block(grid.getLocation(0, i)));
 			addStaticElement(new Block(grid.getLocation(ROWS - 1, i)));

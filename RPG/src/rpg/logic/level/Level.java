@@ -148,7 +148,7 @@ public class Level {
 		grid.add(e);
 	}
 
-	public Grid getMap() {
+	public Grid getGrid() {
 		return grid;
 	}
 

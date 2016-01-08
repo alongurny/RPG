@@ -39,7 +39,7 @@ public class ServerPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Vector2D loc = new Vector2D(getWidth(), getHeight()).multiply(0.5);
-		Grid grid = game.getLevel().getMap();
+		Grid grid = game.getLevel().getGrid();
 		sourceX = limit(-32, grid.getWidth() - getWidth() + 32, (int) loc.getX() - getWidth() / 2);
 		sourceY = limit(-32, grid.getHeight() - getHeight() + 32, (int) loc.getY() - getHeight() / 2);
 		g.drawImage(background, 0, 0, null);

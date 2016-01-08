@@ -1,5 +1,8 @@
 package rpg.element;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import rpg.Mechanism;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
@@ -8,7 +11,11 @@ import rpg.ui.Drawable;
 
 public abstract class Element extends Mechanism implements Drawable {
 
+	private static int counter = 0;
+	private static Map<Integer, Element> ids = new HashMap<>();
+
 	public Element(Vector2D location) {
+		setID(this, counter++);
 		set("location", location);
 	}
 
@@ -42,6 +49,16 @@ public abstract class Element extends Mechanism implements Drawable {
 
 	public static double distance(Element a, Element b) {
 		return Vector2D.distance(a.getLocation(), b.getLocation());
+	}
+
+	public static Element getByID(int id) {
+		return ids.get(id);
+	}
+
+	public static void setID(Element element, int id) {
+		ids.remove(element.getInteger("id", -1));
+		ids.put(id, element);
+		element.set("id", id);
 	}
 
 }

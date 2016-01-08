@@ -2,6 +2,7 @@ package rpg.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,10 +25,10 @@ public class GamePanel extends JPanel {
 	private static final long serialVersionUID = -435064221993994993L;
 
 	private static BufferedImage background;
-	private int sourceX, sourceY;
 	private Game game;
 	private int num;
 	private List<Drawable> drawables;
+	private Point offset;
 
 	public GamePanel(Game game, int num) {
 		this.drawables = new ArrayList<>();
@@ -52,11 +53,8 @@ public class GamePanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Vector2D loc = getPlayer().getLocation();
-		Grid grid = game.getLevel().getMap();
-		sourceX = limit(-32, grid.getWidth() - getWidth() + 32, (int) loc.getX() - getWidth() / 2);
-		sourceY = limit(-32, grid.getHeight() - getHeight() + 32, (int) loc.getY() - getHeight() / 2);
 		g.drawImage(background, 0, 0, null);
+		calculateOffset();
 		List<Element> dynamics = game.getLevel().getDynamicElements();
 		dynamics.sort((a, b) -> a.getIndex() - b.getIndex());
 		Queue<Element> dyn = new ArrayDeque<>(dynamics);
@@ -99,11 +97,24 @@ public class GamePanel extends JPanel {
 	}
 
 	public void drawElement(Graphics g, Element e) {
-		int x = (int) (e.getLocation().getX()) - sourceX;
-		int y = (int) (e.getLocation().getY()) - sourceY;
+		int x = (int) (e.getLocation().getX()) - offset.x;
+		int y = (int) (e.getLocation().getY()) - offset.y;
 		g.translate(x, y);
 		e.draw(g);
 		g.translate(-x, -y);
+	}
+
+	private void calculateOffset() {
+		Vector2D loc = getPlayer().getLocation();
+		Grid grid = game.getLevel().getGrid();
+		int x = limit(-32, grid.getWidth() - getWidth() + 32, (int) loc.getX() - getWidth() / 2);
+		int y = limit(-32, grid.getHeight() - getHeight() + 32, (int) loc.getY() - getHeight() / 2);
+		offset = new Point(x, y);
+	}
+
+	public Point getOffset() {
+		return offset;
+
 	}
 
 }

@@ -20,7 +20,7 @@ public class Level1 extends Level {
 		player.addAbility(new FireballSpell(192));
 		player.addAbility(new HasteSpell());
 		addDynamicElement(player);
-		Grid grid = getMap();
+		Grid grid = getGrid();
 		for (int i = 0; i < COLUMNS; i++) {
 			addStaticElement(new Block(grid.getLocation(0, i)));
 			addStaticElement(new Block(grid.getLocation(ROWS - 1, i)));

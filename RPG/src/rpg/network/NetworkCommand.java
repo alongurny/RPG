@@ -1,5 +1,6 @@
 package rpg.network;
 
+import rpg.element.Element;
 import rpg.element.entity.Player;
 import rpg.geometry.Vector2D;
 import rpg.logic.Game;
@@ -34,7 +35,12 @@ public class NetworkCommand {
 			case "setVector":
 				player.set(arr[3], Vector2D.valueOf(arr[4]));
 				break;
+			case "setTarget":
+				System.out.println("sets Target to " + arr[3]);
+				Element element = arr[3].equals("null") ? null : Element.getByID(Integer.parseInt(arr[3]));
+				player.setTarget(element);
 			}
+
 		} else {
 			throw new RuntimeException(string);
 		}

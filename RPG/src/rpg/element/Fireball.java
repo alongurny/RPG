@@ -8,7 +8,6 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-import rpg.element.entity.DisabledEffect;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
@@ -72,7 +71,6 @@ public class Fireball extends Element {
 		if (other instanceof Entity && caster != other) {
 			Entity entity = (Entity) other;
 			entity.remove("health", 10);
-			entity.addEffect(new DisabledEffect(0.5));
 			level.removeDynamicElement(this);
 		} else if (!other.isPassable(level, this)) {
 			level.removeDynamicElement(this);
