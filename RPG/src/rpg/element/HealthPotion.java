@@ -24,7 +24,7 @@ public class HealthPotion extends Bonus {
 
 	@Override
 	protected void onPick(Entity picker) {
-		picker.addBarValue("health", 20);
+		picker.add("health", 20);
 	}
 
 	@Override

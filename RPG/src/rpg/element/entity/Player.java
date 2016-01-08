@@ -53,19 +53,31 @@ public class Player extends Entity {
 
 	@Override
 	public boolean isPassable(Level level, Element other) {
-		if (other instanceof Entity) {
-			return false;
-		}
-		return true;
+		return !(other instanceof Entity);
 	}
 
 	private void regenerate(double dt) {
-		addBarValue("health", dt * getTotalNumber("healthRegen"));
-		addBarValue("mana", dt * getTotalNumber("manaRegen"));
+		add("health", dt * getTotalNumber("healthRegen"));
+		add("mana", dt * getTotalNumber("manaRegen"));
+	}
+
+	private void setSprites(double x, double y) {
+		if (y > 0) {
+			set("spriteNumber", SOUTH);
+		} else if (y < 0) {
+			set("spriteNumber", NORTH);
+		} else if (x > 0) {
+			set("spriteNumber", EAST);
+		} else if (x < 0) {
+			set("spriteNumber", WEST);
+		} else {
+			return;
+		}
+		set("spriteCounter", (getInteger("spriteCounter") + 1) % 12);
 	}
 
 	private void move(Level level, double dt) {
-		if (!getTotalBoolean("disabled")) {
+		if (isAlive() && !getTotalBoolean("disabled")) {
 			Vector2D velocity = getVelocity().multiply(dt);
 			double x = velocity.getX();
 			double y = velocity.getY();
@@ -79,18 +91,7 @@ public class Player extends Entity {
 					y = 0;
 				}
 			}
-			if (y > 0) {
-				set("spriteNumber", SOUTH);
-			} else if (y < 0) {
-				set("spriteNumber", NORTH);
-			} else if (x > 0) {
-				set("spriteNumber", EAST);
-			} else if (x < 0) {
-				set("spriteNumber", WEST);
-			} else {
-				return;
-			}
-			set("spriteCounter", (getInteger("spriteCounter") + 1) % 12);
+			setSprites(x, y);
 		}
 	}
 
@@ -98,10 +99,6 @@ public class Player extends Entity {
 	public void act(Level level, double dt) {
 		regenerate(dt);
 		move(level, dt);
-	}
-
-	@Override
-	public void onDeath(Level level) {
 	}
 
 	public Vector2D getVelocity() {

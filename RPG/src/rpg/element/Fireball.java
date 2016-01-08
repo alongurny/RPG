@@ -71,7 +71,7 @@ public class Fireball extends Element {
 	public void onCollision(Level level, Element other) {
 		if (other instanceof Entity && caster != other) {
 			Entity entity = (Entity) other;
-			entity.removeBarValue("health", 10);
+			entity.remove("health", 10);
 			entity.addEffect(new DisabledEffect(0.5));
 			level.removeDynamicElement(this);
 		} else if (!other.isPassable(level, this)) {

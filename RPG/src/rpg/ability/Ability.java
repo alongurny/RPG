@@ -2,6 +2,7 @@ package rpg.ability;
 
 import java.util.List;
 
+import rpg.Cost;
 import rpg.Mechanism;
 import rpg.Requirement;
 import rpg.element.entity.Entity;
@@ -42,5 +43,7 @@ public abstract class Ability extends Mechanism implements Drawable {
 	public abstract void onCast(Level level, Entity caster);
 
 	public abstract List<Requirement> getRequirements();
+
+	public abstract List<Cost> getCosts();
 
 }

@@ -3,12 +3,11 @@ package rpg.element.entity;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BooleanSupplier;
 
+import rpg.Cost;
 import rpg.Requirement;
 import rpg.ability.Ability;
 import rpg.element.Element;
@@ -21,7 +20,6 @@ import rpg.logic.level.Level;
 public abstract class Entity extends Element {
 
 	private Race race;
-	private Map<String, Bar> bars;
 	private Inventory inventory;
 	private List<Ability> abilities;
 	private List<Effect> effects;
@@ -31,9 +29,8 @@ public abstract class Entity extends Element {
 		set("race", race.get("race"));
 		set("direction", Vector2D.NORTH);
 		this.race = race;
-		this.bars = new HashMap<>();
-		bars.put("health", new Bar(getTotalNumber("maxHealth")));
-		bars.put("mana", new Bar(getTotalNumber("maxMana")));
+		setLimited("health", getTotalNumber("maxHealth"));
+		setLimited("mana", getTotalNumber("maxMana"));
 		inventory = new Inventory();
 		abilities = new CopyOnWriteArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
@@ -41,54 +38,36 @@ public abstract class Entity extends Element {
 
 	@Override
 	public void update(Level level, double dt) {
-		if (isAlive()) {
-			abilities.forEach(a -> a.update(level, dt));
-			effects.forEach(e -> e.update(level, dt));
-			effects.removeIf(e -> new BooleanSupplier() {
-				public boolean getAsBoolean() {
-					if (!e.isAffecting()) {
-						e.onEnd();
-						return true;
-					}
-					return false;
+		abilities.forEach(a -> a.update(level, dt));
+		effects.forEach(e -> e.update(level, dt));
+		effects.removeIf(e -> new BooleanSupplier() {
+			public boolean getAsBoolean() {
+				if (!e.isAffecting()) {
+					e.onEnd();
+					return true;
 				}
-			}.getAsBoolean());
-			act(level, dt);
-		} else {
-			onDeath(level);
-		}
-
+				return false;
+			}
+		}.getAsBoolean());
+		act(level, dt);
 	}
 
 	public abstract void act(Level level, double dt);
 
-	public Map<String, Bar> getBars() {
-		return new HashMap<>(bars);
+	public boolean isRequireable(String key, double value) {
+		return getDouble(key) >= value;
 	}
 
-	public void addBarValue(String name, double dvalue) {
-		bars.get(name).addValue(dvalue);
-	}
-
-	public void removeBarValue(String name, double dvalue) {
-		bars.get(name).addValue(-Math.min(dvalue, getBarValue(name)));
-	}
-
-	public boolean isRequireable(String name, double value) {
-		double current = getBarValue(name);
-		return current >= value;
-	}
-
-	public boolean tryRequire(String name, double value) {
-		if (!isRequireable(name, value)) {
+	public boolean tryRequire(String key, double value) {
+		if (!isRequireable(key, value)) {
 			return false;
 		}
-		addBarValue(name, -value);
+		set(key, getDouble(key) - value);
 		return true;
 	}
 
 	public boolean isAlive() {
-		return getBarValue("health") > 0;
+		return getDouble("health") > 0;
 	}
 
 	public double getTotalNumber(String key) {
@@ -117,11 +96,11 @@ public abstract class Entity extends Element {
 		drawEntity(g);
 		Rectangle rect = getRelativeRect();
 		int counter = 0;
-		List<String> keys = new ArrayList<>(bars.keySet());
+		List<String> keys = new ArrayList<>(Bar.getBound());
 		keys.sort(String.CASE_INSENSITIVE_ORDER);
 		for (String key : keys) {
 			if (Bar.isBound(key)) {
-				double percentage = getBarValue(key) / getBarMaximum(key);
+				double percentage = getDouble(key) / getMaximum(key);
 				Color[] colors = Bar.getColors(key);
 				g.setColor(colors[0]);
 				g.fillRect((int) rect.getX(), (int) rect.getHeight() + 8 * counter - 4,
@@ -135,24 +114,7 @@ public abstract class Entity extends Element {
 		}
 	}
 
-	public double getBarValue(String name) {
-		return bars.get(name).getValue();
-	}
-
-	public double getBarValue(String name, double defaultValue) {
-		Bar bar = bars.get(name);
-		return bar != null ? bar.getValue() : defaultValue;
-	}
-
-	public double getBarMaximum(String name) {
-		return bars.get(name).getMaximum();
-	}
-
 	protected abstract void drawEntity(Graphics g);
-
-	public void putBar(String name, Bar bar) {
-		bars.put(name, bar);
-	}
 
 	public void pick(Item item) {
 		inventory.add(item);
@@ -181,8 +143,8 @@ public abstract class Entity extends Element {
 					return false;
 				}
 			}
-			for (Requirement r : ability.getRequirements()) {
-				r.require(this);
+			for (Cost c : ability.getCosts()) {
+				c.cost(this);
 			}
 			return true;
 		}
@@ -221,7 +183,5 @@ public abstract class Entity extends Element {
 	public void addEffect(Effect effect) {
 		effects.add(effect);
 	}
-
-	public abstract void onDeath(Level level);
 
 }

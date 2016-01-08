@@ -32,7 +32,7 @@ public class Dragon extends Entity {
 	public Dragon(Vector2D location) {
 		super(location, Race.DRAGON);
 		addAbility(new FireballSpell(192));
-		putBar("mana", new Bar(100));
+		setLimited("mana", 100, 0, 100);
 	}
 
 	@Override
@@ -65,19 +65,18 @@ public class Dragon extends Entity {
 
 	@Override
 	public void act(Level level, double dt) {
-		for (Element d : level.getDynamicElements()) {
-			if (d instanceof Player) {
-				set("direction", d.getLocation().subtract(getLocation()).getUnitalVector());
-				tryCast(level, 0);
+		if (isAlive()) {
+			for (Element e : level.getDynamicElements()) {
+				if (e instanceof Player) {
+					set("direction", e.getLocation().subtract(getLocation()).getUnitalVector());
+					tryCast(level, 0);
+				}
 			}
+		} else {
+			level.addDynamicElement(new HealthPotion(getLocation()));
+			level.removeDynamicElement(this);
+			level.finish();
 		}
-	}
-
-	@Override
-	public void onDeath(Level level) {
-		level.addDynamicElement(new HealthPotion(getLocation()));
-		level.removeDynamicElement(this);
-		level.finish();
 	}
 
 }

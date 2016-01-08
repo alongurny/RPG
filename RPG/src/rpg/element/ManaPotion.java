@@ -24,7 +24,7 @@ public class ManaPotion extends Bonus {
 
 	@Override
 	protected void onPick(Entity picker) {
-		picker.addBarValue("mana", 20);
+		picker.add("mana", 20);
 	}
 
 	@Override

@@ -9,9 +9,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import rpg.Cost;
 import rpg.Requirement;
-import rpg.Requirement.AliveRequirement;
-import rpg.Requirement.BarRequirement;
 import rpg.element.entity.Entity;
 import rpg.logic.level.Level;
 
@@ -54,7 +53,12 @@ public class HasteSpell extends DurationSpell {
 
 	@Override
 	public List<Requirement> getRequirements() {
-		return Arrays.asList(new BarRequirement("mana", 1), new AliveRequirement());
+		return Arrays.asList(Requirement.atLeast("mana", 1), Entity::isAlive);
+	}
+
+	@Override
+	public List<Cost> getCosts() {
+		return Arrays.asList(Cost.bar("mana", 1));
 	}
 
 }

@@ -1,10 +1,7 @@
 package protocol;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,7 +21,6 @@ import rpg.ability.HasteSpell;
 import rpg.element.Bonus;
 import rpg.element.Fireball;
 import rpg.element.Portal;
-import rpg.element.entity.Bar;
 import rpg.element.entity.Entity;
 import rpg.exception.RPGException;
 import rpg.geometry.Vector2D;
@@ -48,7 +44,6 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 		Element element = (Element) root;
 		NodeList elements = element.getChildNodes();
 		AttributeSet set = new AttributeSet();
-		Map<String, Bar> bars = new HashMap<>();
 		List<Ability> abilities = new ArrayList<>();
 		for (int i = 0; i < elements.getLength(); i++) {
 			Element node = (Element) elements.item(i);
@@ -67,9 +62,6 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			case "string":
 				set.set(key, String.valueOf(nodeValue));
 				break;
-			case "Bar":
-				bars.put(key, new Bar(Double.parseDouble(nodeValue), Double.parseDouble(node.getAttribute("maximum"))));
-				break;
 			case "rpg.ability.FireballSpell":
 				abilities.add((FireballSpell) decode(node));
 				break;
@@ -87,9 +79,6 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			case "rpg.element.entity.Player":
 			case "rpg.element.entity.Dragon":
 				Entity entity = (Entity) thing;
-				for (Entry<String, Bar> entry : bars.entrySet()) {
-					entity.putBar(entry.getKey(), entry.getValue());
-				}
 				abilities.forEach(a -> entity.addAbility(a));
 				break;
 
@@ -118,14 +107,6 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 		} else if (thing instanceof Entity) {
 			Entity entity = (Entity) thing;
 			root.appendChild(encode0(entity.getInventory(), document));
-			Map<String, Bar> bars = entity.getBars();
-			for (Entry<String, Bar> entry : bars.entrySet()) {
-				org.w3c.dom.Element entryNode = document.createElement("Bar");
-				entryNode.setAttribute("key", entry.getKey());
-				entryNode.setAttribute("value", "" + entry.getValue().getValue());
-				entryNode.setAttribute("maximum", "" + entry.getValue().getMaximum());
-				root.appendChild(entryNode);
-			}
 			for (Ability a : entity.getAbilities()) {
 				root.appendChild(encode0(a, document));
 			}

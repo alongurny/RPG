@@ -68,9 +68,45 @@ public abstract class Thing {
 	}
 
 	private Map<String, Object> attributes;
+	private Map<String, Double> maxima;
+	private Map<String, Double> minima;
 
 	public Thing() {
 		this.attributes = new HashMap<>();
+		this.maxima = new HashMap<>();
+		this.minima = new HashMap<>();
+	}
+
+	public void setLimited(String key, double value) {
+		setLimited(key, value, 0, value);
+	}
+
+	public void setLimited(String key, double value, double minimum, double maximum) {
+		setMinimum(key, minimum);
+		setMaximum(key, maximum);
+		set(key, value);
+	}
+
+	public void setMinimum(String key, double minimum) {
+		minima.put(key, minimum);
+		if (hasKey(key)) {
+			set(key, getDouble(key));
+		}
+	}
+
+	public void setMaximum(String key, double maximum) {
+		maxima.put(key, maximum);
+		if (hasKey(key)) {
+			set(key, getDouble(key));
+		}
+	}
+
+	public void add(String key, double value) {
+		set(key, getDouble(key) + value);
+	}
+
+	public void remove(String key, double value) {
+		set(key, getDouble(key) - value);
 	}
 
 	public void set(String key, Object value) {
@@ -78,7 +114,14 @@ public abstract class Thing {
 			throw new RPGException("Type not allowed");
 		}
 		if (value instanceof Number) {
-			value = ((Number) value).doubleValue();
+			double doubleValue = ((Number) value).doubleValue();
+			if (minima.containsKey(key)) {
+				doubleValue = Math.max(getMinimum(key), doubleValue);
+			}
+			if (maxima.containsKey(key)) {
+				doubleValue = Math.min(getMaximum(key), doubleValue);
+			}
+			value = doubleValue;
 		}
 		attributes.put(key, value);
 	}
@@ -132,6 +175,14 @@ public abstract class Thing {
 
 	public double getDouble(String key, double defaultValue) {
 		return hasKey(key) ? (double) attributes.get(key) : defaultValue;
+	}
+
+	public double getMaximum(String key) {
+		return maxima.get(key);
+	}
+
+	public double getMinimum(String key) {
+		return minima.get(key);
 	}
 
 	public int getInteger(String key, int defaultValue) {
