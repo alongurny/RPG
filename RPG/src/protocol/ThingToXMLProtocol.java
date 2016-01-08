@@ -21,11 +21,9 @@ import rpg.Thing;
 import rpg.ability.Ability;
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
-import rpg.ability.RocketSpell;
 import rpg.element.Bonus;
 import rpg.element.Fireball;
 import rpg.element.Portal;
-import rpg.element.Rocket;
 import rpg.element.entity.Bar;
 import rpg.element.entity.Entity;
 import rpg.exception.RPGException;
@@ -46,10 +44,9 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 	}
 
 	@Override
-	public Thing decode(Node d) {
-		Element e = (Element) d;
-
-		NodeList elements = e.getChildNodes();
+	public Thing decode(Node root) {
+		Element element = (Element) root;
+		NodeList elements = element.getChildNodes();
 		AttributeSet set = new AttributeSet();
 		Map<String, Bar> bars = new HashMap<>();
 		List<Ability> abilities = new ArrayList<>();
@@ -79,17 +76,14 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			case "rpg.ability.HasteSpell":
 				abilities.add((HasteSpell) decode(node));
 				break;
-			case "rpg.ability.RocketSpell":
-				abilities.add((RocketSpell) decode(node));
-				break;
 			}
 		}
 		try {
-			Thing thing = Attribute.getThing(Class.forName(e.getTagName()), set);
+			Thing thing = Attribute.getThing(Class.forName(element.getTagName()), set);
 			for (String key : set.getKeys()) {
 				thing.set(key, set.get(key));
 			}
-			switch (e.getTagName()) {
+			switch (element.getTagName()) {
 			case "rpg.element.entity.Player":
 			case "rpg.element.entity.Dragon":
 				Entity entity = (Entity) thing;
@@ -120,8 +114,7 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			node.setAttribute("value", thing.get(key).toString());
 		}
 		if (thing instanceof Ability || thing instanceof Item || thing instanceof Bonus || thing instanceof Portal
-				|| thing instanceof Fireball || thing instanceof Rocket) {
-
+				|| thing instanceof Fireball) {
 		} else if (thing instanceof Entity) {
 			Entity entity = (Entity) thing;
 			root.appendChild(encode0(entity.getInventory(), document));

@@ -59,35 +59,45 @@ public class Player extends Entity {
 		return true;
 	}
 
-	@Override
-	public void act(Level level, double dt) {
-		Vector2D velocity = getVelocity().multiply(dt);
-		double x = velocity.getX();
-		double y = velocity.getY();
-		if (!level.tryMoveBy(this, velocity).isEmpty()) {
-			if (level.tryMoveBy(this, new Vector2D(0, y)).isEmpty()) {
-				x = 0;
-			} else if (level.tryMoveBy(this, new Vector2D(x, 0)).isEmpty()) {
-				y = 0;
-			} else {
-				x = 0;
-				y = 0;
-			}
-		}
+	private void regenerate(double dt) {
 		addBarValue("health", dt * getTotalNumber("healthRegen"));
 		addBarValue("mana", dt * getTotalNumber("manaRegen"));
-		if (y > 0) {
-			set("spriteNumber", SOUTH);
-		} else if (y < 0) {
-			set("spriteNumber", NORTH);
-		} else if (x > 0) {
-			set("spriteNumber", EAST);
-		} else if (x < 0) {
-			set("spriteNumber", WEST);
-		} else {
-			return;
+	}
+
+	private void move(Level level, double dt) {
+		if (!getTotalBoolean("disabled")) {
+			Vector2D velocity = getVelocity().multiply(dt);
+			double x = velocity.getX();
+			double y = velocity.getY();
+			if (!level.tryMoveBy(this, velocity)) {
+				if (level.tryMoveBy(this, new Vector2D(0, y))) {
+					x = 0;
+				} else if (level.tryMoveBy(this, new Vector2D(x, 0))) {
+					y = 0;
+				} else {
+					x = 0;
+					y = 0;
+				}
+			}
+			if (y > 0) {
+				set("spriteNumber", SOUTH);
+			} else if (y < 0) {
+				set("spriteNumber", NORTH);
+			} else if (x > 0) {
+				set("spriteNumber", EAST);
+			} else if (x < 0) {
+				set("spriteNumber", WEST);
+			} else {
+				return;
+			}
+			set("spriteCounter", (getInteger("spriteCounter") + 1) % 12);
 		}
-		set("spriteCounter", (getInteger("spriteCounter") + 1) % 12);
+	}
+
+	@Override
+	public void act(Level level, double dt) {
+		regenerate(dt);
+		move(level, dt);
 	}
 
 	@Override

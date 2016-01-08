@@ -2,7 +2,6 @@ package rpg.logic.level;
 
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
-import rpg.ability.RocketSpell;
 import rpg.element.Block;
 import rpg.element.entity.Player;
 import rpg.element.entity.Race;
@@ -19,7 +18,6 @@ public class Level1 extends Level {
 
 		Player player = new Player(new Vector2D(80, 100), Race.HUMAN);
 		player.addAbility(new FireballSpell(192));
-		player.addAbility(new RocketSpell(160));
 		player.addAbility(new HasteSpell());
 		addDynamicElement(player);
 		Grid grid = getMap();

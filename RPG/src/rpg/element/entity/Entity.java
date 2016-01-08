@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.BooleanSupplier;
 
 import rpg.Requirement;
 import rpg.ability.Ability;
@@ -23,6 +24,7 @@ public abstract class Entity extends Element {
 	private Map<String, Bar> bars;
 	private Inventory inventory;
 	private List<Ability> abilities;
+	private List<Effect> effects;
 
 	public Entity(Vector2D location, Race race) {
 		super(location);
@@ -34,16 +36,28 @@ public abstract class Entity extends Element {
 		bars.put("mana", new Bar(getTotalNumber("maxMana")));
 		inventory = new Inventory();
 		abilities = new CopyOnWriteArrayList<>();
+		effects = new CopyOnWriteArrayList<>();
 	}
 
 	@Override
 	public void update(Level level, double dt) {
 		if (isAlive()) {
-			abilities.forEach(p -> p.update(level, dt));
+			abilities.forEach(a -> a.update(level, dt));
+			effects.forEach(e -> e.update(level, dt));
+			effects.removeIf(e -> new BooleanSupplier() {
+				public boolean getAsBoolean() {
+					if (!e.isAffecting()) {
+						e.onEnd();
+						return true;
+					}
+					return false;
+				}
+			}.getAsBoolean());
 			act(level, dt);
 		} else {
 			onDeath(level);
 		}
+
 	}
 
 	public abstract void act(Level level, double dt);
@@ -83,6 +97,19 @@ public abstract class Entity extends Element {
 
 	public Vector2D getTotalVector(String key) {
 		return super.getVector(key, Vector2D.ZERO).add(race.getVector(key, Vector2D.ZERO));
+	}
+
+	private boolean getTotalBooleanFromEffects(String key) {
+		for (Effect e : effects) {
+			if (e.getBoolean(key, false)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean getTotalBoolean(String key) {
+		return super.getBoolean(key, false) || race.getBoolean(key, false) || getTotalBooleanFromEffects(key);
 	}
 
 	@Override
@@ -148,8 +175,7 @@ public abstract class Entity extends Element {
 	}
 
 	public boolean makeCastable(Ability ability) {
-		boolean noCooldown = ability.getCooldown() == 0;
-		if (noCooldown) {
+		if (!ability.hasCooldown()) {
 			for (Requirement r : ability.getRequirements()) {
 				if (!r.isRequireable(this)) {
 					return false;
@@ -160,13 +186,11 @@ public abstract class Entity extends Element {
 			}
 			return true;
 		}
-
 		return false;
 	}
 
 	public boolean isCastable(Ability ability) {
-		boolean noCooldown = ability.getCooldown() == 0;
-		if (noCooldown) {
+		if (!ability.hasCooldown()) {
 			for (Requirement r : ability.getRequirements()) {
 				if (!r.isRequireable(this)) {
 					return false;
@@ -192,6 +216,10 @@ public abstract class Entity extends Element {
 
 	public boolean tryCast(Level level, int i) {
 		return tryCast(level, getAbility(i));
+	}
+
+	public void addEffect(Effect effect) {
+		effects.add(effect);
 	}
 
 	public abstract void onDeath(Level level);

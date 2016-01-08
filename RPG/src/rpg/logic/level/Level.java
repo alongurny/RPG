@@ -27,23 +27,23 @@ public class Level {
 		timer = new Timer();
 	}
 
-	public List<Element> tryMoveBy(Element element, Vector2D displacement) {
+	public boolean tryMoveBy(Element element, Vector2D displacement) {
 		return tryMove(element, element.getLocation().add(displacement));
 	}
 
-	public List<Element> tryMove(Element element, Vector2D target) {
+	public boolean tryMove(Element element, Vector2D target) {
 		List<Element> obstacles = getObstacles(element, target);
 		if (obstacles.isEmpty()) {
 			element.setLocation(target);
 		}
-		return obstacles;
+		return obstacles.isEmpty();
 	}
 
 	public void interact(Entity entity, Interactive interactive) {
 		interactive.onInteract(this, entity);
 	}
 
-	private List<Element> getObstacles(Element element, Vector2D target) {
+	public List<Element> getObstacles(Element element, Vector2D target) {
 		Rectangle oldRect = element.getAbsoluteRect();
 		double x = target.getX() - element.getLocation().getX() + oldRect.getX();
 		double y = target.getY() - element.getLocation().getY() + oldRect.getY();
