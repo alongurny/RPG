@@ -150,7 +150,9 @@ public abstract class Thing {
 	}
 
 	public double getDouble(String key) {
-		return (double) attributes.get(key);
+		if (hasKey(key) && getType(key) == KeyType.DOUBLE)
+			return (double) attributes.get(key);
+		throw new RPGException("Key " + key + " does not map to a double value");
 
 	}
 

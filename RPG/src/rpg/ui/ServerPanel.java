@@ -81,7 +81,7 @@ public class ServerPanel extends JPanel {
 		int x = (int) (e.getLocation().getX()) - sourceX;
 		int y = (int) (e.getLocation().getY()) - sourceY;
 		g.translate(x, y);
-		e.draw(g);
+		e.getDrawer().draw(g);
 		g.translate(-x, -y);
 	}
 

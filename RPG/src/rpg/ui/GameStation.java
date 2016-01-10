@@ -3,14 +3,12 @@ package rpg.ui;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 
-import rpg.logic.Game;
-
 public abstract class GameStation {
 
 	private GameBoard gameBoard;
 
-	public GameStation(Game game, int num) {
-		gameBoard = new GameBoard(480, 528, game, num);
+	public GameStation(int num) {
+		gameBoard = new GameBoard(480, 528, num);
 		gameBoard.setLocation(500, 40);
 		gameBoard.setAlwaysOnTop(true);
 	}

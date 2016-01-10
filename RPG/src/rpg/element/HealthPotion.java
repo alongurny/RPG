@@ -1,25 +1,18 @@
 package rpg.element;
 
-import java.awt.Graphics;
-
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Sprite;
-import rpg.graphics.Tileset;
+import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class HealthPotion extends Bonus {
 
-	private static final Sprite sprite = Sprite.get(Tileset.get(0), 25, 2);
+	private static final Sprite sprite = new Sprite(0, 25, 2);
 
 	public HealthPotion(Vector2D location) {
 		super(location);
-	}
-
-	@Override
-	public void draw(Graphics g) {
-		sprite.draw(g, 0);
 	}
 
 	@Override
@@ -40,6 +33,11 @@ public class HealthPotion extends Bonus {
 	@Override
 	public void update(Level level, double dt) {
 
+	}
+
+	@Override
+	public Drawer getDrawer() {
+		return sprite;
 	}
 
 }

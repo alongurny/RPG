@@ -1,36 +1,20 @@
 package rpg.element;
 
-import java.awt.Graphics;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.draw.Drawer;
+import rpg.graphics.draw.RotatedImageDrawer;
 import rpg.logic.level.Level;
 
 public class Fireball extends Element {
 
-	private static BufferedImage image;
-	public static int width, height;
+	private static int width = 32, height = 32;
 
 	private static double defaultAngle = Math.toRadians(-90);
 	private Entity caster;
-
-	static {
-		try {
-			image = ImageIO.read(new File("img/fireball.gif"));
-			width = image.getWidth(null) / 2;
-			height = image.getHeight(null) / 2;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	public Fireball(Entity caster, Vector2D location, Vector2D direction, double speed) {
 		super(location);
@@ -46,13 +30,10 @@ public class Fireball extends Element {
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	public Drawer getDrawer() {
 		Vector2D direction = getVector("direction");
-		double theta = Math.atan2(direction.getY(), direction.getX());
-		AffineTransform at = new AffineTransform();
-		at.rotate(theta + defaultAngle, image.getWidth(null) / 2, image.getHeight(null) / 2);
-		AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-		g.drawImage(op.filter(image, null), -width / 2, -height / 2, width, height, null);
+		double angle = Math.atan2(direction.getY(), direction.getX()) + defaultAngle;
+		return new RotatedImageDrawer("img/fireball.gif", width, height, angle);
 	}
 
 	@Override

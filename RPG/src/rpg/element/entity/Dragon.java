@@ -1,6 +1,5 @@
 package rpg.element.entity;
 
-import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +11,7 @@ import rpg.element.Element;
 import rpg.element.HealthPotion;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.draw.Drawable;
 import rpg.logic.level.Level;
 
 public class Dragon extends Entity {
@@ -31,13 +31,13 @@ public class Dragon extends Entity {
 
 	public Dragon(Vector2D location) {
 		super(location, Race.DRAGON);
-		addAbility(new FireballSpell(192));
+		addAbility(new FireballSpell());
 		setLimited("mana", 100, 0, 100);
 	}
 
 	@Override
-	protected void drawEntity(Graphics g) {
-		g.drawImage(image, -width / 2, -height / 2, width, height, null);
+	protected Drawable getEntityDrawer() {
+		return g -> g.drawImage(image, -width / 2, -height / 2, width, height, null);
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package rpg.logic;
 import java.util.ArrayList;
 import java.util.List;
 
-import rpg.element.Air;
 import rpg.element.Element;
 import rpg.geometry.Vector2D;
 
@@ -16,7 +15,6 @@ public class Grid {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				elements[i][j] = new ElementContainer();
-				elements[i][j].add(new Air(getLocation(i, j)));
 			}
 		}
 	}

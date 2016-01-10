@@ -1,27 +1,16 @@
 package rpg.element.entity;
 
-import java.awt.Graphics;
-
 import rpg.element.Element;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.Sprite;
-import rpg.graphics.Tileset;
+import rpg.graphics.draw.Drawable;
+import rpg.graphics.draw.IconDrawer;
 import rpg.logic.level.Level;
 
 public class Player extends Entity {
 
-	private Sprite[] sprites;
-	private static final int NORTH = 3, SOUTH = 0, WEST = 1, EAST = 2;
-
 	public Player(Vector2D location, Race race) {
 		super(location, race);
-		sprites = new Sprite[4];
-		for (int i = 0; i < sprites.length; i++) {
-			sprites[i] = Sprite.get(Tileset.get(1), i, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2);
-		}
-		set("spriteNumber", NORTH);
-		set("spriteCounter", 0);
 	}
 
 	public Player(Vector2D location, String race) {
@@ -29,8 +18,8 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public void drawEntity(Graphics g) {
-		sprites[getInteger("spriteNumber")].draw(g, getInteger("spriteCounter"));
+	public Drawable getEntityDrawer() {
+		return new IconDrawer("img/player.png", 32, 32);
 	}
 
 	public void step() {
@@ -57,23 +46,10 @@ public class Player extends Entity {
 	}
 
 	private void regenerate(double dt) {
-		add("health", dt * getTotalNumber("healthRegen"));
-		add("mana", dt * getTotalNumber("manaRegen"));
-	}
-
-	private void setSprites(double x, double y) {
-		if (y > 0) {
-			set("spriteNumber", SOUTH);
-		} else if (y < 0) {
-			set("spriteNumber", NORTH);
-		} else if (x > 0) {
-			set("spriteNumber", EAST);
-		} else if (x < 0) {
-			set("spriteNumber", WEST);
-		} else {
-			return;
+		if (isAlive()) {
+			add("health", dt * getTotalNumber("healthRegen"));
+			add("mana", dt * getTotalNumber("manaRegen"));
 		}
-		set("spriteCounter", (getInteger("spriteCounter") + 1) % 12);
 	}
 
 	private void move(Level level, double dt) {
@@ -91,7 +67,6 @@ public class Player extends Entity {
 					y = 0;
 				}
 			}
-			setSprites(x, y);
 		}
 	}
 

@@ -10,12 +10,6 @@ import javax.imageio.ImageIO;
 
 public class Tileset {
 
-	private BufferedImage image;
-
-	private Tileset(BufferedImage image) {
-		this.image = image;
-	}
-
 	private static List<Tileset> tilesets;
 
 	static {
@@ -34,6 +28,12 @@ public class Tileset {
 
 	public static Tileset get(int index) {
 		return tilesets.get(index);
+	}
+
+	private BufferedImage image;
+
+	private Tileset(BufferedImage image) {
+		this.image = image;
 	}
 
 	public BufferedImage subimage(int row, int column) {

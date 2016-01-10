@@ -13,6 +13,8 @@ import rpg.ability.Ability;
 import rpg.element.Element;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.draw.Drawable;
+import rpg.graphics.draw.Drawer;
 import rpg.item.Inventory;
 import rpg.item.Item;
 import rpg.logic.level.Level;
@@ -92,30 +94,36 @@ public abstract class Entity extends Element {
 		return super.getBoolean(key, false) || race.getBoolean(key, false) || getTotalBooleanFromEffects(key);
 	}
 
-	@Override
-	public void draw(Graphics g) {
-		drawEntity(g);
-		Rectangle rect = getRelativeRect();
-		int counter = 0;
-		List<String> keys = new ArrayList<>(Bar.getBound());
-		keys.sort(String.CASE_INSENSITIVE_ORDER);
-		for (String key : keys) {
-			if (Bar.isBound(key)) {
-				double percentage = getDouble(key) / getMaximum(key);
-				Color[] colors = Bar.getColors(key);
-				g.setColor(colors[0]);
-				g.fillRect((int) rect.getX(), (int) rect.getHeight() + 8 * counter - 4,
-						(int) (rect.getWidth() * percentage), 4);
-				g.setColor(colors[1]);
-				g.fillRect((int) (rect.getWidth() * percentage) + (int) (rect.getX()),
-						(int) rect.getHeight() + 8 * counter - 4,
-						(int) rect.getWidth() - (int) (rect.getWidth() * percentage), 4);
-				counter++;
-			}
-		}
-	}
+	protected abstract Drawable getEntityDrawer();
 
-	protected abstract void drawEntity(Graphics g);
+	@Override
+	public Drawer getDrawer() {
+		return new Drawer() {
+
+			@Override
+			public void draw(Graphics g) {
+				getEntityDrawer().draw(g);
+				Rectangle rect = getRelativeRect();
+				int counter = 0;
+				List<String> keys = new ArrayList<>(Bar.getBound());
+				keys.sort(String.CASE_INSENSITIVE_ORDER);
+				for (String key : keys) {
+					if (Bar.isBound(key)) {
+						double percentage = Entity.this.getDouble(key) / Entity.this.getMaximum(key);
+						Color[] colors = Bar.getColors(key);
+						g.setColor(colors[0]);
+						g.fillRect((int) rect.getX(), (int) rect.getHeight() + 8 * counter - 4,
+								(int) (rect.getWidth() * percentage), 4);
+						g.setColor(colors[1]);
+						g.fillRect((int) (rect.getWidth() * percentage) + (int) (rect.getX()),
+								(int) rect.getHeight() + 8 * counter - 4,
+								(int) rect.getWidth() - (int) (rect.getWidth() * percentage), 4);
+						counter++;
+					}
+				}
+			}
+		};
+	}
 
 	public void pick(Item item) {
 		inventory.add(item);

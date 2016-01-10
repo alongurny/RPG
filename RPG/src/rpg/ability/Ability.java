@@ -6,10 +6,12 @@ import rpg.Cost;
 import rpg.Mechanism;
 import rpg.Requirement;
 import rpg.element.entity.Entity;
+import rpg.element.entity.Player;
+import rpg.graphics.draw.AbilityDrawer;
+import rpg.graphics.draw.Drawable;
 import rpg.logic.level.Level;
-import rpg.ui.Drawable;
 
-public abstract class Ability extends Mechanism implements Drawable {
+public abstract class Ability extends Mechanism {
 
 	public static final int WIDTH = 32;
 	public static final int HEIGHT = 32;
@@ -45,5 +47,9 @@ public abstract class Ability extends Mechanism implements Drawable {
 	public abstract List<Requirement> getRequirements();
 
 	public abstract List<Cost> getCosts();
+
+	public Drawable getDrawer(Player player) {
+		return new AbilityDrawer(getDouble("cooldown"), getDouble("maxCooldown"), player.isCastable(this));
+	}
 
 }

@@ -1,11 +1,10 @@
 package rpg.element;
 
-import java.awt.Graphics;
-
 import rpg.Interactive;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.draw.Drawer;
 import rpg.item.Item;
 import rpg.logic.level.Level;
 
@@ -16,11 +15,6 @@ public class ItemHolder extends Element implements Interactive {
 	public ItemHolder(Vector2D location, Item item) {
 		super(location);
 		this.item = item;
-	}
-
-	@Override
-	public void draw(Graphics g) {
-		item.draw(g);
 	}
 
 	@Override
@@ -58,6 +52,11 @@ public class ItemHolder extends Element implements Interactive {
 	@Override
 	public boolean isInteractable(Level level, Entity entity) {
 		return getAbsoluteRect().intersects(entity.getAbsoluteRect());
+	}
+
+	@Override
+	public Drawer getDrawer() {
+		return null;
 	}
 
 }

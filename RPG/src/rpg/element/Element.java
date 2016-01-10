@@ -6,10 +6,10 @@ import java.util.Map;
 import rpg.Mechanism;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
-import rpg.ui.Drawable;
 
-public abstract class Element extends Mechanism implements Drawable {
+public abstract class Element extends Mechanism {
 
 	private static int counter = 0;
 	private static Map<Integer, Element> ids = new HashMap<>();
@@ -50,6 +50,8 @@ public abstract class Element extends Mechanism implements Drawable {
 	public static double distance(Element a, Element b) {
 		return Vector2D.distance(a.getLocation(), b.getLocation());
 	}
+
+	public abstract Drawer getDrawer();
 
 	public static Element getByID(int id) {
 		return ids.get(id);

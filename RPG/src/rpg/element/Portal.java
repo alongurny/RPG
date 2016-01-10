@@ -1,32 +1,17 @@
 package rpg.element;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.net.MalformedURLException;
-
-import javax.swing.ImageIcon;
-
 import rpg.Interactive;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.draw.Drawer;
+import rpg.graphics.draw.IconDrawer;
 import rpg.logic.level.Level;
 
 public class Portal extends Element implements Interactive {
 
-	private static Image image;
-	private static int width, height;
-
-	static {
-		try {
-			image = new ImageIcon(new File("img/portal.gif").toURI().toURL()).getImage();
-			width = 32;
-			height = 32;
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-	}
+	private static int width = 32, height = 32;
+	private static Drawer drawer = new IconDrawer("img/portal.gif", width, height);
 
 	public static Portal[] getPair(Vector2D v1, Vector2D v2) {
 		Portal p1 = new Portal(v1, v2);
@@ -45,8 +30,8 @@ public class Portal extends Element implements Interactive {
 	}
 
 	@Override
-	public void draw(Graphics g) {
-		g.drawImage(image, -width / 2, -height / 2, width, height, null);
+	public Drawer getDrawer() {
+		return drawer;
 	}
 
 	@Override

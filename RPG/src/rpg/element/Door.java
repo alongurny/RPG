@@ -1,38 +1,19 @@
 package rpg.element;
 
-import java.awt.Graphics;
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import rpg.Interactive;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.draw.Drawer;
+import rpg.graphics.draw.IconDrawer;
 import rpg.item.MasterKey;
 import rpg.logic.level.Level;
 
 public class Door extends Element implements Interactive {
 
-	private static Image openImage, closedImage;
-	private static int width, height;
-
-	static {
-		width = 32;
-		height = 32;
-		try {
-			openImage = ImageIO.read(new File("img/openDoor.png"));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		try {
-			closedImage = ImageIO.read(new File("img/closedDoor.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	private static int width = 32, height = 32;
+	private static Drawer openDrawer = new IconDrawer("img/openDoor.png", width, height);
+	private static Drawer closedDrawer = new IconDrawer("img/closedDrawer.png", width, height);
 
 	public Door(Vector2D location) {
 		super(location);
@@ -43,9 +24,8 @@ public class Door extends Element implements Interactive {
 	}
 
 	@Override
-	public void draw(Graphics g) {
-		Image image = isOpen() ? openImage : closedImage;
-		g.drawImage(image, -width / 2, -height / 2, width, height, null);
+	public Drawer getDrawer() {
+		return isOpen() ? openDrawer : closedDrawer;
 	}
 
 	@Override

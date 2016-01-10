@@ -7,7 +7,6 @@ import java.util.Map;
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
 import rpg.ability.IceBlockSpell;
-import rpg.element.Air;
 import rpg.element.Block;
 import rpg.element.Door;
 import rpg.element.Fireball;
@@ -33,7 +32,6 @@ public class Attribute {
 	private static Map<Class<? extends Thing>, Attribute[]> map = new HashMap<>();
 
 	static {
-		register(Air.class, Attribute.LOCATION);
 		register(Block.class, Attribute.LOCATION);
 		register(Dragon.class, Attribute.LOCATION);
 		register(Player.class, PLAYER);

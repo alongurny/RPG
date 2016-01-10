@@ -1,10 +1,7 @@
 package rpg.network;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -132,7 +129,7 @@ public class GameClient implements KeyListener, MultiKeyListener {
 						String data = e.getMessage().getData();
 						if (data.startsWith("your number is ")) {
 							client.num = Integer.parseInt(data.replace("your number is ", ""));
-							GameStation gs = new GameStation(game, client.num) {
+							GameStation gs = new GameStation(client.num) {
 								@Override
 								public void run() {
 									client.sendCommands();
@@ -142,14 +139,18 @@ public class GameClient implements KeyListener, MultiKeyListener {
 							keyTracker.addMultiKeyListener(client);
 							gs.addKeyListener(keyTracker);
 							gs.addKeyListener(client);
-							gs.addMouseListener(new MouseAdapter() {
-								@Override
-								public void mouseClicked(MouseEvent e) {
-									Point offset = gs.getBoard().getPanel().getOffset();
-									client.commands.add(new NetworkCommand(String.format("player %s setTarget %s",
-											client.num, new Vector2D(e.getX() + offset.x, e.getY() + offset.y))));
-								}
-							});
+							// gs.addMouseListener(new MouseAdapter() {
+							// @Override
+							// public void mouseClicked(MouseEvent e) {
+							// Point offset =
+							// gs.getBoard().getPanel().getOffset();
+							// client.commands.add(new
+							// NetworkCommand(String.format("player %s setTarget
+							// %s",
+							// client.num, new Vector2D(e.getX() + offset.x,
+							// e.getY() + offset.y))));
+							// }
+							// });
 							gs.start();
 						}
 					}

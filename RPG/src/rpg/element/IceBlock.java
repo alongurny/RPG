@@ -1,20 +1,14 @@
 package rpg.element;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Sprite;
-import rpg.graphics.Tileset;
+import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class IceBlock extends Element {
 
-	private static final Sprite sprite = Sprite.get(Tileset.get(0), 16, 27);
-	private static final BufferedImage image = sprite.get(0);
+	private static final Sprite sprite = new Sprite(0, 16, 27);
 
 	public IceBlock(Vector2D location, double size) {
 		super(location);
@@ -22,11 +16,8 @@ public class IceBlock extends Element {
 	}
 
 	@Override
-	public void draw(Graphics g) {
-		int size = (int) getDouble("size");
-		((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75f));
-		g.drawImage(image, -size / 2, -size / 2, size, size, null);
-		((Graphics2D) g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+	public Drawer getDrawer() {
+		return sprite;
 	}
 
 	@Override

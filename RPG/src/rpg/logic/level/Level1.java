@@ -17,7 +17,7 @@ public class Level1 extends Level {
 		super(ROWS, COLUMNS);
 
 		Player player = new Player(new Vector2D(80, 100), Race.HUMAN);
-		player.addAbility(new FireballSpell(192));
+		player.addAbility(new FireballSpell());
 		player.addAbility(new HasteSpell());
 		addDynamicElement(player);
 		Grid grid = getGrid();

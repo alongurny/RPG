@@ -1,24 +1,22 @@
 package rpg.element;
 
-import java.awt.Graphics;
-
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Sprite;
-import rpg.graphics.Tileset;
+import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class Block extends Element {
 
-	private static final Sprite sprite = Sprite.get(Tileset.get(0), 13, 23);
+	private static final Sprite sprite = new Sprite(0, 13, 23);
 
 	public Block(Vector2D location) {
 		super(location);
 	}
 
 	@Override
-	public void draw(Graphics g) {
-		sprite.draw(g, 0);
+	public Drawer getDrawer() {
+		return sprite;
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import rpg.Interactive;
-import rpg.element.Air;
 import rpg.element.Element;
 import rpg.element.entity.Entity;
 import rpg.element.entity.Player;
@@ -186,10 +185,6 @@ public class Level {
 		return grid.getElements();
 	}
 
-	public boolean removeStaticElement(Element e) {
-		return grid.remove(e);
-	}
-
 	public void addTimer(double time, Runnable run) {
 		timer.add(time, run);
 	}
@@ -212,7 +207,7 @@ public class Level {
 		List<Element> elements = new ArrayList<>(this.elements);
 		elements.addAll(getStaticElements());
 		elements.sort((a, b) -> a.getIndex() - b.getIndex());
-		elements.removeIf(e -> e instanceof Air || !e.getAbsoluteRect().contains(target));
+		elements.removeIf(e -> !e.getAbsoluteRect().contains(target));
 		return elements;
 	}
 }
