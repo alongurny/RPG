@@ -2,10 +2,8 @@ package rpg.graphics.draw;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
+import rpg.element.entity.ImageResource;
 
 public class IconDrawer extends Drawer {
 
@@ -18,11 +16,7 @@ public class IconDrawer extends Drawer {
 		set("height", height);
 		this.width = width;
 		this.height = height;
-		try {
-			this.image = ImageIO.read(new File(path).toURI().toURL());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.image = ImageResource.get(path).getImage();
 	}
 
 	@Override

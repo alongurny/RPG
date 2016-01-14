@@ -19,7 +19,6 @@ import rpg.element.Element;
 import rpg.element.entity.Entity;
 import rpg.exception.RPGException;
 import rpg.geometry.Vector2D;
-import rpg.graphics.draw.Drawer;
 import rpg.item.Inventory;
 import rpg.item.Item;
 
@@ -79,7 +78,6 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 				Entity entity = (Entity) thing;
 				abilities.forEach(a -> entity.addAbility(a));
 				break;
-
 			}
 			return thing;
 		} catch (ClassNotFoundException ex) {
@@ -100,7 +98,7 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			node.setAttribute("key", key);
 			node.setAttribute("value", thing.get(key).toString());
 		}
-		if (thing instanceof Ability || thing instanceof Item || thing instanceof Drawer) {
+		if (thing instanceof Ability || thing instanceof Item) {
 		} else if (thing instanceof Element) {
 			if (thing instanceof Entity) {
 				Entity entity = (Entity) thing;
@@ -118,5 +116,6 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			throw new RPGException("No match for " + thing.getClass());
 		}
 		return root;
+
 	}
 }

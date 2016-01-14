@@ -1,105 +1,73 @@
 package rpg.ui;
 
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import rpg.element.Element;
-import rpg.graphics.draw.Drawable;
+import rpg.geometry.Vector2D;
+import rpg.graphics.draw.Drawer;
 
 public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = -435064221993994993L;
 
 	private static BufferedImage background;
-	private int num;
-	private List<Drawable> drawables;
-	private Point offset;
+	private List<Drawer> drawers;
+	private List<Drawer> buffer;
+	private List<Drawer> statics;
 
-	public GamePanel(int num) {
-		this.drawables = new ArrayList<>();
-		this.num = num;
+	public GamePanel() {
+		this.drawers = new CopyOnWriteArrayList<>();
+		this.buffer = new CopyOnWriteArrayList<>();
+		this.statics = new CopyOnWriteArrayList<>();
 		setFocusable(true);
 		try {
 			background = ImageIO.read(new File("img/background.jpg"));
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
-	public void addDrawable(Drawable drawable) {
-		drawables.add(drawable);
+	public void flush() {
+		drawers.clear();
+		drawers.addAll(buffer);
+		buffer.clear();
+	}
+
+	public void addDrawer(Drawer drawer) {
+		buffer.add(drawer);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		// g.drawImage(background, 0, 0, null);
-		// // calculateOffset();
-		// List<Element> dynamics = game.getLevel().getDynamicElements();
-		// dynamics.sort((a, b) -> a.getIndex() - b.getIndex());
-		// Queue<Element> dyn = new ArrayDeque<>(dynamics);
-		// List<Element> statics = game.getLevel().getStaticElements();
-		// statics.sort((a, b) -> a.getIndex() - b.getIndex());
-		// Queue<Element> stt = new ArrayDeque<>(statics);
-		// while (!dyn.isEmpty() && !stt.isEmpty()) {
-		// Element s = stt.peek();
-		// Element d = dyn.peek();
-		// if (s.getIndex() < d.getIndex()) {
-		// drawElement(g, stt.remove());
-		// } else {
-		// drawElement(g, dyn.remove());
-		// }
-		// }
-		// while (!stt.isEmpty()) {
-		// drawElement(g, stt.remove());
-		// }
-		// while (!dyn.isEmpty()) {
-		// drawElement(g, dyn.remove());
-		// }
-		// g.translate(0, getHeight() - 48);
-		// g.setColor(new Color(0, 255, 0, 127));
-		// g.fillRect(0, 0, getWidth(), 48);
-		// g.translate(10, 10);
-		// for (Drawable d : drawables) {
-		// d.draw(g);
-		// g.translate(0, 64);
-		// }
+		g.drawImage(background, 0, 0, null);
+		for (Drawer drawer : drawers) {
+			drawDrawer(g, drawer);
+		}
+		for (Drawer drawer : statics) {
+			drawDrawer(g, drawer);
+		}
 	}
 
-	private static int limit(int min, int max, int value) {
-		if (min > value) {
-			return min;
-		}
-		if (max < value) {
-			return max;
-		}
-		return value;
-	}
-
-	public void drawElement(Graphics g, Element e) {
-		int x = (int) (e.getLocation().getX()) - offset.x;
-		int y = (int) (e.getLocation().getY()) - offset.y;
+	private void drawDrawer(Graphics g, Drawer drawer) {
+		Vector2D location = drawer.getVector("location");
+		int x = (int) location.getX();
+		int y = (int) location.getY();
 		g.translate(x, y);
-		e.getDrawer().draw(g);
+		drawer.draw(g);
 		g.translate(-x, -y);
 	}
 
-	// private void calculateOffset() {
-	// Vector2D loc = getPlayer().getLocation();
-	// Grid grid = game.getLevel().getGrid();
-	// int x = limit(-32, grid.getWidth() - getWidth() + 32, (int) loc.getX() -
-	// getWidth() / 2);
-	// int y = limit(-32, grid.getHeight() - getHeight() + 32, (int) loc.getY()
-	// - getHeight() / 2);
-	// offset = new Point(x, y);
-	// }
+	public void addStaticDrawer(Drawer drawer) {
+		System.out.println("added");
+		statics.add(drawer);
+	}
 
 }

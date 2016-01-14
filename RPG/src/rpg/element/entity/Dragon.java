@@ -1,43 +1,29 @@
 package rpg.element.entity;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.ImageIcon;
-
 import rpg.ability.FireballSpell;
 import rpg.element.Element;
 import rpg.element.HealthPotion;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.draw.Drawable;
+import rpg.graphics.draw.Drawer;
+import rpg.graphics.draw.IconDrawer;
 import rpg.logic.level.Level;
 
 public class Dragon extends Entity {
+	private static int width = 32, height = 32;
 
-	private static Image image;
-	private static int width, height;
-
-	static {
-		try {
-			image = new ImageIcon(new File("img/dragon.png").toURI().toURL()).getImage();
-			width = image.getWidth(null) / 2;
-			height = image.getHeight(null) / 2;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	private Drawer drawer;
 
 	public Dragon(Vector2D location) {
 		super(location, Race.DRAGON);
 		addAbility(new FireballSpell());
 		setLimited("mana", 100, 0, 100);
+		drawer = new IconDrawer("img/dragon.png", 32, 32);
 	}
 
 	@Override
-	protected Drawable getEntityDrawer() {
-		return g -> g.drawImage(image, -width / 2, -height / 2, width, height, null);
+	protected Drawer getEntityDrawer() {
+		return drawer;
 	}
 
 	@Override

@@ -3,11 +3,13 @@ package rpg.element.entity;
 import rpg.element.Element;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.draw.Drawable;
+import rpg.graphics.draw.Drawer;
 import rpg.graphics.draw.IconDrawer;
 import rpg.logic.level.Level;
 
 public class Player extends Entity {
+
+	private Drawer drawer = new IconDrawer("img/player.png", 32, 32);
 
 	public Player(Vector2D location, Race race) {
 		super(location, race);
@@ -18,8 +20,8 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public Drawable getEntityDrawer() {
-		return new IconDrawer("img/player.png", 32, 32);
+	public Drawer getEntityDrawer() {
+		return drawer;
 	}
 
 	public void step() {

@@ -2,15 +2,25 @@ package rpg.ui;
 
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.Socket;
 
-public abstract class GameStation {
+import rpg.network.GameClient;
+
+public class GameStation {
 
 	private GameBoard gameBoard;
+	private GameClient client;
 
-	public GameStation(int num) {
-		gameBoard = new GameBoard(480, 528, num);
+	public GameStation(Socket socket) throws IOException {
+		gameBoard = new GameBoard(480, 528);
 		gameBoard.setLocation(500, 40);
 		gameBoard.setAlwaysOnTop(true);
+		client = new GameClient(gameBoard.getPanel(), socket);
+		KeyTracker tracker = new KeyTracker();
+		tracker.addMultiKeyListener(client);
+		addKeyListener(client);
+		addKeyListener(tracker);
 	}
 
 	public GameBoard getBoard() {
@@ -37,7 +47,9 @@ public abstract class GameStation {
 		}).start();
 	}
 
-	public abstract void run();
+	public void run() {
+		client.sendCommands();
+	}
 
 	public void addMouseListener(MouseListener listener) {
 		gameBoard.setFocusable(true);

@@ -62,14 +62,14 @@ public class ChatClient implements Closeable {
 		}
 		state = State.LISTENING;
 		new Thread(() -> {
-			Message m;
+			Message message;
 			do {
-				m = receive();
-				if (m == null) {
+				message = receive();
+				if (message == null) {
 					break;
 				}
-				for (MessageListener ml : messageListeners) {
-					ml.onReceive(new MessageEvent(m));
+				for (MessageListener listener : messageListeners) {
+					listener.onReceive(new MessageEvent(message));
 				}
 			} while (state == State.LISTENING);
 			disconnectListeners.forEach(cl -> cl.onDisconnect(new ConnectionEvent()));
@@ -104,8 +104,8 @@ public class ChatClient implements Closeable {
 		disconnectListeners.remove(listener);
 	}
 
-	public void send(Message m) {
-		out.println(protocol.encode(m));
+	public void send(Message message) {
+		out.println(protocol.encode(message));
 	}
 
 	private Message receive() {

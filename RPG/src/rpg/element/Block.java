@@ -8,10 +8,11 @@ import rpg.logic.level.Level;
 
 public class Block extends Element {
 
-	private static final Sprite sprite = new Sprite(0, 13, 23);
+	private Sprite sprite;
 
 	public Block(Vector2D location) {
 		super(location);
+		sprite = new Sprite(0, 13, 23);
 	}
 
 	@Override

@@ -19,8 +19,6 @@ import rpg.ui.ServerStation;
 import tcp.chat.ChatServer;
 import tcp.chat.message.Message;
 import tcp.chat.message.Message.Source;
-import tcp.chat.message.Message.Target;
-import tcp.chat.message.Message.Type;
 
 public class GameServer {
 
@@ -28,14 +26,21 @@ public class GameServer {
 	private ChatServer server;
 	private Timer timer;
 	private Game game;
-	private int counter = 0;
 	private ThingToStringProtocol protocol;
+	private boolean sendStatics = false;
 
 	public GameServer(Game game) throws IOException {
 		received = new CopyOnWriteArrayList<>();
 		timer = new Timer();
 		server = new ChatServer();
 		protocol = new ThingToStringProtocol();
+		server.addConnectListener(new ConnectListener() {
+
+			@Override
+			public void onConnect(ConnectionEvent e) {
+				sendStatics = true;
+			}
+		});
 		server.addMessageListener(new MessageListener() {
 			@Override
 			public void onReceive(MessageEvent e) {
@@ -48,7 +53,6 @@ public class GameServer {
 	public void start() {
 		server.start();
 		timer.schedule(new TimerTask() {
-
 			@Override
 			public void run() {
 				for (NetworkCommand c : received) {
@@ -69,7 +73,13 @@ public class GameServer {
 	private void send() {
 		server.send(Message.data(Source.SERVER, "start"));
 		for (Element e : game.getLevel().getDynamicElements()) {
-			server.send(Message.data(Source.SERVER, "xml-element " + protocol.encode(e)));
+			server.send(Message.data(Source.SERVER, "dynamic " + protocol.encode(e)));
+		}
+		if (sendStatics) {
+			for (Element e : game.getLevel().getStaticElements()) {
+				server.send(Message.data(Source.SERVER, "static " + protocol.encode(e)));
+			}
+			sendStatics = false;
 		}
 		server.send(Message.data(Source.SERVER, "end"));
 	}
@@ -78,30 +88,11 @@ public class GameServer {
 		return true;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Level level = new Level2();
 		Game game = new Game(level);
-		try {
-			GameServer server = new GameServer(game);
-			server.server.addConnectListener(new ConnectListener() {
-
-				@Override
-				public void onConnect(ConnectionEvent e) {
-					server.server.send(Message.create(Source.SERVER, Target.BROADCAST, Type.METADATA,
-							"your number is " + server.counter++ + ""));
-				}
-			});
-			server.start();
-			ServerStation gs = new ServerStation(game) {
-				@Override
-				public void doSomething() {
-				}
-			};
-			gs.start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		new GameServer(game).start();
+		new ServerStation(game).start();
 	}
 
 }

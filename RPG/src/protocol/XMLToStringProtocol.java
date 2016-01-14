@@ -46,7 +46,7 @@ public class XMLToStringProtocol implements Protocol<Node, String> {
 		try {
 			return builder.parse(new InputSource(new StringReader(n))).getFirstChild();
 		} catch (Exception e) {
-			throw new RPGException(e);
+			throw new RPGException(n + " is an invalid string to parse");
 		}
 	}
 

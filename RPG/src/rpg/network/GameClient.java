@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -13,11 +12,9 @@ import event.MessageListener;
 import protocol.ThingToStringProtocol;
 import rpg.element.Element;
 import rpg.geometry.Vector2D;
-import rpg.logic.Game;
-import rpg.logic.level.Level;
-import rpg.logic.level.Level2;
+import rpg.graphics.draw.Drawer;
+import rpg.ui.GamePanel;
 import rpg.ui.GameStation;
-import rpg.ui.KeyTracker;
 import rpg.ui.MultiKeyEvent;
 import rpg.ui.MultiKeyListener;
 import tcp.chat.ChatClient;
@@ -27,45 +24,43 @@ import tcp.chat.message.Message.Type;
 
 public class GameClient implements KeyListener, MultiKeyListener {
 
-	private Game game;
 	private List<NetworkCommand> commands;
 	private ChatClient chatClient;
-	private List<Element> elements;
 	private ThingToStringProtocol protocol;
-	private int num = -1;
 
-	public GameClient(Game game, Socket toServer) {
-		this.game = game;
+	public GameClient(GamePanel panel, Socket toServer) throws IOException {
 		commands = new CopyOnWriteArrayList<>();
 		protocol = new ThingToStringProtocol();
-		elements = new CopyOnWriteArrayList<>();
+		chatClient = new ChatClient(toServer);
+		chatClient.addMessageListener(new MessageListener() {
+			@Override
+			public void onReceive(MessageEvent e) {
 
-		try {
-			chatClient = new ChatClient(toServer);
-			chatClient.addMessageListener(new MessageListener() {
-				@Override
-				public void onReceive(MessageEvent e) {
+				if (e.getMessage().getSource() == Source.SERVER && e.getMessage().getType() == Type.DATA) {
 					String data = e.getMessage().getData();
-					if (e.getMessage().getType() == Type.DATA) {
-						if (data.equals("start")) {
-						} else if (data.equals("end")) {
-							game.getLevel().replaceDynamicElements(new ArrayList<>(elements));
-							elements.clear();
-						} else if (data != null && data.startsWith("xml-element ")) {
-							data = data.substring("xml-element ".length());
-							elements.add((Element) protocol.decode(data));
-						}
+					if (data.equals("start")) {
+					} else if (data.equals("end")) {
+						panel.flush();
+					} else if (data.startsWith("dynamic ")) {
+						Element element = (Element) protocol.decode(data.substring(8));
+						Drawer drawer = element.getDrawer();
+						drawer.set("location", element.getLocation());
+						panel.addDrawer(drawer);
+					} else if (data.startsWith("static ")) {
+						Element element = (Element) protocol.decode(data.substring(7));
+						Drawer drawer = element.getDrawer();
+						drawer.set("location", element.getLocation());
+						panel.addStaticDrawer(drawer);
 					}
 				}
-			});
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			}
+		});
+		chatClient.listen();
 	}
 
 	public void sendCommands() {
 		for (NetworkCommand c : commands) {
-			chatClient.send(Message.data(Source.SERVER, c.toString()));
+			chatClient.send(Message.data(Source.valueOf("FRIEND A"), c.toString()));
 		}
 		commands.clear();
 	}
@@ -89,9 +84,9 @@ public class GameClient implements KeyListener, MultiKeyListener {
 				velocity = velocity.add(Vector2D.EAST);
 			}
 		}
-		commands.add(new NetworkCommand("player " + num + " setVector velocityDirection " + velocity));
+		commands.add(new NetworkCommand("player " + 0 + " setVector velocityDirection " + velocity));
 		if (!velocity.equals(Vector2D.ZERO)) {
-			commands.add(new NetworkCommand("player " + num + " setVector direction " + velocity));
+			commands.add(new NetworkCommand("player " + 0 + " setVector direction " + velocity));
 		}
 	}
 
@@ -102,10 +97,9 @@ public class GameClient implements KeyListener, MultiKeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			commands.add(new NetworkCommand(String.format("player %s interact", num)));
-		} else if (e.getKeyCode() - '0' >= 1
-				&& e.getKeyCode() - '0' <= game.getLevel().getPlayer(num).getAbilityCount()) {
-			commands.add(new NetworkCommand(String.format("player %s cast %s", num, e.getKeyCode() - '1')));
+			commands.add(new NetworkCommand(String.format("player %s interact", 0)));
+		} else if (e.getKeyCode() - '0' >= 1 && e.getKeyCode() - '0' <= 9) {
+			commands.add(new NetworkCommand(String.format("player %s cast %s", 0, e.getKeyCode() - '1')));
 		}
 	}
 
@@ -115,48 +109,8 @@ public class GameClient implements KeyListener, MultiKeyListener {
 	}
 
 	public static void main(String[] args) {
-		Level level = new Level2();
-		Game game = new Game(level);
 		try {
-			Socket s = new Socket("localhost", 1234);
-
-			GameClient client = new GameClient(game, s);
-			client.chatClient.addMessageListener(new MessageListener() {
-
-				@Override
-				public void onReceive(MessageEvent e) {
-					if (e.getMessage().getType() == Type.METADATA && client.num == -1) {
-						String data = e.getMessage().getData();
-						if (data.startsWith("your number is ")) {
-							client.num = Integer.parseInt(data.replace("your number is ", ""));
-							GameStation gs = new GameStation(client.num) {
-								@Override
-								public void run() {
-									client.sendCommands();
-								}
-							};
-							KeyTracker keyTracker = new KeyTracker();
-							keyTracker.addMultiKeyListener(client);
-							gs.addKeyListener(keyTracker);
-							gs.addKeyListener(client);
-							// gs.addMouseListener(new MouseAdapter() {
-							// @Override
-							// public void mouseClicked(MouseEvent e) {
-							// Point offset =
-							// gs.getBoard().getPanel().getOffset();
-							// client.commands.add(new
-							// NetworkCommand(String.format("player %s setTarget
-							// %s",
-							// client.num, new Vector2D(e.getX() + offset.x,
-							// e.getY() + offset.y))));
-							// }
-							// });
-							gs.start();
-						}
-					}
-				}
-			});
-			client.chatClient.listen();
+			new GameStation(new Socket("localhost", 1234)).start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
