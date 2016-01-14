@@ -1,8 +1,7 @@
-package rpg.element.entity;
+package rpg.element;
 
 import rpg.ability.FireballSpell;
-import rpg.element.Element;
-import rpg.element.HealthPotion;
+import rpg.element.entity.Race;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.draw.Drawer;

@@ -1,4 +1,4 @@
-package rpg.element.entity;
+package rpg;
 
 public interface Resource {
 

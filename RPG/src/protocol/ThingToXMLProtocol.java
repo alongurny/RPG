@@ -16,7 +16,7 @@ import rpg.AttributeSet;
 import rpg.Thing;
 import rpg.ability.Ability;
 import rpg.element.Element;
-import rpg.element.entity.Entity;
+import rpg.element.Entity;
 import rpg.exception.RPGException;
 import rpg.geometry.Vector2D;
 import rpg.item.Inventory;

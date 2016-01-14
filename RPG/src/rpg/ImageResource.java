@@ -1,4 +1,4 @@
-package rpg.element.entity;
+package rpg;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

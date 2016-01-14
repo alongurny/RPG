@@ -3,7 +3,7 @@ package rpg.logic.level;
 import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
 import rpg.element.Block;
-import rpg.element.entity.Player;
+import rpg.element.Player;
 import rpg.element.entity.Race;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;

@@ -1,6 +1,6 @@
 package rpg;
 
-import rpg.element.entity.Entity;
+import rpg.element.Entity;
 
 public interface Requirement {
 	boolean isRequireable(Entity entity);

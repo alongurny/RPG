@@ -2,7 +2,6 @@ package rpg.element;
 
 import java.util.List;
 
-import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.draw.Drawer;

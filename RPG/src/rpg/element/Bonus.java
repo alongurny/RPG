@@ -1,6 +1,5 @@
 package rpg.element;
 
-import rpg.element.entity.Entity;
 import rpg.geometry.Vector2D;
 import rpg.logic.level.Level;
 

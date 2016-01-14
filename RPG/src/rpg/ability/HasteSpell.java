@@ -5,7 +5,7 @@ import java.util.List;
 
 import rpg.Cost;
 import rpg.Requirement;
-import rpg.element.entity.Entity;
+import rpg.element.Entity;
 import rpg.graphics.draw.Drawer;
 import rpg.graphics.draw.IconDrawer;
 import rpg.logic.level.Level;

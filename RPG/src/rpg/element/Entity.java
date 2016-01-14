@@ -1,4 +1,4 @@
-package rpg.element.entity;
+package rpg.element;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,7 +10,9 @@ import java.util.function.BooleanSupplier;
 import rpg.Cost;
 import rpg.Requirement;
 import rpg.ability.Ability;
-import rpg.element.Element;
+import rpg.element.entity.Bar;
+import rpg.element.entity.Effect;
+import rpg.element.entity.Race;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.draw.Drawable;

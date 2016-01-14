@@ -3,7 +3,7 @@ package rpg.network;
 import java.util.List;
 
 import rpg.element.Element;
-import rpg.element.entity.Player;
+import rpg.element.Player;
 import rpg.geometry.Vector2D;
 import rpg.logic.level.Level;
 

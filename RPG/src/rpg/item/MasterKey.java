@@ -2,7 +2,7 @@ package rpg.item;
 
 import java.awt.Graphics;
 
-import rpg.element.entity.Entity;
+import rpg.element.Entity;
 
 public class MasterKey extends Item {
 

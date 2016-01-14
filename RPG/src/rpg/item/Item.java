@@ -1,7 +1,7 @@
 package rpg.item;
 
 import rpg.Thing;
-import rpg.element.entity.Entity;
+import rpg.element.Entity;
 import rpg.graphics.draw.Drawable;
 
 public abstract class Item extends Thing implements Drawable {

@@ -6,8 +6,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import rpg.Interactive;
 import rpg.element.Element;
-import rpg.element.entity.Entity;
-import rpg.element.entity.Player;
+import rpg.element.Entity;
+import rpg.element.Player;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;

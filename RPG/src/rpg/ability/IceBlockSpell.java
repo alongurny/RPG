@@ -5,8 +5,8 @@ import java.util.List;
 
 import rpg.Cost;
 import rpg.Requirement;
+import rpg.element.Entity;
 import rpg.element.IceBlock;
-import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.logic.level.Level;
 

@@ -9,13 +9,13 @@ import rpg.ability.HasteSpell;
 import rpg.ability.IceBlockSpell;
 import rpg.element.Block;
 import rpg.element.Door;
+import rpg.element.Dragon;
 import rpg.element.Fireball;
 import rpg.element.HealthPotion;
 import rpg.element.IceBlock;
 import rpg.element.ManaPotion;
+import rpg.element.Player;
 import rpg.element.Portal;
-import rpg.element.entity.Dragon;
-import rpg.element.entity.Player;
 import rpg.exception.RPGException;
 import rpg.geometry.Vector2D;
 

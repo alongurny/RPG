@@ -1,6 +1,6 @@
-package rpg.element.entity;
+package rpg.element;
 
-import rpg.element.Element;
+import rpg.element.entity.Race;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.draw.Drawer;

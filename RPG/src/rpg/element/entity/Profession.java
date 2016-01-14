@@ -1,6 +1,7 @@
 package rpg.element.entity;
 
 import rpg.Thing;
+import rpg.element.Player;
 
 public abstract class Profession extends Thing {
 

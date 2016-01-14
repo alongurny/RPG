@@ -1,6 +1,6 @@
 package rpg.ability;
 
-import rpg.element.entity.Entity;
+import rpg.element.Entity;
 import rpg.logic.level.Level;
 
 public abstract class Spell extends Ability {

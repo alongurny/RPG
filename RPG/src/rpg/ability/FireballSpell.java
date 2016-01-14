@@ -5,8 +5,8 @@ import java.util.List;
 
 import rpg.Cost;
 import rpg.Requirement;
+import rpg.element.Entity;
 import rpg.element.Fireball;
-import rpg.element.entity.Entity;
 import rpg.geometry.Vector2D;
 import rpg.logic.level.Level;
 
