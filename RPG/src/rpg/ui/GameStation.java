@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import rpg.network.GameClient;
+import rpg.network.IOHandler;
 
 public class GameStation {
 
@@ -17,14 +18,9 @@ public class GameStation {
 		gameBoard.setLocation(500, 40);
 		gameBoard.setAlwaysOnTop(true);
 		client = new GameClient(gameBoard.getPanel(), socket);
-		KeyTracker tracker = new KeyTracker();
-		tracker.addMultiKeyListener(client);
-		addKeyListener(client);
-		addKeyListener(tracker);
-	}
-
-	public GameBoard getBoard() {
-		return gameBoard;
+		IOHandler handler = new IOHandler(client);
+		addKeyListener(handler);
+		addMouseListener(handler);
 	}
 
 	public void addKeyListener(KeyListener listener) {
@@ -36,7 +32,7 @@ public class GameStation {
 		gameBoard.setVisible(true);
 		new Thread(() -> {
 			while (true) {
-				run();
+				client.sendCommands();
 				gameBoard.repaint();
 				try {
 					Thread.sleep(30);
@@ -45,10 +41,6 @@ public class GameStation {
 				}
 			}
 		}).start();
-	}
-
-	public void run() {
-		client.sendCommands();
 	}
 
 	public void addMouseListener(MouseListener listener) {

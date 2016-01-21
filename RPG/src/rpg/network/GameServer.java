@@ -35,7 +35,6 @@ public class GameServer {
 		server = new ChatServer();
 		protocol = new ThingToStringProtocol();
 		server.addConnectListener(new ConnectListener() {
-
 			@Override
 			public void onConnect(ConnectionEvent e) {
 				sendStatics = true;
