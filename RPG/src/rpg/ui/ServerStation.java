@@ -28,8 +28,7 @@ public class ServerStation {
 			while (true) {
 				gameBoard.repaint();
 				long now = System.currentTimeMillis();
-				long diff = now - last;
-				game.update(diff * 1e-3);
+				game.update((now - last) * 1e-3);
 				last = now;
 			}
 		}).start();

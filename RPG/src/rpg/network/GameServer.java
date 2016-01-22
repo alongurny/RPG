@@ -55,7 +55,9 @@ public class GameServer {
 			@Override
 			public void run() {
 				for (NetworkCommand c : received) {
-					c.execute(game.getLevel());
+					if (isAllowed(c)) {
+						c.execute(game.getLevel());
+					}
 				}
 				received.clear();
 			}
