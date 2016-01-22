@@ -16,8 +16,8 @@ import rpg.logic.Game;
 import rpg.logic.level.Level;
 import rpg.logic.level.Level2;
 import rpg.ui.ServerStation;
-import tcp.chat.ChatServer;
-import tcp.chat.message.Message;
+import tcp.ChatServer;
+import tcp.message.Message;
 
 public class GameServer {
 

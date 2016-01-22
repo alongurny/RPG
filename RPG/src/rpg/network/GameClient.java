@@ -12,9 +12,9 @@ import rpg.element.Element;
 import rpg.graphics.draw.Drawer;
 import rpg.ui.GamePanel;
 import rpg.ui.GameStation;
-import tcp.chat.ChatClient;
-import tcp.chat.message.Message;
-import tcp.chat.message.Message.Type;
+import tcp.ChatClient;
+import tcp.message.Message;
+import tcp.message.Message.Type;
 
 public class GameClient {
 

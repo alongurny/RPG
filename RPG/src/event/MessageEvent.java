@@ -1,6 +1,6 @@
 package event;
 
-import tcp.chat.message.Message;
+import tcp.message.Message;
 
 public class MessageEvent {
 

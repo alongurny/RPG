@@ -1,4 +1,4 @@
-package tcp.chat.message;
+package tcp.message;
 
 public class Message {
 

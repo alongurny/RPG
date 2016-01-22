@@ -1,4 +1,4 @@
-package tcp.chat;
+package tcp;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -15,8 +15,8 @@ import event.DisconnectListener;
 import event.MessageEvent;
 import event.MessageListener;
 import protocol.Protocol;
-import tcp.chat.message.Message;
-import tcp.chat.message.MessageDeliveryProtocol;
+import tcp.message.Message;
+import tcp.message.MessageDeliveryProtocol;
 
 public class ChatClient implements Closeable {
 

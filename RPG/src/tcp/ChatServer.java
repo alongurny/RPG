@@ -1,4 +1,4 @@
-package tcp.chat;
+package tcp;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -10,8 +10,7 @@ import event.ConnectListener;
 import event.ConnectionEvent;
 import event.DisconnectListener;
 import event.MessageListener;
-import tcp.TcpServer;
-import tcp.chat.message.Message;
+import tcp.message.Message;
 
 public class ChatServer extends TcpServer {
 
@@ -66,7 +65,7 @@ public class ChatServer extends TcpServer {
 			clients.remove(client);
 			try {
 				client.close();
-			} catch (Exception ex) {
+			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
 		});
