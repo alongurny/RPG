@@ -9,7 +9,10 @@ import event.MessageEvent;
 import event.MessageListener;
 import protocol.ThingToStringProtocol;
 import rpg.element.Element;
+import rpg.element.Player;
+import rpg.geometry.Vector2D;
 import rpg.graphics.draw.Drawer;
+import rpg.graphics.draw.MultiAbilityDrawer;
 import rpg.ui.GamePanel;
 import rpg.ui.GameStation;
 import tcp.ChatClient;
@@ -49,11 +52,21 @@ public class GameClient {
 					Element element = (Element) protocol.decode(data.substring(8));
 					Drawer drawer = element.getDrawer();
 					drawer.set("location", element.getLocation());
+					drawer.set("z-index", element.getIndex());
 					panel.addDrawer(drawer);
+					if (element instanceof Player) {
+						MultiAbilityDrawer d = new MultiAbilityDrawer();
+						d.set("location", new Vector2D(32, 460));
+						d.set("z-index", 1000);
+						Player player = (Player) element;
+						player.getAbilities().forEach(ability -> d.addAbility(player, ability));
+						panel.addDrawer(d);
+					}
 				} else if (data.startsWith("static ")) {
 					Element element = (Element) protocol.decode(data.substring(7));
 					Drawer drawer = element.getDrawer();
 					drawer.set("location", element.getLocation());
+					drawer.set("z-index", element.getIndex());
 					panel.addStaticDrawer(drawer);
 				}
 			}

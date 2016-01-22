@@ -8,6 +8,7 @@ import rpg.Requirement;
 import rpg.element.Entity;
 import rpg.element.IceBlock;
 import rpg.geometry.Rectangle;
+import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class IceBlockSpell extends Spell {
@@ -40,6 +41,11 @@ public class IceBlockSpell extends Spell {
 	@Override
 	public List<Cost> getCosts() {
 		return Arrays.asList(Cost.bar("mana", 1));
+	}
+
+	@Override
+	public Drawer getSelfDrawer() {
+		return IceBlock.sprite;
 	}
 
 }

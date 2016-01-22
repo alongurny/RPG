@@ -20,9 +20,9 @@ public class AbilityDrawer extends Drawer {
 
 	@Override
 	public void draw(Graphics g) {
-
 		double cooldown = getDouble("cooldown");
 		g.setColor(Color.BLACK);
+		g.translate(-16, -16);
 		g.drawRect(0, 0, 32, 32);
 		if (cooldown > 0) {
 			g.setColor(new Color(63, 63, 63, 100));
@@ -57,8 +57,9 @@ public class AbilityDrawer extends Drawer {
 			g.drawString(s, dx, dy);
 		} else if (getBoolean("castable")) {
 			g.setColor(new Color(63, 63, 63, 100));
-			g.fillRect(0, 0, Ability.WIDTH, Ability.HEIGHT);
+			g.fillRect(0, 0, 32, 32);
 		}
+		g.translate(16, 16);
 	}
 
 }

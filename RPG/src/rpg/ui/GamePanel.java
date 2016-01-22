@@ -40,6 +40,7 @@ public class GamePanel extends JPanel {
 	public void flush() {
 		drawers.clear();
 		drawers.addAll(buffer);
+		drawers.sort((a, b) -> a.getInteger("z-index") - b.getInteger("z-index"));
 		buffer.clear();
 	}
 
@@ -51,10 +52,10 @@ public class GamePanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, null);
-		for (Drawer drawer : drawers) {
+		for (Drawer drawer : statics) {
 			drawDrawer(g, drawer);
 		}
-		for (Drawer drawer : statics) {
+		for (Drawer drawer : drawers) {
 			drawDrawer(g, drawer);
 		}
 	}

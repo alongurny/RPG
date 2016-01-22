@@ -58,13 +58,16 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 				set.set(key, String.valueOf(nodeValue));
 				break;
 
-			}
-			try {
-				Class<?> cls = Class.forName(node.getTagName());
-				if (Ability.class.isAssignableFrom(cls)) {
-					abilities.add((Ability) cls.newInstance());
+			default:
+				try {
+					Class<?> cls = Class.forName(node.getTagName());
+					if (Ability.class.isAssignableFrom(cls)) {
+						abilities.add((Ability) cls.newInstance());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
+				break;
 			}
 		}
 		try {
@@ -73,8 +76,8 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 				thing.set(key, set.get(key));
 			}
 			switch (element.getTagName()) {
-			case "rpg.element.entity.Player":
-			case "rpg.element.entity.Dragon":
+			case "rpg.element.Player":
+			case "rpg.element.Dragon":
 				Entity entity = (Entity) thing;
 				abilities.forEach(a -> entity.addAbility(a));
 				break;

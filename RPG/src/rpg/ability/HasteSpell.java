@@ -13,9 +13,11 @@ import rpg.logic.level.Level;
 public class HasteSpell extends Spell {
 
 	private double speed;
+	private Drawer drawer;
 
 	public HasteSpell() {
 		super(2, 2);
+		drawer = new IconDrawer("img/haste.png", 32, 32);
 	}
 
 	public Drawer getAbilityDrawer() {
@@ -41,6 +43,11 @@ public class HasteSpell extends Spell {
 	@Override
 	public List<Cost> getCosts() {
 		return Arrays.asList(Cost.bar("mana", 1));
+	}
+
+	@Override
+	public Drawer getSelfDrawer() {
+		return drawer;
 	}
 
 }

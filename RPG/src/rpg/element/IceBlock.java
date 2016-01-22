@@ -8,7 +8,7 @@ import rpg.logic.level.Level;
 
 public class IceBlock extends Element {
 
-	private static final Sprite sprite = new Sprite(0, 16, 27);
+	public static final Sprite sprite = new Sprite(0, 16, 27);
 
 	public IceBlock(Vector2D location, double size) {
 		super(location);

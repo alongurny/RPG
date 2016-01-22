@@ -8,13 +8,18 @@ import rpg.Requirement;
 import rpg.element.Entity;
 import rpg.element.Fireball;
 import rpg.geometry.Vector2D;
+import rpg.graphics.draw.Drawer;
+import rpg.graphics.draw.IconDrawer;
 import rpg.logic.level.Level;
 
 public class FireballSpell extends Spell {
 
+	private Drawer drawer;
+
 	public FireballSpell() {
 		super(2);
 		set("speed", 192);
+		drawer = new IconDrawer("img/fireball.gif", 32, 32);
 	}
 
 	@Override
@@ -39,5 +44,10 @@ public class FireballSpell extends Spell {
 	@Override
 	public void onEnd(Level level, Entity caster) {
 
+	}
+
+	@Override
+	public Drawer getSelfDrawer() {
+		return drawer;
 	}
 }
