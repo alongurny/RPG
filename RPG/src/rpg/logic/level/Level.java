@@ -8,6 +8,7 @@ import rpg.Interactive;
 import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.Player;
+import rpg.exception.RPGException;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;
@@ -23,6 +24,8 @@ public class Level {
 	private boolean finished;
 	private Level nextLevel;
 	private Timer timer;
+	private List<Vector2D> initialLocations;
+	private List<Player> players;
 
 	public Level(int rows, int cols) {
 		elements = new CopyOnWriteArrayList<>();
@@ -30,6 +33,8 @@ public class Level {
 		toAdd = new CopyOnWriteArrayList<>();
 		grid = new Grid(rows, cols);
 		timer = new Timer();
+		initialLocations = new CopyOnWriteArrayList<>();
+		players = new CopyOnWriteArrayList<>();
 	}
 
 	public List<Element> tryMoveBy(Element element, Vector2D displacement) {
@@ -71,10 +76,17 @@ public class Level {
 		return obstacles;
 	}
 
-	public void replaceDynamicElements(List<Element> elements) {
-		synchronized (this) {
-			this.elements.clear();
-			this.elements.addAll(elements);
+	public void addInitialLocation(Vector2D location) {
+		initialLocations.add(location);
+	}
+
+	public void addPlayer(Player player) {
+		if (players.size() < initialLocations.size()) {
+			player.setLocation(initialLocations.get(players.size()));
+			players.add(player);
+			elements.add(player);
+		} else {
+			throw new RPGException("Cannot add player - not enough initial locations");
 		}
 	}
 
@@ -190,17 +202,15 @@ public class Level {
 	}
 
 	public Player getPlayer(int index) {
-		synchronized (this) {
-			for (Element e : elements) {
-				if (e instanceof Player) {
-					if (index == 0) {
-						return (Player) e;
-					}
-					index--;
+		for (Element e : elements) {
+			if (e instanceof Player) {
+				if (index == 0) {
+					return (Player) e;
 				}
+				index--;
 			}
-			throw new IndexOutOfBoundsException("No player " + index);
 		}
+		throw new IndexOutOfBoundsException("No player " + index);
 	}
 
 	public List<Element> getElements(Vector2D target) {

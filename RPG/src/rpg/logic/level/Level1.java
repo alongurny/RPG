@@ -19,7 +19,7 @@ public class Level1 extends Level {
 		Player player = new Player(new Vector2D(80, 100), Race.HUMAN);
 		player.addAbility(new FireballSpell());
 		player.addAbility(new HasteSpell());
-		addDynamicElement(player);
+		addPlayer(player);
 		Grid grid = getGrid();
 		for (int i = 0; i < COLUMNS; i++) {
 			addStaticElement(new Block(grid.getLocation(0, i)));

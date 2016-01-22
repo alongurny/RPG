@@ -26,8 +26,10 @@ public class Level2 extends Level {
 		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN);
 		player2.addAbility(new FireballSpell());
 		player2.addAbility(new HasteSpell());
-		addDynamicElement(player1);
-		addDynamicElement(player2);
+		addInitialLocation(player1.getLocation());
+		addInitialLocation(player2.getLocation());
+		addPlayer(player1);
+		addPlayer(player2);
 		addDynamicElement(new Dragon(new Vector2D(420, 300)));
 		addDynamicElement(new ManaPotion(new Vector2D(300, 200)));
 		Grid grid = getGrid();
