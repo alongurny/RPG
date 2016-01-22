@@ -14,7 +14,6 @@ import rpg.ui.GamePanel;
 import rpg.ui.GameStation;
 import tcp.chat.ChatClient;
 import tcp.chat.message.Message;
-import tcp.chat.message.Message.Source;
 import tcp.chat.message.Message.Type;
 
 public class GameClient {
@@ -42,23 +41,20 @@ public class GameClient {
 		chatClient.addMessageListener(new MessageListener() {
 			@Override
 			public void onReceive(MessageEvent e) {
-
-				if (e.getMessage().getSource() == Source.SERVER && e.getMessage().getType() == Type.DATA) {
-					String data = e.getMessage().getData();
-					if (data.equals("start")) {
-					} else if (data.equals("end")) {
-						panel.flush();
-					} else if (data.startsWith("dynamic ")) {
-						Element element = (Element) protocol.decode(data.substring(8));
-						Drawer drawer = element.getDrawer();
-						drawer.set("location", element.getLocation());
-						panel.addDrawer(drawer);
-					} else if (data.startsWith("static ")) {
-						Element element = (Element) protocol.decode(data.substring(7));
-						Drawer drawer = element.getDrawer();
-						drawer.set("location", element.getLocation());
-						panel.addStaticDrawer(drawer);
-					}
+				String data = e.getMessage().getData();
+				if (data.equals("start")) {
+				} else if (data.equals("end")) {
+					panel.flush();
+				} else if (data.startsWith("dynamic ")) {
+					Element element = (Element) protocol.decode(data.substring(8));
+					Drawer drawer = element.getDrawer();
+					drawer.set("location", element.getLocation());
+					panel.addDrawer(drawer);
+				} else if (data.startsWith("static ")) {
+					Element element = (Element) protocol.decode(data.substring(7));
+					Drawer drawer = element.getDrawer();
+					drawer.set("location", element.getLocation());
+					panel.addStaticDrawer(drawer);
 				}
 			}
 		});
@@ -83,7 +79,7 @@ public class GameClient {
 
 	public void sendCommands() {
 		for (NetworkCommand command : commands) {
-			chatClient.send(Message.data(Source.friend("FRIEND A"), command.toString()));
+			chatClient.send(Message.data(command.toString()));
 		}
 		commands.clear();
 	}

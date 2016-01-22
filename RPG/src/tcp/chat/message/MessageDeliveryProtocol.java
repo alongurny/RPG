@@ -6,19 +6,17 @@ public class MessageDeliveryProtocol implements Protocol<Message, String> {
 
 	@Override
 	public String encode(Message message) {
-		return String.format("%s ::: %s ::: %s ::: %s", message.getSource(), message.getTarget(),
-				message.getType().toString(), message.getData());
+		return String.format("%s ::: %s", message.getType().toString(), message.getData());
 	}
 
 	@Override
 	public Message decode(String data) {
 		try {
 			String[] arr = data.split(" ::: ");
-			if (arr.length == 3) {
-				arr = new String[] { arr[0], arr[1], arr[2], "" };
+			if (arr.length == 1) {
+				arr = new String[] { arr[0], "" };
 			}
-			return Message.create(Message.Source.valueOf(arr[0]), Message.Target.valueOf(arr[1]),
-					Message.Type.valueOf(arr[2]), arr[3]);
+			return Message.create(Message.Type.valueOf(arr[0]), arr[1]);
 		} catch (RuntimeException e) {
 			throw new RuntimeException("Wrong data: " + data, e);
 		}

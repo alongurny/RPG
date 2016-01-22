@@ -18,7 +18,6 @@ import rpg.logic.level.Level2;
 import rpg.ui.ServerStation;
 import tcp.chat.ChatServer;
 import tcp.chat.message.Message;
-import tcp.chat.message.Message.Source;
 
 public class GameServer {
 
@@ -72,17 +71,17 @@ public class GameServer {
 	}
 
 	private void send() {
-		server.send(Message.data(Source.SERVER, "start"));
+		server.send(Message.data("start"));
 		for (Element e : game.getLevel().getDynamicElements()) {
-			server.send(Message.data(Source.SERVER, "dynamic " + protocol.encode(e)));
+			server.send(Message.data("dynamic " + protocol.encode(e)));
 		}
 		if (sendStatics) {
 			for (Element e : game.getLevel().getStaticElements()) {
-				server.send(Message.data(Source.SERVER, "static " + protocol.encode(e)));
+				server.send(Message.data("static " + protocol.encode(e)));
 			}
 			sendStatics = false;
 		}
-		server.send(Message.data(Source.SERVER, "end"));
+		server.send(Message.data("end"));
 	}
 
 	public boolean isAllowed(NetworkCommand command) {

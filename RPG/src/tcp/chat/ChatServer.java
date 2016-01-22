@@ -78,31 +78,18 @@ public class ChatServer extends TcpServer {
 	}
 
 	private void handleMessage(ChatClient client, Message message) {
-		Message.Target target = message.getTarget();
 		String data = message.getData();
 		switch (message.getType()) {
 		case DATA:
-			if (Message.Target.isBroadcast(target)) {
-				clients.forEach(c -> c.send(message));
-			}
-			if (Message.Target.isFriend(target)) {
-				clients.forEach(c -> {
-					if (c.getInetAddress().getHostAddress().equals(target.getHostName())
-							|| c.getInetAddress().getHostName().equals(target.getHostName())) {
-						c.send(message);
-					}
-				});
-			}
+			clients.forEach(c -> c.send(message));
 			break;
 		case METADATA:
-			if (Message.Target.isServer(target)) {
-				if (data.startsWith("connect ")) {
-					String name = data.replace("connect ", "");
-					client.setName(name);
-				} else if (data.equals("disconnect")) {
-					client.stop();
-					clients.remove(client);
-				}
+			if (data.startsWith("connect ")) {
+				String name = data.replace("connect ", "");
+				client.setName(name);
+			} else if (data.equals("disconnect")) {
+				client.stop();
+				clients.remove(client);
 			}
 			break;
 		}
