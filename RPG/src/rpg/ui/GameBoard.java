@@ -10,7 +10,6 @@ public class GameBoard extends JFrame {
 	public GameBoard(int width, int height) {
 		setResizable(false);
 		gamePanel = new GamePanel();
-		// gamePanel.addDrawer(new MultiAbilityDrawer());
 		add(gamePanel);
 		setSize(width, height);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

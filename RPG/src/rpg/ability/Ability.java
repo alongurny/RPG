@@ -1,6 +1,5 @@
 package rpg.ability;
 
-import java.awt.Graphics;
 import java.util.List;
 
 import rpg.Cost;
@@ -19,7 +18,7 @@ public abstract class Ability extends Mechanism {
 
 	public Ability(double maxCooldown) {
 		set("maxCooldown", maxCooldown);
-		set("cooldown", 0.0);
+		setLimited("cooldown", 0.0, 0.0, maxCooldown);
 	}
 
 	public double getCooldown() {
@@ -31,7 +30,7 @@ public abstract class Ability extends Mechanism {
 	}
 
 	public void setCooldown(double cooldown) {
-		set("cooldown", Math.max(0, Math.min(cooldown, getDouble("maxCooldown"))));
+		set("cooldown", cooldown);
 	}
 
 	private void reduceCooldown(double dcooldown) {
@@ -52,16 +51,9 @@ public abstract class Ability extends Mechanism {
 	public abstract Drawer getSelfDrawer();
 
 	public Drawer getDrawer(Player player) {
-		AbilityDrawer abilityDrawer = new AbilityDrawer(getDouble("cooldown"), getDouble("maxCooldown"),
-				player.isCastable(this));
-		return new Drawer() {
-
-			@Override
-			public void draw(Graphics g) {
-				getSelfDrawer().draw(g);
-				abilityDrawer.draw(g);
-			}
-		};
+		return Drawer.concat(getSelfDrawer(),
+				new AbilityDrawer(getDouble("cooldown"),
+						getDouble("maxCooldown"), player.isCastable(this)));
 	}
 
 }

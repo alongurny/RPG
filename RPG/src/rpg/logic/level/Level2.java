@@ -44,7 +44,8 @@ public class Level2 extends Level {
 			}
 			addStaticElement(new Block(grid.getLocation(j, COLUMNS - 1)));
 		}
-		Portal[] portals = Portal.getPair(grid.getLocation(2, 2), grid.getLocation(10, 6));
+		Portal[] portals = Portal.getPair(grid.getLocation(2, 2),
+				grid.getLocation(10, 6));
 		addDynamicElement(portals[0]);
 		addDynamicElement(portals[1]);
 	}

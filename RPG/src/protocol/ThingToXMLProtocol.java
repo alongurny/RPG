@@ -62,7 +62,7 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 				try {
 					Class<?> cls = Class.forName(node.getTagName());
 					if (Ability.class.isAssignableFrom(cls)) {
-						abilities.add((Ability) cls.newInstance());
+						abilities.add((Ability) decode(node));
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -71,7 +71,8 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			}
 		}
 		try {
-			Thing thing = Attribute.getThing(Class.forName(element.getTagName()), set);
+			Thing thing = Attribute.getThing(
+					Class.forName(element.getTagName()), set);
 			for (String key : set.getKeys()) {
 				thing.set(key, set.get(key));
 			}
@@ -94,9 +95,11 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 	}
 
 	public Node encode0(Thing thing, Document document) {
-		org.w3c.dom.Element root = document.createElement(thing.getClass().getName());
+		org.w3c.dom.Element root = document.createElement(thing.getClass()
+				.getName());
 		for (String key : thing.getKeys()) {
-			org.w3c.dom.Element node = document.createElement(thing.getType(key).getName());
+			org.w3c.dom.Element node = document.createElement(thing
+					.getType(key).getName());
 			root.appendChild(node);
 			node.setAttribute("key", key);
 			node.setAttribute("value", thing.get(key).toString());

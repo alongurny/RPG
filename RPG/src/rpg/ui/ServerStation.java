@@ -11,7 +11,7 @@ public class ServerStation {
 
 	public ServerStation(Game game) {
 		gameBoard = new ServerBoard(480, 480, game);
-		gameBoard.setLocation(500, 40);
+		gameBoard.setLocation(150, 40);
 		gameBoard.setAlwaysOnTop(true);
 		this.game = game;
 	}

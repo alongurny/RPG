@@ -20,10 +20,6 @@ public class HasteSpell extends Spell {
 		drawer = new IconDrawer("img/haste.png", 32, 32);
 	}
 
-	public Drawer getAbilityDrawer() {
-		return new IconDrawer("haste.png", 32, 32);
-	}
-
 	@Override
 	public void onStart(Level level, Entity caster) {
 		speed = caster.getDouble("speed", 0);

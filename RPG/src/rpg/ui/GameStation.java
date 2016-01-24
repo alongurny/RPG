@@ -15,7 +15,7 @@ public class GameStation {
 
 	public GameStation(Socket socket) throws IOException {
 		gameBoard = new GameBoard(480, 528);
-		gameBoard.setLocation(500, 40);
+		gameBoard.setLocation(700, 40);
 		gameBoard.setAlwaysOnTop(true);
 		client = new GameClient(gameBoard.getPanel(), socket);
 		IOHandler handler = new IOHandler(client);

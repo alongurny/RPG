@@ -6,10 +6,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import event.ConnectListener;
-import event.ConnectionEvent;
-import event.MessageEvent;
-import event.MessageListener;
 import protocol.ThingToStringProtocol;
 import rpg.element.Element;
 import rpg.logic.Game;
@@ -18,6 +14,10 @@ import rpg.logic.level.Level2;
 import rpg.ui.ServerStation;
 import tcp.ChatServer;
 import tcp.message.Message;
+import event.ConnectListener;
+import event.ConnectionEvent;
+import event.MessageEvent;
+import event.MessageListener;
 
 public class GameServer {
 
@@ -26,7 +26,8 @@ public class GameServer {
 	private Timer timer;
 	private Game game;
 	private ThingToStringProtocol protocol;
-	private boolean sendStatics = false;
+	private boolean firstConnection = false;
+	private static int num = 0;
 
 	public GameServer(Game game) throws IOException {
 		received = new CopyOnWriteArrayList<>();
@@ -36,7 +37,7 @@ public class GameServer {
 		server.addConnectListener(new ConnectListener() {
 			@Override
 			public void onConnect(ConnectionEvent e) {
-				sendStatics = true;
+				firstConnection = true;
 			}
 		});
 		server.addMessageListener(new MessageListener() {
@@ -75,11 +76,12 @@ public class GameServer {
 		for (Element e : game.getLevel().getDynamicElements()) {
 			server.send(Message.data("dynamic " + protocol.encode(e)));
 		}
-		if (sendStatics) {
+		if (firstConnection) {
+			server.send(Message.metadata("number " + num++));
 			for (Element e : game.getLevel().getStaticElements()) {
 				server.send(Message.data("static " + protocol.encode(e)));
 			}
-			sendStatics = false;
+			firstConnection = false;
 		}
 		server.send(Message.data("end"));
 	}

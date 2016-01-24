@@ -80,7 +80,8 @@ public abstract class Entity extends Element {
 	}
 
 	public Vector2D getTotalVector(String key) {
-		return super.getVector(key, Vector2D.ZERO).add(race.getVector(key, Vector2D.ZERO));
+		return super.getVector(key, Vector2D.ZERO).add(
+				race.getVector(key, Vector2D.ZERO));
 	}
 
 	private boolean getTotalBooleanFromEffects(String key) {
@@ -93,7 +94,8 @@ public abstract class Entity extends Element {
 	}
 
 	public boolean getTotalBoolean(String key) {
-		return super.getBoolean(key, false) || race.getBoolean(key, false) || getTotalBooleanFromEffects(key);
+		return super.getBoolean(key, false) || race.getBoolean(key, false)
+				|| getTotalBooleanFromEffects(key);
 	}
 
 	protected abstract Drawable getEntityDrawer();
@@ -111,15 +113,18 @@ public abstract class Entity extends Element {
 				keys.sort(String.CASE_INSENSITIVE_ORDER);
 				for (String key : keys) {
 					if (Bar.isBound(key)) {
-						double percentage = Entity.this.getDouble(key) / Entity.this.getMaximum(key);
+						double percentage = Entity.this.getDouble(key)
+								/ Entity.this.getMaximum(key);
 						Color[] colors = Bar.getColors(key);
 						g.setColor(colors[0]);
-						g.fillRect((int) rect.getX(), (int) rect.getHeight() + 8 * counter - 4,
+						g.fillRect((int) rect.getX(), (int) rect.getHeight()
+								+ 8 * counter - 4,
 								(int) (rect.getWidth() * percentage), 4);
 						g.setColor(colors[1]);
-						g.fillRect((int) (rect.getWidth() * percentage) + (int) (rect.getX()),
-								(int) rect.getHeight() + 8 * counter - 4,
-								(int) rect.getWidth() - (int) (rect.getWidth() * percentage), 4);
+						g.fillRect((int) (rect.getWidth() * percentage)
+								+ (int) (rect.getX()), (int) rect.getHeight()
+								+ 8 * counter - 4, (int) rect.getWidth()
+								- (int) (rect.getWidth() * percentage), 4);
 						counter++;
 					}
 				}

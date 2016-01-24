@@ -3,10 +3,9 @@ package rpg.network;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import event.MessageEvent;
-import event.MessageListener;
 import protocol.ThingToStringProtocol;
 import rpg.element.Element;
 import rpg.element.Player;
@@ -18,13 +17,15 @@ import rpg.ui.GameStation;
 import tcp.ChatClient;
 import tcp.message.Message;
 import tcp.message.Message.Type;
+import event.MessageEvent;
+import event.MessageListener;
 
 public class GameClient {
 
 	private ChatClient chatClient;
 	private List<NetworkCommand> commands;
 	private ThingToStringProtocol protocol;
-	private int num;
+	private Optional<Integer> num;
 	private GamePanel panel;
 
 	public GameClient(GamePanel panel, Socket toServer) throws IOException {
@@ -32,12 +33,16 @@ public class GameClient {
 		protocol = new ThingToStringProtocol();
 		chatClient = new ChatClient(toServer);
 		this.panel = panel;
+		num = Optional.empty();
 		chatClient.addMessageListener(new MessageListener() {
-
 			@Override
 			public void onReceive(MessageEvent e) {
 				if (e.getMessage().getType() == Type.METADATA) {
-					num = Integer.parseInt(e.getMessage().getData().replace("Your number is ", ""));
+					String data = e.getMessage().getData();
+					if (data.startsWith("number ") && !num.isPresent()) {
+						num = Optional.of(Integer.valueOf(data.replace(
+								"number ", "")));
+					}
 				}
 			}
 		});
@@ -49,21 +54,25 @@ public class GameClient {
 				} else if (data.equals("end")) {
 					panel.flush();
 				} else if (data.startsWith("dynamic ")) {
-					Element element = (Element) protocol.decode(data.substring(8));
+					Element element = (Element) protocol.decode(data
+							.substring(8));
 					Drawer drawer = element.getDrawer();
 					drawer.set("location", element.getLocation());
 					drawer.set("z-index", element.getIndex());
 					panel.addDrawer(drawer);
-					if (element instanceof Player) {
+					if (element instanceof Player && num.isPresent()
+							&& element.getInteger("id") == num.get()) {
 						MultiAbilityDrawer d = new MultiAbilityDrawer();
 						d.set("location", new Vector2D(32, 460));
 						d.set("z-index", 1000);
 						Player player = (Player) element;
-						player.getAbilities().forEach(ability -> d.addAbility(player, ability));
+						player.getAbilities().forEach(
+								ability -> d.addAbility(player, ability));
 						panel.addDrawer(d);
 					}
 				} else if (data.startsWith("static ")) {
-					Element element = (Element) protocol.decode(data.substring(7));
+					Element element = (Element) protocol.decode(data
+							.substring(7));
 					Drawer drawer = element.getDrawer();
 					drawer.set("location", element.getLocation());
 					drawer.set("z-index", element.getIndex());
@@ -87,7 +96,7 @@ public class GameClient {
 	}
 
 	public int getNumber() {
-		return num;
+		return num.get();
 	}
 
 	public void sendCommands() {

@@ -9,8 +9,9 @@ import rpg.ability.Ability;
 
 public class AbilityDrawer extends Drawer {
 
-	private static Point[] ps = { new Point(16, 0), new Point(32, 0), new Point(32, 16), new Point(32, 32),
-			new Point(16, 32), new Point(0, 32), new Point(0, 16), new Point(0, 0) };
+	private static Point[] ps = { new Point(16, 0), new Point(32, 0),
+			new Point(32, 16), new Point(32, 32), new Point(16, 32),
+			new Point(0, 32), new Point(0, 16), new Point(0, 0) };
 
 	public AbilityDrawer(double cooldown, double maxCooldown, boolean castable) {
 		set("cooldown", cooldown);
@@ -31,14 +32,13 @@ public class AbilityDrawer extends Drawer {
 			for (int i = 0; i < 8; i++) {
 				double diff = (i + 1) / 8.0 - percentage;
 				if (diff >= 0) {
-					g.fillPolygon(
-							new int[] {
-									first ? (int) (ps[i].x + (1 - 8 * diff) * (ps[(i + 1) % 8].x - ps[i].x)) : ps[i].x,
-									16, ps[(i + 1) % 8].x },
-							new int[] {
-									first ? (int) (ps[i].y + (1 - 8 * diff) * (ps[(i + 1) % 8].y - ps[i].y)) : ps[i].y,
-									16, ps[(i + 1) % 8].y },
-							3);
+					g.fillPolygon(new int[] {
+							first ? (int) (ps[i].x + (1 - 8 * diff)
+									* (ps[(i + 1) % 8].x - ps[i].x)) : ps[i].x,
+							16, ps[(i + 1) % 8].x }, new int[] {
+							first ? (int) (ps[i].y + (1 - 8 * diff)
+									* (ps[(i + 1) % 8].y - ps[i].y)) : ps[i].y,
+							16, ps[(i + 1) % 8].y }, 3);
 					first = false;
 				}
 			}
@@ -55,7 +55,7 @@ public class AbilityDrawer extends Drawer {
 				s = "0";
 			}
 			g.drawString(s, dx, dy);
-		} else if (getBoolean("castable")) {
+		} else if (!getBoolean("castable")) {
 			g.setColor(new Color(63, 63, 63, 100));
 			g.fillRect(0, 0, 32, 32);
 		}

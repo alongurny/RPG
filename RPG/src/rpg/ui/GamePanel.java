@@ -40,7 +40,8 @@ public class GamePanel extends JPanel {
 	public void flush() {
 		drawers.clear();
 		drawers.addAll(buffer);
-		drawers.sort((a, b) -> a.getInteger("z-index") - b.getInteger("z-index"));
+		drawers.sort((a, b) -> a.getInteger("z-index")
+				- b.getInteger("z-index"));
 		buffer.clear();
 	}
 
