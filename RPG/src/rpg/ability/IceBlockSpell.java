@@ -15,6 +15,7 @@ public class IceBlockSpell extends DurationAbility {
 
 	public IceBlockSpell() {
 		super(2, 2);
+		drawer = new Sprite(0, 16, 27);
 	}
 
 	@Override
@@ -30,7 +31,6 @@ public class IceBlockSpell extends DurationAbility {
 		Rectangle rect = target.getAbsoluteRect();
 		block = new IceBlock(target.getLocation(), Math.max(rect.getWidth(), rect.getHeight()) * 1.5);
 		level.addDynamicElement(block);
-		drawer = new Sprite(0, 16, 27);
 	}
 
 	@Override
