@@ -1,51 +1,46 @@
 package rpg.ability;
 
-import java.util.Arrays;
-import java.util.List;
-
-import rpg.Cost;
-import rpg.Requirement;
+import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.IceBlock;
 import rpg.geometry.Rectangle;
+import rpg.graphics.Sprite;
 import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
-public class IceBlockSpell extends Spell {
+public class IceBlockSpell extends DurationAbility {
 
 	private IceBlock block;
+	private Drawer drawer;
 
 	public IceBlockSpell() {
 		super(2, 2);
 	}
 
 	@Override
-	public void onStart(Level level, Entity caster) {
-		Entity target = (Entity) caster.getTarget();
-		Rectangle rect = target.getAbsoluteRect();
-		block = new IceBlock(target.getLocation(), Math.max(rect.getWidth(), rect.getHeight()) * 1.5);
-		level.addDynamicElement(block);
+	public boolean isCastable(Entity caster, Element... elements) {
+		return caster.isAlive() && caster.getDouble("mana") >= 1 && elements.length == 1
+				&& elements[0] instanceof Entity;
 	}
 
 	@Override
-	public void onEnd(Level level, Entity caster) {
+	public void onStart(Level level, Entity caster, Element... elements) {
+		caster.remove("mana", 1);
+		Entity target = (Entity) elements[0];
+		Rectangle rect = target.getAbsoluteRect();
+		block = new IceBlock(target.getLocation(), Math.max(rect.getWidth(), rect.getHeight()) * 1.5);
+		level.addDynamicElement(block);
+		drawer = new Sprite(0, 16, 27);
+	}
+
+	@Override
+	public void onEnd(Level level, Entity caster, Element... elements) {
 		level.removeDynamicElement(block);
 	}
 
 	@Override
-	public List<Requirement> getRequirements() {
-		return Arrays.asList(Requirement.atLeast("mana", 1), Entity::isAlive,
-				entity -> entity.hasTarget() && entity.getTarget() instanceof Entity);
-	}
-
-	@Override
-	public List<Cost> getCosts() {
-		return Arrays.asList(Cost.bar("mana", 1));
-	}
-
-	@Override
 	public Drawer getSelfDrawer() {
-		return IceBlock.sprite;
+		return drawer;
 	}
 
 }

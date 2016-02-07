@@ -1,8 +1,5 @@
 package rpg.network;
 
-import java.util.List;
-
-import rpg.element.Element;
 import rpg.element.Player;
 import rpg.geometry.Vector2D;
 import rpg.logic.level.Level;
@@ -36,11 +33,6 @@ public class NetworkCommand {
 				break;
 			case "setVector":
 				player.set(arr[3], Vector2D.valueOf(arr[4]));
-				break;
-			case "setTarget":
-				Vector2D target = Vector2D.valueOf(arr[3]);
-				List<Element> elements = level.getElements(target);
-				player.setTarget(elements.isEmpty() ? null : elements.get(0));
 				break;
 			}
 

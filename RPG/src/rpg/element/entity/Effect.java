@@ -17,7 +17,7 @@ public class Effect extends Mechanism {
 	}
 
 	private void reduceRemainingTime(double dt) {
-		set("remainingTime", getDouble("remainingTime") - dt);
+		remove("remainingTime", dt);
 	}
 
 	public void onEnd() {

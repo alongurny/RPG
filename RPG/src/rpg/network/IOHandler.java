@@ -1,6 +1,5 @@
 package rpg.network;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -71,7 +70,7 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		Point offset = client.getPanel().getOffset();
+		Vector2D offset = client.getPanel().getOffset();
 		Vector2D target = new Vector2D(e.getX() + offset.getX(), e.getY() + offset.getY());
 		client.addCommand(new NetworkCommand(String.format("player %s setTarget %s", client.getNumber(), target)));
 	}

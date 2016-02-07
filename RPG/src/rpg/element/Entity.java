@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BooleanSupplier;
 
-import rpg.Cost;
-import rpg.Requirement;
 import rpg.ability.Ability;
 import rpg.element.entity.Bar;
 import rpg.element.entity.Effect;
@@ -80,8 +78,7 @@ public abstract class Entity extends Element {
 	}
 
 	public Vector2D getTotalVector(String key) {
-		return super.getVector(key, Vector2D.ZERO).add(
-				race.getVector(key, Vector2D.ZERO));
+		return super.getVector(key, Vector2D.ZERO).add(race.getVector(key, Vector2D.ZERO));
 	}
 
 	private boolean getTotalBooleanFromEffects(String key) {
@@ -94,8 +91,7 @@ public abstract class Entity extends Element {
 	}
 
 	public boolean getTotalBoolean(String key) {
-		return super.getBoolean(key, false) || race.getBoolean(key, false)
-				|| getTotalBooleanFromEffects(key);
+		return super.getBoolean(key, false) || race.getBoolean(key, false) || getTotalBooleanFromEffects(key);
 	}
 
 	protected abstract Drawable getEntityDrawer();
@@ -113,18 +109,15 @@ public abstract class Entity extends Element {
 				keys.sort(String.CASE_INSENSITIVE_ORDER);
 				for (String key : keys) {
 					if (Bar.isBound(key)) {
-						double percentage = Entity.this.getDouble(key)
-								/ Entity.this.getMaximum(key);
+						double percentage = Entity.this.getDouble(key) / Entity.this.getMaximum(key);
 						Color[] colors = Bar.getColors(key);
 						g.setColor(colors[0]);
-						g.fillRect((int) rect.getX(), (int) rect.getHeight()
-								+ 8 * counter - 4,
+						g.fillRect((int) rect.getX(), (int) rect.getHeight() + 8 * counter - 4,
 								(int) (rect.getWidth() * percentage), 4);
 						g.setColor(colors[1]);
-						g.fillRect((int) (rect.getWidth() * percentage)
-								+ (int) (rect.getX()), (int) rect.getHeight()
-								+ 8 * counter - 4, (int) rect.getWidth()
-								- (int) (rect.getWidth() * percentage), 4);
+						g.fillRect((int) (rect.getWidth() * percentage) + (int) (rect.getX()),
+								(int) rect.getHeight() + 8 * counter - 4,
+								(int) rect.getWidth() - (int) (rect.getWidth() * percentage), 4);
 						counter++;
 					}
 				}
@@ -152,35 +145,8 @@ public abstract class Entity extends Element {
 		return new ArrayList<>(abilities);
 	}
 
-	public boolean makeCastable(Ability ability) {
-		if (!ability.hasCooldown()) {
-			for (Requirement r : ability.getRequirements()) {
-				if (!r.isRequireable(this)) {
-					return false;
-				}
-			}
-			for (Cost c : ability.getCosts()) {
-				c.cost(this);
-			}
-			return true;
-		}
-		return false;
-	}
-
-	public boolean isCastable(Ability ability) {
-		if (!ability.hasCooldown()) {
-			for (Requirement r : ability.getRequirements()) {
-				if (!r.isRequireable(this)) {
-					return false;
-				}
-			}
-			return true;
-		}
-		return false;
-	}
-
-	public boolean tryCast(Level level, Ability ability) {
-		if (makeCastable(ability)) {
+	public boolean tryCast(Level level, Ability ability, Element... elements) {
+		if (ability.isCastable(this, elements)) {
 			ability.onCast(level, this);
 			ability.setCooldown(ability.getDouble("maxCooldown"));
 			return true;
@@ -192,25 +158,12 @@ public abstract class Entity extends Element {
 		return abilities.size();
 	}
 
-	public boolean tryCast(Level level, int i) {
-		return tryCast(level, getAbility(i));
+	public boolean tryCast(Level level, int i, Element... elements) {
+		return tryCast(level, getAbility(i), elements);
 	}
 
 	public void addEffect(Effect effect) {
 		effects.add(effect);
-	}
-
-	public boolean hasTarget() {
-		return getInteger("targetID") != -1;
-	}
-
-	public Element getTarget() {
-		int id = getInteger("targetID");
-		return id > -1 ? Element.getByID(id) : null;
-	}
-
-	public void setTarget(Element target) {
-		set("targetID", target != null ? target.getInteger("id") : -1);
 	}
 
 }

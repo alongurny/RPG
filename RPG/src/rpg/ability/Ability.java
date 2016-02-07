@@ -1,10 +1,7 @@
 package rpg.ability;
 
-import java.util.List;
-
-import rpg.Cost;
 import rpg.Mechanism;
-import rpg.Requirement;
+import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.Player;
 import rpg.graphics.draw.AbilityDrawer;
@@ -42,18 +39,15 @@ public abstract class Ability extends Mechanism {
 		reduceCooldown(dt);
 	}
 
-	public abstract void onCast(Level level, Entity caster);
+	public abstract boolean isCastable(Entity caster, Element... elements);
 
-	public abstract List<Requirement> getRequirements();
-
-	public abstract List<Cost> getCosts();
+	public abstract void onCast(Level level, Entity caster, Element... elements);
 
 	public abstract Drawer getSelfDrawer();
 
 	public Drawer getDrawer(Player player) {
 		return Drawer.concat(getSelfDrawer(),
-				new AbilityDrawer(getDouble("cooldown"),
-						getDouble("maxCooldown"), player.isCastable(this)));
+				new AbilityDrawer(getDouble("cooldown"), getDouble("maxCooldown"), isCastable(player)));
 	}
 
 }

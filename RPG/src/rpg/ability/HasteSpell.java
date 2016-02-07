@@ -1,16 +1,12 @@
 package rpg.ability;
 
-import java.util.Arrays;
-import java.util.List;
-
-import rpg.Cost;
-import rpg.Requirement;
+import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.graphics.draw.Drawer;
 import rpg.graphics.draw.IconDrawer;
 import rpg.logic.level.Level;
 
-public class HasteSpell extends Spell {
+public class HasteSpell extends DurationAbility {
 
 	private double speed;
 	private Drawer drawer;
@@ -21,24 +17,20 @@ public class HasteSpell extends Spell {
 	}
 
 	@Override
-	public void onStart(Level level, Entity caster) {
+	public void onStart(Level level, Entity caster, Element... elements) {
+		caster.remove("mana", 1);
 		speed = caster.getDouble("speed", 0);
 		caster.set("speed", speed + 0.5 * caster.getTotalNumber("speed"));
 	}
 
 	@Override
-	public void onEnd(Level level, Entity caster) {
+	public void onEnd(Level level, Entity caster, Element... elements) {
 		caster.set("speed", speed);
 	}
 
 	@Override
-	public List<Requirement> getRequirements() {
-		return Arrays.asList(Requirement.atLeast("mana", 1), Entity::isAlive);
-	}
-
-	@Override
-	public List<Cost> getCosts() {
-		return Arrays.asList(Cost.bar("mana", 1));
+	public boolean isCastable(Entity caster, Element... elements) {
+		return caster.isAlive() && caster.getDouble("mana") >= 1;
 	}
 
 	@Override

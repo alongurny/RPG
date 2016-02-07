@@ -15,7 +15,7 @@ public abstract class Element extends Mechanism {
 	private static Map<Integer, Element> ids = new HashMap<>();
 
 	public Element(Vector2D location) {
-		setID(this, counter++);
+		setID(counter++);
 		set("location", location);
 	}
 
@@ -34,8 +34,8 @@ public abstract class Element extends Mechanism {
 	public Rectangle getAbsoluteRect() {
 		Rectangle rel = getRelativeRect();
 		Vector2D location = getLocation();
-		return new Rectangle(location.getX() + rel.getX(), location.getY()
-				+ rel.getY(), rel.getWidth(), rel.getHeight());
+		return new Rectangle(location.getX() + rel.getX(), location.getY() + rel.getY(), rel.getWidth(),
+				rel.getHeight());
 	}
 
 	public abstract void onCollision(Level level, Element other);
@@ -44,8 +44,7 @@ public abstract class Element extends Mechanism {
 
 	@Override
 	public String toString() {
-		return String.format("%s[location=%s]", getClass().getName(),
-				getLocation());
+		return String.format("%s[location=%s]", getClass().getName(), getLocation());
 	}
 
 	public static double distance(Element a, Element b) {
@@ -58,10 +57,18 @@ public abstract class Element extends Mechanism {
 		return ids.get(id);
 	}
 
-	public static void setID(Element element, int id) {
-		ids.remove(element.getInteger("id", -1));
-		ids.put(id, element);
-		element.set("id", id);
+	public int getID() {
+		return getInteger("id");
+	}
+
+	public void setID(int id) {
+		ids.remove(getInteger("id", -1));
+		ids.put(id, this);
+		set("id", id);
+	}
+
+	public boolean equals(Object object) {
+		return object instanceof Element && ((Element) object).getID() == this.getID();
 	}
 
 }
