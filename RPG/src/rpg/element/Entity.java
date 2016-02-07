@@ -146,8 +146,8 @@ public abstract class Entity extends Element {
 	}
 
 	public boolean tryCast(Level level, Ability ability, Element... elements) {
-		if (ability.isCastable(this, elements)) {
-			ability.onCast(level, this);
+		if (!ability.hasCooldown() && ability.isCastable(this, elements)) {
+			ability.onCast(level, this, elements);
 			ability.setCooldown(ability.getDouble("maxCooldown"));
 			return true;
 		}

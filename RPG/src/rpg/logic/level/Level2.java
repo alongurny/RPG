@@ -4,12 +4,15 @@ import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
 import rpg.ability.IceBlockSpell;
 import rpg.element.Block;
+import rpg.element.Door;
 import rpg.element.Dragon;
+import rpg.element.ItemHolder;
 import rpg.element.ManaPotion;
 import rpg.element.Player;
 import rpg.element.Portal;
 import rpg.element.entity.Race;
 import rpg.geometry.Vector2D;
+import rpg.item.MasterKey;
 import rpg.logic.Grid;
 
 public class Level2 extends Level {
@@ -41,11 +44,13 @@ public class Level2 extends Level {
 			grid.add(new Block(grid.getLocation(j, 0)));
 			if (j != 12 && j != 13) {
 				addStaticElement(new Block(grid.getLocation(j, 4)));
+			} else {
+				addDynamicElement(new Door(grid.getLocation(j, 4)));
 			}
 			addStaticElement(new Block(grid.getLocation(j, COLUMNS - 1)));
 		}
-		Portal[] portals = Portal.getPair(grid.getLocation(2, 2),
-				grid.getLocation(10, 6));
+		addDynamicElement(new ItemHolder(new Vector2D(60, 160), new MasterKey()));
+		Portal[] portals = Portal.getPair(grid.getLocation(2, 2), grid.getLocation(10, 6));
 		addDynamicElement(portals[0]);
 		addDynamicElement(portals[1]);
 	}

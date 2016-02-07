@@ -53,7 +53,7 @@ public class Dragon extends Entity {
 		if (isAlive()) {
 			for (Element e : level.getDynamicElements()) {
 				if (e instanceof Player) {
-					tryCast(level, 0);
+					tryCast(level, 0, e);
 				}
 			}
 		} else {

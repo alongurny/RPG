@@ -55,7 +55,7 @@ public class ItemHolder extends Element implements Interactive {
 
 	@Override
 	public Drawer getDrawer() {
-		return null;
+		return item.getDrawer();
 	}
 
 }

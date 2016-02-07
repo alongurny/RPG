@@ -3,19 +3,20 @@ package rpg.element;
 import rpg.Interactive;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.Sprite;
 import rpg.graphics.draw.Drawer;
-import rpg.graphics.draw.IconDrawer;
 import rpg.item.MasterKey;
 import rpg.logic.level.Level;
 
 public class Door extends Element implements Interactive {
 
 	private static int width = 32, height = 32;
-	private static Drawer openDrawer = new IconDrawer("img/openDoor.png", width, height);
-	private static Drawer closedDrawer = new IconDrawer("img/closedDrawer.png", width, height);
+	private Drawer openDrawer = new Sprite(0, 11, 27);
+	private Drawer closedDrawer = new Sprite(0, 11, 23);
 
 	public Door(Vector2D location) {
 		super(location);
+		set("open", false);
 	}
 
 	public boolean isOpen() {
