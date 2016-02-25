@@ -16,6 +16,10 @@ public class ItemHolder extends Element implements Interactive {
 		this.item = item;
 	}
 
+	public ItemHolder(Vector2D location, int id) {
+		this(location, Item.getByID(id));
+	}
+
 	@Override
 	public Rectangle getRelativeRect() {
 		return new Rectangle(-16, -16, 32, 32);

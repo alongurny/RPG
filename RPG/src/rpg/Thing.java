@@ -17,7 +17,8 @@ import rpg.geometry.Vector2D;
 public abstract class Thing {
 
 	public enum KeyType {
-		DOUBLE(Double.class), BOOLEAN(Boolean.class), VECTOR(Vector2D.class), STRING(String.class);
+		DOUBLE(Double.class), INTEGER(Integer.class), BOOLEAN(Boolean.class), VECTOR(Vector2D.class), STRING(
+				String.class);
 
 		private Class<?> enclosingType;
 
@@ -42,6 +43,8 @@ public abstract class Thing {
 		switch (brr[1].trim()) {
 		case "number":
 			return Double.valueOf(brr[0].trim());
+		case "integer":
+			return Integer.valueOf(brr[0].trim());
 		case "boolean":
 			return Boolean.valueOf(brr[0].trim());
 		case "vector":
