@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,11 +74,13 @@ public abstract class Thing {
 	private Map<String, Object> attributes;
 	private Map<String, Double> maxima;
 	private Map<String, Double> minima;
+	private Set<String> integerKeys;
 
 	public Thing() {
 		this.attributes = new HashMap<>();
 		this.maxima = new HashMap<>();
 		this.minima = new HashMap<>();
+		integerKeys = new HashSet<>();
 	}
 
 	public void setLimited(String key, double value) {
@@ -117,6 +120,9 @@ public abstract class Thing {
 			throw new RPGException("Type not allowed");
 		}
 		if (value instanceof Number) {
+			if (value instanceof Integer) {
+				integerKeys.add(key);
+			}
 			double doubleValue = ((Number) value).doubleValue();
 			if (minima.containsKey(key)) {
 				doubleValue = Math.max(getMinimum(key), doubleValue);
@@ -132,7 +138,7 @@ public abstract class Thing {
 	public KeyType getType(String key) {
 		switch (attributes.get(key).getClass().getSimpleName()) {
 		case "Double":
-			return KeyType.DOUBLE;
+			return integerKeys.contains(key) ? KeyType.INTEGER : KeyType.DOUBLE;
 		case "Boolean":
 			return KeyType.BOOLEAN;
 		case "Vector2D":
@@ -153,7 +159,7 @@ public abstract class Thing {
 	}
 
 	public double getDouble(String key) {
-		if (hasKey(key) && getType(key) == KeyType.DOUBLE)
+		if (hasKey(key) && (getType(key) == KeyType.DOUBLE || getType(key) == KeyType.INTEGER))
 			return (double) attributes.get(key);
 		throw new RPGException("Key " + key + " does not map to a double value");
 
@@ -214,6 +220,8 @@ public abstract class Thing {
 		switch (getType(key)) {
 		case DOUBLE:
 			return getDouble(key);
+		case INTEGER:
+			return getInteger(key);
 		case BOOLEAN:
 			return getBoolean(key);
 		case VECTOR:

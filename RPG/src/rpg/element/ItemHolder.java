@@ -42,7 +42,6 @@ public class ItemHolder extends Element implements Interactive {
 
 	@Override
 	public boolean isPassable(Level level, Element other) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

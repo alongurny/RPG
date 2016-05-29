@@ -1,6 +1,7 @@
 package rpg;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +67,7 @@ public class Attribute {
 			Constructor<?> constructor = cls.getConstructor(classes);
 			return (Thing) constructor.newInstance(values);
 		} catch (Exception e) {
+			System.err.printf("%s || %s || %s \n", cls, Arrays.toString(classes), Arrays.toString(values));
 			throw new RPGException(e);
 		}
 	}

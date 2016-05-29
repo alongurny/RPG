@@ -19,7 +19,6 @@ import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.exception.RPGException;
 import rpg.geometry.Vector2D;
-import rpg.item.Inventory;
 import rpg.item.Item;
 
 public class ThingToXMLProtocol implements Protocol<Thing, Node> {
@@ -40,6 +39,7 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 		NodeList elements = element.getChildNodes();
 		AttributeSet set = new AttributeSet();
 		List<Ability> abilities = new ArrayList<>();
+		List<Item> items = new ArrayList<>();
 		for (int i = 0; i < elements.getLength(); i++) {
 			org.w3c.dom.Element node = (org.w3c.dom.Element) elements.item(i);
 			String key = node.getAttribute("key");
@@ -47,6 +47,9 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			switch (node.getTagName()) {
 			case "double":
 				set.set(key, Double.valueOf(nodeValue));
+				break;
+			case "integer":
+				set.set(key, Integer.valueOf(nodeValue));
 				break;
 			case "boolean":
 				set.set(key, Boolean.valueOf(nodeValue));
@@ -64,6 +67,9 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 					if (Ability.class.isAssignableFrom(cls)) {
 						abilities.add((Ability) decode(node));
 					}
+					if (Item.class.isAssignableFrom(cls)) {
+						items.add((Item) decode(node));
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -80,6 +86,7 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 			case "rpg.element.Dragon":
 				Entity entity = (Entity) thing;
 				abilities.forEach(a -> entity.addAbility(a));
+				items.forEach(i -> entity.getInventory().add(i));
 				break;
 			}
 			return thing;
@@ -105,15 +112,12 @@ public class ThingToXMLProtocol implements Protocol<Thing, Node> {
 		} else if (thing instanceof Element) {
 			if (thing instanceof Entity) {
 				Entity entity = (Entity) thing;
-				root.appendChild(encode0(entity.getInventory(), document));
 				for (Ability a : entity.getAbilities()) {
 					root.appendChild(encode0(a, document));
 				}
-			}
-		} else if (thing instanceof Inventory) {
-			Inventory inventory = (Inventory) thing;
-			for (int i = 0; i < inventory.getSize(); i++) {
-				root.appendChild(encode0(inventory.get(i), document));
+				for (Item i : entity.getInventory()) {
+					root.appendChild(encode0(i, document));
+				}
 			}
 		} else {
 			throw new RPGException("No match for " + thing.getClass());

@@ -15,16 +15,15 @@ import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.draw.Drawable;
 import rpg.graphics.draw.Drawer;
-import rpg.item.Inventory;
 import rpg.item.Item;
 import rpg.logic.level.Level;
 
 public abstract class Entity extends Element {
 
 	private Race race;
-	private Inventory inventory;
 	private List<Ability> abilities;
 	private List<Effect> effects;
+	private List<Item> inventory;
 
 	public Entity(Vector2D location, Race race) {
 		super(location);
@@ -34,7 +33,7 @@ public abstract class Entity extends Element {
 		set("targetID", -1);
 		setLimited("health", getTotalNumber("maxHealth"));
 		setLimited("mana", getTotalNumber("maxMana"));
-		inventory = new Inventory();
+		inventory = new ArrayList<Item>();
 		abilities = new CopyOnWriteArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
 	}
@@ -129,7 +128,7 @@ public abstract class Entity extends Element {
 		inventory.add(item);
 	}
 
-	public Inventory getInventory() {
+	public List<Item> getInventory() {
 		return inventory;
 	}
 

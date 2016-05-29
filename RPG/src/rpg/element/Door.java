@@ -55,7 +55,7 @@ public class Door extends Element implements Interactive {
 
 	@Override
 	public boolean isInteractable(Level level, Entity other) {
-		for (int i = 0; i < other.getInventory().getSize(); i++) {
+		for (int i = 0; i < other.getInventory().size(); i++) {
 			if (other.getInventory().get(i) instanceof MasterKey) {
 				if (Element.distance(other, this) < 36) {
 					return true;
@@ -67,10 +67,10 @@ public class Door extends Element implements Interactive {
 
 	@Override
 	public void onInteract(Level level, Entity other) {
-		for (int i = 0; i < other.getInventory().getSize(); i++) {
+		for (int i = 0; i < other.getInventory().size(); i++) {
 			if (other.getInventory().get(i) instanceof MasterKey) {
 				set("open", true);
-				other.getInventory().removeAt(i);
+				other.getInventory().remove(i);
 				return;
 			}
 		}
