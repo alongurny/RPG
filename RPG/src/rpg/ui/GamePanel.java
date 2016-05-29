@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import rpg.geometry.Vector2D;
+import rpg.graphics.draw.Drawable;
 import rpg.graphics.draw.Drawer;
 
 public class GamePanel extends JPanel {
@@ -18,9 +19,9 @@ public class GamePanel extends JPanel {
 	private static final long serialVersionUID = -435064221993994993L;
 
 	private static BufferedImage background;
-	private List<Drawer> drawers;
-	private List<Drawer> buffer;
-	private List<Drawer> statics;
+	private List<Drawable> drawers;
+	private List<Drawable> buffer;
+	private List<Drawable> statics;
 	private Vector2D offset;
 
 	public GamePanel() {
@@ -39,11 +40,10 @@ public class GamePanel extends JPanel {
 	public void flush() {
 		drawers.clear();
 		drawers.addAll(buffer);
-		drawers.sort((a, b) -> a.getInteger("z-index") - b.getInteger("z-index"));
 		buffer.clear();
 	}
 
-	public void addDrawer(Drawer drawer) {
+	public void addDrawable(Drawable drawer) {
 		buffer.add(drawer);
 	}
 
@@ -51,20 +51,19 @@ public class GamePanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, null);
-		for (Drawer drawer : statics) {
-			drawDrawer(g, drawer);
+		for (Drawable drawer : statics) {
+			drawDrawable(g, drawer);
 		}
-		for (Drawer drawer : drawers) {
-			drawDrawer(g, drawer);
+		for (Drawable drawer : drawers) {
+			drawDrawable(g, drawer);
 		}
 	}
 
-	private void drawDrawer(Graphics g, Drawer drawer) {
-		Vector2D location = drawer.getVector("location");
-		int x = (int) (location.getX() + offset.getX());
-		int y = (int) (location.getY() + offset.getY());
+	private void drawDrawable(Graphics g, Drawable d) {
+		int x = (int) (offset.getX());
+		int y = (int) (offset.getY());
 		g.translate(x, y);
-		drawer.draw(g);
+		d.draw(g);
 		g.translate(-x, -y);
 	}
 

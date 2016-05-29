@@ -8,8 +8,8 @@ import rpg.logic.level.Level;
 
 public class HasteSpell extends DurationAbility {
 
-	private double speed;
 	private Drawer drawer;
+	private double speed;
 
 	public HasteSpell() {
 		super(2, 2);

@@ -13,21 +13,24 @@ public abstract class Ability extends Mechanism {
 	public static final int WIDTH = 32;
 	public static final int HEIGHT = 32;
 
+	private double maxCooldown;
+	private double cooldown;
+
 	public Ability(double maxCooldown) {
-		set("maxCooldown", maxCooldown);
-		setLimited("cooldown", 0.0, 0.0, maxCooldown);
+		this.maxCooldown = maxCooldown;
+		this.cooldown = 0;
 	}
 
 	public double getCooldown() {
-		return getDouble("cooldown");
+		return cooldown;
 	}
 
 	public boolean hasCooldown() {
-		return getDouble("cooldown") > 0;
+		return cooldown > 0;
 	}
 
 	public void setCooldown(double cooldown) {
-		set("cooldown", cooldown);
+		this.cooldown = cooldown;
 	}
 
 	private void reduceCooldown(double dcooldown) {
@@ -46,8 +49,7 @@ public abstract class Ability extends Mechanism {
 	public abstract Drawer getSelfDrawer();
 
 	public Drawer getDrawer(Player player) {
-		return Drawer.concat(getSelfDrawer(),
-				new AbilityDrawer(getDouble("cooldown"), getDouble("maxCooldown"), isCastable(player)));
+		return Drawer.concat(getSelfDrawer(), new AbilityDrawer(cooldown, maxCooldown, isCastable(player)));
 	}
 
 }

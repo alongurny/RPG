@@ -11,9 +11,6 @@ public class IconDrawer extends Drawer {
 	private int width, height;
 
 	public IconDrawer(String path, int width, int height) {
-		set("path", path);
-		set("width", width);
-		set("height", height);
 		this.width = width;
 		this.height = height;
 		this.image = ImageResource.get(path).getImage();

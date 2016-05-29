@@ -20,10 +20,6 @@ public class RotatedImageDrawer extends Drawer {
 	private double angle;
 
 	public RotatedImageDrawer(String path, int width, int height, double angle) {
-		set("path", path);
-		set("width", width);
-		set("height", height);
-		set("angle", angle);
 		this.width = width;
 		this.height = height;
 		this.angle = angle;

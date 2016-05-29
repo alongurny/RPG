@@ -1,33 +1,38 @@
 package rpg.element.entity;
 
+import java.util.Map;
+
 import rpg.Mechanism;
 import rpg.logic.level.Level;
 
 public class Effect extends Mechanism {
 
 	private String[] keys;
+	private Map<String, Boolean> map;
+	private double duration;
+	private double remainingTime;
 
 	public Effect(double duration, String... keys) {
-		set("duration", duration);
-		set("remainingTime", duration);
+		this.duration = duration;
+		this.remainingTime = duration;
 		for (String key : keys) {
-			set(key, true);
+			map.put(key, true);
 		}
 		this.keys = keys;
 	}
 
 	private void reduceRemainingTime(double dt) {
-		remove("remainingTime", dt);
+		remainingTime -= dt;
 	}
 
 	public void onEnd() {
 		for (String key : keys) {
-			set(key, false);
+			map.put(key, false);
 		}
 	}
 
 	public boolean isAffecting() {
-		return getDouble("remainingTime") > 0;
+		return remainingTime > 0;
 	}
 
 	@Override

@@ -4,30 +4,29 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import rpg.geometry.Rectangle;
-import rpg.graphics.draw.Drawer;
+import rpg.graphics.draw.Redrawable;
 
-public class Sprite extends Drawer {
+public class Sprite implements Redrawable {
 
 	private BufferedImage[] images;
+	private int index;
 
 	public Sprite(int tileset, int row, int column) {
 		this(tileset, row, column, column);
 	}
 
 	public Sprite(int tileset, int row, int firstColumn, int lastColumn) {
-		set("tileset", tileset);
-		set("row", row);
-		set("firstColumn", firstColumn);
-		set("lastColumn", lastColumn);
-		set("index", 0);
 		images = new BufferedImage[lastColumn - firstColumn + 1];
 		for (int i = 0; i < images.length; i++) {
 			images[i] = Tileset.get(tileset).subimage(row, firstColumn + i);
 		}
 	}
 
+	public void progress() {
+		index = (index + 1) % images.length;
+	}
+
 	public void draw(Graphics g) {
-		int index = getInteger("index");
 		int width = images[index].getWidth();
 		int height = images[index].getHeight();
 		g.drawImage(images[index], -width / 2, -height / 2, width, height, null);

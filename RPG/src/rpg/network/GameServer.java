@@ -6,7 +6,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import protocol.ThingToStringProtocol;
+import event.ConnectListener;
+import event.ConnectionEvent;
+import event.MessageEvent;
+import event.MessageListener;
 import rpg.element.Element;
 import rpg.logic.Game;
 import rpg.logic.level.Level;
@@ -14,10 +17,6 @@ import rpg.logic.level.Level2;
 import rpg.ui.ServerStation;
 import tcp.ChatServer;
 import tcp.message.Message;
-import event.ConnectListener;
-import event.ConnectionEvent;
-import event.MessageEvent;
-import event.MessageListener;
 
 public class GameServer {
 
@@ -25,7 +24,6 @@ public class GameServer {
 	private ChatServer server;
 	private Timer timer;
 	private Game game;
-	private ThingToStringProtocol protocol;
 	private boolean firstConnection = false;
 	private static int num = 0;
 
@@ -33,7 +31,6 @@ public class GameServer {
 		received = new CopyOnWriteArrayList<>();
 		timer = new Timer();
 		server = new ChatServer();
-		protocol = new ThingToStringProtocol();
 		server.addConnectListener(new ConnectListener() {
 			@Override
 			public void onConnect(ConnectionEvent e) {

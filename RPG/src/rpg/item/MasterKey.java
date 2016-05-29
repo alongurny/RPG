@@ -3,6 +3,7 @@ package rpg.item;
 import rpg.element.Entity;
 import rpg.graphics.Sprite;
 import rpg.graphics.draw.Drawer;
+import rpg.graphics.draw.Redrawer;
 
 public class MasterKey extends Item {
 
@@ -12,7 +13,7 @@ public class MasterKey extends Item {
 	}
 
 	@Override
-	public Drawer getDrawer() {
+	public Redrawer getRedrawer() {
 		return drawer;
 	}
 
