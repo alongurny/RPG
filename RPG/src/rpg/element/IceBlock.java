@@ -2,17 +2,19 @@ package rpg.element;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
-import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class IceBlock extends Element {
 
-	public static final Drawer sprite = TileDrawer.tile(0, 16, 27);
+	public static final Drawer sprite = new TileDrawer(0, 16, 27);
+
+	private double size;
 
 	public IceBlock(Vector2D location, double size) {
 		super(location);
-		set("size", size);
+		this.size = size;
 	}
 
 	@Override
@@ -37,7 +39,6 @@ public class IceBlock extends Element {
 
 	@Override
 	public Rectangle getRelativeRect() {
-		double size = getDouble("size");
 		return new Rectangle(-size / 2, -size / 2, size, size);
 	}
 

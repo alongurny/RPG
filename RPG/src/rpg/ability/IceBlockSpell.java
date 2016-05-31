@@ -4,8 +4,8 @@ import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.IceBlock;
 import rpg.geometry.Rectangle;
+import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
-import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class IceBlockSpell extends DurationAbility {
@@ -15,18 +15,17 @@ public class IceBlockSpell extends DurationAbility {
 
 	public IceBlockSpell() {
 		super(2, 2);
-		drawer = TileDrawer.tile(0, 16, 27);
+		drawer = new TileDrawer(0, 16, 27);
 	}
 
 	@Override
 	public boolean isCastable(Entity caster, Element... elements) {
-		return caster.isAlive() && caster.getDouble("mana") >= 1 && elements.length == 1
-				&& elements[0] instanceof Entity;
+		return caster.isAlive() && caster.getMana() >= 1 && elements.length == 1 && elements[0] instanceof Entity;
 	}
 
 	@Override
 	public void onStart(Level level, Entity caster, Element... elements) {
-		caster.remove("mana", 1);
+		caster.subtractMana(1);
 		Entity target = (Entity) elements[0];
 		Rectangle rect = target.getAbsoluteRect();
 		block = new IceBlock(target.getLocation(), Math.max(rect.getWidth(), rect.getHeight()) * 1.5);

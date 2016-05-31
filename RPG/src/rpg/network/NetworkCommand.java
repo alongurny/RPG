@@ -25,14 +25,20 @@ public class NetworkCommand {
 			case "moveBy":
 				level.tryMoveBy(player, Vector2D.valueOf(arr[3]));
 				break;
+			case "setLocation":
+				player.setLocation(Vector2D.valueOf(arr[3]));
+				break;
+			case "setOrientation":
+				player.setOrientation(Vector2D.valueOf(arr[3]));
+				break;
+			case "setDirection":
+				player.setDirection(Vector2D.valueOf(arr[3]));
+				break;
 			case "cast":
 				player.tryCast(level, Integer.parseInt(arr[3]));
 				break;
 			case "interact":
 				level.tryInteract(player);
-				break;
-			case "setVector":
-				player.set(arr[3], Vector2D.valueOf(arr[4]));
 				break;
 			}
 

@@ -1,6 +1,7 @@
 package rpg.ui;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import rpg.geometry.Vector2D;
-import rpg.graphics.draw.Drawer;
+import rpg.graphics.Drawer;
 
 public class GamePanel extends JPanel {
 
@@ -51,14 +52,14 @@ public class GamePanel extends JPanel {
 		super.paintComponent(g);
 		g.drawImage(background, 0, 0, null);
 		for (Drawer drawer : statics) {
-			drawDrawer(g, drawer);
+			drawDrawer((Graphics2D) g, drawer);
 		}
 		for (Drawer drawer : drawers) {
-			drawDrawer(g, drawer);
+			drawDrawer((Graphics2D) g, drawer);
 		}
 	}
 
-	private void drawDrawer(Graphics g, Drawer drawer) {
+	private void drawDrawer(Graphics2D g, Drawer drawer) {
 		int x = (int) (offset.getX());
 		int y = (int) (offset.getY());
 		g.translate(x, y);

@@ -4,8 +4,8 @@ import rpg.Mechanism;
 import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.Player;
+import rpg.graphics.Drawer;
 import rpg.graphics.draw.AbilityDrawer;
-import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public abstract class Ability extends Mechanism {
@@ -13,25 +13,28 @@ public abstract class Ability extends Mechanism {
 	public static final int WIDTH = 32;
 	public static final int HEIGHT = 32;
 
+	private double cooldown;
+	private double maxCooldown;
+
 	public Ability(double maxCooldown) {
-		set("maxCooldown", maxCooldown);
-		setLimited("cooldown", 0.0, 0.0, maxCooldown);
+		this.cooldown = maxCooldown;
+		this.maxCooldown = maxCooldown;
 	}
 
 	public double getCooldown() {
-		return getDouble("cooldown");
+		return cooldown;
 	}
 
 	public boolean hasCooldown() {
-		return getDouble("cooldown") > 0;
+		return cooldown > 0;
 	}
 
 	public void setCooldown(double cooldown) {
-		set("cooldown", cooldown);
+		this.cooldown = cooldown;
 	}
 
 	private void reduceCooldown(double dcooldown) {
-		setCooldown(getCooldown() - dcooldown);
+		cooldown -= dcooldown;
 	}
 
 	@Override
@@ -46,8 +49,11 @@ public abstract class Ability extends Mechanism {
 	public abstract Drawer getSelfDrawer();
 
 	public Drawer getDrawer(Player player) {
-		return getSelfDrawer()
-				.andThen(new AbilityDrawer(getDouble("cooldown"), getDouble("maxCooldown"), isCastable(player)));
+		return getSelfDrawer().andThen(new AbilityDrawer(cooldown, maxCooldown, isCastable(player)));
+	}
+
+	public double getMaxCooldown() {
+		return maxCooldown;
 	}
 
 }

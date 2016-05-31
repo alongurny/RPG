@@ -3,8 +3,8 @@ package rpg.element;
 import rpg.Interactive;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
-import rpg.graphics.draw.Drawer;
 import rpg.item.MasterKey;
 import rpg.logic.level.Level;
 
@@ -13,21 +13,22 @@ public class Door extends Element implements Interactive {
 	private static int width = 32, height = 32;
 	private Drawer openDrawer;
 	private Drawer closedDrawer;
+	private boolean open;
 
 	public Door(Vector2D location) {
 		super(location);
-		set("open", false);
-		openDrawer = TileDrawer.tile(0, 11, 27);
-		closedDrawer = TileDrawer.tile(0, 11, 23);
+		this.open = false;
+		openDrawer = new TileDrawer(0, 11, 27);
+		closedDrawer = new TileDrawer(0, 11, 23);
 	}
 
 	public boolean isOpen() {
-		return getBoolean("open");
+		return open;
 	}
 
 	@Override
 	public Drawer getDrawer() {
-		return isOpen() ? openDrawer : closedDrawer;
+		return open ? openDrawer : closedDrawer;
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class Door extends Element implements Interactive {
 	public void onInteract(Level level, Entity other) {
 		for (int i = 0; i < other.getInventory().size(); i++) {
 			if (other.getInventory().get(i) instanceof MasterKey) {
-				set("open", true);
+				open = true;
 				other.getInventory().remove(i);
 				return;
 			}

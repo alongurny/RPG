@@ -5,29 +5,34 @@ import rpg.logic.level.Level;
 
 public class Effect extends Mechanism {
 
-	private String[] keys;
+	private String key;
+	private double duration;
+	private double remainingTime;
 
-	public Effect(double duration, String... keys) {
-		set("duration", duration);
-		set("remainingTime", duration);
-		for (String key : keys) {
-			set(key, true);
-		}
-		this.keys = keys;
+	public Effect(double duration, String key) {
+		this.duration = duration;
+		this.remainingTime = duration;
+		this.key = key;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public double getDuration() {
+		return duration;
 	}
 
 	private void reduceRemainingTime(double dt) {
-		remove("remainingTime", dt);
-	}
-
-	public void onEnd() {
-		for (String key : keys) {
-			set(key, false);
-		}
+		remainingTime -= dt;
 	}
 
 	public boolean isAffecting() {
-		return getDouble("remainingTime") > 0;
+		return remainingTime > 0;
+	}
+
+	public void onEnd() {
+
 	}
 
 	@Override

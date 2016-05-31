@@ -1,10 +1,8 @@
 package rpg.graphics;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
-
-import rpg.graphics.draw.Drawer;
 
 public class Sprite extends Drawer {
 
@@ -20,7 +18,7 @@ public class Sprite extends Drawer {
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		drawers.get(index).draw(g);
 	}
 

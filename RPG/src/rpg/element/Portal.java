@@ -3,14 +3,15 @@ package rpg.element;
 import rpg.Interactive;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.IconDrawer;
-import rpg.graphics.draw.Drawer;
+import rpg.graphics.DrawIcon;
+import rpg.graphics.Drawer;
 import rpg.logic.level.Level;
 
 public class Portal extends Element implements Interactive {
 
 	private static int width = 32, height = 32;
 	private Drawer drawer;
+	private Vector2D target;
 
 	public static Portal[] getPair(Vector2D v1, Vector2D v2) {
 		Portal p1 = new Portal(v1, v2);
@@ -20,8 +21,8 @@ public class Portal extends Element implements Interactive {
 
 	public Portal(Vector2D location, Vector2D target) {
 		super(location);
-		set("target", target);
-		drawer = new IconDrawer("img/portal.gif", width, height);
+		this.target = target;
+		drawer = new DrawIcon("img/portal.gif", width, height);
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class Portal extends Element implements Interactive {
 
 	@Override
 	public void onInteract(Level level, Entity entity) {
-		level.tryMove(entity, getVector("target").add(entity.getLocation()).subtract(getLocation()));
+		level.tryMove(entity, target.add(entity.getLocation()).subtract(getLocation()));
 	}
 
 	@Override

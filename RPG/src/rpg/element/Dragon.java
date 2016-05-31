@@ -4,8 +4,8 @@ import rpg.ability.FireballSpell;
 import rpg.element.entity.Race;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.IconDrawer;
-import rpg.graphics.draw.Drawer;
+import rpg.graphics.DrawIcon;
+import rpg.graphics.Drawer;
 import rpg.logic.level.Level;
 
 public class Dragon extends Entity {
@@ -16,8 +16,7 @@ public class Dragon extends Entity {
 	public Dragon(Vector2D location) {
 		super(location, Race.DRAGON);
 		addAbility(new FireballSpell());
-		setLimited("mana", 100, 0, 100);
-		drawer = new IconDrawer("img/dragon.png", 32, 32);
+		drawer = new DrawIcon("img/dragon.png", 32, 32);
 	}
 
 	@Override

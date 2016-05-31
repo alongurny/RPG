@@ -4,8 +4,8 @@ import java.util.List;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.Drawer;
 import rpg.graphics.RotatedImageDrawer;
-import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class Fireball extends Element {
@@ -14,24 +14,17 @@ public class Fireball extends Element {
 
 	private static double defaultAngle = Math.toRadians(-90);
 	private Entity caster;
+	private Vector2D velocity;
 
-	public Fireball(Entity caster, Vector2D location, Vector2D direction, double speed) {
+	public Fireball(Entity caster, Vector2D location, Vector2D velocity) {
 		super(location);
 		this.caster = caster;
-		set("direction", direction.getUnitalVector());
-		set("speed", speed);
-	}
-
-	public Fireball(Vector2D location, Vector2D direction, double speed) {
-		super(location);
-		set("direction", direction.getUnitalVector());
-		set("speed", speed);
+		this.velocity = velocity;
 	}
 
 	@Override
 	public Drawer getDrawer() {
-		Vector2D direction = getVector("direction");
-		double angle = Math.atan2(direction.getY(), direction.getX()) + defaultAngle;
+		double angle = Math.atan2(velocity.getY(), velocity.getX()) + defaultAngle;
 		return new RotatedImageDrawer("img/fireball.gif", width, height, angle);
 	}
 
@@ -42,7 +35,7 @@ public class Fireball extends Element {
 
 	@Override
 	public void update(Level level, double dt) {
-		List<Element> obstacles = level.tryMoveBy(this, getVector("direction").multiply(getDouble("speed") * dt));
+		List<Element> obstacles = level.tryMoveBy(this, velocity.multiply(dt));
 		obstacles.forEach(obstacle -> {
 			onCollision(level, obstacle);
 			obstacle.onCollision(level, this);
@@ -53,7 +46,7 @@ public class Fireball extends Element {
 	public void onCollision(Level level, Element other) {
 		if (other instanceof Entity && caster != other) {
 			Entity entity = (Entity) other;
-			entity.remove("health", 10);
+			entity.subtractHealth(10);
 			level.removeDynamicElement(this);
 		} else if (!other.isPassable(level, this)) {
 			level.removeDynamicElement(this);

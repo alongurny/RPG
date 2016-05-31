@@ -1,29 +1,32 @@
 package rpg.element.entity;
 
-import java.util.List;
-
 import rpg.Thing;
-import rpg.exception.RPGException;
 
-public class Race extends Thing {
+public abstract class Race extends Thing {
 
-	public static final Race HUMAN = new Race("human", read("race/human.attr"));
-	public static final Race DRAGON = new Race("dragon", read("race/dragon.attr"));
+	public static final Race HUMAN = new Race() {
 
-	private Race(String name, List<Attribute> attributes) {
-		attributes.forEach(a -> set(a.getKey(), a.getValue()));
-		set("race", name);
-	}
-
-	public static Race valueOf(String str) {
-		switch (str.toLowerCase()) {
-		case "human":
-			return HUMAN;
-		case "dragon":
-			return DRAGON;
-		default:
-			throw new RPGException("No race " + str);
+		public double getMaxHealth() {
+			return 42;
 		}
-	}
+
+		@Override
+		public double getMaxMana() {
+			return 0;
+		}
+	};
+	public static final Race DRAGON = new Race() {
+		public double getMaxHealth() {
+			return 100;
+		}
+
+		public double getMaxMana() {
+			return 100;
+		}
+	};
+
+	public abstract double getMaxMana();
+
+	public abstract double getMaxHealth();
 
 }

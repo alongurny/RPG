@@ -1,21 +1,28 @@
 package rpg.network;
 
+import java.util.Arrays;
+
 import protocol.Protocol;
-import rpg.graphics.draw.Drawer;
+import rpg.exception.RPGException;
+import rpg.graphics.Drawer;
 
 public class DrawerProtocol implements Protocol<Drawer, String> {
 
 	@Override
 	public String encode(Drawer d) {
-		return d.represent();
+		return d.toString();
 	}
 
 	@Override
 	public Drawer decode(String str) {
+		return Arrays.stream(str.split(";;")).map(this::decodeOne).reduce((a, b) -> a.andThen(b)).get();
+	}
+
+	private Drawer decodeOne(String str) {
 		String[] arr = str.split(" ");
 		String type = arr[0];
 		try {
-			Class<?> cls = Class.forName("rpg.graphics." + type);
+			Class<?> cls = Class.forName(type);
 			Class<?>[] paramTypes = new Class<?>[arr.length - 1];
 			Object[] paramValues = new Object[arr.length - 1];
 			for (int i = 0; i < arr.length - 1; i++) {
@@ -27,8 +34,7 @@ public class DrawerProtocol implements Protocol<Drawer, String> {
 			}
 			return (Drawer) cls.getConstructor(paramTypes).newInstance(paramValues);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return Drawer.empty();
+			throw new RPGException(e);
 		}
 	}
 

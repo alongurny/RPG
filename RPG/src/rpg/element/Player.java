@@ -3,20 +3,16 @@ package rpg.element;
 import rpg.element.entity.Race;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.IconDrawer;
-import rpg.graphics.draw.Drawer;
+import rpg.graphics.DrawIcon;
+import rpg.graphics.Drawer;
 import rpg.logic.level.Level;
 
 public class Player extends Entity {
 
-	private Drawer drawer = new IconDrawer("img/player.png", 32, 32);
+	private Drawer drawer = new DrawIcon("img/player.png", 32, 32);
 
 	public Player(Vector2D location, Race race) {
 		super(location, race);
-	}
-
-	public Player(Vector2D location, String race) {
-		this(location, Race.valueOf(race));
 	}
 
 	@Override
@@ -49,13 +45,13 @@ public class Player extends Entity {
 
 	private void regenerate(double dt) {
 		if (isAlive()) {
-			add("health", dt * getTotalNumber("healthRegen"));
-			add("mana", dt * getTotalNumber("manaRegen"));
+			addHealth(dt * 3);
+			addMana(dt * 3);
 		}
 	}
 
 	private void move(Level level, double dt) {
-		if (isAlive() && !getTotalBoolean("disabled")) {
+		if (isAlive() && !getEffects().stream().anyMatch(e -> e.getKey().equals("disabled"))) {
 			Vector2D velocity = getVelocity().multiply(dt);
 			double x = velocity.getX();
 			double y = velocity.getY();
@@ -76,10 +72,6 @@ public class Player extends Entity {
 	public void act(Level level, double dt) {
 		regenerate(dt);
 		move(level, dt);
-	}
-
-	public Vector2D getVelocity() {
-		return getTotalVector("velocityDirection").multiply(getTotalNumber("speed"));
 	}
 
 }

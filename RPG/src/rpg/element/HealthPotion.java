@@ -2,13 +2,13 @@ package rpg.element;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
-import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class HealthPotion extends Bonus {
 
-	private static final Drawer sprite = TileDrawer.tile(0, 25, 2);
+	private static final Drawer sprite = new TileDrawer(0, 25, 2);
 
 	public HealthPotion(Vector2D location) {
 		super(location);
@@ -16,7 +16,7 @@ public class HealthPotion extends Bonus {
 
 	@Override
 	protected void onPick(Entity picker) {
-		picker.add("health", 20);
+		picker.addHealth(20);
 	}
 
 	@Override

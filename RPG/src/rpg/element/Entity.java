@@ -1,20 +1,18 @@
 package rpg.element;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BooleanSupplier;
 
 import rpg.ability.Ability;
-import rpg.element.entity.Bar;
 import rpg.element.entity.Effect;
 import rpg.element.entity.Race;
-import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.draw.Drawable;
-import rpg.graphics.draw.Drawer;
+import rpg.graphics.Drawer;
+import rpg.graphics.ScaleDrawer;
+import rpg.graphics.Translate;
 import rpg.item.Item;
 import rpg.logic.level.Level;
 
@@ -25,17 +23,46 @@ public abstract class Entity extends Element {
 	private List<Effect> effects;
 	private List<Item> inventory;
 
+	private double health, mana;
+	private Vector2D orientation;
+	private double speed;
+	private Vector2D direction;
+
 	public Entity(Vector2D location, Race race) {
 		super(location);
-		set("race", race.get("race"));
-		set("direction", Vector2D.NORTH);
 		this.race = race;
-		set("targetID", -1);
-		setLimited("health", getTotalNumber("maxHealth"));
-		setLimited("mana", getTotalNumber("maxMana"));
+		this.health = getMaxHealth();
+		this.mana = getMaxMana();
+		this.direction = Vector2D.ZERO;
+		this.orientation = Vector2D.NORTH;
+		this.speed = 64;
 		inventory = new ArrayList<Item>();
 		abilities = new CopyOnWriteArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
+	}
+
+	public double getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+	public void setDirection(Vector2D direction) {
+		this.direction = direction;
+	}
+
+	public Vector2D getDirection() {
+		return direction;
+	}
+
+	public void setOrientation(Vector2D orientation) {
+		this.orientation = orientation;
+	}
+
+	public Vector2D getOrientation() {
+		return orientation;
 	}
 
 	@Override
@@ -56,76 +83,62 @@ public abstract class Entity extends Element {
 
 	public abstract void act(Level level, double dt);
 
-	public boolean isRequireable(String key, double value) {
-		return getDouble(key) >= value;
+	public boolean isRequireable(double value) {
+		return mana >= value;
 	}
 
-	public boolean tryRequire(String key, double value) {
-		if (!isRequireable(key, value)) {
+	public void addMana(double value) {
+		mana = Math.min(mana + value, getMaxMana());
+	}
+
+	protected List<Effect> getEffects() {
+		return effects;
+	}
+
+	public void addHealth(double value) {
+		health = Math.min(health + value, getMaxHealth());
+	}
+
+	public boolean tryRequireMana(double value) {
+		if (!isRequireable(value)) {
 			return false;
 		}
-		set(key, getDouble(key) - value);
+		subtractMana(value);
 		return true;
 	}
 
+	public void subtractMana(double value) {
+		mana -= value;
+	}
+
+	public void subtractHealth(double value) {
+		health -= value;
+	}
+
 	public boolean isAlive() {
-		return getDouble("health") > 0;
+		return health > 0;
 	}
 
-	public double getTotalNumber(String key) {
-		return super.getDouble(key, 0.0) + race.getDouble(key, 0.0);
+	public double getMaxMana() {
+		return race.getMaxMana();
 	}
 
-	public Vector2D getTotalVector(String key) {
-		return super.getVector(key, Vector2D.ZERO).add(race.getVector(key, Vector2D.ZERO));
+	public double getMaxHealth() {
+		return race.getMaxHealth();
 	}
 
-	private boolean getTotalBooleanFromEffects(String key) {
-		for (Effect e : effects) {
-			if (e.getBoolean(key, false)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean getTotalBoolean(String key) {
-		return super.getBoolean(key, false) || race.getBoolean(key, false) || getTotalBooleanFromEffects(key);
-	}
-
-	protected abstract Drawable getEntityDrawer();
+	protected abstract Drawer getEntityDrawer();
 
 	@Override
 	public Drawer getDrawer() {
-		return new Drawer() {
-			@Override
-			public String represent() {
-				return "TileDrawer 0:int 25:int 5:int";
-			}
-
-			@Override
-			public void draw(Graphics g) {
-				getEntityDrawer().draw(g);
-				Rectangle rect = getRelativeRect();
-				int counter = 0;
-				List<String> keys = new ArrayList<>(Bar.getBound());
-				keys.sort(String.CASE_INSENSITIVE_ORDER);
-				for (String key : keys) {
-					if (Bar.isBound(key)) {
-						double percentage = Entity.this.getDouble(key) / Entity.this.getMaximum(key);
-						Color[] colors = Bar.getColors(key);
-						g.setColor(colors[0]);
-						g.fillRect((int) rect.getX(), (int) rect.getHeight() + 8 * counter - 4,
-								(int) (rect.getWidth() * percentage), 4);
-						g.setColor(colors[1]);
-						g.fillRect((int) (rect.getWidth() * percentage) + (int) (rect.getX()),
-								(int) rect.getHeight() + 8 * counter - 4,
-								(int) rect.getWidth() - (int) (rect.getWidth() * percentage), 4);
-						counter++;
-					}
-				}
-			}
-		};
+		Translate t = new Translate(0, (int) (getRelativeRect().getHeight() / 2));
+		Translate s = new Translate(0, 8);
+		return getEntityDrawer().andThen(t).andThen(s)
+				.andThen(new ScaleDrawer(health / getMaxHealth(), Color.RED, Color.GREEN, getRelativeRect().getWidth(),
+						4))
+				.andThen(s)
+				.andThen(new ScaleDrawer(mana / getMaxMana(), Color.BLUE, Color.CYAN, getRelativeRect().getWidth(), 4))
+				.andThen(t.negate().andThen(s.negate()).andThen(s.negate()));
 	}
 
 	public void pick(Item item) {
@@ -151,7 +164,7 @@ public abstract class Entity extends Element {
 	public boolean tryCast(Level level, Ability ability, Element... elements) {
 		if (!ability.hasCooldown() && ability.isCastable(this, elements)) {
 			ability.onCast(level, this, elements);
-			ability.setCooldown(ability.getDouble("maxCooldown"));
+			ability.setCooldown(ability.getMaxCooldown());
 			return true;
 		}
 		return false;
@@ -167,6 +180,18 @@ public abstract class Entity extends Element {
 
 	public void addEffect(Effect effect) {
 		effects.add(effect);
+	}
+
+	public double getMana() {
+		return mana;
+	}
+
+	public double getHealth() {
+		return health;
+	}
+
+	public Vector2D getVelocity() {
+		return direction.multiply(speed);
 	}
 
 }

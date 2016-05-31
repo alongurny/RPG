@@ -3,7 +3,7 @@ package rpg.element;
 import rpg.Interactive;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.draw.Drawer;
+import rpg.graphics.Drawer;
 import rpg.item.Item;
 import rpg.logic.level.Level;
 
@@ -14,10 +14,6 @@ public class ItemHolder extends Element implements Interactive {
 	public ItemHolder(Vector2D location, Item item) {
 		super(location);
 		this.item = item;
-	}
-
-	public ItemHolder(Vector2D location, int id) {
-		this(location, Item.getByID(id));
 	}
 
 	@Override

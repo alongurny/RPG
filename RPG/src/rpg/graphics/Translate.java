@@ -1,26 +1,28 @@
 package rpg.graphics;
 
-import java.awt.Graphics;
-
-import rpg.graphics.draw.Drawer;
+import java.awt.Graphics2D;
 
 public class Translate extends Drawer {
 
-	private int dx, dy;
+	private double dx, dy;
 
-	public Translate(int dx, int dy) {
+	public Translate(double dx, double dy) {
 		this.dx = dx;
 		this.dy = dy;
 	}
 
 	@Override
 	public String represent() {
-		return String.format("Translate %d:int %d:int", dx, dy);
+		return String.format("%s %f:double %f:double", getClass().getName(), dx, dy);
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		g.translate(dx, dy);
+	}
+
+	public Translate negate() {
+		return new Translate(-dx, -dy);
 	}
 
 }

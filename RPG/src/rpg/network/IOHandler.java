@@ -40,10 +40,10 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 				velocity = velocity.add(Vector2D.EAST);
 			}
 		}
-		client.addCommand(
-				new NetworkCommand("player " + client.getNumber() + " setVector velocityDirection " + velocity));
+		client.addCommand(new NetworkCommand("player " + client.getNumber() + " setDirection " + velocity));
 		if (!velocity.equals(Vector2D.ZERO)) {
-			client.addCommand(new NetworkCommand("player " + client.getNumber() + " setVector direction " + velocity));
+			client.addCommand(new NetworkCommand(
+					"player " + client.getNumber() + " setOrientation " + velocity.getUnitalVector()));
 		}
 	}
 

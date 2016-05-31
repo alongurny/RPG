@@ -10,8 +10,10 @@ import event.ConnectListener;
 import event.ConnectionEvent;
 import event.MessageEvent;
 import event.MessageListener;
+import protocol.Protocol;
 import rpg.element.Element;
-import rpg.graphics.draw.Drawer;
+import rpg.graphics.Drawer;
+import rpg.graphics.Translate;
 import rpg.logic.Game;
 import rpg.logic.level.Level;
 import rpg.logic.level.Level2;
@@ -25,12 +27,14 @@ public class GameServer {
 	private ChatServer server;
 	private Timer timer;
 	private Game game;
+	private Protocol<Drawer, String> protocol;
 	private boolean firstConnection = false;
 	private static int num = 0;
 
 	public GameServer(Game game) throws IOException {
 		received = new CopyOnWriteArrayList<>();
 		timer = new Timer();
+		protocol = new DrawerProtocol();
 		server = new ChatServer();
 		server.addConnectListener(new ConnectListener() {
 			@Override
@@ -72,25 +76,18 @@ public class GameServer {
 	private void send() {
 		server.send(Message.data("start"));
 		for (Element e : game.getLevel().getDynamicElements()) {
-			String t1 = Drawer.translate((int) e.getLocation().getX(), (int) e.getLocation().getY()).represent();
-			String t2 = Drawer.translate((int) -e.getLocation().getX(), (int) -e.getLocation().getY()).represent();
-			String[] str = e.getDrawer().represent().split("\n");
-			server.send(Message.data("dynamic " + t1));
-			for (String s : str) {
-				server.send(Message.data("dynamic " + s));
-			}
-			server.send(Message.data("dynamic " + t2));
+			Translate t = new Translate((int) e.getLocation().getX(), (int) e.getLocation().getY());
+			server.send(Message.data("dynamic " + protocol.encode(t)));
+			server.send(Message.data("dynamic " + e.getDrawer()));
+			server.send(Message.data("dynamic " + protocol.encode(t.negate())));
 		}
 		if (firstConnection) {
 			server.send(Message.metadata("number " + num++));
 			for (Element e : game.getLevel().getStaticElements()) {
-				String[] str = e.getDrawer().represent().split("\n");
-				String t1 = Drawer.translate((int) e.getLocation().getX(), (int) e.getLocation().getY()).represent();
-				String t2 = Drawer.translate((int) -e.getLocation().getX(), (int) -e.getLocation().getY()).represent();
+				String t1 = new Translate((int) e.getLocation().getX(), (int) e.getLocation().getY()).represent();
+				String t2 = new Translate((int) -e.getLocation().getX(), (int) -e.getLocation().getY()).represent();
 				server.send(Message.data("static " + t1));
-				for (String s : str) {
-					server.send(Message.data("static " + s));
-				}
+				server.send(Message.data("static " + e.getDrawer()));
 				server.send(Message.data("static " + t2));
 			}
 			firstConnection = false;

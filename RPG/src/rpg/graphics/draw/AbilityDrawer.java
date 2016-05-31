@@ -2,10 +2,11 @@ package rpg.graphics.draw;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 
 import rpg.ability.Ability;
+import rpg.graphics.Drawer;
 
 public class AbilityDrawer extends Drawer {
 
@@ -22,7 +23,7 @@ public class AbilityDrawer extends Drawer {
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		g.setColor(Color.BLACK);
 		g.translate(-16, -16);
 		g.drawRect(0, 0, 32, 32);

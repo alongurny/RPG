@@ -1,11 +1,9 @@
 package rpg.graphics;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
-import rpg.graphics.draw.Drawer;
 
 public class TileDrawer extends Drawer {
 
@@ -22,10 +20,6 @@ public class TileDrawer extends Drawer {
 		this.col = col;
 	}
 
-	public static TileDrawer tile(int tileset, int row, int col) {
-		return new TileDrawer(tileset, row, col);
-	}
-
 	public static Sprite sprite(int tileset, int row, int firstColumn, int lastColumn) {
 		List<TileDrawer> list = new ArrayList<>();
 		for (int i = firstColumn; i <= lastColumn; i++) {
@@ -34,13 +28,13 @@ public class TileDrawer extends Drawer {
 		return new Sprite(list);
 	}
 
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		g.drawImage(image, -image.getWidth() / 2, -image.getHeight() / 2, image.getWidth(), image.getHeight(), null);
 	}
 
 	@Override
 	public String represent() {
-		return String.format("TileDrawer %d:int %d:int %d:int", tileset, row, col);
+		return String.format("%s %d:int %d:int %d:int", getClass().getName(), tileset, row, col);
 	}
 
 }

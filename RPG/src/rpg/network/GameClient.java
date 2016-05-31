@@ -9,7 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import event.MessageEvent;
 import event.MessageListener;
 import protocol.Protocol;
-import rpg.graphics.draw.Drawer;
+import rpg.graphics.Drawer;
 import rpg.ui.GamePanel;
 import rpg.ui.GameStation;
 import tcp.ChatClient;
@@ -50,7 +50,6 @@ public class GameClient {
 					panel.flush();
 				} else if (data.startsWith("dynamic ")) {
 					Drawer drawer = protocol.decode(data.substring(8));
-					System.out.println(drawer.represent());
 					panel.addDrawer(drawer);
 				} else if (data.startsWith("static ")) {
 					Drawer drawer = protocol.decode(data.substring(7));

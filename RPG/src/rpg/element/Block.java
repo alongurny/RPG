@@ -2,8 +2,8 @@ package rpg.element;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
-import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class Block extends Element {
@@ -12,7 +12,7 @@ public class Block extends Element {
 
 	public Block(Vector2D location) {
 		super(location);
-		sprite = TileDrawer.tile(0, 13, 23);
+		sprite = new TileDrawer(0, 13, 23);
 
 	}
 

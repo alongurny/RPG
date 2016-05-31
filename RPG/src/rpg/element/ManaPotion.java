@@ -2,13 +2,13 @@ package rpg.element;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
-import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class ManaPotion extends Bonus {
 
-	private static final TileDrawer drawer = TileDrawer.tile(0, 24, 29);
+	private static final TileDrawer drawer = new TileDrawer(0, 24, 29);
 
 	public ManaPotion(Vector2D location) {
 		super(location);
@@ -16,7 +16,7 @@ public class ManaPotion extends Bonus {
 
 	@Override
 	protected void onPick(Entity picker) {
-		picker.add("mana", 20);
+		picker.addMana(20);
 	}
 
 	@Override

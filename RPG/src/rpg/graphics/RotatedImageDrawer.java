@@ -1,12 +1,11 @@
 package rpg.graphics;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 import rpg.ImageResource;
-import rpg.graphics.draw.Drawer;
 
 public class RotatedImageDrawer extends Drawer {
 
@@ -24,7 +23,7 @@ public class RotatedImageDrawer extends Drawer {
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		g.drawImage(image, -width / 2, -height / 2, width, height, null);
 		AffineTransform at = new AffineTransform();
 		at.rotate(angle, image.getWidth(null) / 2, image.getHeight(null) / 2);
@@ -34,8 +33,8 @@ public class RotatedImageDrawer extends Drawer {
 
 	@Override
 	public String represent() {
-		return String.format("RotatedImageDrawer %s:java.lang.String %d:int %d:int %f:double", path, width, height,
-				angle);
+		return String.format("%s %s:java.lang.String %d:int %d:int %f:double", getClass().getName(), path, width,
+				height, angle);
 	}
 
 }

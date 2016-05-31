@@ -1,30 +1,25 @@
 package rpg.element;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import rpg.Mechanism;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.draw.Drawer;
+import rpg.graphics.Drawer;
 import rpg.logic.level.Level;
 
 public abstract class Element extends Mechanism {
 
-	private static int counter = 0;
-	private static Map<Integer, Element> ids = new HashMap<>();
+	private Vector2D location;
 
 	public Element(Vector2D location) {
-		setID(counter++);
-		set("location", location);
+		this.location = location;
 	}
 
 	public Vector2D getLocation() {
-		return getVector("location");
+		return location;
 	}
 
 	public void setLocation(Vector2D location) {
-		set("location", location);
+		this.location = location;
 	}
 
 	public abstract Rectangle getRelativeRect();
@@ -52,23 +47,5 @@ public abstract class Element extends Mechanism {
 	}
 
 	public abstract Drawer getDrawer();
-
-	public static Element getByID(int id) {
-		return ids.get(id);
-	}
-
-	public int getID() {
-		return getInteger("id");
-	}
-
-	public void setID(int id) {
-		ids.remove(getInteger("id", -1));
-		ids.put(id, this);
-		set("id", id);
-	}
-
-	public boolean equals(Object object) {
-		return object instanceof Element && ((Element) object).getID() == this.getID();
-	}
 
 }

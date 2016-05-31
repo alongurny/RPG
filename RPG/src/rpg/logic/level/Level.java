@@ -66,7 +66,7 @@ public class Level {
 				}
 			}
 		}
-		for (Element e : getNearElements(element)) {
+		for (Element e : grid.getElements()) {
 			if (e != element) {
 				if (e.getAbsoluteRect().intersects(newRect) && !e.isPassable(this, element)) {
 					obstacles.add(e);
@@ -129,7 +129,7 @@ public class Level {
 					}
 				}
 			}
-			for (Element s : getNearElements(e)) {
+			for (Element s : grid.getElements()) {
 				Rectangle r = s.getAbsoluteRect();
 				if (r.intersects(e.getAbsoluteRect())) {
 					s.onCollision(this, e);
@@ -153,7 +153,7 @@ public class Level {
 				}
 			}
 		}
-		for (Element e : getNearElements(entity)) {
+		for (Element e : grid.getElements()) {
 			if (e instanceof Interactive) {
 				Interactive i = (Interactive) e;
 				if (i.isInteractable(this, entity)) {
@@ -179,18 +179,6 @@ public class Level {
 
 	public void setNextLevel(Level nextLevel) {
 		this.nextLevel = nextLevel;
-	}
-
-	public List<Element> getNearElements(
-			Element e) { /*
-							 * int y = e., x; List<StaticElement> list = new
-							 * ArrayList<>(); for (int i = -1; i <= 1; i++) {
-							 * for (int j = -1; j <= 1; j++) { if (0 <= y + i &&
-							 * y + i <= map.getRows()) { if (0 <= x + j && x + j
-							 * <= map.getColumns()) { list.add(map.get(y + i, x
-							 * + j)); } } } }
-							 */
-		return grid.getElements();
 	}
 
 	public List<Element> getStaticElements() {

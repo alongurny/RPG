@@ -1,6 +1,7 @@
 package rpg.ui;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -81,7 +82,7 @@ public class ServerPanel extends JPanel {
 		int x = (int) (e.getLocation().getX()) - sourceX;
 		int y = (int) (e.getLocation().getY()) - sourceY;
 		g.translate(x, y);
-		e.getDrawer().draw(g);
+		e.getDrawer().draw((Graphics2D) g);
 		g.translate(-x, -y);
 	}
 
