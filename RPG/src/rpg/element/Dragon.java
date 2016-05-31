@@ -4,8 +4,8 @@ import rpg.ability.FireballSpell;
 import rpg.element.entity.Race;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.IconDrawer;
 import rpg.graphics.draw.Drawer;
-import rpg.graphics.draw.IconDrawer;
 import rpg.logic.level.Level;
 
 public class Dragon extends Entity {

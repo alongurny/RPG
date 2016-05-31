@@ -8,12 +8,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import event.MessageEvent;
 import event.MessageListener;
-import protocol.ThingToStringProtocol;
-import rpg.element.Element;
-import rpg.element.Player;
-import rpg.geometry.Vector2D;
+import protocol.Protocol;
 import rpg.graphics.draw.Drawer;
-import rpg.graphics.draw.MultiAbilityDrawer;
 import rpg.ui.GamePanel;
 import rpg.ui.GameStation;
 import tcp.ChatClient;
@@ -24,14 +20,14 @@ public class GameClient {
 
 	private ChatClient chatClient;
 	private List<NetworkCommand> commands;
-	private ThingToStringProtocol protocol;
+	private Protocol<Drawer, String> protocol;
 	private Optional<Integer> num;
 	private GamePanel panel;
 
 	public GameClient(GamePanel panel, Socket toServer) throws IOException {
 		commands = new CopyOnWriteArrayList<>();
-		protocol = new ThingToStringProtocol();
 		chatClient = new ChatClient(toServer);
+		protocol = new DrawerProtocol();
 		this.panel = panel;
 		num = Optional.empty();
 		chatClient.addMessageListener(new MessageListener() {
@@ -53,27 +49,10 @@ public class GameClient {
 				} else if (data.equals("end")) {
 					panel.flush();
 				} else if (data.startsWith("dynamic ")) {
-					Element element = (Element) protocol.decode(data.substring(8));
-					Drawer drawer = element.getDrawer();
-					drawer.set("location", element.getLocation());
-					drawer.set("z-index", element.getIndex());
+					Drawer drawer = protocol.decode(data.substring(8));
 					panel.addDrawer(drawer);
-					if (element instanceof Player && num.isPresent() && element.getInteger("id") == num.get()) {
-						MultiAbilityDrawer d = new MultiAbilityDrawer();
-						d.set("location", new Vector2D(32, 460));
-						d.set("z-index", 1000);
-						Player player = (Player) element;
-						Vector2D location = player.getLocation();
-						panel.setOffset(new Vector2D(limit(0.5 * panel.getWidth(), -32, panel.getWidth() + 32),
-								limit(0.5 * panel.getHeight(), -32, panel.getHeight() + 32)).subtract(location));
-						player.getAbilities().forEach(ability -> d.addAbility(player, ability));
-						panel.addDrawer(d);
-					}
 				} else if (data.startsWith("static ")) {
-					Element element = (Element) protocol.decode(data.substring(7));
-					Drawer drawer = element.getDrawer();
-					drawer.set("location", element.getLocation());
-					drawer.set("z-index", element.getIndex());
+					Drawer drawer = protocol.decode(data.substring(7));
 					panel.addStaticDrawer(drawer);
 				}
 			}
@@ -108,7 +87,4 @@ public class GameClient {
 		return panel;
 	}
 
-	private static double limit(double value, double min, double max) {
-		return Math.min(max, Math.max(min, value));
-	}
 }

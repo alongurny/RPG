@@ -2,13 +2,13 @@ package rpg.element;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.Sprite;
+import rpg.graphics.TileDrawer;
 import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class ManaPotion extends Bonus {
 
-	private static final Sprite sprite = new Sprite(0, 24, 29);
+	private static final TileDrawer drawer = TileDrawer.tile(0, 24, 29);
 
 	public ManaPotion(Vector2D location) {
 		super(location);
@@ -21,7 +21,7 @@ public class ManaPotion extends Bonus {
 
 	@Override
 	public Rectangle getRelativeRect() {
-		return sprite.getRelativeRect(0);
+		return new Rectangle(-16, -16, 32, 32);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class ManaPotion extends Bonus {
 
 	@Override
 	public Drawer getDrawer() {
-		return sprite;
+		return drawer;
 	}
 
 }

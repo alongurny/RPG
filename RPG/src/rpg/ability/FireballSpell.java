@@ -4,8 +4,8 @@ import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.Fireball;
 import rpg.geometry.Vector2D;
+import rpg.graphics.IconDrawer;
 import rpg.graphics.draw.Drawer;
-import rpg.graphics.draw.IconDrawer;
 import rpg.logic.level.Level;
 
 public class FireballSpell extends Ability {

@@ -39,7 +39,6 @@ public class GamePanel extends JPanel {
 	public void flush() {
 		drawers.clear();
 		drawers.addAll(buffer);
-		drawers.sort((a, b) -> a.getInteger("z-index") - b.getInteger("z-index"));
 		buffer.clear();
 	}
 
@@ -60,9 +59,8 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawDrawer(Graphics g, Drawer drawer) {
-		Vector2D location = drawer.getVector("location");
-		int x = (int) (location.getX() + offset.getX());
-		int y = (int) (location.getY() + offset.getY());
+		int x = (int) (offset.getX());
+		int y = (int) (offset.getY());
 		g.translate(x, y);
 		drawer.draw(g);
 		g.translate(-x, -y);

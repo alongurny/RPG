@@ -102,10 +102,10 @@ public class Level {
 		toRemove.add(element);
 	}
 
-	public void update(double d) {
-		elements.forEach(e -> e.update(this, d));
+	public void update(double dt) {
+		elements.forEach(e -> e.update(this, dt));
 		handleCollisions();
-		timer.update(this, d);
+		timer.update(this, dt);
 		elements.addAll(toAdd);
 		elements.removeAll(toRemove);
 		toAdd.clear();

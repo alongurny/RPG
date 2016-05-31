@@ -46,8 +46,8 @@ public abstract class Ability extends Mechanism {
 	public abstract Drawer getSelfDrawer();
 
 	public Drawer getDrawer(Player player) {
-		return Drawer.concat(getSelfDrawer(),
-				new AbilityDrawer(getDouble("cooldown"), getDouble("maxCooldown"), isCastable(player)));
+		return getSelfDrawer()
+				.andThen(new AbilityDrawer(getDouble("cooldown"), getDouble("maxCooldown"), isCastable(player)));
 	}
 
 }

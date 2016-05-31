@@ -98,6 +98,10 @@ public abstract class Entity extends Element {
 	@Override
 	public Drawer getDrawer() {
 		return new Drawer() {
+			@Override
+			public String represent() {
+				return "TileDrawer 0:int 25:int 5:int";
+			}
 
 			@Override
 			public void draw(Graphics g) {

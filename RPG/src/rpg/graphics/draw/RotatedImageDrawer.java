@@ -18,15 +18,13 @@ public class RotatedImageDrawer extends Drawer {
 	private BufferedImage image;
 	private int width, height;
 	private double angle;
+	private String path;
 
 	public RotatedImageDrawer(String path, int width, int height, double angle) {
-		set("path", path);
-		set("width", width);
-		set("height", height);
-		set("angle", angle);
 		this.width = width;
 		this.height = height;
 		this.angle = angle;
+		this.path = path;
 		if (cache.containsKey(path)) {
 			this.image = cache.get(path);
 		} else {
@@ -46,6 +44,12 @@ public class RotatedImageDrawer extends Drawer {
 		at.rotate(angle, image.getWidth(null) / 2, image.getHeight(null) / 2);
 		AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
 		g.drawImage(op.filter(image, null), -width / 2, -height / 2, width, height, null);
+	}
+
+	@Override
+	public String represent() {
+		return String.format("RotatedImageDrawer %s:java.lang.String %d:int %d:int %f:angle", path, width, height,
+				angle);
 	}
 
 }

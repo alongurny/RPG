@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -15,7 +16,7 @@ public class ImageResource implements Resource {
 	private BufferedImage image;
 
 	public ImageResource(BufferedImage image) {
-		this.image = image;
+		this.image = Objects.requireNonNull(image);
 	}
 
 	public BufferedImage getImage() {

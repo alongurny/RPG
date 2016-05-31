@@ -3,7 +3,7 @@ package rpg.element;
 import rpg.Interactive;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.Sprite;
+import rpg.graphics.TileDrawer;
 import rpg.graphics.draw.Drawer;
 import rpg.item.MasterKey;
 import rpg.logic.level.Level;
@@ -11,8 +11,8 @@ import rpg.logic.level.Level;
 public class Door extends Element implements Interactive {
 
 	private static int width = 32, height = 32;
-	private Drawer openDrawer = new Sprite(0, 11, 27);
-	private Drawer closedDrawer = new Sprite(0, 11, 23);
+	private Drawer openDrawer = TileDrawer.tile(0, 11, 27);
+	private Drawer closedDrawer = TileDrawer.tile(0, 11, 23);
 
 	public Door(Vector2D location) {
 		super(location);

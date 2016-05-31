@@ -4,9 +4,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import rpg.Mechanism;
 import rpg.logic.level.Level;
 
-public class Timer {
+public class Timer extends Mechanism {
 
 	private Map<Double, Runnable> actionMap;
 	private double time;

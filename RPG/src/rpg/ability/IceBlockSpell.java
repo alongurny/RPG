@@ -4,7 +4,7 @@ import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.IceBlock;
 import rpg.geometry.Rectangle;
-import rpg.graphics.Sprite;
+import rpg.graphics.TileDrawer;
 import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
@@ -15,7 +15,7 @@ public class IceBlockSpell extends DurationAbility {
 
 	public IceBlockSpell() {
 		super(2, 2);
-		drawer = new Sprite(0, 16, 27);
+		drawer = TileDrawer.tile(0, 16, 27);
 	}
 
 	@Override

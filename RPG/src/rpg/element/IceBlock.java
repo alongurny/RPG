@@ -2,13 +2,13 @@ package rpg.element;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.Sprite;
+import rpg.graphics.TileDrawer;
 import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class IceBlock extends Element {
 
-	public static final Sprite sprite = new Sprite(0, 16, 27);
+	public static final Drawer sprite = TileDrawer.tile(0, 16, 27);
 
 	public IceBlock(Vector2D location, double size) {
 		super(location);

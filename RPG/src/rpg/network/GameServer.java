@@ -6,18 +6,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import protocol.ThingToStringProtocol;
-import rpg.element.Element;
-import rpg.logic.Game;
-import rpg.logic.level.Level;
-import rpg.logic.level.Level2;
-import rpg.ui.ServerStation;
-import tcp.ChatServer;
-import tcp.message.Message;
 import event.ConnectListener;
 import event.ConnectionEvent;
 import event.MessageEvent;
 import event.MessageListener;
+import protocol.Protocol;
+import rpg.element.Element;
+import rpg.graphics.draw.Drawer;
+import rpg.logic.Game;
+import rpg.logic.level.Level;
+import rpg.logic.level.Level2;
+import tcp.ChatServer;
+import tcp.message.Message;
 
 public class GameServer {
 
@@ -25,15 +25,15 @@ public class GameServer {
 	private ChatServer server;
 	private Timer timer;
 	private Game game;
-	private ThingToStringProtocol protocol;
+	private Protocol<Drawer, String> protocol;
 	private boolean firstConnection = false;
 	private static int num = 0;
 
 	public GameServer(Game game) throws IOException {
 		received = new CopyOnWriteArrayList<>();
+		protocol = new DrawerProtocol();
 		timer = new Timer();
 		server = new ChatServer();
-		protocol = new ThingToStringProtocol();
 		server.addConnectListener(new ConnectListener() {
 			@Override
 			public void onConnect(ConnectionEvent e) {
@@ -74,12 +74,26 @@ public class GameServer {
 	private void send() {
 		server.send(Message.data("start"));
 		for (Element e : game.getLevel().getDynamicElements()) {
-			server.send(Message.data("dynamic " + protocol.encode(e)));
+			String t1 = Drawer.translate((int) e.getLocation().getX(), (int) e.getLocation().getY()).represent();
+			String t2 = Drawer.translate((int) -e.getLocation().getX(), (int) -e.getLocation().getY()).represent();
+			String[] str = e.getDrawer().represent().split("\n");
+			server.send(Message.data("dynamic " + t1));
+			for (String s : str) {
+				server.send(Message.data("dynamic " + s));
+			}
+			server.send(Message.data("dynamic " + t2));
 		}
 		if (firstConnection) {
 			server.send(Message.metadata("number " + num++));
 			for (Element e : game.getLevel().getStaticElements()) {
-				server.send(Message.data("static " + protocol.encode(e)));
+				String[] str = e.getDrawer().represent().split("\n");
+				String t1 = Drawer.translate((int) e.getLocation().getX(), (int) e.getLocation().getY()).represent();
+				String t2 = Drawer.translate((int) -e.getLocation().getX(), (int) -e.getLocation().getY()).represent();
+				server.send(Message.data("static " + t1));
+				for (String s : str) {
+					server.send(Message.data("static " + s));
+				}
+				server.send(Message.data("static " + t2));
 			}
 			firstConnection = false;
 		}
@@ -94,7 +108,6 @@ public class GameServer {
 		Level level = new Level2();
 		Game game = new Game(level);
 		new GameServer(game).start();
-		new ServerStation(game).start();
 	}
 
 }

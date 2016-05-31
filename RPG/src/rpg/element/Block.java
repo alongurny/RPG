@@ -2,17 +2,17 @@ package rpg.element;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.Sprite;
+import rpg.graphics.TileDrawer;
 import rpg.graphics.draw.Drawer;
 import rpg.logic.level.Level;
 
 public class Block extends Element {
 
-	private Sprite sprite;
+	private Drawer sprite;
 
 	public Block(Vector2D location) {
 		super(location);
-		sprite = new Sprite(0, 13, 23);
+		sprite = TileDrawer.tile(0, 13, 23);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class Block extends Element {
 
 	@Override
 	public Rectangle getRelativeRect() {
-		return sprite.getRelativeRect(0);
+		return new Rectangle(-16, -16, 32, 32);
 	}
 
 	@Override

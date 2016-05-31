@@ -1,12 +1,12 @@
 package rpg.item;
 
 import rpg.element.Entity;
-import rpg.graphics.Sprite;
+import rpg.graphics.TileDrawer;
 import rpg.graphics.draw.Drawer;
 
 public class MasterKey extends Item {
 
-	private Drawer drawer = new Sprite(0, 45, 54);
+	private Drawer drawer = TileDrawer.tile(0, 45, 54);
 
 	public MasterKey() {
 	}
