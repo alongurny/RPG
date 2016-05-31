@@ -4,8 +4,8 @@ import java.util.List;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.RotatedImageDrawer;
 import rpg.graphics.draw.Drawer;
-import rpg.graphics.draw.RotatedImageDrawer;
 import rpg.logic.level.Level;
 
 public class Fireball extends Element {

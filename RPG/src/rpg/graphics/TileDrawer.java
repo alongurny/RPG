@@ -5,19 +5,21 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import rpg.geometry.Rectangle;
 import rpg.graphics.draw.Drawer;
 
 public class TileDrawer extends Drawer {
 
 	private BufferedImage image;
 
-	private int tilset;
+	private int tileset;
 	private int row;
 	private int col;
 
 	public TileDrawer(int tileset, int row, int col) {
 		image = Tileset.get(tileset).subimage(row, col);
+		this.tileset = tileset;
+		this.row = row;
+		this.col = col;
 	}
 
 	public static TileDrawer tile(int tileset, int row, int col) {
@@ -33,18 +35,12 @@ public class TileDrawer extends Drawer {
 	}
 
 	public void draw(Graphics g) {
-		g.drawImage(image, image.getWidth(), image.getHeight(), null);
-	}
-
-	public Rectangle getRelativeRect() {
-		int width = image.getWidth();
-		int height = image.getHeight();
-		return new Rectangle(-width / 2, -height / 2, width, height);
+		g.drawImage(image, -image.getWidth() / 2, -image.getHeight() / 2, image.getWidth(), image.getHeight(), null);
 	}
 
 	@Override
 	public String represent() {
-		return String.format("TileDrawer %d:int %d:int %d:int", tilset, row, col);
+		return String.format("TileDrawer %d:int %d:int %d:int", tileset, row, col);
 	}
 
 }

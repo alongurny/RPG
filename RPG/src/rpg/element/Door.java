@@ -11,12 +11,14 @@ import rpg.logic.level.Level;
 public class Door extends Element implements Interactive {
 
 	private static int width = 32, height = 32;
-	private Drawer openDrawer = TileDrawer.tile(0, 11, 27);
-	private Drawer closedDrawer = TileDrawer.tile(0, 11, 23);
+	private Drawer openDrawer;
+	private Drawer closedDrawer;
 
 	public Door(Vector2D location) {
 		super(location);
 		set("open", false);
+		openDrawer = TileDrawer.tile(0, 11, 27);
+		closedDrawer = TileDrawer.tile(0, 11, 23);
 	}
 
 	public boolean isOpen() {

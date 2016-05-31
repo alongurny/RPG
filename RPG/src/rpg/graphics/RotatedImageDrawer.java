@@ -1,19 +1,14 @@
-package rpg.graphics.draw;
+package rpg.graphics;
 
 import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.imageio.ImageIO;
+import rpg.ImageResource;
+import rpg.graphics.draw.Drawer;
 
 public class RotatedImageDrawer extends Drawer {
-
-	private static final Map<String, BufferedImage> cache = new HashMap<>();
 
 	private BufferedImage image;
 	private int width, height;
@@ -25,16 +20,7 @@ public class RotatedImageDrawer extends Drawer {
 		this.height = height;
 		this.angle = angle;
 		this.path = path;
-		if (cache.containsKey(path)) {
-			this.image = cache.get(path);
-		} else {
-			try {
-				this.image = ImageIO.read(new File(path).toURI().toURL());
-				cache.put(path, image);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		this.image = ImageResource.get(path).getImage();
 	}
 
 	@Override
@@ -48,7 +34,7 @@ public class RotatedImageDrawer extends Drawer {
 
 	@Override
 	public String represent() {
-		return String.format("RotatedImageDrawer %s:java.lang.String %d:int %d:int %f:angle", path, width, height,
+		return String.format("RotatedImageDrawer %s:java.lang.String %d:int %d:int %f:double", path, width, height,
 				angle);
 	}
 

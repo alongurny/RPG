@@ -50,6 +50,7 @@ public class GameClient {
 					panel.flush();
 				} else if (data.startsWith("dynamic ")) {
 					Drawer drawer = protocol.decode(data.substring(8));
+					System.out.println(drawer.represent());
 					panel.addDrawer(drawer);
 				} else if (data.startsWith("static ")) {
 					Drawer drawer = protocol.decode(data.substring(7));

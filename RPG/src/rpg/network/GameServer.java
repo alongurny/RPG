@@ -10,12 +10,12 @@ import event.ConnectListener;
 import event.ConnectionEvent;
 import event.MessageEvent;
 import event.MessageListener;
-import protocol.Protocol;
 import rpg.element.Element;
 import rpg.graphics.draw.Drawer;
 import rpg.logic.Game;
 import rpg.logic.level.Level;
 import rpg.logic.level.Level2;
+import rpg.ui.ServerStation;
 import tcp.ChatServer;
 import tcp.message.Message;
 
@@ -25,13 +25,11 @@ public class GameServer {
 	private ChatServer server;
 	private Timer timer;
 	private Game game;
-	private Protocol<Drawer, String> protocol;
 	private boolean firstConnection = false;
 	private static int num = 0;
 
 	public GameServer(Game game) throws IOException {
 		received = new CopyOnWriteArrayList<>();
-		protocol = new DrawerProtocol();
 		timer = new Timer();
 		server = new ChatServer();
 		server.addConnectListener(new ConnectListener() {
@@ -101,12 +99,16 @@ public class GameServer {
 	}
 
 	public boolean isAllowed(NetworkCommand command) {
+		if (command.toString().startsWith("nothing")) {
+			return true;
+		}
 		return true;
 	}
 
 	public static void main(String[] args) throws IOException {
 		Level level = new Level2();
 		Game game = new Game(level);
+		new ServerStation(game).start();
 		new GameServer(game).start();
 	}
 

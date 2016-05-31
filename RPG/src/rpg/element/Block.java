@@ -13,6 +13,7 @@ public class Block extends Element {
 	public Block(Vector2D location) {
 		super(location);
 		sprite = TileDrawer.tile(0, 13, 23);
+
 	}
 
 	@Override
