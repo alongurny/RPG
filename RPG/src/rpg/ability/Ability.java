@@ -17,7 +17,7 @@ public abstract class Ability extends Mechanism {
 	private double maxCooldown;
 
 	public Ability(double maxCooldown) {
-		this.cooldown = maxCooldown;
+		this.cooldown = 0;
 		this.maxCooldown = maxCooldown;
 	}
 

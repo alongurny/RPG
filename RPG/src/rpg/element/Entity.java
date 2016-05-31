@@ -3,6 +3,7 @@ package rpg.element;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BooleanSupplier;
 
@@ -27,6 +28,7 @@ public abstract class Entity extends Element {
 	private Vector2D orientation;
 	private double speed;
 	private Vector2D direction;
+	private Optional<Element> target;
 
 	public Entity(Vector2D location, Race race) {
 		super(location);
@@ -36,6 +38,7 @@ public abstract class Entity extends Element {
 		this.direction = Vector2D.ZERO;
 		this.orientation = Vector2D.NORTH;
 		this.speed = 64;
+		this.target = Optional.empty();
 		inventory = new ArrayList<Item>();
 		abilities = new CopyOnWriteArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
@@ -63,6 +66,10 @@ public abstract class Entity extends Element {
 
 	public Vector2D getOrientation() {
 		return orientation;
+	}
+
+	public void setTarget(Level level, Vector2D target) {
+		this.target = level.getElements(target).stream().findFirst();
 	}
 
 	@Override
@@ -97,6 +104,10 @@ public abstract class Entity extends Element {
 
 	public void addHealth(double value) {
 		health = Math.min(health + value, getMaxHealth());
+	}
+
+	public Optional<Element> getTarget() {
+		return target;
 	}
 
 	public boolean tryRequireMana(double value) {
@@ -134,7 +145,7 @@ public abstract class Entity extends Element {
 		Translate t = new Translate(0, (int) (getRelativeRect().getHeight() / 2));
 		Translate s = new Translate(0, 8);
 		return getEntityDrawer().andThen(t).andThen(s)
-				.andThen(new ScaleDrawer(health / getMaxHealth(), Color.RED, Color.GREEN, getRelativeRect().getWidth(),
+				.andThen(new ScaleDrawer(health / getMaxHealth(), Color.GREEN, Color.RED, getRelativeRect().getWidth(),
 						4))
 				.andThen(s)
 				.andThen(new ScaleDrawer(mana / getMaxMana(), Color.BLUE, Color.CYAN, getRelativeRect().getWidth(), 4))

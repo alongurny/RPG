@@ -30,7 +30,7 @@ public class Player extends Entity {
 
 	@Override
 	public Rectangle getRelativeRect() {
-		return new Rectangle(-16, -16, 32, 32);
+		return new Rectangle(-14, -14, 28, 28);
 	}
 
 	@Override
