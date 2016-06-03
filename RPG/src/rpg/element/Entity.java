@@ -231,8 +231,9 @@ public abstract class Entity extends Element {
 		return false;
 	}
 
-	public boolean tryCast(Level level, int i, Optional<Element> element) {
-		return tryCast(level, getAbility(i), element);
+	public boolean tryCast(Level level, int index, Optional<Element> element) {
+		List<Ability> abilities = getAbilities();
+		return 0 <= index && index < abilities.size() && tryCast(level, abilities.get(index), element);
 	}
 
 	public boolean tryRequireMana(double value) {

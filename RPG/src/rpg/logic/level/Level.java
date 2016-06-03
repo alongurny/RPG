@@ -18,7 +18,6 @@ import rpg.logic.Timer;
 public class Level {
 
 	private List<Element> elements;
-
 	private List<Element> toRemove;
 	private List<Element> toAdd;
 	private Grid grid;

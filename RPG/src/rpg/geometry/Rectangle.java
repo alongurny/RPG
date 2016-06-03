@@ -9,6 +9,7 @@ public class Rectangle {
 		double y2 = Math.min(a.getMaxY(), b.getMaxY());
 		return new Rectangle(x1, y1, x2 - x1, y2 - y1);
 	}
+
 	private double x, y;
 
 	private double width, height;
@@ -70,7 +71,7 @@ public class Rectangle {
 
 	@Override
 	public String toString() {
-		return String.format("Rectangle {x: %s, y: %s, width: %s, height: %s", x, y, width, height);
+		return String.format("Rectangle[x: %s, y: %s, width: %s, height: %s]", x, y, width, height);
 	}
 
 }

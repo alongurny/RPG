@@ -19,27 +19,39 @@ import javax.swing.ImageIcon;
  */
 public class ImageResource implements Resource {
 
-	private static Map<String, ImageResource> map = new HashMap<>();
+	private static Map<String, ImageResource> cache = new HashMap<>();
 
+	/**
+	 * Returns a new <code>ImageResource</code> using this path.
+	 * 
+	 * @param path
+	 *            the path
+	 * @return a new image resource
+	 */
 	public static ImageResource get(String path) {
-		if (!map.containsKey(path)) {
+		if (!cache.containsKey(path)) {
 			try {
 				ImageResource resource = new ImageResource(new ImageIcon(new File(path).toURI().toURL()).getImage());
-				map.put(path, resource);
+				cache.put(path, resource);
 				return resource;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		return map.get(path);
+		return cache.get(path);
 	}
 
 	private Image image;
 
-	public ImageResource(Image image) {
+	private ImageResource(Image image) {
 		this.image = Objects.requireNonNull(image);
 	}
 
+	/**
+	 * Returns the {@link Image} instance that this resource holds.
+	 * 
+	 * @return an image
+	 */
 	public Image getImage() {
 		return image;
 	}
