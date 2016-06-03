@@ -1,5 +1,7 @@
 package rpg.ability;
 
+import java.util.Optional;
+
 import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.Fireball;
@@ -19,16 +21,16 @@ public class FireballSpell extends Ability {
 		drawer = new DrawIcon("img/fireball.gif", 32, 32);
 	}
 
-	public boolean isCastable(Entity caster, Element... elements) {
-		return elements.length == 1 && caster.isAlive() && elements[0] instanceof Entity && caster.getMana() >= 1
-				&& elements[0] != caster;
+	public boolean isCastable(Entity caster, Optional<Element> element) {
+		return caster.isAlive() && element.isPresent() && element.get() instanceof Entity && caster.getMana() >= 1
+				&& element.get() != caster;
 	}
 
 	@Override
-	public void onCast(Level level, Entity caster, Element... elements) {
+	public void onCast(Level level, Entity caster, Optional<Element> element) {
 		caster.subtractMana(1);
 		Vector2D location = caster.getLocation();
-		Vector2D direction = elements[0].getLocation().subtract(location).getUnitalVector();
+		Vector2D direction = element.get().getLocation().subtract(location).getUnitalVector();
 		level.addDynamicElement(new Fireball(caster, location, direction.multiply(speed)));
 	}
 

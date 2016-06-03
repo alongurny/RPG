@@ -1,5 +1,7 @@
 package rpg.ability;
 
+import java.util.Optional;
+
 import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.logic.level.Level;
@@ -18,12 +20,12 @@ public abstract class DurationAbility extends Ability {
 	}
 
 	@Override
-	public void onCast(Level level, Entity caster, Element... elements) {
-		onStart(level, caster, elements);
-		level.addTimer(duration, () -> onEnd(level, caster, elements));
+	public void onCast(Level level, Entity caster, Optional<Element> element) {
+		onStart(level, caster, element);
+		level.addTimer(duration, () -> onEnd(level, caster, element));
 	}
 
-	public abstract void onStart(Level level, Entity caster, Element... elements);
+	public abstract void onStart(Level level, Entity caster, Optional<Element> element);
 
-	public abstract void onEnd(Level level, Entity caster, Element... elements);
+	public abstract void onEnd(Level level, Entity caster, Optional<Element> element);
 }

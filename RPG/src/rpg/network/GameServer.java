@@ -17,6 +17,7 @@ import rpg.element.Element;
 import rpg.element.Player;
 import rpg.graphics.Drawer;
 import rpg.graphics.MultiAbilityDrawer;
+import rpg.graphics.ShowInventory;
 import rpg.graphics.Translate;
 import rpg.logic.Game;
 import rpg.logic.level.Level;
@@ -101,6 +102,7 @@ public class GameServer {
 			Player p = game.getLevel().getPlayer(i);
 			p.getAbilities().forEach(a -> mad.addAbility(p, a));
 			c.send(Message.data("absolute " + mad.getDrawer()));
+			c.send(Message.data("inventory " + new ShowInventory(160, 160, p).getDrawer()));
 			c.send(Message.data("location " + p.getLocation()));
 		});
 		server.send(Message.data("end"));

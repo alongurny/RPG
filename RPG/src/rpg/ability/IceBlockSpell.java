@@ -1,5 +1,7 @@
 package rpg.ability;
 
+import java.util.Optional;
+
 import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.IceBlock;
@@ -19,21 +21,21 @@ public class IceBlockSpell extends DurationAbility {
 	}
 
 	@Override
-	public boolean isCastable(Entity caster, Element... elements) {
-		return caster.isAlive() && caster.getMana() >= 1 && elements.length == 1 && elements[0] instanceof Entity;
+	public boolean isCastable(Entity caster, Optional<Element> element) {
+		return caster.isAlive() && element.isPresent() && caster.getMana() >= 1 && element.get() instanceof Entity;
 	}
 
 	@Override
-	public void onStart(Level level, Entity caster, Element... elements) {
+	public void onStart(Level level, Entity caster, Optional<Element> element) {
 		caster.subtractMana(1);
-		Entity target = (Entity) elements[0];
+		Entity target = (Entity) element.get();
 		Rectangle rect = target.getAbsoluteRect();
 		block = new IceBlock(target.getLocation(), Math.max(rect.getWidth(), rect.getHeight()) * 1.5);
 		level.addDynamicElement(block);
 	}
 
 	@Override
-	public void onEnd(Level level, Entity caster, Element... elements) {
+	public void onEnd(Level level, Entity caster, Optional<Element> element) {
 		level.removeDynamicElement(block);
 	}
 

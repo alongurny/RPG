@@ -2,15 +2,16 @@ package rpg.ui;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import rpg.BufferedImageResource;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 
@@ -18,7 +19,8 @@ public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = -435064221993994993L;
 
-	private static BufferedImage background;
+	private static BufferedImage bg = BufferedImageResource.get("img/tileset0.png").getImage().getSubimage(32 * 7,
+			32 * 15, 32, 32);
 	private List<Drawer> drawers;
 	private List<Drawer> buffer;
 	private List<Drawer> absoluteDrawers;
@@ -33,11 +35,6 @@ public class GamePanel extends JPanel {
 		this.absoluteBuffer = new CopyOnWriteArrayList<>();
 		this.absoluteDrawers = new CopyOnWriteArrayList<>();
 		setFocusable(true);
-		try {
-			background = ImageIO.read(new File("img/background.jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		this.offset = Vector2D.ZERO;
 	}
 
@@ -57,7 +54,12 @@ public class GamePanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(background, 0, 0, null);
+		Graphics2D g2d = (Graphics2D) g;
+		TexturePaint paint = new TexturePaint(bg, new Rectangle(0, 0, bg.getWidth(), bg.getHeight()));
+		Paint prev = g2d.getPaint();
+		g2d.setPaint(paint);
+		g2d.fillRect(0, 0, getWidth(), getHeight());
+		g2d.setPaint(prev);
 		for (Drawer drawer : statics) {
 			drawDrawer((Graphics2D) g, drawer);
 		}

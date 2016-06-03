@@ -2,16 +2,17 @@ package rpg.ui;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import rpg.BufferedImageResource;
 import rpg.element.Element;
 import rpg.geometry.Vector2D;
 import rpg.logic.Game;
@@ -21,29 +22,30 @@ public class ServerPanel extends JPanel {
 
 	private static final long serialVersionUID = -435064221993994993L;
 
-	private static BufferedImage background;
+	private static BufferedImage bg = BufferedImageResource.get("img/tileset0.png").getImage().getSubimage(32 * 7,
+			32 * 15, 32, 32);
 	private int sourceX, sourceY;
 	private Game game;
 
 	public ServerPanel(Game game) {
 		this.game = game;
 		setFocusable(true);
-		try {
-			background = ImageIO.read(new File("img/background.jpg"));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D) g;
+		TexturePaint paint = new TexturePaint(bg, new Rectangle(0, 0, bg.getWidth(), bg.getHeight()));
+		Paint prev = g2d.getPaint();
+		g2d.setPaint(paint);
+		g2d.fillRect(0, 0, getWidth(), getHeight());
+		g2d.setPaint(prev);
 		Vector2D loc = new Vector2D(getWidth(), getHeight()).multiply(0.5);
 		Grid grid = game.getLevel().getGrid();
 		sourceX = limit(-32, grid.getWidth() - getWidth() + 32, (int) loc.getX() - getWidth() / 2);
 		sourceY = limit(-32, grid.getHeight() - getHeight() + 32, (int) loc.getY() - getHeight() / 2);
-		g.drawImage(background, 0, 0, null);
 		List<Element> dynamics = game.getLevel().getDynamicElements();
 		dynamics.sort((a, b) -> a.getIndex() - b.getIndex());
 		Queue<Element> dyn = new ArrayDeque<>(dynamics);

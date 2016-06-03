@@ -1,5 +1,6 @@
 package rpg.element;
 
+import rpg.element.entity.Attribute;
 import rpg.element.entity.Profession;
 import rpg.element.entity.Race;
 import rpg.geometry.Rectangle;
@@ -61,9 +62,17 @@ public class Player extends Entity {
 
 	private void regenerate(double dt) {
 		if (isAlive()) {
-			addHealth(dt * 3);
-			addMana(dt * 3);
+			addHealth(getHealthRegen() * dt);
+			addMana(getManaRegen() * dt);
 		}
+	}
+
+	public double getManaRegen() {
+		return 0.01 * getAttribute(Attribute.INT);
+	}
+
+	public double getHealthRegen() {
+		return 0.01 * getAttribute(Attribute.CON);
 	}
 
 	private void move(Level level, double dt) {
@@ -88,7 +97,7 @@ public class Player extends Entity {
 
 	private void stepDraw() {
 		counter++;
-		if (counter >= 6) {
+		if (counter >= 32) {
 			eastDrawer.step();
 			westDrawer.step();
 			northDrawer.step();

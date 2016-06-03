@@ -1,5 +1,7 @@
 package rpg.ability;
 
+import java.util.Optional;
+
 import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.graphics.DrawIcon;
@@ -16,19 +18,19 @@ public class HasteSpell extends DurationAbility {
 	}
 
 	@Override
-	public void onStart(Level level, Entity caster, Element... elements) {
-		caster.subtractMana(20);
+	public void onStart(Level level, Entity caster, Optional<Element> element) {
+		caster.subtractMana(5);
 		caster.setSpeed(caster.getSpeed() * 1.25);
 	}
 
 	@Override
-	public void onEnd(Level level, Entity caster, Element... elements) {
+	public void onEnd(Level level, Entity caster, Optional<Element> element) {
 		caster.setSpeed(caster.getSpeed() * 0.8);
 	}
 
 	@Override
-	public boolean isCastable(Entity caster, Element... elements) {
-		return caster.isAlive() && caster.getMana() >= 20;
+	public boolean isCastable(Entity caster, Optional<Element> element) {
+		return caster.isAlive() && caster.getMana() >= 5;
 	}
 
 	@Override

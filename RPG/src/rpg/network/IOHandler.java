@@ -26,21 +26,17 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 	@Override
 	public void keysChange(MultiKeyEvent e) {
 		Vector2D velocity = Vector2D.ZERO;
-		if (e.get(KeyEvent.VK_UP) || e.get(KeyEvent.VK_DOWN)) {
-			if (e.get(KeyEvent.VK_UP)) {
-				velocity = velocity.add(Vector2D.NORTH);
-			}
-			if (e.get(KeyEvent.VK_DOWN)) {
-				velocity = velocity.add(Vector2D.SOUTH);
-			}
+		if (e.get(KeyEvent.VK_UP) || e.get(KeyEvent.VK_W)) {
+			velocity = velocity.add(Vector2D.NORTH);
 		}
-		if (e.get(KeyEvent.VK_LEFT) || e.get(KeyEvent.VK_RIGHT)) {
-			if (e.get(KeyEvent.VK_LEFT)) {
-				velocity = velocity.add(Vector2D.WEST);
-			}
-			if (e.get(KeyEvent.VK_RIGHT)) {
-				velocity = velocity.add(Vector2D.EAST);
-			}
+		if (e.get(KeyEvent.VK_DOWN) || e.get(KeyEvent.VK_S)) {
+			velocity = velocity.add(Vector2D.SOUTH);
+		}
+		if (e.get(KeyEvent.VK_LEFT) || e.get(KeyEvent.VK_A)) {
+			velocity = velocity.add(Vector2D.WEST);
+		}
+		if (e.get(KeyEvent.VK_RIGHT) || e.get(KeyEvent.VK_D)) {
+			velocity = velocity.add(Vector2D.EAST);
 		}
 		client.addCommand(new NetworkCommand("player " + client.getNumber() + " setDirection " + velocity));
 	}
@@ -48,6 +44,9 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		tracker.keyPressed(e);
+		if (e.getKeyCode() == KeyEvent.VK_E) {
+			client.setShowInventory(true);
+		}
 	}
 
 	@Override
@@ -58,6 +57,9 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 		} else if (e.getKeyCode() - '0' >= 1 && e.getKeyCode() - '0' <= 9) {
 			client.addCommand(
 					new NetworkCommand(String.format("player %s cast %s", client.getNumber(), e.getKeyCode() - '1')));
+		}
+		if (e.getKeyCode() == KeyEvent.VK_E) {
+			client.setShowInventory(false);
 		}
 	}
 

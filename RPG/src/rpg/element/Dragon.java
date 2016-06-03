@@ -1,5 +1,7 @@
 package rpg.element;
 
+import java.util.Optional;
+
 import rpg.ability.FireballSpell;
 import rpg.element.entity.Profession;
 import rpg.element.entity.Race;
@@ -51,11 +53,8 @@ public class Dragon extends Entity {
 	@Override
 	public void act(Level level, double dt) {
 		if (isAlive()) {
-			for (Element e : level.getDynamicElements()) {
-				if (e instanceof Player) {
-					tryCast(level, 0, e);
-				}
-			}
+			level.getDynamicElements().stream().filter(p -> p instanceof Player).findFirst()
+					.ifPresent(p -> tryCast(level, 0, Optional.of(p)));
 		} else {
 			level.addDynamicElement(new HealthPotion(getLocation()));
 			level.removeDynamicElement(this);

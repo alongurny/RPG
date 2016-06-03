@@ -13,7 +13,7 @@ public class FillRect extends Drawer {
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.fillRect((int) (-width / 2), (int) (-height / 2), (int) width, (int) height);
+		g.fillRect(0, 0, (int) width, (int) height);
 	}
 
 	@Override

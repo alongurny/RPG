@@ -26,6 +26,7 @@ public class GameClient {
 	private Protocol<Drawer, String> protocol;
 	private Optional<Integer> num;
 	private GamePanel panel;
+	private boolean showInventory;
 
 	public GameClient(GamePanel panel, Socket toServer) throws IOException {
 		commands = new CopyOnWriteArrayList<>();
@@ -52,15 +53,18 @@ public class GameClient {
 				} else if (data.equals("end")) {
 					panel.flush();
 				} else if (data.startsWith("dynamic ")) {
-					Drawer drawer = protocol.decode(data.substring(8));
+					Drawer drawer = protocol.decode(data.substring("dynamic ".length()));
 					panel.addDrawer(drawer);
 				} else if (data.startsWith("static ")) {
-					Drawer drawer = protocol.decode(data.substring(7));
+					Drawer drawer = protocol.decode(data.substring("static ".length()));
 					panel.addStaticDrawer(drawer);
 				} else if (data.startsWith("location ")) {
-					panel.setOffsetByPlayerLocation(Vector2D.valueOf(data.substring(9)));
+					panel.setOffsetByPlayerLocation(Vector2D.valueOf(data.substring("location ".length())));
 				} else if (data.startsWith("absolute ")) {
-					Drawer drawer = protocol.decode(data.substring(9));
+					Drawer drawer = protocol.decode(data.substring("absolute ".length()));
+					panel.addAbsoluteDrawer(drawer);
+				} else if (data.startsWith("inventory ") && showInventory) {
+					Drawer drawer = protocol.decode(data.substring("inventory ".length()));
 					panel.addAbsoluteDrawer(drawer);
 				}
 			}
@@ -95,6 +99,10 @@ public class GameClient {
 
 	public GamePanel getPanel() {
 		return panel;
+	}
+
+	public void setShowInventory(boolean b) {
+		this.showInventory = b;
 	}
 
 }

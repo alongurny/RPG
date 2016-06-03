@@ -2,10 +2,10 @@ package rpg.element;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BooleanSupplier;
 
@@ -38,6 +38,7 @@ public abstract class Entity extends Element {
 
 	public Entity(Vector2D location, Race race, Profession profession) {
 		super(location);
+		initAttributes();
 		this.race = race;
 		this.profession = profession;
 		this.health = getMaxHealth();
@@ -46,16 +47,17 @@ public abstract class Entity extends Element {
 		this.orientation = Vector2D.SOUTH;
 		this.speed = 64;
 		this.target = Optional.empty();
-		inventory = new ArrayList<Item>();
+		inventory = new ArrayList<>();
 		abilities = new CopyOnWriteArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
-		attributes = new ConcurrentHashMap<>();
+	}
+
+	private void initAttributes() {
+		attributes = new HashMap<>();
 		attributes.put(Attribute.STR, 10);
-		attributes.put(Attribute.CON, 10);
 		attributes.put(Attribute.DEX, 10);
 		attributes.put(Attribute.INT, 10);
-		attributes.put(Attribute.WIS, 10);
-		attributes.put(Attribute.CHA, 10);
+		attributes.put(Attribute.CON, 10);
 	}
 
 	public double getSpeed() {
@@ -186,9 +188,9 @@ public abstract class Entity extends Element {
 		return new ArrayList<>(abilities);
 	}
 
-	public boolean tryCast(Level level, Ability ability, Element... elements) {
-		if (!ability.hasCooldown() && ability.isCastable(this, elements)) {
-			ability.onCast(level, this, elements);
+	public boolean tryCast(Level level, Ability ability, Optional<Element> element) {
+		if (!ability.hasCooldown() && ability.isCastable(this, element)) {
+			ability.onCast(level, this, element);
 			ability.setCooldown(ability.getMaxCooldown());
 			return true;
 		}
@@ -199,8 +201,8 @@ public abstract class Entity extends Element {
 		return abilities.size();
 	}
 
-	public boolean tryCast(Level level, int i, Element... elements) {
-		return tryCast(level, getAbility(i), elements);
+	public boolean tryCast(Level level, int i, Optional<Element> element) {
+		return tryCast(level, getAbility(i), element);
 	}
 
 	public void addEffect(Effect effect) {

@@ -23,7 +23,7 @@ public class MultiAbilityDrawer {
 
 	public Drawer getDrawer() {
 		return drawers.stream().map(d -> d.andThen(new Translate(48, 0))).reduce(new Translate(dx, dy), Drawer::andThen)
-				.andThen(new Translate(-48 * drawers.size(), 0));
+				.andThen(new Translate(-48 * drawers.size(), 0)).andThen(new Translate(-dx, -dy));
 	}
 
 }

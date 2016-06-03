@@ -35,11 +35,7 @@ public class NetworkCommand {
 				level.onClick(player, Vector2D.valueOf(arr[3]));
 				break;
 			case "cast":
-				if (player.getTarget().isPresent()) {
-					player.tryCast(level, Integer.parseInt(arr[3]), player.getTarget().get());
-				} else {
-					player.tryCast(level, Integer.parseInt(arr[3]));
-				}
+				player.tryCast(level, Integer.parseInt(arr[3]), player.getTarget());
 				break;
 			case "interact":
 				level.tryInteract(player);

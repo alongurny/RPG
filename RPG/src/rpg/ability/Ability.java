@@ -1,5 +1,7 @@
 package rpg.ability;
 
+import java.util.Optional;
+
 import rpg.Mechanism;
 import rpg.element.Element;
 import rpg.element.Entity;
@@ -48,15 +50,15 @@ public abstract class Ability extends Mechanism {
 		reduceCooldown(dt);
 	}
 
-	public abstract boolean isCastable(Entity caster, Element... elements);
+	public abstract boolean isCastable(Entity caster, Optional<Element> element);
 
-	public abstract void onCast(Level level, Entity caster, Element... elements);
+	public abstract void onCast(Level level, Entity caster, Optional<Element> element);
 
 	public abstract Drawer getSelfDrawer();
 
 	public Drawer getDrawer(Player player) {
-		return getSelfDrawer().andThen(new AbilityDrawer(cooldown, maxCooldown,
-				player.getTarget().isPresent() ? isCastable(player, player.getTarget().get()) : isCastable(player)));
+		return getSelfDrawer()
+				.andThen(new AbilityDrawer(cooldown, maxCooldown, isCastable(player, player.getTarget())));
 	}
 
 	public double getMaxCooldown() {
