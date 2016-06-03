@@ -14,13 +14,14 @@ public class FireballSpell extends Ability {
 	private double speed;
 
 	public FireballSpell() {
-		super(2);
+		super(2, TargetType.ENEMY);
 		this.speed = 192;
 		drawer = new DrawIcon("img/fireball.gif", 32, 32);
 	}
 
 	public boolean isCastable(Entity caster, Element... elements) {
-		return elements.length == 1 && caster.isAlive() && elements[0] instanceof Entity && caster.getMana() >= 1;
+		return elements.length == 1 && caster.isAlive() && elements[0] instanceof Entity && caster.getMana() >= 1
+				&& elements[0] != caster;
 	}
 
 	@Override

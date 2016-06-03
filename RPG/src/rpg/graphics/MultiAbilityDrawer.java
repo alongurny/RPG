@@ -1,12 +1,10 @@
-package rpg.graphics.draw;
+package rpg.graphics;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import rpg.ability.Ability;
 import rpg.element.Player;
-import rpg.graphics.Drawer;
-import rpg.graphics.Translate;
 
 public class MultiAbilityDrawer {
 

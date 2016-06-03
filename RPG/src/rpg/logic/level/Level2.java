@@ -10,6 +10,7 @@ import rpg.element.ItemHolder;
 import rpg.element.ManaPotion;
 import rpg.element.Player;
 import rpg.element.Portal;
+import rpg.element.entity.Profession;
 import rpg.element.entity.Race;
 import rpg.geometry.Vector2D;
 import rpg.item.MasterKey;
@@ -22,11 +23,11 @@ public class Level2 extends Level {
 
 	public Level2() {
 		super(ROWS, COLUMNS);
-		Player player1 = new Player(new Vector2D(80, 100), Race.HUMAN);
+		Player player1 = new Player(new Vector2D(80, 100), Race.HUMAN, Profession.MAGE);
 		player1.addAbility(new FireballSpell());
 		player1.addAbility(new HasteSpell());
 		player1.addAbility(new IceBlockSpell());
-		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN);
+		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN, Profession.WARRIOR);
 		player2.addAbility(new FireballSpell());
 		player2.addAbility(new HasteSpell());
 		addInitialLocation(player1.getLocation());

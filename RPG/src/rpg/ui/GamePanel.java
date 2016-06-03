@@ -21,6 +21,8 @@ public class GamePanel extends JPanel {
 	private static BufferedImage background;
 	private List<Drawer> drawers;
 	private List<Drawer> buffer;
+	private List<Drawer> absoluteDrawers;
+	private List<Drawer> absoluteBuffer;
 	private List<Drawer> statics;
 	private Vector2D offset;
 
@@ -28,6 +30,8 @@ public class GamePanel extends JPanel {
 		this.drawers = new CopyOnWriteArrayList<>();
 		this.buffer = new CopyOnWriteArrayList<>();
 		this.statics = new CopyOnWriteArrayList<>();
+		this.absoluteBuffer = new CopyOnWriteArrayList<>();
+		this.absoluteDrawers = new CopyOnWriteArrayList<>();
 		setFocusable(true);
 		try {
 			background = ImageIO.read(new File("img/background.jpg"));
@@ -38,6 +42,9 @@ public class GamePanel extends JPanel {
 	}
 
 	public void flush() {
+		absoluteDrawers.clear();
+		absoluteDrawers.addAll(absoluteBuffer);
+		absoluteBuffer.clear();
 		drawers.clear();
 		drawers.addAll(buffer);
 		buffer.clear();
@@ -56,6 +63,9 @@ public class GamePanel extends JPanel {
 		}
 		for (Drawer drawer : drawers) {
 			drawDrawer((Graphics2D) g, drawer);
+		}
+		for (Drawer drawer : absoluteDrawers) {
+			drawer.draw((Graphics2D) g);
 		}
 	}
 
@@ -77,6 +87,20 @@ public class GamePanel extends JPanel {
 
 	public void setOffset(Vector2D offset) {
 		this.offset = offset;
+	}
+
+	private static double limit(double value, double min, double max) {
+		return Math.min(max, Math.max(min, value));
+	}
+
+	public void setOffsetByPlayerLocation(Vector2D location) {
+		double x = limit(-location.getX() + getWidth() / 2, -getWidth() / 2 + 32, 32);
+		double y = limit(-location.getY() + getHeight() / 2, -getHeight() / 2 + 32, 32);
+		setOffset(new Vector2D(x, y));
+	}
+
+	public void addAbsoluteDrawer(Drawer drawer) {
+		absoluteBuffer.add(drawer);
 	}
 
 }

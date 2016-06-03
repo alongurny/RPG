@@ -1,32 +1,41 @@
 package rpg.element.entity;
 
 import rpg.Thing;
-import rpg.element.Player;
+import rpg.element.Entity;
 
 public abstract class Profession extends Thing {
 
-	public Profession() {
-		init();
-	}
+	public static final Mage MAGE = new Mage();
+	public static final Warrior WARRIOR = new Warrior();
+	public static final NoProfession NONE = new NoProfession();
 
-	public double getDefaultMana(Player player) {
-		return Math.max(0, 0);
-	}
-
-	protected abstract void init();
-
-	public static final Profession MAGE = new Profession() {
+	private static class Mage extends Profession {
 
 		@Override
-		protected void init() {
+		public double getMaxMana(Entity entity) {
+			return entity.getModifier(Attribute.INT);
 		}
-	};
 
-	public static final Profession WARRIOR = new Profession() {
+	}
+
+	private static class Warrior extends Profession {
+
 		@Override
-		protected void init() {
-
+		public double getMaxMana(Entity entity) {
+			return 0;
 		}
-	};
+
+	}
+
+	private static class NoProfession extends Profession {
+
+		@Override
+		public double getMaxMana(Entity entity) {
+			return 0;
+		}
+
+	}
+
+	public abstract double getMaxMana(Entity entity);
 
 }

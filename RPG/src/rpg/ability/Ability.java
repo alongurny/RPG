@@ -4,8 +4,8 @@ import rpg.Mechanism;
 import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.Player;
+import rpg.graphics.AbilityDrawer;
 import rpg.graphics.Drawer;
-import rpg.graphics.draw.AbilityDrawer;
 import rpg.logic.level.Level;
 
 public abstract class Ability extends Mechanism {
@@ -15,10 +15,12 @@ public abstract class Ability extends Mechanism {
 
 	private double cooldown;
 	private double maxCooldown;
+	private TargetType targetType;
 
-	public Ability(double maxCooldown) {
+	public Ability(double maxCooldown, TargetType targetType) {
 		this.cooldown = 0;
 		this.maxCooldown = maxCooldown;
+		this.targetType = targetType;
 	}
 
 	public double getCooldown() {
@@ -37,6 +39,10 @@ public abstract class Ability extends Mechanism {
 		cooldown -= dcooldown;
 	}
 
+	public TargetType getTargetType() {
+		return targetType;
+	}
+
 	@Override
 	public void update(Level level, double dt) {
 		reduceCooldown(dt);
@@ -49,7 +55,8 @@ public abstract class Ability extends Mechanism {
 	public abstract Drawer getSelfDrawer();
 
 	public Drawer getDrawer(Player player) {
-		return getSelfDrawer().andThen(new AbilityDrawer(cooldown, maxCooldown, isCastable(player)));
+		return getSelfDrawer().andThen(new AbilityDrawer(cooldown, maxCooldown,
+				player.getTarget().isPresent() ? isCastable(player, player.getTarget().get()) : isCastable(player)));
 	}
 
 	public double getMaxCooldown() {

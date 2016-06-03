@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.BiConsumer;
 
 import event.ConnectListener;
 import event.ConnectionEvent;
@@ -74,6 +75,12 @@ public class ChatServer extends TcpServer {
 
 	public void send(Message message) {
 		clients.forEach(client -> client.send(message));
+	}
+
+	public void forEach(BiConsumer<Integer, ChatClient> action) {
+		for (int i = 0; i < clients.size(); i++) {
+			action.accept(i, clients.get(i));
+		}
 	}
 
 	private void handleMessage(ChatClient client, Message message) {

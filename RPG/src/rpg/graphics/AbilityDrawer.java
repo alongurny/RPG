@@ -1,4 +1,4 @@
-package rpg.graphics.draw;
+package rpg.graphics;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import rpg.ability.Ability;
-import rpg.graphics.Drawer;
 
 public class AbilityDrawer extends Drawer {
 
@@ -67,7 +66,8 @@ public class AbilityDrawer extends Drawer {
 
 	@Override
 	public String represent() {
-		return String.format("AbilityDrawer %f %f %f", cooldown, maxCooldown, castable);
+		return String.format("%s %f:double %f:double %b:boolean", getClass().getName(), cooldown, maxCooldown,
+				castable);
 	}
 
 }

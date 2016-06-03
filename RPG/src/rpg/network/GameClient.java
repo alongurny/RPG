@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.swing.SwingUtilities;
+
 import event.MessageEvent;
 import event.MessageListener;
 import protocol.Protocol;
+import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.ui.GamePanel;
 import rpg.ui.GameStation;
@@ -54,6 +57,11 @@ public class GameClient {
 				} else if (data.startsWith("static ")) {
 					Drawer drawer = protocol.decode(data.substring(7));
 					panel.addStaticDrawer(drawer);
+				} else if (data.startsWith("location ")) {
+					panel.setOffsetByPlayerLocation(Vector2D.valueOf(data.substring(9)));
+				} else if (data.startsWith("absolute ")) {
+					Drawer drawer = protocol.decode(data.substring(9));
+					panel.addAbsoluteDrawer(drawer);
 				}
 			}
 		});
@@ -65,11 +73,13 @@ public class GameClient {
 	}
 
 	public static void main(String[] args) {
-		try {
-			new GameStation(new Socket("localhost", 1234)).start();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		SwingUtilities.invokeLater(() -> {
+			try {
+				new GameStation(new Socket("localhost", 1234)).start();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 	public int getNumber() {

@@ -11,13 +11,13 @@ public class HasteSpell extends DurationAbility {
 	private Drawer drawer;
 
 	public HasteSpell() {
-		super(2, 2);
+		super(2, 2, TargetType.SELF);
 		drawer = new DrawIcon("img/haste.png", 32, 32);
 	}
 
 	@Override
 	public void onStart(Level level, Entity caster, Element... elements) {
-		caster.subtractMana(1);
+		caster.subtractMana(20);
 		caster.setSpeed(caster.getSpeed() * 1.25);
 	}
 
@@ -28,7 +28,7 @@ public class HasteSpell extends DurationAbility {
 
 	@Override
 	public boolean isCastable(Entity caster, Element... elements) {
-		return caster.isAlive() && caster.getMana() >= 1;
+		return caster.isAlive() && caster.getMana() >= 20;
 	}
 
 	@Override

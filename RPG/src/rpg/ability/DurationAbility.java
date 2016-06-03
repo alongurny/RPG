@@ -8,13 +8,13 @@ public abstract class DurationAbility extends Ability {
 
 	private double duration;
 
-	public DurationAbility(double maxCooldown, double duration) {
-		super(maxCooldown);
+	public DurationAbility(double maxCooldown, double duration, TargetType targetType) {
+		super(maxCooldown, targetType);
 		this.duration = duration;
 	}
 
-	public DurationAbility(double maxCooldown) {
-		this(maxCooldown, 0);
+	public DurationAbility(double maxCooldown, TargetType targetType) {
+		this(maxCooldown, 0, targetType);
 	}
 
 	@Override

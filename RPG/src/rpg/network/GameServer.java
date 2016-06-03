@@ -6,13 +6,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.swing.SwingUtilities;
+
 import event.ConnectListener;
 import event.ConnectionEvent;
 import event.MessageEvent;
 import event.MessageListener;
 import protocol.Protocol;
 import rpg.element.Element;
+import rpg.element.Player;
 import rpg.graphics.Drawer;
+import rpg.graphics.MultiAbilityDrawer;
 import rpg.graphics.Translate;
 import rpg.logic.Game;
 import rpg.logic.level.Level;
@@ -92,6 +96,13 @@ public class GameServer {
 			}
 			firstConnection = false;
 		}
+		server.forEach((i, c) -> {
+			MultiAbilityDrawer mad = new MultiAbilityDrawer(120, 480);
+			Player p = game.getLevel().getPlayer(i);
+			p.getAbilities().forEach(a -> mad.addAbility(p, a));
+			c.send(Message.data("absolute " + mad.getDrawer()));
+			c.send(Message.data("location " + p.getLocation()));
+		});
 		server.send(Message.data("end"));
 	}
 
@@ -105,8 +116,9 @@ public class GameServer {
 	public static void main(String[] args) throws IOException {
 		Level level = new Level2();
 		Game game = new Game(level);
-		new ServerStation(game).start();
 		new GameServer(game).start();
+		SwingUtilities.invokeLater(() -> new ServerStation(game).start());
+
 	}
 
 }

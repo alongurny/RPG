@@ -12,12 +12,14 @@ public final class Vector2D {
 	public static final Vector2D SOUTH = new Vector2D(0, 1);
 	public static final Vector2D WEST = new Vector2D(-1, 0);
 	public static final Vector2D EAST = new Vector2D(1, 0);
-	public static final Vector2D UNDEFINED = new Vector2D(Double.NaN, Double.NaN);
 
 	private final double x;
 	private final double y;
 
 	public Vector2D(double x, double y) {
+		if (Double.isNaN(x) || Double.isNaN(y)) {
+			throw new ArithmeticException("Vector2D cannot have NaN entries");
+		}
 		this.x = x;
 		this.y = y;
 	}

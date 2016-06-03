@@ -3,12 +3,16 @@ package rpg.element;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BooleanSupplier;
 
 import rpg.ability.Ability;
+import rpg.element.entity.Attribute;
 import rpg.element.entity.Effect;
+import rpg.element.entity.Profession;
 import rpg.element.entity.Race;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
@@ -20,6 +24,7 @@ import rpg.logic.level.Level;
 public abstract class Entity extends Element {
 
 	private Race race;
+	private Profession profession;
 	private List<Ability> abilities;
 	private List<Effect> effects;
 	private List<Item> inventory;
@@ -29,19 +34,28 @@ public abstract class Entity extends Element {
 	private double speed;
 	private Vector2D direction;
 	private Optional<Element> target;
+	private Map<Attribute, Integer> attributes;
 
-	public Entity(Vector2D location, Race race) {
+	public Entity(Vector2D location, Race race, Profession profession) {
 		super(location);
 		this.race = race;
+		this.profession = profession;
 		this.health = getMaxHealth();
 		this.mana = getMaxMana();
 		this.direction = Vector2D.ZERO;
-		this.orientation = Vector2D.NORTH;
+		this.orientation = Vector2D.SOUTH;
 		this.speed = 64;
 		this.target = Optional.empty();
 		inventory = new ArrayList<Item>();
 		abilities = new CopyOnWriteArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
+		attributes = new ConcurrentHashMap<>();
+		attributes.put(Attribute.STR, 10);
+		attributes.put(Attribute.CON, 10);
+		attributes.put(Attribute.DEX, 10);
+		attributes.put(Attribute.INT, 10);
+		attributes.put(Attribute.WIS, 10);
+		attributes.put(Attribute.CHA, 10);
 	}
 
 	public double getSpeed() {
@@ -68,8 +82,8 @@ public abstract class Entity extends Element {
 		return orientation;
 	}
 
-	public void setTarget(Level level, Vector2D target) {
-		this.target = level.getElements(target).stream().findFirst();
+	public void setTarget(Optional<Element> target) {
+		this.target = target;
 	}
 
 	@Override
@@ -131,11 +145,11 @@ public abstract class Entity extends Element {
 	}
 
 	public double getMaxMana() {
-		return race.getMaxMana();
+		return race.getMaxMana(this) + profession.getMaxMana(this);
 	}
 
 	public double getMaxHealth() {
-		return race.getMaxHealth();
+		return race.getMaxHealth(this);
 	}
 
 	protected abstract Drawer getEntityDrawer();
@@ -203,6 +217,14 @@ public abstract class Entity extends Element {
 
 	public Vector2D getVelocity() {
 		return direction.multiply(speed);
+	}
+
+	public int getAttribute(Attribute attr) {
+		return attributes.get(attr) + race.getAttribute(attr);
+	}
+
+	public int getModifier(Attribute attr) {
+		return Attribute.getModifier(getAttribute(attr));
 	}
 
 }

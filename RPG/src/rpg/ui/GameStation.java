@@ -35,7 +35,7 @@ public class GameStation {
 				client.sendCommands();
 				gameBoard.repaint();
 				try {
-					Thread.sleep(30);
+					Thread.sleep(15);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

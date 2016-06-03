@@ -76,6 +76,10 @@ public class Level {
 		return obstacles;
 	}
 
+	public void onClick(Player player, Vector2D target) {
+		player.setTarget(getElements(target).stream().findFirst());
+	}
+
 	public void addInitialLocation(Vector2D location) {
 		initialLocations.add(location);
 	}
@@ -108,6 +112,9 @@ public class Level {
 		timer.update(this, dt);
 		elements.addAll(toAdd);
 		elements.removeAll(toRemove);
+		if (!toAdd.isEmpty() || !toRemove.isEmpty()) {
+			elements.sort((a, b) -> a.getIndex() - b.getIndex());
+		}
 		toAdd.clear();
 		toRemove.clear();
 	}

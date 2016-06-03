@@ -28,14 +28,18 @@ public class NetworkCommand {
 			case "setLocation":
 				player.setLocation(Vector2D.valueOf(arr[3]));
 				break;
-			case "setOrientation":
-				player.setOrientation(Vector2D.valueOf(arr[3]));
-				break;
 			case "setDirection":
 				player.setDirection(Vector2D.valueOf(arr[3]));
 				break;
+			case "onClick":
+				level.onClick(player, Vector2D.valueOf(arr[3]));
+				break;
 			case "cast":
-				player.tryCast(level, Integer.parseInt(arr[3]));
+				if (player.getTarget().isPresent()) {
+					player.tryCast(level, Integer.parseInt(arr[3]), player.getTarget().get());
+				} else {
+					player.tryCast(level, Integer.parseInt(arr[3]));
+				}
 				break;
 			case "interact":
 				level.tryInteract(player);

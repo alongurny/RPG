@@ -4,6 +4,7 @@ import rpg.ability.FireballSpell;
 import rpg.ability.HasteSpell;
 import rpg.element.Block;
 import rpg.element.Player;
+import rpg.element.entity.Profession;
 import rpg.element.entity.Race;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;
@@ -15,8 +16,7 @@ public class Level1 extends Level {
 
 	public Level1() {
 		super(ROWS, COLUMNS);
-
-		Player player = new Player(new Vector2D(80, 100), Race.HUMAN);
+		Player player = new Player(new Vector2D(80, 100), Race.HUMAN, Profession.WARRIOR);
 		player.addAbility(new FireballSpell());
 		player.addAbility(new HasteSpell());
 		addPlayer(player);

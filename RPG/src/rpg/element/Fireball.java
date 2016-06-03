@@ -4,8 +4,9 @@ import java.util.List;
 
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
+import rpg.graphics.DrawIcon;
 import rpg.graphics.Drawer;
-import rpg.graphics.RotatedImageDrawer;
+import rpg.graphics.Rotate;
 import rpg.logic.level.Level;
 
 public class Fireball extends Element {
@@ -25,7 +26,7 @@ public class Fireball extends Element {
 	@Override
 	public Drawer getDrawer() {
 		double angle = Math.atan2(velocity.getY(), velocity.getX()) + defaultAngle;
-		return new RotatedImageDrawer("img/fireball.gif", width, height, angle);
+		return new Rotate(angle).andThen(new DrawIcon("img/fireball.gif", width, height)).andThen(new Rotate(-angle));
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.SwingUtilities;
+
 import rpg.geometry.Vector2D;
 import rpg.ui.KeyTracker;
 import rpg.ui.MultiKeyEvent;
@@ -41,10 +43,6 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 			}
 		}
 		client.addCommand(new NetworkCommand("player " + client.getNumber() + " setDirection " + velocity));
-		if (!velocity.equals(Vector2D.ZERO)) {
-			client.addCommand(new NetworkCommand(
-					"player " + client.getNumber() + " setOrientation " + velocity.getUnitalVector()));
-		}
 	}
 
 	@Override
@@ -70,9 +68,11 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		Vector2D offset = client.getPanel().getOffset();
-		Vector2D target = new Vector2D(e.getX() + offset.getX(), e.getY() + offset.getY());
-		client.addCommand(new NetworkCommand(String.format("player %s setTarget %s", client.getNumber(), target)));
+		if (SwingUtilities.isRightMouseButton(e)) {
+			Vector2D offset = client.getPanel().getOffset();
+			Vector2D target = new Vector2D(e.getX(), e.getY()).subtract(offset);
+			client.addCommand(new NetworkCommand(String.format("player %d onClick %s", client.getNumber(), target)));
+		}
 	}
 
 	@Override
