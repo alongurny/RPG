@@ -1,7 +1,7 @@
 package rpg.element.entity;
 
-import rpg.ability.HasteSpell;
-import rpg.ability.MagicMissileSpell;
+import rpg.ability.force.HasteSpell;
+import rpg.ability.force.MagicMissileSpell;
 import rpg.element.DamageType;
 import rpg.element.Entity;
 

@@ -25,7 +25,6 @@ public abstract class Entity extends Element {
 
 	private Race race;
 	private Profession profession;
-	private List<Ability> abilities;
 	private List<Effect> effects;
 	private List<Item> inventory;
 
@@ -50,9 +49,7 @@ public abstract class Entity extends Element {
 		this.target = Optional.empty();
 		this.xp = 0;
 		inventory = new ArrayList<>();
-		abilities = new CopyOnWriteArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
-		profession.getAbilities().forEach(this::addAbility);
 	}
 
 	private void initAttributes() {
@@ -102,7 +99,7 @@ public abstract class Entity extends Element {
 
 	@Override
 	public void update(Level level, double dt) {
-		abilities.forEach(a -> a.update(level, dt));
+		getAbilities().forEach(a -> a.update(level, dt));
 		effects.forEach(e -> e.update(level, dt));
 		effects.removeIf(e -> new BooleanSupplier() {
 			public boolean getAsBoolean() {
@@ -190,16 +187,12 @@ public abstract class Entity extends Element {
 		return inventory;
 	}
 
-	public void addAbility(Ability ability) {
-		abilities.add(ability);
-	}
-
 	public Ability getAbility(int i) {
-		return abilities.get(i);
+		return getAbilities().get(i);
 	}
 
 	public List<Ability> getAbilities() {
-		return new ArrayList<>(abilities);
+		return profession.getAbilities();
 	}
 
 	public boolean tryCast(Level level, Ability ability, Optional<Element> element) {
@@ -216,7 +209,7 @@ public abstract class Entity extends Element {
 	}
 
 	public int getAbilityCount() {
-		return abilities.size();
+		return getAbilities().size();
 	}
 
 	public boolean tryCast(Level level, int i, Optional<Element> element) {

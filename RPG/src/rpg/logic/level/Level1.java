@@ -1,7 +1,5 @@
 package rpg.logic.level;
 
-import rpg.ability.FireballSpell;
-import rpg.ability.HasteSpell;
 import rpg.element.Block;
 import rpg.element.Player;
 import rpg.element.entity.Profession;
@@ -17,8 +15,6 @@ public class Level1 extends Level {
 	public Level1() {
 		super(ROWS, COLUMNS);
 		Player player = new Player(new Vector2D(80, 100), Race.HUMAN, Profession.FROST_MAGE);
-		player.addAbility(new FireballSpell());
-		player.addAbility(new HasteSpell());
 		addPlayer(player);
 		Grid grid = getGrid();
 		for (int i = 0; i < COLUMNS; i++) {

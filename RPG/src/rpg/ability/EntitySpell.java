@@ -3,11 +3,11 @@ package rpg.ability;
 import rpg.element.Entity;
 import rpg.logic.level.Level;
 
-public abstract class DamagingSpell extends EnemyAbility {
+public abstract class EntitySpell extends EntityAbility {
 
 	private double mana;
 
-	public DamagingSpell(double maxCooldown, double mana) {
+	public EntitySpell(double maxCooldown, double mana) {
 		super(maxCooldown);
 		this.mana = mana;
 	}

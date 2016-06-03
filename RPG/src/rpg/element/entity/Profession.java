@@ -12,6 +12,7 @@ public abstract class Profession extends Thing {
 
 	public static final FireMage FIRE_MAGE = new FireMage();
 	public static final FrostMage FROST_MAGE = new FrostMage();
+	public static final DragonProfession DRAGON = new DragonProfession();
 	public static final NoProfession NONE = new NoProfession();
 
 	private List<Ability> abilities;

@@ -1,7 +1,9 @@
-package rpg.ability;
+package rpg.ability.force;
 
 import java.util.Optional;
 
+import rpg.ability.DurationAbility;
+import rpg.ability.TargetType;
 import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.entity.Attribute;

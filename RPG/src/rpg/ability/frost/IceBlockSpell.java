@@ -1,7 +1,9 @@
-package rpg.ability;
+package rpg.ability.frost;
 
 import java.util.Optional;
 
+import rpg.ability.DurationAbility;
+import rpg.ability.TargetType;
 import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.IceBlock;

@@ -1,5 +1,6 @@
-package rpg.ability;
+package rpg.ability.fire;
 
+import rpg.ability.EntitySpell;
 import rpg.element.Entity;
 import rpg.element.Lava;
 import rpg.geometry.Vector2D;
@@ -8,7 +9,7 @@ import rpg.graphics.Sprite;
 import rpg.graphics.TileDrawer;
 import rpg.logic.level.Level;
 
-public class LavaSpell extends DamagingSpell {
+public class LavaSpell extends EntitySpell {
 
 	private Sprite sprite = TileDrawer.sprite(0, 13, 49, 52);
 

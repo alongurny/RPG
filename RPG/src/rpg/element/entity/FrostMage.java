@@ -1,6 +1,6 @@
 package rpg.element.entity;
 
-import rpg.ability.IceBlockSpell;
+import rpg.ability.frost.IceBlockSpell;
 import rpg.element.DamageType;
 import rpg.element.Entity;
 

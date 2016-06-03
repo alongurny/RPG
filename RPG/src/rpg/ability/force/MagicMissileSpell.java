@@ -1,32 +1,32 @@
-package rpg.ability;
+package rpg.ability.force;
 
+import rpg.ability.EnemySpell;
 import rpg.element.Dice;
 import rpg.element.DiceSet;
 import rpg.element.Entity;
-import rpg.element.Fireball;
+import rpg.element.MagicMissile;
 import rpg.geometry.Vector2D;
-import rpg.graphics.DrawIcon;
 import rpg.graphics.Drawer;
+import rpg.graphics.TileDrawer;
 import rpg.logic.level.Level;
 
-public class FireballSpell extends DamagingSpell {
+public class MagicMissileSpell extends EnemySpell {
 
 	private Drawer drawer;
 	private double speed;
 	private DiceSet dice;
 
-	public FireballSpell() {
+	public MagicMissileSpell() {
 		super(2, 5);
-		this.speed = 192;
-		drawer = new DrawIcon("img/fireball.gif", 32, 32);
-		dice = DiceSet.repeat(3, Dice.get(6));
+		this.speed = 96;
+		drawer = TileDrawer.sprite(0, 6, 34, 36);
+		dice = DiceSet.repeat(3, Dice.get(4));
 	}
 
 	@Override
 	public void afterCast(Level level, Entity caster, Entity entity) {
 		Vector2D location = caster.getLocation();
-		Vector2D direction = entity.getLocation().subtract(location).getUnitalVector();
-		level.addDynamicElement(new Fireball(caster, location, direction.multiply(speed), () -> (double) dice.roll()));
+		level.addDynamicElement(new MagicMissile(caster, location, speed, entity, () -> (double) dice.roll()));
 	}
 
 	@Override

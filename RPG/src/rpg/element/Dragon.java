@@ -2,7 +2,6 @@ package rpg.element;
 
 import java.util.Optional;
 
-import rpg.ability.FireballSpell;
 import rpg.element.entity.Profession;
 import rpg.element.entity.Race;
 import rpg.geometry.Rectangle;
@@ -17,8 +16,7 @@ public class Dragon extends Entity {
 	private Drawer drawer;
 
 	public Dragon(Vector2D location) {
-		super(location, Race.DRAGON, Profession.NONE);
-		addAbility(new FireballSpell());
+		super(location, Race.DRAGON, Profession.DRAGON);
 		drawer = new DrawIcon("img/dragon.png", 32, 32);
 	}
 

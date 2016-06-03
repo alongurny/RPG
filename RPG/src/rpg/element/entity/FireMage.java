@@ -1,7 +1,7 @@
 package rpg.element.entity;
 
-import rpg.ability.FireballSpell;
-import rpg.ability.LavaSpell;
+import rpg.ability.fire.FireballSpell;
+import rpg.ability.fire.LavaSpell;
 import rpg.element.DamageType;
 import rpg.element.Entity;
 
