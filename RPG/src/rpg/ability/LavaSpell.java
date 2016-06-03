@@ -22,7 +22,7 @@ public class LavaSpell extends DamagingSpell {
 			for (int x = -1; x <= 1; x++) {
 				Vector2D v = entity.getLocation().add(new Vector2D(x, y).multiply(32));
 				if (level.getElements(v).stream().allMatch(e -> e.isPassable(level, entity))) {
-					Lava lava = new Lava(v);
+					Lava lava = new Lava(v, caster);
 					level.addDynamicElement(lava);
 					level.addTimer(5.0, () -> level.removeDynamicElement(lava));
 				}

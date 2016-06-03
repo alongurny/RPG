@@ -12,9 +12,11 @@ public class Lava extends Element {
 	private Sprite sprite = TileDrawer.sprite(0, 13, 49, 52);
 	private double count = 0;
 	private double dt;
+	private Entity caster;
 
-	public Lava(Vector2D location) {
+	public Lava(Vector2D location, Entity caster) {
 		super(location);
+		this.caster = caster;
 	}
 
 	@Override
@@ -31,7 +33,9 @@ public class Lava extends Element {
 	public void onCollision(Level level, Element other) {
 		if (other instanceof Entity) {
 			Entity entity = (Entity) other;
-			entity.damage(2.5 * dt, DamageType.FIRE);
+			if (!caster.isFriendly(entity)) {
+				entity.damage(2.5 * dt, DamageType.FIRE);
+			}
 		}
 	}
 
