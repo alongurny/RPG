@@ -21,6 +21,10 @@ public abstract class Race extends Thing {
 		public int getAttribute(Attribute attr) {
 			return 0;
 		}
+
+		public double getSpeed(Entity entity) {
+			return 64;
+		}
 	};
 	public static final Race DRAGON = new Race() {
 		@Override
@@ -37,6 +41,10 @@ public abstract class Race extends Thing {
 		public int getAttribute(Attribute attr) {
 			return 10;
 		}
+
+		public double getSpeed(Entity entity) {
+			return 20;
+		}
 	};
 
 	public abstract double getMaxMana(Entity entity);
@@ -44,5 +52,7 @@ public abstract class Race extends Thing {
 	public abstract double getMaxHealth(Entity entity);
 
 	public abstract int getAttribute(Attribute attr);
+
+	public abstract double getSpeed(Entity entity);
 
 }

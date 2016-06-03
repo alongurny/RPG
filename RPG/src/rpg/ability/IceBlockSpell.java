@@ -16,7 +16,7 @@ public class IceBlockSpell extends DurationAbility {
 	private Drawer drawer;
 
 	public IceBlockSpell() {
-		super(2, 2, TargetType.ANY_ENTITY);
+		super(10, 2, TargetType.ANY_ENTITY);
 		drawer = new TileDrawer(0, 16, 27);
 	}
 

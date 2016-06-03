@@ -17,7 +17,7 @@ public class MagicMissileSpell extends DamagingSpell {
 
 	public MagicMissileSpell() {
 		super(2, 5);
-		this.speed = 64;
+		this.speed = 96;
 		drawer = TileDrawer.sprite(0, 6, 34, 36);
 		dice = DiceSet.repeat(3, Dice.get(4));
 	}

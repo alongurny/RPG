@@ -1,33 +1,35 @@
 package rpg.logic;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import rpg.Mechanism;
 import rpg.logic.level.Level;
 
 public class Timer extends Mechanism {
 
-	private Map<Double, Runnable> actionMap;
+	private List<Tuple<Double, Runnable>> list;
 	private double time;
 
 	public Timer() {
-		actionMap = new ConcurrentHashMap<>();
+		list = new CopyOnWriteArrayList<>();
 	}
 
 	public void add(double time, Runnable run) {
-		actionMap.put(this.time + time, run);
+		list.add(Tuple.of(this.time + time, run));
 	}
 
 	public void update(Level level, double dt) {
 		time += dt;
-		for (Entry<Double, Runnable> entry : actionMap.entrySet()) {
-			if (time >= entry.getKey()) {
-				entry.getValue().run();
-				actionMap.remove(entry.getKey());
+		List<Tuple<Double, Runnable>> toRemove = new ArrayList<>();
+		for (Tuple<Double, Runnable> t : list) {
+			if (time >= t.getFirst()) {
+				t.getSecond().run();
+				toRemove.add(t);
 			}
 		}
+		list.removeAll(toRemove);
 	}
 
 }

@@ -16,7 +16,7 @@ public class Level1 extends Level {
 
 	public Level1() {
 		super(ROWS, COLUMNS);
-		Player player = new Player(new Vector2D(80, 100), Race.HUMAN, Profession.WARRIOR);
+		Player player = new Player(new Vector2D(80, 100), Race.HUMAN, Profession.FROST_MAGE);
 		player.addAbility(new FireballSpell());
 		player.addAbility(new HasteSpell());
 		addPlayer(player);

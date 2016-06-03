@@ -1,9 +1,5 @@
 package rpg.logic.level;
 
-import rpg.ability.FireballSpell;
-import rpg.ability.HasteSpell;
-import rpg.ability.IceBlockSpell;
-import rpg.ability.MagicMissileSpell;
 import rpg.element.Block;
 import rpg.element.Door;
 import rpg.element.Dragon;
@@ -24,12 +20,8 @@ public class Level2 extends Level {
 
 	public Level2() {
 		super(ROWS, COLUMNS);
-		Player player1 = new Player(new Vector2D(80, 100), Race.HUMAN, Profession.MAGE);
-		player1.addAbility(new FireballSpell());
-		player1.addAbility(new MagicMissileSpell());
-		player1.addAbility(new HasteSpell());
-		player1.addAbility(new IceBlockSpell());
-		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN, Profession.WARRIOR);
+		Player player1 = new Player(new Vector2D(80, 100), Race.HUMAN, Profession.FIRE_MAGE);
+		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN, Profession.FROST_MAGE);
 		addInitialLocation(player1.getLocation());
 		addInitialLocation(player2.getLocation());
 		addPlayer(player1);

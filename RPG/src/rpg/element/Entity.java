@@ -29,12 +29,14 @@ public abstract class Entity extends Element {
 	private List<Effect> effects;
 	private List<Item> inventory;
 
+	private double xp;
+
 	private double health, mana;
 	private Vector2D orientation;
-	private double speed;
 	private Vector2D direction;
 	private Optional<Element> target;
-	private Map<Attribute, Integer> attributes;
+	private Map<Attribute, Double> attributes;
+	private Map<Attribute, Double> temporary;
 
 	public Entity(Vector2D location, Race race, Profession profession) {
 		super(location);
@@ -45,27 +47,37 @@ public abstract class Entity extends Element {
 		this.mana = getMaxMana();
 		this.direction = Vector2D.ZERO;
 		this.orientation = Vector2D.SOUTH;
-		this.speed = 64;
 		this.target = Optional.empty();
+		this.xp = 0;
 		inventory = new ArrayList<>();
 		abilities = new CopyOnWriteArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
+		profession.getAbilities().forEach(this::addAbility);
 	}
 
 	private void initAttributes() {
 		attributes = new HashMap<>();
-		attributes.put(Attribute.STR, 10);
-		attributes.put(Attribute.DEX, 10);
-		attributes.put(Attribute.INT, 10);
-		attributes.put(Attribute.CON, 10);
+		temporary = new HashMap<>();
+		attributes.put(Attribute.STR, 10.0);
+		attributes.put(Attribute.DEX, 10.0);
+		attributes.put(Attribute.INT, 10.0);
+		attributes.put(Attribute.CON, 10.0);
+		temporary.put(Attribute.STR, 0.0);
+		temporary.put(Attribute.DEX, 0.0);
+		temporary.put(Attribute.INT, 0.0);
+		temporary.put(Attribute.CON, 0.0);
+	}
+
+	public void addAttribute(Attribute attr, double value) {
+		temporary.put(attr, temporary.get(attr) + value);
+	}
+
+	public void subtractAttribute(Attribute attr, double value) {
+		temporary.put(attr, temporary.get(attr) - value);
 	}
 
 	public double getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(double speed) {
-		this.speed = speed;
+		return race.getSpeed(this) + 16 * getModifier(Attribute.DEX);
 	}
 
 	public void setDirection(Vector2D direction) {
@@ -111,7 +123,7 @@ public abstract class Entity extends Element {
 	}
 
 	public void addMana(double value) {
-		mana = Math.min(mana + value, getMaxMana());
+		mana = Math.max(0, Math.min(mana + value, getMaxMana()));
 	}
 
 	public abstract boolean isFriendly(Entity other);
@@ -121,7 +133,7 @@ public abstract class Entity extends Element {
 	}
 
 	public void addHealth(double value) {
-		health = Math.min(health + value, getMaxHealth());
+		health = Math.max(0, Math.min(health + value, getMaxHealth()));
 	}
 
 	public Optional<Element> getTarget() {
@@ -137,11 +149,11 @@ public abstract class Entity extends Element {
 	}
 
 	public void subtractMana(double value) {
-		mana -= value;
+		addMana(-value);
 	}
 
 	public void subtractHealth(double value) {
-		health -= value;
+		addHealth(-value);
 	}
 
 	public boolean isAlive() {
@@ -199,6 +211,10 @@ public abstract class Entity extends Element {
 		return false;
 	}
 
+	public void addXP(double xp) {
+		this.xp += xp;
+	}
+
 	public int getAbilityCount() {
 		return abilities.size();
 	}
@@ -220,15 +236,27 @@ public abstract class Entity extends Element {
 	}
 
 	public Vector2D getVelocity() {
-		return direction.multiply(speed);
+		return direction.multiply(getSpeed());
 	}
 
-	public int getAttribute(Attribute attr) {
-		return attributes.get(attr) + race.getAttribute(attr);
+	public double getAttribute(Attribute attr) {
+		return attributes.get(attr) + race.getAttribute(attr) + temporary.get(attr);
 	}
 
-	public int getModifier(Attribute attr) {
-		return Attribute.getModifier(getAttribute(attr));
+	public double getModifier(Attribute attr) {
+		return getAttribute(attr) - 10;
+	}
+
+	public int getRank() {
+		return (int) (Math.log(1 + xp / 1000) / Math.log(Math.sqrt(10))) + 1;
+	}
+
+	public void damage(double damage, DamageType type) {
+		subtractHealth(Math.max(0, damage - getResistance(type)));
+	}
+
+	public double getResistance(DamageType type) {
+		return profession.getResistance(this, type);
 	}
 
 }

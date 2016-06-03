@@ -2,6 +2,7 @@ package rpg.logic.level;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import rpg.Interactive;
@@ -112,6 +113,11 @@ public class Level {
 		timer.update(this, dt);
 		elements.addAll(toAdd);
 		elements.removeAll(toRemove);
+		players.forEach(p -> {
+			if (p.getTarget().isPresent() && toRemove.contains(p.getTarget().get())) {
+				p.setTarget(Optional.empty());
+			}
+		});
 		if (!toAdd.isEmpty() || !toRemove.isEmpty()) {
 			elements.sort((a, b) -> a.getIndex() - b.getIndex());
 		}

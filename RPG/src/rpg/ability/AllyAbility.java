@@ -14,7 +14,7 @@ public abstract class AllyAbility extends Ability {
 
 	@Override
 	public final boolean isCastable(Entity caster, Optional<Element> element) {
-		return element.isPresent() && caster.isFriendly((Entity) element.get())
+		return element.isPresent() && element.get() instanceof Entity && caster.isFriendly((Entity) element.get())
 				&& isCastable(caster, (Entity) element.get());
 	}
 
