@@ -114,6 +114,8 @@ public abstract class Entity extends Element {
 		mana = Math.min(mana + value, getMaxMana());
 	}
 
+	public abstract boolean isFriendly(Entity other);
+
 	protected List<Effect> getEffects() {
 		return effects;
 	}

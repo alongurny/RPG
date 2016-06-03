@@ -2,9 +2,6 @@ package rpg.ui;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Rectangle;
-import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -54,12 +51,11 @@ public class GamePanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
-		TexturePaint paint = new TexturePaint(bg, new Rectangle(0, 0, bg.getWidth(), bg.getHeight()));
-		Paint prev = g2d.getPaint();
-		g2d.setPaint(paint);
-		g2d.fillRect(0, 0, getWidth(), getHeight());
-		g2d.setPaint(prev);
+		for (int y = 0; y < getHeight(); y += 32) {
+			for (int x = 0; x < getWidth(); x += 32) {
+				g.drawImage(bg, x, y, null);
+			}
+		}
 		for (Drawer drawer : statics) {
 			drawDrawer((Graphics2D) g, drawer);
 		}

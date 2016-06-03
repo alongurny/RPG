@@ -62,4 +62,9 @@ public class Dragon extends Entity {
 		}
 	}
 
+	@Override
+	public boolean isFriendly(Entity entity) {
+		return entity == this;
+	}
+
 }

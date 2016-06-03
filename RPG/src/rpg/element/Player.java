@@ -68,11 +68,11 @@ public class Player extends Entity {
 	}
 
 	public double getManaRegen() {
-		return 0.01 * getAttribute(Attribute.INT);
+		return 0.03 * getAttribute(Attribute.INT);
 	}
 
 	public double getHealthRegen() {
-		return 0.01 * getAttribute(Attribute.CON);
+		return 0.05 * getAttribute(Attribute.CON);
 	}
 
 	private void move(Level level, double dt) {
@@ -110,6 +110,11 @@ public class Player extends Entity {
 	public void act(Level level, double dt) {
 		regenerate(dt);
 		move(level, dt);
+	}
+
+	@Override
+	public boolean isFriendly(Entity other) {
+		return other instanceof Player;
 	}
 
 }
