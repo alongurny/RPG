@@ -15,16 +15,12 @@ public class Effect extends Mechanism {
 		this.key = key;
 	}
 
-	public String getKey() {
-		return key;
-	}
-
 	public double getDuration() {
 		return duration;
 	}
 
-	private void reduceRemainingTime(double dt) {
-		remainingTime -= dt;
+	public String getKey() {
+		return key;
 	}
 
 	public boolean isAffecting() {
@@ -33,6 +29,10 @@ public class Effect extends Mechanism {
 
 	public void onEnd() {
 
+	}
+
+	private void reduceRemainingTime(double dt) {
+		remainingTime -= dt;
 	}
 
 	@Override

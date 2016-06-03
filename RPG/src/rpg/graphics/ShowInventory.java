@@ -16,6 +16,10 @@ public class ShowInventory {
 		this.player = player;
 	}
 
+	public Drawer getDrawer() {
+		return new Translate(x, y).andThen(getIn()).andThen(new Translate(-x, -y));
+	}
+
 	private Drawer getIn() {
 		Drawer d = new Popup(200, 200, new Color(100, 100, 100, 255), "Inventory").getDrawer();
 		for (Item i : player.getInventory()) {
@@ -24,10 +28,6 @@ public class ShowInventory {
 		d = d.andThen(new Translate(-40 * player.getInventory().size(), -40 * player.getInventory().size()));
 		return d;
 
-	}
-
-	public Drawer getDrawer() {
-		return new Translate(x, y).andThen(getIn()).andThen(new Translate(-x, -y));
 	}
 
 }

@@ -10,14 +10,14 @@ import rpg.logic.level.Level;
 public class Portal extends Element implements Interactive {
 
 	private static int width = 32, height = 32;
-	private Drawer drawer;
-	private Vector2D target;
-
 	public static Portal[] getPair(Vector2D v1, Vector2D v2) {
 		Portal p1 = new Portal(v1, v2);
 		Portal p2 = new Portal(v2, v1);
 		return new Portal[] { p1, p2 };
 	}
+	private Drawer drawer;
+
+	private Vector2D target;
 
 	public Portal(Vector2D location, Vector2D target) {
 		super(location);
@@ -26,18 +26,8 @@ public class Portal extends Element implements Interactive {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
-
-	}
-
-	@Override
 	public Drawer getDrawer() {
 		return drawer;
-	}
-
-	@Override
-	public void onCollision(Level level, Element other) {
-
 	}
 
 	@Override
@@ -46,8 +36,8 @@ public class Portal extends Element implements Interactive {
 	}
 
 	@Override
-	public void onInteract(Level level, Entity entity) {
-		level.tryMove(entity, target.add(entity.getLocation()).subtract(getLocation()));
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-width / 2, -height / 2, width, height);
 	}
 
 	@Override
@@ -65,8 +55,18 @@ public class Portal extends Element implements Interactive {
 	}
 
 	@Override
-	public Rectangle getRelativeRect() {
-		return new Rectangle(-width / 2, -height / 2, width, height);
+	public void onCollision(Level level, Element other) {
+
+	}
+
+	@Override
+	public void onInteract(Level level, Entity entity) {
+		level.tryMove(entity, target.add(entity.getLocation()).subtract(getLocation()));
+	}
+
+	@Override
+	public void update(Level level, double dt) {
+
 	}
 
 }

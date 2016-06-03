@@ -27,8 +27,8 @@ public class Block extends Element {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
-
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-16, -16, 32, 32);
 	}
 
 	@Override
@@ -37,12 +37,12 @@ public class Block extends Element {
 	}
 
 	@Override
-	public Rectangle getRelativeRect() {
-		return new Rectangle(-16, -16, 32, 32);
+	public void onCollision(Level level, Element other) {
+
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void update(Level level, double dt) {
 
 	}
 

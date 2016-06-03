@@ -2,7 +2,15 @@ package rpg.geometry;
 
 public class Rectangle {
 
+	public static Rectangle intersect(Rectangle a, Rectangle b) {
+		double x1 = Math.max(a.getMinX(), b.getMinX());
+		double y1 = Math.max(a.getMinY(), b.getMinY());
+		double x2 = Math.min(a.getMaxX(), b.getMaxX());
+		double y2 = Math.min(a.getMaxY(), b.getMaxY());
+		return new Rectangle(x1, y1, x2 - x1, y2 - y1);
+	}
 	private double x, y;
+
 	private double width, height;
 
 	public Rectangle(double x, double y, double width, double height) {
@@ -12,28 +20,12 @@ public class Rectangle {
 		this.height = height;
 	}
 
-	public double getX() {
-		return x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	public double getWidth() {
-		return width;
+	public boolean contains(Vector2D v) {
+		return getMinX() <= v.getX() && v.getX() <= getMaxX() && getMinY() <= v.getY() && v.getY() <= getMaxY();
 	}
 
 	public double getHeight() {
 		return height;
-	}
-
-	public double getMinX() {
-		return getX();
-	}
-
-	public double getMinY() {
-		return getY();
 	}
 
 	public double getMaxX() {
@@ -44,9 +36,24 @@ public class Rectangle {
 		return getY() + getHeight();
 	}
 
-	@Override
-	public String toString() {
-		return String.format("Rectangle {x: %s, y: %s, width: %s, height: %s", x, y, width, height);
+	public double getMinX() {
+		return getX();
+	}
+
+	public double getMinY() {
+		return getY();
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
 	}
 
 	public boolean intersects(Rectangle r) {
@@ -61,16 +68,9 @@ public class Rectangle {
 		return rw > tx && rh > ty && tw > rx && th > ry;
 	}
 
-	public static Rectangle intersect(Rectangle a, Rectangle b) {
-		double x1 = Math.max(a.getMinX(), b.getMinX());
-		double y1 = Math.max(a.getMinY(), b.getMinY());
-		double x2 = Math.min(a.getMaxX(), b.getMaxX());
-		double y2 = Math.min(a.getMaxY(), b.getMaxY());
-		return new Rectangle(x1, y1, x2 - x1, y2 - y1);
-	}
-
-	public boolean contains(Vector2D v) {
-		return getMinX() <= v.getX() && v.getX() <= getMaxX() && getMinY() <= v.getY() && v.getY() <= getMaxY();
+	@Override
+	public String toString() {
+		return String.format("Rectangle {x: %s, y: %s, width: %s, height: %s", x, y, width, height);
 	}
 
 }

@@ -30,10 +30,6 @@ public class ChatServer extends TcpServer {
 		disconnectListeners = new ArrayList<>();
 	}
 
-	public void addMessageListener(MessageListener listener) {
-		messageListeners.add(listener);
-	}
-
 	public void addConnectListener(ConnectListener listener) {
 		connectListeners.add(listener);
 	}
@@ -42,12 +38,32 @@ public class ChatServer extends TcpServer {
 		disconnectListeners.add(listener);
 	}
 
-	public void removeMessageListener(MessageListener listener) {
-		messageListeners.remove(listener);
+	public void addMessageListener(MessageListener listener) {
+		messageListeners.add(listener);
 	}
 
-	public void removeDisconnectListener(DisconnectListener listener) {
-		disconnectListeners.remove(listener);
+	public void forEach(BiConsumer<Integer, ChatClient> action) {
+		for (int i = 0; i < clients.size(); i++) {
+			action.accept(i, clients.get(i));
+		}
+	}
+
+	private void handleMessage(ChatClient client, Message message) {
+		String data = message.getData();
+		switch (message.getType()) {
+		case DATA:
+			clients.forEach(c -> c.send(message));
+			break;
+		case METADATA:
+			if (data.startsWith("connect ")) {
+				String name = data.replace("connect ", "");
+				client.setName(name);
+			} else if (data.equals("disconnect")) {
+				client.stop();
+				clients.remove(client);
+			}
+			break;
+		}
 	}
 
 	@Override
@@ -73,31 +89,15 @@ public class ChatServer extends TcpServer {
 		client.listen();
 	}
 
+	public void removeDisconnectListener(DisconnectListener listener) {
+		disconnectListeners.remove(listener);
+	}
+
+	public void removeMessageListener(MessageListener listener) {
+		messageListeners.remove(listener);
+	}
+
 	public void send(Message message) {
 		clients.forEach(client -> client.send(message));
-	}
-
-	public void forEach(BiConsumer<Integer, ChatClient> action) {
-		for (int i = 0; i < clients.size(); i++) {
-			action.accept(i, clients.get(i));
-		}
-	}
-
-	private void handleMessage(ChatClient client, Message message) {
-		String data = message.getData();
-		switch (message.getType()) {
-		case DATA:
-			clients.forEach(c -> c.send(message));
-			break;
-		case METADATA:
-			if (data.startsWith("connect ")) {
-				String name = data.replace("connect ", "");
-				client.setName(name);
-			} else if (data.equals("disconnect")) {
-				client.stop();
-				clients.remove(client);
-			}
-			break;
-		}
 	}
 }

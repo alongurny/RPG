@@ -15,13 +15,8 @@ public class HealthPotion extends Bonus {
 	}
 
 	@Override
-	protected void onPick(Entity picker) {
-		picker.addHealth(20);
-	}
-
-	@Override
-	public Rectangle getRelativeRect() {
-		return new Rectangle(-16, -16, 32, 32);
+	public Drawer getDrawer() {
+		return sprite;
 	}
 
 	@Override
@@ -30,13 +25,18 @@ public class HealthPotion extends Bonus {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
-
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-16, -16, 32, 32);
 	}
 
 	@Override
-	public Drawer getDrawer() {
-		return sprite;
+	protected void onPick(Entity picker) {
+		picker.addHealth(20);
+	}
+
+	@Override
+	public void update(Level level, double dt) {
+
 	}
 
 }

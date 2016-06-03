@@ -9,11 +9,6 @@ import rpg.graphics.Drawer;
 public class DrawerProtocol implements Protocol<Drawer, String> {
 
 	@Override
-	public String encode(Drawer d) {
-		return d.toString();
-	}
-
-	@Override
 	public Drawer decode(String str) {
 		return Arrays.stream(str.split(";;")).map(this::decodeOne).reduce((a, b) -> a.andThen(b)).get();
 	}
@@ -40,6 +35,11 @@ public class DrawerProtocol implements Protocol<Drawer, String> {
 		} catch (Exception e) {
 			throw new RPGException(e);
 		}
+	}
+
+	@Override
+	public String encode(Drawer d) {
+		return d.toString();
 	}
 
 }

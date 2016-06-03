@@ -15,13 +15,13 @@ public class DrawString extends Drawer {
 	}
 
 	@Override
-	protected String represent() {
-		return String.format("%s %s:java.lang.String %d:int %d:int", getClass().getName(), string, x, y);
+	public void draw(Graphics2D g) {
+		g.drawString(string, x, y);
 	}
 
 	@Override
-	public void draw(Graphics2D g) {
-		g.drawString(string, x, y);
+	protected String represent() {
+		return String.format("%s %s:java.lang.String %d:int %d:int", getClass().getName(), string, x, y);
 	}
 
 }

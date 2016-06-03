@@ -18,16 +18,16 @@ public class Tileset {
 		load("img/tileset1.png");
 	}
 
+	public static Tileset get(int index) {
+		return tilesets.get(index);
+	}
+
 	private static void load(String pathname) {
 		try {
 			tilesets.add(new Tileset(ImageIO.read(new File(pathname))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static Tileset get(int index) {
-		return tilesets.get(index);
 	}
 
 	private BufferedImage image;

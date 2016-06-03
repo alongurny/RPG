@@ -7,10 +7,18 @@ import java.util.List;
 
 public class TileDrawer extends Drawer {
 
-	private BufferedImage image;
+	public static Sprite sprite(int tileset, int row, int firstColumn, int lastColumn) {
+		List<TileDrawer> list = new ArrayList<>();
+		for (int i = firstColumn; i <= lastColumn; i++) {
+			list.add(new TileDrawer(tileset, row, i));
+		}
+		return new Sprite(list);
+	}
 
+	private BufferedImage image;
 	private int tileset;
 	private int row;
+
 	private int col;
 
 	public TileDrawer(int tileset, int row, int col) {
@@ -18,14 +26,6 @@ public class TileDrawer extends Drawer {
 		this.tileset = tileset;
 		this.row = row;
 		this.col = col;
-	}
-
-	public static Sprite sprite(int tileset, int row, int firstColumn, int lastColumn) {
-		List<TileDrawer> list = new ArrayList<>();
-		for (int i = firstColumn; i <= lastColumn; i++) {
-			list.add(new TileDrawer(tileset, row, i));
-		}
-		return new Sprite(list);
 	}
 
 	public void draw(Graphics2D g) {

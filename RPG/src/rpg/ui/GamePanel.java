@@ -18,11 +18,15 @@ public class GamePanel extends JPanel {
 
 	private static BufferedImage bg = BufferedImageResource.get("img/tileset0.png").getImage().getSubimage(32 * 7,
 			32 * 15, 32, 32);
+	private static double limit(double value, double min, double max) {
+		return Math.min(max, Math.max(min, value));
+	}
 	private List<Drawer> drawers;
 	private List<Drawer> buffer;
 	private List<Drawer> absoluteDrawers;
 	private List<Drawer> absoluteBuffer;
 	private List<Drawer> statics;
+
 	private Vector2D offset;
 
 	public GamePanel() {
@@ -35,6 +39,26 @@ public class GamePanel extends JPanel {
 		this.offset = Vector2D.ZERO;
 	}
 
+	public void addAbsoluteDrawer(Drawer drawer) {
+		absoluteBuffer.add(drawer);
+	}
+
+	public void addDrawer(Drawer drawer) {
+		buffer.add(drawer);
+	}
+
+	public void addStaticDrawer(Drawer drawer) {
+		statics.add(drawer);
+	}
+
+	private void drawDrawer(Graphics2D g, Drawer drawer) {
+		int x = (int) (offset.getX());
+		int y = (int) (offset.getY());
+		g.translate(x, y);
+		drawer.draw(g);
+		g.translate(-x, -y);
+	}
+
 	public void flush() {
 		absoluteDrawers.clear();
 		absoluteDrawers.addAll(absoluteBuffer);
@@ -44,8 +68,8 @@ public class GamePanel extends JPanel {
 		buffer.clear();
 	}
 
-	public void addDrawer(Drawer drawer) {
-		buffer.add(drawer);
+	public Vector2D getOffset() {
+		return offset;
 	}
 
 	@Override
@@ -67,38 +91,14 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	private void drawDrawer(Graphics2D g, Drawer drawer) {
-		int x = (int) (offset.getX());
-		int y = (int) (offset.getY());
-		g.translate(x, y);
-		drawer.draw(g);
-		g.translate(-x, -y);
-	}
-
-	public void addStaticDrawer(Drawer drawer) {
-		statics.add(drawer);
-	}
-
-	public Vector2D getOffset() {
-		return offset;
-	}
-
 	public void setOffset(Vector2D offset) {
 		this.offset = offset;
-	}
-
-	private static double limit(double value, double min, double max) {
-		return Math.min(max, Math.max(min, value));
 	}
 
 	public void setOffsetByPlayerLocation(Vector2D location) {
 		double x = limit(-location.getX() + getWidth() / 2, -getWidth() / 2 + 32, 32);
 		double y = limit(-location.getY() + getHeight() / 2, -getHeight() / 2 + 32, 32);
 		setOffset(new Vector2D(x, y));
-	}
-
-	public void addAbsoluteDrawer(Drawer drawer) {
-		absoluteBuffer.add(drawer);
 	}
 
 }

@@ -25,7 +25,7 @@ public abstract class DurationAbility extends Ability {
 		level.addTimer(duration, () -> onEnd(level, caster, element));
 	}
 
-	public abstract void onStart(Level level, Entity caster, Optional<Element> element);
-
 	public abstract void onEnd(Level level, Entity caster, Optional<Element> element);
+
+	public abstract void onStart(Level level, Entity caster, Optional<Element> element);
 }

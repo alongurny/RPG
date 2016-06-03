@@ -28,8 +28,8 @@ public class IceBlock extends Element {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
-
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-size / 2, -size / 2, size, size);
 	}
 
 	@Override
@@ -38,15 +38,15 @@ public class IceBlock extends Element {
 	}
 
 	@Override
-	public Rectangle getRelativeRect() {
-		return new Rectangle(-size / 2, -size / 2, size, size);
-	}
-
-	@Override
 	public void onCollision(Level level, Element other) {
 		if (other instanceof Fireball) {
 			level.removeDynamicElement(this);
 		}
+	}
+
+	@Override
+	public void update(Level level, double dt) {
+
 	}
 
 }

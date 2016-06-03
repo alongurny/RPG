@@ -12,6 +12,8 @@ public abstract class EnemySpell extends EnemyAbility {
 		this.mana = mana;
 	}
 
+	protected abstract void afterCast(Level level, Entity caster, Entity entity);
+
 	@Override
 	protected boolean isCastable(Entity caster, Entity element) {
 		return caster.getMana() >= mana;
@@ -22,7 +24,5 @@ public abstract class EnemySpell extends EnemyAbility {
 		caster.subtractMana(mana);
 		afterCast(level, caster, entity);
 	}
-
-	protected abstract void afterCast(Level level, Entity caster, Entity entity);
 
 }

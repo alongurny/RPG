@@ -21,6 +21,13 @@ import rpg.graphics.Translate;
 import rpg.item.Item;
 import rpg.logic.level.Level;
 
+/**
+ * This class represents an entity: something that is living and can move and
+ * act. {@link Player} is a subclass of this class.
+ * 
+ * @author Alon
+ *
+ */
 public abstract class Entity extends Element {
 
 	private Race race;
@@ -52,6 +59,118 @@ public abstract class Entity extends Element {
 		effects = new CopyOnWriteArrayList<>();
 	}
 
+	public abstract void act(Level level, double dt);
+
+	public void addAttribute(Attribute attr, double value) {
+		temporary.put(attr, temporary.get(attr) + value);
+	}
+
+	public void addEffect(Effect effect) {
+		effects.add(effect);
+	}
+
+	public void addHealth(double value) {
+		health = Math.max(0, Math.min(health + value, getMaxHealth()));
+	}
+
+	public void addMana(double value) {
+		mana = Math.max(0, Math.min(mana + value, getMaxMana()));
+	}
+
+	public void addXP(double xp) {
+		this.xp += xp;
+	}
+
+	public void damage(double damage, DamageType type) {
+		subtractHealth(Math.max(0, damage - getResistance(type)));
+	}
+
+	public List<Ability> getAbilities() {
+		return profession.getAbilities();
+	}
+
+	public Ability getAbility(int i) {
+		return getAbilities().get(i);
+	}
+
+	public int getAbilityCount() {
+		return getAbilities().size();
+	}
+
+	public double getAttribute(Attribute attr) {
+		return attributes.get(attr) + race.getAttribute(attr) + temporary.get(attr);
+	}
+
+	public Vector2D getDirection() {
+		return direction;
+	}
+
+	@Override
+	public Drawer getDrawer() {
+		Translate t = new Translate(0, (int) (getRelativeRect().getHeight() / 2));
+		Translate s = new Translate(0, 8);
+		return getEntityDrawer().andThen(t).andThen(s)
+				.andThen(new ScaleDrawer(health / getMaxHealth(), Color.GREEN, Color.RED, getRelativeRect().getWidth(),
+						4))
+				.andThen(s)
+				.andThen(new ScaleDrawer(mana / getMaxMana(), Color.BLUE, Color.CYAN, getRelativeRect().getWidth(), 4))
+				.andThen(t.negate().andThen(s.negate()).andThen(s.negate()));
+	}
+
+	protected List<Effect> getEffects() {
+		return effects;
+	}
+
+	protected abstract Drawer getEntityDrawer();
+
+	public double getHealth() {
+		return health;
+	}
+
+	public List<Item> getInventory() {
+		return inventory;
+	}
+
+	public double getMana() {
+		return mana;
+	}
+
+	public double getMaxHealth() {
+		return race.getMaxHealth(this);
+	}
+
+	public double getMaxMana() {
+		return race.getMaxMana(this) + profession.getMaxMana(this);
+	}
+
+	public double getModifier(Attribute attr) {
+		return getAttribute(attr) - 10;
+	}
+
+	public Vector2D getOrientation() {
+		return orientation;
+	}
+
+	public int getRank() {
+		return (int) (Math.log(1 + xp / 1000) / Math.log(Math.sqrt(10))) + 1;
+	}
+
+	public double getResistance(DamageType type) {
+		return profession.getResistance(this, type);
+	}
+
+	public double getSpeed() {
+		return race.getSpeed(this) + 16 * getModifier(Attribute.DEX);
+	}
+
+	public Optional<Element> getTarget() {
+		return target;
+	}
+
+	public Vector2D getVelocity() {
+		return direction.multiply(getSpeed());
+	}
+
 	private void initAttributes() {
 		attributes = new HashMap<>();
 		temporary = new HashMap<>();
@@ -65,36 +184,63 @@ public abstract class Entity extends Element {
 		temporary.put(Attribute.CON, 0.0);
 	}
 
-	public void addAttribute(Attribute attr, double value) {
-		temporary.put(attr, temporary.get(attr) + value);
+	public boolean isAlive() {
+		return health > 0;
 	}
 
-	public void subtractAttribute(Attribute attr, double value) {
-		temporary.put(attr, temporary.get(attr) - value);
+	public abstract boolean isFriendly(Entity other);
+
+	public boolean isRequireable(double value) {
+		return mana >= value;
 	}
 
-	public double getSpeed() {
-		return race.getSpeed(this) + 16 * getModifier(Attribute.DEX);
+	public void pick(Item item) {
+		inventory.add(item);
 	}
 
 	public void setDirection(Vector2D direction) {
 		this.direction = direction;
 	}
 
-	public Vector2D getDirection() {
-		return direction;
-	}
-
 	public void setOrientation(Vector2D orientation) {
 		this.orientation = orientation;
 	}
 
-	public Vector2D getOrientation() {
-		return orientation;
-	}
-
 	public void setTarget(Optional<Element> target) {
 		this.target = target;
+	}
+
+	public void subtractAttribute(Attribute attr, double value) {
+		temporary.put(attr, temporary.get(attr) - value);
+	}
+
+	public void subtractHealth(double value) {
+		addHealth(-value);
+	}
+
+	public void subtractMana(double value) {
+		addMana(-value);
+	}
+
+	public boolean tryCast(Level level, Ability ability, Optional<Element> element) {
+		if (!ability.hasCooldown() && ability.isCastable(this, element)) {
+			ability.onCast(level, this, element);
+			ability.setCooldown(ability.getMaxCooldown());
+			return true;
+		}
+		return false;
+	}
+
+	public boolean tryCast(Level level, int i, Optional<Element> element) {
+		return tryCast(level, getAbility(i), element);
+	}
+
+	public boolean tryRequireMana(double value) {
+		if (!isRequireable(value)) {
+			return false;
+		}
+		subtractMana(value);
+		return true;
 	}
 
 	@Override
@@ -111,145 +257,6 @@ public abstract class Entity extends Element {
 			}
 		}.getAsBoolean());
 		act(level, dt);
-	}
-
-	public abstract void act(Level level, double dt);
-
-	public boolean isRequireable(double value) {
-		return mana >= value;
-	}
-
-	public void addMana(double value) {
-		mana = Math.max(0, Math.min(mana + value, getMaxMana()));
-	}
-
-	public abstract boolean isFriendly(Entity other);
-
-	protected List<Effect> getEffects() {
-		return effects;
-	}
-
-	public void addHealth(double value) {
-		health = Math.max(0, Math.min(health + value, getMaxHealth()));
-	}
-
-	public Optional<Element> getTarget() {
-		return target;
-	}
-
-	public boolean tryRequireMana(double value) {
-		if (!isRequireable(value)) {
-			return false;
-		}
-		subtractMana(value);
-		return true;
-	}
-
-	public void subtractMana(double value) {
-		addMana(-value);
-	}
-
-	public void subtractHealth(double value) {
-		addHealth(-value);
-	}
-
-	public boolean isAlive() {
-		return health > 0;
-	}
-
-	public double getMaxMana() {
-		return race.getMaxMana(this) + profession.getMaxMana(this);
-	}
-
-	public double getMaxHealth() {
-		return race.getMaxHealth(this);
-	}
-
-	protected abstract Drawer getEntityDrawer();
-
-	@Override
-	public Drawer getDrawer() {
-		Translate t = new Translate(0, (int) (getRelativeRect().getHeight() / 2));
-		Translate s = new Translate(0, 8);
-		return getEntityDrawer().andThen(t).andThen(s)
-				.andThen(new ScaleDrawer(health / getMaxHealth(), Color.GREEN, Color.RED, getRelativeRect().getWidth(),
-						4))
-				.andThen(s)
-				.andThen(new ScaleDrawer(mana / getMaxMana(), Color.BLUE, Color.CYAN, getRelativeRect().getWidth(), 4))
-				.andThen(t.negate().andThen(s.negate()).andThen(s.negate()));
-	}
-
-	public void pick(Item item) {
-		inventory.add(item);
-	}
-
-	public List<Item> getInventory() {
-		return inventory;
-	}
-
-	public Ability getAbility(int i) {
-		return getAbilities().get(i);
-	}
-
-	public List<Ability> getAbilities() {
-		return profession.getAbilities();
-	}
-
-	public boolean tryCast(Level level, Ability ability, Optional<Element> element) {
-		if (!ability.hasCooldown() && ability.isCastable(this, element)) {
-			ability.onCast(level, this, element);
-			ability.setCooldown(ability.getMaxCooldown());
-			return true;
-		}
-		return false;
-	}
-
-	public void addXP(double xp) {
-		this.xp += xp;
-	}
-
-	public int getAbilityCount() {
-		return getAbilities().size();
-	}
-
-	public boolean tryCast(Level level, int i, Optional<Element> element) {
-		return tryCast(level, getAbility(i), element);
-	}
-
-	public void addEffect(Effect effect) {
-		effects.add(effect);
-	}
-
-	public double getMana() {
-		return mana;
-	}
-
-	public double getHealth() {
-		return health;
-	}
-
-	public Vector2D getVelocity() {
-		return direction.multiply(getSpeed());
-	}
-
-	public double getAttribute(Attribute attr) {
-		return attributes.get(attr) + race.getAttribute(attr) + temporary.get(attr);
-	}
-
-	public double getModifier(Attribute attr) {
-		return getAttribute(attr) - 10;
-	}
-
-	public int getRank() {
-		return (int) (Math.log(1 + xp / 1000) / Math.log(Math.sqrt(10))) + 1;
-	}
-
-	public void damage(double damage, DamageType type) {
-		subtractHealth(Math.max(0, damage - getResistance(type)));
-	}
-
-	public double getResistance(DamageType type) {
-		return profession.getResistance(this, type);
 	}
 
 }

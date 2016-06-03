@@ -9,6 +9,10 @@ public class Game {
 		this.level = firstLevel;
 	}
 
+	public Level getLevel() {
+		return level;
+	}
+
 	public void update(double dt) {
 		if (level != null) {
 			if (level.isFinished() && level.getNextLevel() != null) {
@@ -17,9 +21,5 @@ public class Game {
 				level.update(dt);
 			}
 		}
-	}
-
-	public Level getLevel() {
-		return level;
 	}
 }

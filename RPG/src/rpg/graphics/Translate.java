@@ -12,17 +12,17 @@ public class Translate extends Drawer {
 	}
 
 	@Override
-	public String represent() {
-		return String.format("%s %f:double %f:double", getClass().getName(), dx, dy);
-	}
-
-	@Override
 	public void draw(Graphics2D g) {
 		g.translate(dx, dy);
 	}
 
 	public Translate negate() {
 		return new Translate(-dx, -dy);
+	}
+
+	@Override
+	public String represent() {
+		return String.format("%s %f:double %f:double", getClass().getName(), dx, dy);
 	}
 
 }

@@ -10,6 +10,11 @@ public abstract class Bonus extends Element {
 	}
 
 	@Override
+	public boolean isPassable(Level level, Element other) {
+		return true;
+	}
+
+	@Override
 	public void onCollision(Level level, Element other) {
 		if (other instanceof Entity) {
 			onPick((Entity) other);
@@ -18,9 +23,4 @@ public abstract class Bonus extends Element {
 	}
 
 	protected abstract void onPick(Entity picker);
-
-	@Override
-	public boolean isPassable(Level level, Element other) {
-		return true;
-	}
 }

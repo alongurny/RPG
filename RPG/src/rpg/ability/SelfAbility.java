@@ -12,18 +12,18 @@ public abstract class SelfAbility extends Ability {
 		super(maxCooldown, TargetType.SELF);
 	}
 
+	protected abstract boolean isCastable(Entity caster);
+
 	@Override
 	public final boolean isCastable(Entity caster, Optional<Element> element) {
 		return isCastable(caster);
 	}
 
+	protected abstract void onCast(Level level, Entity caster);
+
 	@Override
 	public void onCast(Level level, Entity caster, Optional<Element> element) {
 		onCast(level, caster);
 	}
-
-	protected abstract void onCast(Level level, Entity caster);
-
-	protected abstract boolean isCastable(Entity caster);
 
 }

@@ -20,13 +20,23 @@ public class Lava extends Element {
 	}
 
 	@Override
-	public Rectangle getRelativeRect() {
-		return new Rectangle(-16, -16, 32, 32);
+	public Drawer getDrawer() {
+		return sprite;
 	}
 
 	@Override
 	public int getIndex() {
 		return 1;
+	}
+
+	@Override
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-16, -16, 32, 32);
+	}
+
+	@Override
+	public boolean isPassable(Level level, Element other) {
+		return true;
 	}
 
 	@Override
@@ -37,16 +47,6 @@ public class Lava extends Element {
 				entity.damage(2.5 * dt, DamageType.FIRE);
 			}
 		}
-	}
-
-	@Override
-	public boolean isPassable(Level level, Element other) {
-		return true;
-	}
-
-	@Override
-	public Drawer getDrawer() {
-		return sprite;
 	}
 
 	@Override

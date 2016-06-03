@@ -35,6 +35,10 @@ public class ChatClient implements Closeable {
 	private String name;
 	private State state;
 
+	public ChatClient(InetAddress host) throws IOException {
+		this(new Socket(host, APPLICATION_PORT));
+	}
+
 	public ChatClient(Socket socket) throws IOException {
 		this.socket = socket;
 		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -44,16 +48,34 @@ public class ChatClient implements Closeable {
 		this.state = State.NOT_LISTENING;
 	}
 
-	public ChatClient(InetAddress host) throws IOException {
-		this(new Socket(host, APPLICATION_PORT));
-	}
-
 	public ChatClient(String host) throws IOException {
 		this(new Socket(host, APPLICATION_PORT));
 	}
 
+	public void addConnectionListener(DisconnectListener listener) {
+		if (state != State.NOT_LISTENING) {
+			throw new IllegalStateException("Client is already listening");
+		}
+		disconnectListeners.add(listener);
+	}
+
+	public void addMessageListener(MessageListener listener) {
+		if (state != State.NOT_LISTENING) {
+			throw new IllegalStateException("Client is already listening");
+		}
+		messageListeners.add(listener);
+	}
+
+	public void close() throws IOException {
+		socket.close();
+	}
+
 	public InetAddress getInetAddress() {
 		return socket.getInetAddress();
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public void listen() {
@@ -76,38 +98,6 @@ public class ChatClient implements Closeable {
 		} , Thread.currentThread().getName() + "/Client Listen Thread").start();
 	}
 
-	public void addMessageListener(MessageListener listener) {
-		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("Client is already listening");
-		}
-		messageListeners.add(listener);
-	}
-
-	public void addConnectionListener(DisconnectListener listener) {
-		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("Client is already listening");
-		}
-		disconnectListeners.add(listener);
-	}
-
-	public void removeMessageListener(MessageListener listener) {
-		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("Client is already listening");
-		}
-		messageListeners.remove(listener);
-	}
-
-	public void removeConnectionListener(DisconnectListener listener) {
-		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("Client is already listening");
-		}
-		disconnectListeners.remove(listener);
-	}
-
-	public void send(Message message) {
-		out.println(protocol.encode(message));
-	}
-
 	private Message receive() {
 		Message res = null;
 		try {
@@ -118,8 +108,22 @@ public class ChatClient implements Closeable {
 		return res;
 	}
 
-	public String getName() {
-		return name;
+	public void removeConnectionListener(DisconnectListener listener) {
+		if (state != State.NOT_LISTENING) {
+			throw new IllegalStateException("Client is already listening");
+		}
+		disconnectListeners.remove(listener);
+	}
+
+	public void removeMessageListener(MessageListener listener) {
+		if (state != State.NOT_LISTENING) {
+			throw new IllegalStateException("Client is already listening");
+		}
+		messageListeners.remove(listener);
+	}
+
+	public void send(Message message) {
+		out.println(protocol.encode(message));
 	}
 
 	public void setName(String name) {
@@ -131,10 +135,6 @@ public class ChatClient implements Closeable {
 			throw new IllegalStateException("Not started");
 		}
 		state = State.CLOSED;
-	}
-
-	public void close() throws IOException {
-		socket.close();
 	}
 
 }

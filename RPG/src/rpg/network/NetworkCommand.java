@@ -12,11 +12,6 @@ public class NetworkCommand {
 		this.string = string;
 	}
 
-	@Override
-	public String toString() {
-		return string;
-	}
-
 	public void execute(Level level) {
 		String[] arr = string.split(" ");
 		if (arr[0].equals("player")) {
@@ -45,6 +40,11 @@ public class NetworkCommand {
 		} else {
 			throw new RuntimeException(string);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return string;
 	}
 
 }

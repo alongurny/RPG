@@ -13,16 +13,6 @@ public class BufferedImageResource implements Resource {
 
 	private static Map<String, BufferedImageResource> map = new HashMap<>();
 
-	private BufferedImage image;
-
-	public BufferedImageResource(BufferedImage image) {
-		this.image = Objects.requireNonNull(image);
-	}
-
-	public BufferedImage getImage() {
-		return image;
-	}
-
 	public static BufferedImageResource get(String path) {
 		if (!map.containsKey(path)) {
 			try {
@@ -35,6 +25,16 @@ public class BufferedImageResource implements Resource {
 			}
 		}
 		return map.get(path);
+	}
+
+	private BufferedImage image;
+
+	public BufferedImageResource(BufferedImage image) {
+		this.image = Objects.requireNonNull(image);
+	}
+
+	public BufferedImage getImage() {
+		return image;
 	}
 
 }

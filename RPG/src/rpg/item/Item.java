@@ -1,16 +1,15 @@
 package rpg.item;
 
-import rpg.Thing;
 import rpg.element.Entity;
 import rpg.graphics.Drawer;
 
-public abstract class Item extends Thing {
+public abstract class Item {
 
 	public Item() {
 	}
 
-	public abstract void onUse(Entity user);
-
 	public abstract Drawer getDrawer();
+
+	public abstract void onUse(Entity user);
 
 }

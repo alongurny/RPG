@@ -23,8 +23,18 @@ public class IceBlockSpell extends DurationAbility {
 	}
 
 	@Override
+	public Drawer getSelfDrawer() {
+		return drawer;
+	}
+
+	@Override
 	public boolean isCastable(Entity caster, Optional<Element> element) {
 		return caster.isAlive() && element.isPresent() && caster.getMana() >= 1 && element.get() instanceof Entity;
+	}
+
+	@Override
+	public void onEnd(Level level, Entity caster, Optional<Element> element) {
+		level.removeDynamicElement(block);
 	}
 
 	@Override
@@ -34,16 +44,6 @@ public class IceBlockSpell extends DurationAbility {
 		Rectangle rect = target.getAbsoluteRect();
 		block = new IceBlock(target.getLocation(), Math.max(rect.getWidth(), rect.getHeight()) * 1.5);
 		level.addDynamicElement(block);
-	}
-
-	@Override
-	public void onEnd(Level level, Entity caster, Optional<Element> element) {
-		level.removeDynamicElement(block);
-	}
-
-	@Override
-	public Drawer getSelfDrawer() {
-		return drawer;
 	}
 
 }

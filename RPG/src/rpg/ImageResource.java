@@ -1,6 +1,7 @@
 package rpg;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,19 +10,16 @@ import java.util.Objects;
 
 import javax.swing.ImageIcon;
 
+/**
+ * This class provides utilities to use {@link Image Images} and
+ * {@link BufferedImage Buffered Images}.
+ * 
+ * @author Alon
+ *
+ */
 public class ImageResource implements Resource {
 
 	private static Map<String, ImageResource> map = new HashMap<>();
-
-	private Image image;
-
-	public ImageResource(Image image) {
-		this.image = Objects.requireNonNull(image);
-	}
-
-	public Image getImage() {
-		return image;
-	}
 
 	public static ImageResource get(String path) {
 		if (!map.containsKey(path)) {
@@ -34,6 +32,16 @@ public class ImageResource implements Resource {
 			}
 		}
 		return map.get(path);
+	}
+
+	private Image image;
+
+	public ImageResource(Image image) {
+		this.image = Objects.requireNonNull(image);
+	}
+
+	public Image getImage() {
+		return image;
 	}
 
 }

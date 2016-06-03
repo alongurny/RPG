@@ -22,18 +22,9 @@ public class Door extends Element implements Interactive {
 		closedDrawer = new TileDrawer(0, 11, 23);
 	}
 
-	public boolean isOpen() {
-		return open;
-	}
-
 	@Override
 	public Drawer getDrawer() {
 		return open ? openDrawer : closedDrawer;
-	}
-
-	@Override
-	public Rectangle getRelativeRect() {
-		return new Rectangle(-width / 2, -height / 2, width, height);
 	}
 
 	@Override
@@ -42,18 +33,8 @@ public class Door extends Element implements Interactive {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
-
-	}
-
-	@Override
-	public void onCollision(Level level, Element other) {
-
-	}
-
-	@Override
-	public boolean isPassable(Level level, Element other) {
-		return isOpen();
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-width / 2, -height / 2, width, height);
 	}
 
 	@Override
@@ -68,6 +49,20 @@ public class Door extends Element implements Interactive {
 		return false;
 	}
 
+	public boolean isOpen() {
+		return open;
+	}
+
+	@Override
+	public boolean isPassable(Level level, Element other) {
+		return isOpen();
+	}
+
+	@Override
+	public void onCollision(Level level, Element other) {
+
+	}
+
 	@Override
 	public void onInteract(Level level, Entity other) {
 		for (int i = 0; i < other.getInventory().size(); i++) {
@@ -77,6 +72,11 @@ public class Door extends Element implements Interactive {
 				return;
 			}
 		}
+	}
+
+	@Override
+	public void update(Level level, double dt) {
+
 	}
 
 }

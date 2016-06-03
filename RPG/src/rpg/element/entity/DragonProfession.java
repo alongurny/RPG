@@ -11,13 +11,13 @@ public class DragonProfession extends Profession {
 	}
 
 	@Override
-	public double getResistance(Entity entity, DamageType type) {
-		return type == DamageType.FIRE ? 100 : 0;
+	public double getMaxMana(Entity entity) {
+		return 0;
 	}
 
 	@Override
-	public double getMaxMana(Entity entity) {
-		return 0;
+	public double getResistance(Entity entity, DamageType type) {
+		return type == DamageType.FIRE ? 100 : 0;
 	}
 
 }

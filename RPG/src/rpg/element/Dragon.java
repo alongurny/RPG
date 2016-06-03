@@ -21,34 +21,6 @@ public class Dragon extends Entity {
 	}
 
 	@Override
-	protected Drawer getEntityDrawer() {
-		return drawer;
-	}
-
-	@Override
-	public Rectangle getRelativeRect() {
-		return new Rectangle(-width / 2, -height / 2, width, height);
-	}
-
-	@Override
-	public int getIndex() {
-		return 3;
-	}
-
-	@Override
-	public void onCollision(Level level, Element other) {
-
-	}
-
-	@Override
-	public boolean isPassable(Level level, Element other) {
-		if (other instanceof Entity) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
 	public void act(Level level, double dt) {
 		if (isAlive()) {
 			level.getDynamicElements().stream().filter(p -> p instanceof Player).findFirst()
@@ -61,8 +33,36 @@ public class Dragon extends Entity {
 	}
 
 	@Override
+	protected Drawer getEntityDrawer() {
+		return drawer;
+	}
+
+	@Override
+	public int getIndex() {
+		return 3;
+	}
+
+	@Override
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-width / 2, -height / 2, width, height);
+	}
+
+	@Override
 	public boolean isFriendly(Entity entity) {
 		return entity == this;
+	}
+
+	@Override
+	public boolean isPassable(Level level, Element other) {
+		if (other instanceof Entity) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public void onCollision(Level level, Element other) {
+
 	}
 
 }

@@ -28,13 +28,21 @@ import tcp.message.Message;
 
 public class GameServer {
 
+	private static int num = 0;
+	public static void main(String[] args) throws IOException {
+		Level level = new Level2();
+		Game game = new Game(level);
+		new GameServer(game).start();
+		SwingUtilities.invokeLater(() -> new ServerStation(game).start());
+
+	}
 	private List<NetworkCommand> received;
 	private ChatServer server;
 	private Timer timer;
 	private Game game;
 	private Protocol<Drawer, String> protocol;
+
 	private boolean firstConnection = false;
-	private static int num = 0;
 
 	public GameServer(Game game) throws IOException {
 		received = new CopyOnWriteArrayList<>();
@@ -56,26 +64,11 @@ public class GameServer {
 		this.game = game;
 	}
 
-	public void start() {
-		server.start();
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				for (NetworkCommand c : received) {
-					if (isAllowed(c)) {
-						c.execute(game.getLevel());
-					}
-				}
-				received.clear();
-			}
-		}, 0, 30);
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				send();
-			}
-		}, 0, 30);
+	public boolean isAllowed(NetworkCommand command) {
+		if (command.toString().startsWith("nothing")) {
+			return true;
+		}
+		return true;
 	}
 
 	private void send() {
@@ -108,19 +101,26 @@ public class GameServer {
 		server.send(Message.data("end"));
 	}
 
-	public boolean isAllowed(NetworkCommand command) {
-		if (command.toString().startsWith("nothing")) {
-			return true;
-		}
-		return true;
-	}
+	public void start() {
+		server.start();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				for (NetworkCommand c : received) {
+					if (isAllowed(c)) {
+						c.execute(game.getLevel());
+					}
+				}
+				received.clear();
+			}
+		}, 0, 30);
+		timer.schedule(new TimerTask() {
 
-	public static void main(String[] args) throws IOException {
-		Level level = new Level2();
-		Game game = new Game(level);
-		new GameServer(game).start();
-		SwingUtilities.invokeLater(() -> new ServerStation(game).start());
-
+			@Override
+			public void run() {
+				send();
+			}
+		}, 0, 30);
 	}
 
 }

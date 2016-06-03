@@ -13,14 +13,6 @@ public class MultiKeyEvent {
 		}
 	}
 
-	public List<Integer> getKeys() {
-		return keys;
-	}
-
-	public boolean get(int key) {
-		return keys.contains(key);
-	}
-
 	public boolean all(int... keys) {
 		for (int key : keys) {
 			if (!this.keys.contains(key)) {
@@ -37,5 +29,13 @@ public class MultiKeyEvent {
 			}
 		}
 		return false;
+	}
+
+	public boolean get(int key) {
+		return keys.contains(key);
+	}
+
+	public List<Integer> getKeys() {
+		return keys;
 	}
 }

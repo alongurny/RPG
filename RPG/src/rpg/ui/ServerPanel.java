@@ -24,13 +24,31 @@ public class ServerPanel extends JPanel {
 
 	private static BufferedImage bg = BufferedImageResource.get("img/tileset0.png").getImage().getSubimage(32 * 7,
 			32 * 15, 32, 32);
+	private static int limit(int min, int max, int value) {
+		if (min > value) {
+			return min;
+		}
+		if (max < value) {
+			return max;
+		}
+		return value;
+	}
 	private int sourceX, sourceY;
+
 	private Game game;
 
 	public ServerPanel(Game game) {
 		this.game = game;
 		setFocusable(true);
 
+	}
+
+	public void drawElement(Graphics g, Element e) {
+		int x = (int) (e.getLocation().getX()) - sourceX;
+		int y = (int) (e.getLocation().getY()) - sourceY;
+		g.translate(x, y);
+		e.getDrawer().draw((Graphics2D) g);
+		g.translate(-x, -y);
 	}
 
 	@Override
@@ -68,24 +86,6 @@ public class ServerPanel extends JPanel {
 			drawElement(g, dyn.remove());
 		}
 
-	}
-
-	private static int limit(int min, int max, int value) {
-		if (min > value) {
-			return min;
-		}
-		if (max < value) {
-			return max;
-		}
-		return value;
-	}
-
-	public void drawElement(Graphics g, Element e) {
-		int x = (int) (e.getLocation().getX()) - sourceX;
-		int y = (int) (e.getLocation().getY()) - sourceY;
-		g.translate(x, y);
-		e.getDrawer().draw((Graphics2D) g);
-		g.translate(-x, -y);
 	}
 
 }

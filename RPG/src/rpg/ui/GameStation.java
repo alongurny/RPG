@@ -28,6 +28,11 @@ public class GameStation {
 		gameBoard.addKeyListener(listener);
 	}
 
+	public void addMouseListener(MouseListener listener) {
+		gameBoard.setFocusable(true);
+		gameBoard.getPanel().addMouseListener(listener);
+	}
+
 	public void start() {
 		gameBoard.setVisible(true);
 		new Thread(() -> {
@@ -41,11 +46,6 @@ public class GameStation {
 				}
 			}
 		}).start();
-	}
-
-	public void addMouseListener(MouseListener listener) {
-		gameBoard.setFocusable(true);
-		gameBoard.getPanel().addMouseListener(listener);
 	}
 
 }

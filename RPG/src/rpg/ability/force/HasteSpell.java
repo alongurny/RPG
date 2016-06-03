@@ -21,14 +21,8 @@ public class HasteSpell extends DurationAbility {
 	}
 
 	@Override
-	public void onStart(Level level, Entity caster, Optional<Element> element) {
-		caster.subtractMana(5);
-		caster.addAttribute(Attribute.DEX, 2);
-	}
-
-	@Override
-	public void onEnd(Level level, Entity caster, Optional<Element> element) {
-		caster.subtractAttribute(Attribute.DEX, 2);
+	public Drawer getSelfDrawer() {
+		return drawer;
 	}
 
 	@Override
@@ -37,8 +31,14 @@ public class HasteSpell extends DurationAbility {
 	}
 
 	@Override
-	public Drawer getSelfDrawer() {
-		return drawer;
+	public void onEnd(Level level, Entity caster, Optional<Element> element) {
+		caster.subtractAttribute(Attribute.DEX, 2);
+	}
+
+	@Override
+	public void onStart(Level level, Entity caster, Optional<Element> element) {
+		caster.subtractMana(5);
+		caster.addAttribute(Attribute.DEX, 2);
 	}
 
 }

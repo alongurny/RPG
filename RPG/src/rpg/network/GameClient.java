@@ -21,11 +21,21 @@ import tcp.message.Message.Type;
 
 public class GameClient {
 
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(() -> {
+			try {
+				new GameStation(new Socket("localhost", 1234)).start();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+	}
 	private ChatClient chatClient;
 	private List<NetworkCommand> commands;
 	private Protocol<Drawer, String> protocol;
 	private Optional<Integer> num;
 	private GamePanel panel;
+
 	private boolean showInventory;
 
 	public GameClient(GamePanel panel, Socket toServer) throws IOException {
@@ -76,18 +86,12 @@ public class GameClient {
 		commands.add(command);
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			try {
-				new GameStation(new Socket("localhost", 1234)).start();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
-
 	public int getNumber() {
 		return num.get();
+	}
+
+	public GamePanel getPanel() {
+		return panel;
 	}
 
 	public void sendCommands() {
@@ -97,12 +101,8 @@ public class GameClient {
 		commands.clear();
 	}
 
-	public GamePanel getPanel() {
-		return panel;
-	}
-
-	public void setShowInventory(boolean b) {
-		this.showInventory = b;
+	public void setShowInventory(boolean showInventory) {
+		this.showInventory = showInventory;
 	}
 
 }

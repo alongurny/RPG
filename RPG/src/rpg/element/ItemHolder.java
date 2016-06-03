@@ -17,8 +17,8 @@ public class ItemHolder extends Element implements Interactive {
 	}
 
 	@Override
-	public Rectangle getRelativeRect() {
-		return new Rectangle(-16, -16, 32, 32);
+	public Drawer getDrawer() {
+		return item.getDrawer();
 	}
 
 	@Override
@@ -27,18 +27,23 @@ public class ItemHolder extends Element implements Interactive {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
-
+	public Rectangle getRelativeRect() {
+		return new Rectangle(-16, -16, 32, 32);
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
-
+	public boolean isInteractable(Level level, Entity entity) {
+		return getAbsoluteRect().intersects(entity.getAbsoluteRect());
 	}
 
 	@Override
 	public boolean isPassable(Level level, Element other) {
 		return true;
+	}
+
+	@Override
+	public void onCollision(Level level, Element other) {
+
 	}
 
 	@Override
@@ -48,13 +53,8 @@ public class ItemHolder extends Element implements Interactive {
 	}
 
 	@Override
-	public boolean isInteractable(Level level, Entity entity) {
-		return getAbsoluteRect().intersects(entity.getAbsoluteRect());
-	}
+	public void update(Level level, double dt) {
 
-	@Override
-	public Drawer getDrawer() {
-		return item.getDrawer();
 	}
 
 }

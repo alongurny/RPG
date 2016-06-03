@@ -33,21 +33,18 @@ public class MagicMissile extends Element {
 	}
 
 	@Override
+	public int getIndex() {
+		return 100;
+	}
+
+	@Override
 	public Rectangle getRelativeRect() {
 		return new Rectangle(-width / 2, -height / 2, width, height);
 	}
 
 	@Override
-	public void update(Level level, double dt) {
-		Vector2D v = target.getLocation().subtract(getLocation());
-		if (v.getMagnitude() > 0) {
-			v = v.getUnitalVector().multiply(speed * dt);
-		}
-		List<Element> obstacles = level.tryMoveBy(this, v);
-		obstacles.forEach(obstacle -> {
-			onCollision(level, obstacle);
-			obstacle.onCollision(level, this);
-		});
+	public boolean isPassable(Level level, Element other) {
+		return true;
 	}
 
 	@Override
@@ -62,13 +59,16 @@ public class MagicMissile extends Element {
 	}
 
 	@Override
-	public int getIndex() {
-		return 100;
-	}
-
-	@Override
-	public boolean isPassable(Level level, Element other) {
-		return true;
+	public void update(Level level, double dt) {
+		Vector2D v = target.getLocation().subtract(getLocation());
+		if (v.getMagnitude() > 0) {
+			v = v.getUnitalVector().multiply(speed * dt);
+		}
+		List<Element> obstacles = level.tryMoveBy(this, v);
+		obstacles.forEach(obstacle -> {
+			onCollision(level, obstacle);
+			obstacle.onCollision(level, this);
+		});
 	}
 
 }

@@ -24,6 +24,12 @@ public class Player extends Entity {
 	}
 
 	@Override
+	public void act(Level level, double dt) {
+		regenerate(dt);
+		move(level, dt);
+	}
+
+	@Override
 	public Drawer getEntityDrawer() {
 		if (getOrientation().getX() > 0) {
 			return eastDrawer;
@@ -37,12 +43,17 @@ public class Player extends Entity {
 		return southDrawer;
 	}
 
-	public void step() {
-
+	public double getHealthRegen() {
+		return 0.05 * getAttribute(Attribute.CON);
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public int getIndex() {
+		return 10;
+	}
+
+	public double getManaRegen() {
+		return 0.03 * getAttribute(Attribute.INT);
 	}
 
 	@Override
@@ -51,28 +62,13 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public int getIndex() {
-		return 10;
+	public boolean isFriendly(Entity other) {
+		return other instanceof Player;
 	}
 
 	@Override
 	public boolean isPassable(Level level, Element other) {
 		return !(other instanceof Entity);
-	}
-
-	private void regenerate(double dt) {
-		if (isAlive()) {
-			addHealth(getHealthRegen() * dt);
-			addMana(getManaRegen() * dt);
-		}
-	}
-
-	public double getManaRegen() {
-		return 0.03 * getAttribute(Attribute.INT);
-	}
-
-	public double getHealthRegen() {
-		return 0.05 * getAttribute(Attribute.CON);
 	}
 
 	private void move(Level level, double dt) {
@@ -95,6 +91,21 @@ public class Player extends Entity {
 		}
 	}
 
+	@Override
+	public void onCollision(Level level, Element other) {
+	}
+
+	private void regenerate(double dt) {
+		if (isAlive()) {
+			addHealth(getHealthRegen() * dt);
+			addMana(getManaRegen() * dt);
+		}
+	}
+
+	public void step() {
+
+	}
+
 	private void stepDraw() {
 		counter++;
 		if (counter >= 32) {
@@ -104,17 +115,6 @@ public class Player extends Entity {
 			southDrawer.step();
 			counter = 0;
 		}
-	}
-
-	@Override
-	public void act(Level level, double dt) {
-		regenerate(dt);
-		move(level, dt);
-	}
-
-	@Override
-	public boolean isFriendly(Entity other) {
-		return other instanceof Player;
 	}
 
 }

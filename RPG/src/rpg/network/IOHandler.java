@@ -24,24 +24,6 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 	}
 
 	@Override
-	public void keysChange(MultiKeyEvent e) {
-		Vector2D velocity = Vector2D.ZERO;
-		if (e.get(KeyEvent.VK_UP) || e.get(KeyEvent.VK_W)) {
-			velocity = velocity.add(Vector2D.NORTH);
-		}
-		if (e.get(KeyEvent.VK_DOWN) || e.get(KeyEvent.VK_S)) {
-			velocity = velocity.add(Vector2D.SOUTH);
-		}
-		if (e.get(KeyEvent.VK_LEFT) || e.get(KeyEvent.VK_A)) {
-			velocity = velocity.add(Vector2D.WEST);
-		}
-		if (e.get(KeyEvent.VK_RIGHT) || e.get(KeyEvent.VK_D)) {
-			velocity = velocity.add(Vector2D.EAST);
-		}
-		client.addCommand(new NetworkCommand("player " + client.getNumber() + " setDirection " + velocity));
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
 		tracker.keyPressed(e);
 		if (e.getKeyCode() == KeyEvent.VK_E) {
@@ -64,6 +46,24 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 	}
 
 	@Override
+	public void keysChange(MultiKeyEvent e) {
+		Vector2D velocity = Vector2D.ZERO;
+		if (e.get(KeyEvent.VK_UP) || e.get(KeyEvent.VK_W)) {
+			velocity = velocity.add(Vector2D.NORTH);
+		}
+		if (e.get(KeyEvent.VK_DOWN) || e.get(KeyEvent.VK_S)) {
+			velocity = velocity.add(Vector2D.SOUTH);
+		}
+		if (e.get(KeyEvent.VK_LEFT) || e.get(KeyEvent.VK_A)) {
+			velocity = velocity.add(Vector2D.WEST);
+		}
+		if (e.get(KeyEvent.VK_RIGHT) || e.get(KeyEvent.VK_D)) {
+			velocity = velocity.add(Vector2D.EAST);
+		}
+		client.addCommand(new NetworkCommand("player " + client.getNumber() + " setDirection " + velocity));
+	}
+
+	@Override
 	public void keyTyped(KeyEvent e) {
 		tracker.keyTyped(e);
 	}
@@ -78,18 +78,18 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
 	}
 }

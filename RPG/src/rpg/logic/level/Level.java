@@ -38,20 +38,58 @@ public class Level {
 		players = new CopyOnWriteArrayList<>();
 	}
 
-	public List<Element> tryMoveBy(Element element, Vector2D displacement) {
-		return tryMove(element, element.getLocation().add(displacement));
+	public void addDynamicElement(Element element) {
+		toAdd.add(element);
 	}
 
-	public List<Element> tryMove(Element element, Vector2D target) {
-		List<Element> obstacles = getObstacles(element, target);
-		if (obstacles.isEmpty()) {
-			element.setLocation(target);
+	public void addInitialLocation(Vector2D location) {
+		initialLocations.add(location);
+	}
+
+	public void addPlayer(Player player) {
+		if (players.size() < initialLocations.size()) {
+			player.setLocation(initialLocations.get(players.size()));
+			players.add(player);
+			elements.add(player);
+		} else {
+			throw new RPGException("Cannot add player - not enough initial locations");
 		}
-		return obstacles;
 	}
 
-	public void interact(Entity entity, Interactive interactive) {
-		interactive.onInteract(this, entity);
+	public void addStaticElement(Element e) {
+		grid.add(e);
+	}
+
+	public void addTimer(double time, Runnable run) {
+		timer.add(time, run);
+	}
+
+	public boolean checkCollision(Element e, Element f) {
+		return e.getAbsoluteRect().intersects(f.getAbsoluteRect());
+	}
+
+	public void finish() {
+		finished = true;
+	}
+
+	public List<Element> getDynamicElements() {
+		return new ArrayList<>(elements);
+	}
+
+	public List<Element> getElements(Vector2D target) {
+		List<Element> elements = new ArrayList<>(this.elements);
+		elements.addAll(getStaticElements());
+		elements.sort((a, b) -> a.getIndex() - b.getIndex());
+		elements.removeIf(e -> !e.getAbsoluteRect().contains(target));
+		return elements;
+	}
+
+	public Grid getGrid() {
+		return grid;
+	}
+
+	public Level getNextLevel() {
+		return nextLevel;
 	}
 
 	public List<Element> getObstacles(Element element, Vector2D target) {
@@ -77,60 +115,20 @@ public class Level {
 		return obstacles;
 	}
 
-	public void onClick(Player player, Vector2D target) {
-		player.setTarget(getElements(target).stream().findFirst());
-	}
-
-	public void addInitialLocation(Vector2D location) {
-		initialLocations.add(location);
-	}
-
-	public void addPlayer(Player player) {
-		if (players.size() < initialLocations.size()) {
-			player.setLocation(initialLocations.get(players.size()));
-			players.add(player);
-			elements.add(player);
-		} else {
-			throw new RPGException("Cannot add player - not enough initial locations");
-		}
-	}
-
-	public List<Element> getDynamicElements() {
-		return new ArrayList<>(elements);
-	}
-
-	public void addDynamicElement(Element element) {
-		toAdd.add(element);
-	}
-
-	public void removeDynamicElement(Element element) {
-		toRemove.add(element);
-	}
-
-	public void update(double dt) {
-		elements.forEach(e -> e.update(this, dt));
-		handleCollisions();
-		timer.update(this, dt);
-		elements.addAll(toAdd);
-		elements.removeAll(toRemove);
-		players.forEach(p -> {
-			if (p.getTarget().isPresent() && toRemove.contains(p.getTarget().get())) {
-				p.setTarget(Optional.empty());
+	public Player getPlayer(int index) {
+		for (Element e : elements) {
+			if (e instanceof Player) {
+				if (index == 0) {
+					return (Player) e;
+				}
+				index--;
 			}
-		});
-		if (!toAdd.isEmpty() || !toRemove.isEmpty()) {
-			elements.sort((a, b) -> a.getIndex() - b.getIndex());
 		}
-		toAdd.clear();
-		toRemove.clear();
+		throw new IndexOutOfBoundsException("No player " + index);
 	}
 
-	public boolean isFinished() {
-		return finished;
-	}
-
-	public void finish() {
-		finished = true;
+	public List<Element> getStaticElements() {
+		return grid.getElements();
 	}
 
 	public void handleCollisions() {
@@ -152,8 +150,24 @@ public class Level {
 		}
 	}
 
-	public boolean checkCollision(Element e, Element f) {
-		return e.getAbsoluteRect().intersects(f.getAbsoluteRect());
+	public void interact(Entity entity, Interactive interactive) {
+		interactive.onInteract(this, entity);
+	}
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void onClick(Player player, Vector2D target) {
+		player.setTarget(getElements(target).stream().findFirst());
+	}
+
+	public void removeDynamicElement(Element element) {
+		toRemove.add(element);
+	}
+
+	public void setNextLevel(Level nextLevel) {
+		this.nextLevel = nextLevel;
 	}
 
 	public boolean tryInteract(Entity entity) {
@@ -178,47 +192,33 @@ public class Level {
 		return false;
 	}
 
-	public void addStaticElement(Element e) {
-		grid.add(e);
-	}
-
-	public Grid getGrid() {
-		return grid;
-	}
-
-	public Level getNextLevel() {
-		return nextLevel;
-	}
-
-	public void setNextLevel(Level nextLevel) {
-		this.nextLevel = nextLevel;
-	}
-
-	public List<Element> getStaticElements() {
-		return grid.getElements();
-	}
-
-	public void addTimer(double time, Runnable run) {
-		timer.add(time, run);
-	}
-
-	public Player getPlayer(int index) {
-		for (Element e : elements) {
-			if (e instanceof Player) {
-				if (index == 0) {
-					return (Player) e;
-				}
-				index--;
-			}
+	public List<Element> tryMove(Element element, Vector2D target) {
+		List<Element> obstacles = getObstacles(element, target);
+		if (obstacles.isEmpty()) {
+			element.setLocation(target);
 		}
-		throw new IndexOutOfBoundsException("No player " + index);
+		return obstacles;
 	}
 
-	public List<Element> getElements(Vector2D target) {
-		List<Element> elements = new ArrayList<>(this.elements);
-		elements.addAll(getStaticElements());
-		elements.sort((a, b) -> a.getIndex() - b.getIndex());
-		elements.removeIf(e -> !e.getAbsoluteRect().contains(target));
-		return elements;
+	public List<Element> tryMoveBy(Element element, Vector2D displacement) {
+		return tryMove(element, element.getLocation().add(displacement));
+	}
+
+	public void update(double dt) {
+		elements.forEach(e -> e.update(this, dt));
+		handleCollisions();
+		timer.update(this, dt);
+		elements.addAll(toAdd);
+		elements.removeAll(toRemove);
+		players.forEach(p -> {
+			if (p.getTarget().isPresent() && toRemove.contains(p.getTarget().get())) {
+				p.setTarget(Optional.empty());
+			}
+		});
+		if (!toAdd.isEmpty() || !toRemove.isEmpty()) {
+			elements.sort((a, b) -> a.getIndex() - b.getIndex());
+		}
+		toAdd.clear();
+		toRemove.clear();
 	}
 }

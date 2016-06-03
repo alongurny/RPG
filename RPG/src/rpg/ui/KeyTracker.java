@@ -15,9 +15,8 @@ public class KeyTracker implements KeyListener {
 		listeners = new ArrayList<>();
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-
+	public void addMultiKeyListener(MultiKeyListener multiKeyListener) {
+		this.listeners.add(multiKeyListener);
 	}
 
 	@Override
@@ -32,8 +31,9 @@ public class KeyTracker implements KeyListener {
 		listeners.forEach(li -> li.keysChange(new MultiKeyEvent(keys)));
 	}
 
-	public void addMultiKeyListener(MultiKeyListener multiKeyListener) {
-		this.listeners.add(multiKeyListener);
+	@Override
+	public void keyTyped(KeyEvent e) {
+
 	}
 
 	public void removeMultiKeyListener(MultiKeyListener multiKeyListener) {

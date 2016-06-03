@@ -13,10 +13,6 @@ public class Sprite extends Drawer {
 		this.drawers = new ArrayList<>(drawers);
 	}
 
-	public void step() {
-		index = (index + 1) % drawers.size();
-	}
-
 	@Override
 	public void draw(Graphics2D g) {
 		drawers.get(index).draw(g);
@@ -25,6 +21,10 @@ public class Sprite extends Drawer {
 	@Override
 	public String represent() {
 		return drawers.get(index).represent();
+	}
+
+	public void step() {
+		index = (index + 1) % drawers.size();
 	}
 
 }

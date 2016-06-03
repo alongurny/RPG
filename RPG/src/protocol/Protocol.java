@@ -1,38 +1,20 @@
 package protocol;
 
+/**
+ * This interface represents a protocol - in this case, a way to convert a value
+ * of some type to a value of another type.
+ * 
+ * @author Alon
+ *
+ * @param <S>
+ *            the type to encode
+ * @param <T>
+ *            the type that is received after encoding
+ */
 public interface Protocol<S, T> {
-	
-	T encode(S d);
-	
+
 	S decode(T n);
 
-	public static class ProtocolException extends RuntimeException {
-		
-		private static final long serialVersionUID = 1L;
+	T encode(S d);
 
-		public ProtocolException(String msg) {
-			super(msg);
-		}
-		
-	}
-
-	public static class ProtocolEncodingException extends ProtocolException {
-		
-		private static final long serialVersionUID = 1L;
-
-		public ProtocolEncodingException(String msg) {
-			super(msg);
-		}
-
-	}
-
-	public static class ProtocolDecodingException extends ProtocolException {
-		
-		private static final long serialVersionUID = 1L;
-
-		public ProtocolDecodingException(String msg) {
-			super(msg);
-		}
-		
-	}
 }

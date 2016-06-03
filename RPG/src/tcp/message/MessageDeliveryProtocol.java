@@ -5,11 +5,6 @@ import protocol.Protocol;
 public class MessageDeliveryProtocol implements Protocol<Message, String> {
 
 	@Override
-	public String encode(Message message) {
-		return String.format("%s ::: %s", message.getType().toString(), message.getData());
-	}
-
-	@Override
 	public Message decode(String data) {
 		try {
 			String[] arr = data.split(" ::: ");
@@ -20,5 +15,10 @@ public class MessageDeliveryProtocol implements Protocol<Message, String> {
 		} catch (RuntimeException e) {
 			throw new RuntimeException("Wrong data: " + data, e);
 		}
+	}
+
+	@Override
+	public String encode(Message message) {
+		return String.format("%s ::: %s", message.getType().toString(), message.getData());
 	}
 }

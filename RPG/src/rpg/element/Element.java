@@ -6,25 +6,31 @@ import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.logic.level.Level;
 
+/**
+ * This class represents an element of the game. An element is defined as
+ * something that has a location and can be seen.
+ * 
+ * @author Alon
+ *
+ */
 public abstract class Element extends Mechanism {
+
+	public static double distance(Element a, Element b) {
+		return Vector2D.distance(a.getLocation(), b.getLocation());
+	}
 
 	private Vector2D location;
 
+	/**
+	 * Creates a new element in the given location. Note that since this class
+	 * is abstract, this constructor cannot be called directly.
+	 * 
+	 * @param location
+	 *            the location of this element
+	 */
 	public Element(Vector2D location) {
 		this.location = location;
 	}
-
-	public Vector2D getLocation() {
-		return location;
-	}
-
-	public void setLocation(Vector2D location) {
-		this.location = location;
-	}
-
-	public abstract Rectangle getRelativeRect();
-
-	public abstract int getIndex();
 
 	public Rectangle getAbsoluteRect() {
 		Rectangle rel = getRelativeRect();
@@ -33,19 +39,37 @@ public abstract class Element extends Mechanism {
 				rel.getHeight());
 	}
 
-	public abstract void onCollision(Level level, Element other);
+	public abstract Drawer getDrawer();
+
+	public abstract int getIndex();
+
+	/**
+	 * 
+	 * @return the location of this element
+	 */
+	public Vector2D getLocation() {
+		return location;
+	}
+
+	public abstract Rectangle getRelativeRect();
 
 	public abstract boolean isPassable(Level level, Element other);
+
+	public abstract void onCollision(Level level, Element other);
+
+	/**
+	 * Sets a new location to this element
+	 * 
+	 * @param location
+	 *            the new location
+	 */
+	public void setLocation(Vector2D location) {
+		this.location = location;
+	}
 
 	@Override
 	public String toString() {
 		return String.format("%s[location=%s]", getClass().getName(), getLocation());
 	}
-
-	public static double distance(Element a, Element b) {
-		return Vector2D.distance(a.getLocation(), b.getLocation());
-	}
-
-	public abstract Drawer getDrawer();
 
 }

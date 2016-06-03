@@ -13,10 +13,7 @@ public abstract class TcpServer {
 		socket = new ServerSocket(port);
 	}
 
-	public void stop() {
-		System.out.println("Server stopped!");
-		running = false;
-	}
+	protected abstract void handleSocket(Socket s) throws IOException;
 
 	public void start() {
 		if (running) {
@@ -42,6 +39,9 @@ public abstract class TcpServer {
 		} , "Main TCP Server Thread").start();
 	}
 
-	protected abstract void handleSocket(Socket s) throws IOException;
+	public void stop() {
+		System.out.println("Server stopped!");
+		running = false;
+	}
 
 }
