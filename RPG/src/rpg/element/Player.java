@@ -12,10 +12,10 @@ import rpg.logic.level.Level;
 
 public class Player extends Entity {
 
-	private Sprite northDrawer = TileDrawer.sprite(1, 3, 0, 2);
-	private Sprite southDrawer = TileDrawer.sprite(1, 0, 0, 2);
-	private Sprite westDrawer = TileDrawer.sprite(1, 1, 0, 2);
-	private Sprite eastDrawer = TileDrawer.sprite(1, 2, 0, 2);
+	private Sprite backDrawer = TileDrawer.sprite(1, 3, 0, 2);
+	private Sprite frontDrawer = TileDrawer.sprite(1, 0, 0, 2);
+	private Sprite leftDrawer = TileDrawer.sprite(1, 1, 0, 2);
+	private Sprite rightDrawer = TileDrawer.sprite(1, 2, 0, 2);
 
 	private int counter = 0;
 
@@ -25,16 +25,18 @@ public class Player extends Entity {
 
 	@Override
 	public Drawer getEntityDrawer() {
-		if (getOrientation().getX() > 0) {
-			return eastDrawer;
+		switch (getOrientation()) {
+		case BACK:
+			return backDrawer;
+		case FRONT:
+			return frontDrawer;
+		case LEFT:
+			return leftDrawer;
+		case RIGHT:
+			return rightDrawer;
+		default:
+			throw new NullPointerException();
 		}
-		if (getOrientation().getX() < 0) {
-			return westDrawer;
-		}
-		if (getOrientation().getY() < 0) {
-			return northDrawer;
-		}
-		return southDrawer;
 	}
 
 	public void step() {
@@ -81,16 +83,10 @@ public class Player extends Entity {
 			if (!d.equals(Vector2D.ZERO)) {
 				double x = d.getX();
 				double y = d.getY();
-				if (level.tryMoveBy(this, d).isEmpty()) {
-					stepDraw();
-					setOrientation((x != 0 ? new Vector2D(x, 0) : new Vector2D(0, y)).getUnitalVector());
-				} else if (level.tryMoveBy(this, new Vector2D(x, 0)).isEmpty() && x != 0) {
-					stepDraw();
-					setOrientation(new Vector2D(x, 0).getUnitalVector());
-				} else if (level.tryMoveBy(this, new Vector2D(0, y)).isEmpty() && y != 0) {
-					stepDraw();
-					setOrientation(new Vector2D(0, y).getUnitalVector());
-				}
+				level.tryMoveBy(this, new Vector2D(x, 0));
+				level.tryMoveBy(this, new Vector2D(0, y));
+				stepDraw();
+				setOrientation(x > 0 ? Orientation.RIGHT : x < 0 ? Orientation.LEFT : Orientation.FRONT);
 			}
 		}
 	}
@@ -98,10 +94,10 @@ public class Player extends Entity {
 	private void stepDraw() {
 		counter++;
 		if (counter >= 32) {
-			eastDrawer.step();
-			westDrawer.step();
-			northDrawer.step();
-			southDrawer.step();
+			rightDrawer.step();
+			leftDrawer.step();
+			backDrawer.step();
+			frontDrawer.step();
 			counter = 0;
 		}
 	}
