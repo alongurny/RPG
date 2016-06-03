@@ -21,7 +21,7 @@ import rpg.logic.level.Level;
  * @author Alon
  *
  */
-public abstract class Ability extends Mechanism {
+public abstract class Ability implements Mechanism {
 
 	public static final int WIDTH = 32;
 	public static final int HEIGHT = 32;

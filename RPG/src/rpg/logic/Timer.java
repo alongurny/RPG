@@ -7,7 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import rpg.Mechanism;
 import rpg.logic.level.Level;
 
-public class Timer extends Mechanism {
+public class Timer implements Mechanism {
 
 	private List<Tuple<Double, Runnable>> list;
 	private double time;

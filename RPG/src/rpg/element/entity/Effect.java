@@ -3,7 +3,7 @@ package rpg.element.entity;
 import rpg.Mechanism;
 import rpg.logic.level.Level;
 
-public class Effect extends Mechanism {
+public class Effect implements Mechanism {
 
 	private String key;
 	private double duration;

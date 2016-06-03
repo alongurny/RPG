@@ -2,8 +2,8 @@ package rpg;
 
 import rpg.logic.level.Level;
 
-public abstract class Mechanism {
+public interface Mechanism {
 
-	public abstract void update(Level level, double dt);
+	void update(Level level, double dt);
 
 }

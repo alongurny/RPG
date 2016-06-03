@@ -13,7 +13,7 @@ import rpg.logic.level.Level;
  * @author Alon
  *
  */
-public abstract class Element extends Mechanism {
+public abstract class Element implements Mechanism {
 
 	public static double distance(Element a, Element b) {
 		return Vector2D.distance(a.getLocation(), b.getLocation());
