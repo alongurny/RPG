@@ -31,11 +31,13 @@ public abstract class Entity extends Element {
 	private double xp;
 
 	private double health, mana;
-	private Vector2D orientation;
+	private Orientation orientation;
 	private Vector2D direction;
 	private Optional<Element> target;
 	private Map<Attribute, Double> attributes;
 	private Map<Attribute, Double> temporary;
+	private Vector2D gravity = new Vector2D(0, 640);
+	private Vector2D velocity = new Vector2D(0, 0);
 
 	public Entity(Vector2D location, Race race, Profession profession) {
 		super(location);
@@ -45,7 +47,7 @@ public abstract class Entity extends Element {
 		this.health = getMaxHealth();
 		this.mana = getMaxMana();
 		this.direction = Vector2D.ZERO;
-		this.orientation = Vector2D.SOUTH;
+		this.orientation = Orientation.FRONT;
 		this.target = Optional.empty();
 		this.xp = 0;
 		inventory = new ArrayList<>();
@@ -85,11 +87,11 @@ public abstract class Entity extends Element {
 		return direction;
 	}
 
-	public void setOrientation(Vector2D orientation) {
+	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
 	}
 
-	public Vector2D getOrientation() {
+	public Orientation getOrientation() {
 		return orientation;
 	}
 
@@ -110,6 +112,7 @@ public abstract class Entity extends Element {
 				return false;
 			}
 		}.getAsBoolean());
+
 		act(level, dt);
 	}
 
