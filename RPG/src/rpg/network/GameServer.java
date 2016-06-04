@@ -6,8 +6,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.swing.SwingUtilities;
-
 import event.ConnectListener;
 import event.ConnectionEvent;
 import event.DisconnectListener;
@@ -22,7 +20,7 @@ import rpg.graphics.ShowInventory;
 import rpg.graphics.Translate;
 import rpg.logic.Tuple;
 import rpg.logic.level.Game;
-import rpg.logic.level.Level2;
+import rpg.logic.level.Level1;
 import rpg.ui.ServerStation;
 import tcp.Switchboard;
 import tcp.TcpClient;
@@ -31,9 +29,8 @@ import tcp.message.Message;
 public class GameServer {
 
 	public static void main(String[] args) throws IOException {
-		Game game = new Level2();
-		new GameServer(game).start();
-		SwingUtilities.invokeLater(() -> new ServerStation(game).start());
+		Game game = new Level1();
+		new ServerStation(new GameServer(game), game).start();
 	}
 
 	private boolean firstConnection;
@@ -106,7 +103,7 @@ public class GameServer {
 		server.send(Message.data("end"));
 	}
 
-	public void start() {
+	public void startReceiving() {
 		server.start();
 		timer.schedule(new TimerTask() {
 			@Override
@@ -119,6 +116,9 @@ public class GameServer {
 				receivedCommands.clear();
 			}
 		}, 0, 30);
+	}
+
+	public void startSending() {
 		timer.schedule(new TimerTask() {
 
 			@Override

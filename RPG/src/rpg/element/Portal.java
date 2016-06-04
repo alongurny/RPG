@@ -10,11 +10,13 @@ import rpg.logic.level.Game;
 public class Portal extends Element implements Interactive {
 
 	private static int width = 32, height = 32;
+
 	public static Portal[] getPair(Vector2D v1, Vector2D v2) {
 		Portal p1 = new Portal(v1, v2);
 		Portal p2 = new Portal(v2, v1);
 		return new Portal[] { p1, p2 };
 	}
+
 	private Drawer drawer;
 
 	private Vector2D target;
