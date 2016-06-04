@@ -10,62 +10,70 @@ import javax.swing.SwingUtilities;
 
 import event.ConnectListener;
 import event.ConnectionEvent;
-import event.MessageEvent;
-import event.MessageListener;
+import event.DisconnectListener;
 import protocol.Protocol;
 import rpg.element.Element;
 import rpg.element.Player;
+import rpg.element.entity.Profession;
+import rpg.element.entity.Race;
 import rpg.graphics.Drawer;
 import rpg.graphics.MultiAbilityDrawer;
 import rpg.graphics.ShowInventory;
 import rpg.graphics.Translate;
 import rpg.logic.Game;
+import rpg.logic.Tuple;
 import rpg.logic.level.Level;
 import rpg.logic.level.Level2;
 import rpg.ui.ServerStation;
-import tcp.ChatServer;
+import tcp.Switchboard;
+import tcp.TcpClient;
 import tcp.message.Message;
 
 public class GameServer {
 
-	private static int num = 0;
 	public static void main(String[] args) throws IOException {
 		Level level = new Level2();
 		Game game = new Game(level);
 		new GameServer(game).start();
 		SwingUtilities.invokeLater(() -> new ServerStation(game).start());
-
 	}
-	private List<NetworkCommand> received;
-	private ChatServer server;
+
+	private boolean firstConnection;
+	private List<Tuple<String, TcpClient>> receivedCommands;
+	private Switchboard server;
 	private Timer timer;
 	private Game game;
 	private Protocol<Drawer, String> protocol;
 
-	private boolean firstConnection = false;
-
 	public GameServer(Game game) throws IOException {
-		received = new CopyOnWriteArrayList<>();
+		this.game = game;
+		receivedCommands = new CopyOnWriteArrayList<>();
 		timer = new Timer();
 		protocol = new DrawerProtocol();
-		server = new ChatServer();
+		server = new Switchboard();
 		server.addConnectListener(new ConnectListener() {
+
 			@Override
 			public void onConnect(ConnectionEvent e) {
-				firstConnection = true;
+				TcpClient c = e.getClient();
+				game.getLevel().addPlayer(c, Race.HUMAN, Profession.FIRE_MAGE);
+				if (game.getLevel().isReady()) {
+					firstConnection = true;
+				}
 			}
 		});
-		server.addMessageListener(new MessageListener() {
+		server.addDisconnectListener(new DisconnectListener() {
+
 			@Override
-			public void onReceive(MessageEvent e) {
-				received.add(new NetworkCommand(e.getMessage().getData()));
+			public void onDisconnect(ConnectionEvent e) {
+				game.getLevel().removePlayer(e.getClient());
 			}
 		});
-		this.game = game;
+		server.addMessageListener(e -> receivedCommands.add(Tuple.of(e.getMessage().getData(), e.getClient())));
 	}
 
-	public boolean isAllowed(NetworkCommand command) {
-		if (command.toString().startsWith("nothing")) {
+	public boolean isAllowed(String command) {
+		if (command.startsWith("nothing")) {
 			return true;
 		}
 		return true;
@@ -80,7 +88,6 @@ public class GameServer {
 			server.send(Message.data("dynamic " + protocol.encode(t.negate())));
 		}
 		if (firstConnection) {
-			server.send(Message.metadata("number " + num++));
 			for (Element e : game.getLevel().getStaticElements()) {
 				String t1 = new Translate((int) e.getLocation().getX(), (int) e.getLocation().getY()).represent();
 				String t2 = new Translate((int) -e.getLocation().getX(), (int) -e.getLocation().getY()).represent();
@@ -90,9 +97,9 @@ public class GameServer {
 			}
 			firstConnection = false;
 		}
-		server.forEach((i, c) -> {
+		server.forEach(c -> {
 			MultiAbilityDrawer mad = new MultiAbilityDrawer(120, 480);
-			Player p = game.getLevel().getPlayer(i);
+			Player p = game.getLevel().getPlayer(c).get();
 			p.getAbilities().forEach(a -> mad.addAbility(p, a));
 			c.send(Message.data("absolute " + mad.getDrawer()));
 			c.send(Message.data("inventory " + new ShowInventory(160, 160, p).getDrawer()));
@@ -106,12 +113,12 @@ public class GameServer {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				for (NetworkCommand c : received) {
-					if (isAllowed(c)) {
-						c.execute(game.getLevel());
+				for (Tuple<String, TcpClient> command : receivedCommands) {
+					if (isAllowed(command.getFirst())) {
+						NetworkCommand.execute(command.getFirst(), game.getLevel(), command.getSecond());
 					}
 				}
-				received.clear();
+				receivedCommands.clear();
 			}
 		}, 0, 30);
 		timer.schedule(new TimerTask() {

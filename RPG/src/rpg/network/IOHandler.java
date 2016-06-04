@@ -35,10 +35,9 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 	public void keyReleased(KeyEvent e) {
 		tracker.keyReleased(e);
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			client.addCommand(new NetworkCommand(String.format("player %s interact", client.getNumber())));
+			client.addCommand("interact");
 		} else if (e.getKeyCode() - '0' >= 1 && e.getKeyCode() - '0' <= 9) {
-			client.addCommand(
-					new NetworkCommand(String.format("player %s cast %s", client.getNumber(), e.getKeyCode() - '1')));
+			client.addCommand("cast " + (e.getKeyCode() - '1'));
 		}
 		if (e.getKeyCode() == KeyEvent.VK_E) {
 			client.setShowInventory(false);
@@ -60,7 +59,7 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 		if (e.get(KeyEvent.VK_RIGHT) || e.get(KeyEvent.VK_D)) {
 			velocity = velocity.add(Vector2D.EAST);
 		}
-		client.addCommand(new NetworkCommand("player " + client.getNumber() + " setDirection " + velocity));
+		client.addCommand("setDirection " + velocity);
 	}
 
 	@Override
@@ -73,7 +72,7 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 		if (SwingUtilities.isRightMouseButton(e)) {
 			Vector2D offset = client.getPanel().getOffset();
 			Vector2D target = new Vector2D(e.getX(), e.getY()).subtract(offset);
-			client.addCommand(new NetworkCommand(String.format("player %d onClick %s", client.getNumber(), target)));
+			client.addCommand("onClick " + target);
 		}
 	}
 

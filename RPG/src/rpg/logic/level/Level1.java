@@ -1,9 +1,6 @@
 package rpg.logic.level;
 
 import rpg.element.Block;
-import rpg.element.Player;
-import rpg.element.entity.Profession;
-import rpg.element.entity.Race;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;
 
@@ -14,8 +11,7 @@ public class Level1 extends Level {
 
 	public Level1() {
 		super(ROWS, COLUMNS);
-		Player player = new Player(new Vector2D(80, 100), Race.HUMAN, Profession.FROST_MAGE);
-		addPlayer(player);
+		addInitialLocation(new Vector2D(80, 100));
 		Grid grid = getGrid();
 		for (int i = 0; i < COLUMNS; i++) {
 			addStaticElement(new Block(grid.getLocation(0, i)));

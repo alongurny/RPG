@@ -5,10 +5,7 @@ import rpg.element.Door;
 import rpg.element.Dragon;
 import rpg.element.ItemHolder;
 import rpg.element.ManaPotion;
-import rpg.element.Player;
 import rpg.element.Portal;
-import rpg.element.entity.Profession;
-import rpg.element.entity.Race;
 import rpg.geometry.Vector2D;
 import rpg.item.MasterKey;
 import rpg.logic.Grid;
@@ -20,12 +17,9 @@ public class Level2 extends Level {
 
 	public Level2() {
 		super(ROWS, COLUMNS);
-		Player player1 = new Player(new Vector2D(80, 100), Race.HUMAN, Profession.FIRE_MAGE);
-		Player player2 = new Player(new Vector2D(80, 300), Race.HUMAN, Profession.FROST_MAGE);
-		addInitialLocation(player1.getLocation());
-		addInitialLocation(player2.getLocation());
-		addPlayer(player1);
-		addPlayer(player2);
+		addInitialLocation(new Vector2D(80, 100));
+		addInitialLocation(new Vector2D(80, 300));
+		addInitialLocation(new Vector2D(280, 300));
 		addDynamicElement(new Dragon(new Vector2D(420, 300)));
 		addDynamicElement(new ManaPotion(new Vector2D(300, 200)));
 		Grid grid = getGrid();

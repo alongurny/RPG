@@ -1,5 +1,6 @@
 package event;
 
+import tcp.TcpClient;
 import tcp.message.Message;
 
 /**
@@ -13,14 +14,16 @@ public class MessageEvent {
 
 	private Message message;
 	private long arrival;
+	private TcpClient client;
 
-	public MessageEvent(Message message) {
-		this(message, System.currentTimeMillis());
+	public MessageEvent(TcpClient client, Message message) {
+		this(client, message, System.currentTimeMillis());
 	}
 
-	public MessageEvent(Message message, long arrival) {
+	public MessageEvent(TcpClient client, Message message, long arrival) {
 		this.message = message;
 		this.arrival = arrival;
+		this.client = client;
 	}
 
 	/**
@@ -39,6 +42,10 @@ public class MessageEvent {
 	 */
 	public Message getMessage() {
 		return message;
+	}
+
+	public TcpClient getClient() {
+		return client;
 	}
 
 }
