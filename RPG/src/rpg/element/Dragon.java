@@ -3,7 +3,7 @@ package rpg.element;
 import java.util.Optional;
 
 import rpg.element.entity.DragonProfession;
-import rpg.element.entity.Race;
+import rpg.element.entity.DragonRace;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.DrawIcon;
@@ -16,7 +16,7 @@ public class Dragon extends Entity {
 	private Drawer drawer;
 
 	public Dragon(Vector2D location) {
-		super(location, Race.DRAGON, new DragonProfession());
+		super(location, new DragonRace(), new DragonProfession());
 		drawer = new DrawIcon("img/dragon.png", 32, 32);
 	}
 

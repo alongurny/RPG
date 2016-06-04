@@ -13,14 +13,14 @@ import protocol.Protocol;
 import rpg.element.Element;
 import rpg.element.Player;
 import rpg.element.entity.FireMage;
-import rpg.element.entity.Race;
+import rpg.element.entity.Human;
 import rpg.graphics.Drawer;
 import rpg.graphics.MultiAbilityDrawer;
 import rpg.graphics.ShowInventory;
 import rpg.graphics.Translate;
 import rpg.logic.Tuple;
 import rpg.logic.level.Game;
-import rpg.logic.level.Level1;
+import rpg.logic.level.Level2;
 import tcp.Switchboard;
 import tcp.TcpClient;
 import tcp.message.Message;
@@ -28,7 +28,7 @@ import tcp.message.Message;
 public class GameServer {
 
 	public static void main(String[] args) throws IOException {
-		Game game = new Level1();
+		Game game = new Level2();
 		GameServer server = new GameServer(game);
 		server.start();
 	}
@@ -51,7 +51,7 @@ public class GameServer {
 			@Override
 			public void onConnect(ConnectionEvent e) {
 				TcpClient c = e.getClient();
-				game.addPlayer(c, Race.HUMAN, new FireMage());
+				game.addPlayer(c, new Human(), new FireMage());
 				if (game.isReady()) {
 					firstConnection = true;
 				}

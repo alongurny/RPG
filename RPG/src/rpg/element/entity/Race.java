@@ -2,49 +2,14 @@ package rpg.element.entity;
 
 import rpg.element.Entity;
 
+/**
+ * A race is the biological origin of an individual. It determines some of their
+ * attributes and even their abilities. This class is abstract so classes that
+ * represent actual races can implement its methods. It's important that
+ * different {@link Entity entities} do reference the same instance of
+ * <code>Race</code>, since it may reference mutable objects such as abilities.
+ */
 public abstract class Race {
-
-	public static final Race HUMAN = new Race() {
-
-		@Override
-		public int getAttribute(Attribute attr) {
-			return 0;
-		}
-
-		@Override
-		public double getMaxHealth(Entity entity) {
-			return 4 * entity.getAttribute(Attribute.CON);
-		}
-
-		@Override
-		public double getMaxMana(Entity entity) {
-			return 0;
-		}
-
-		public double getSpeed(Entity entity) {
-			return 64;
-		}
-	};
-	public static final Race DRAGON = new Race() {
-		@Override
-		public int getAttribute(Attribute attr) {
-			return 10;
-		}
-
-		@Override
-		public double getMaxHealth(Entity entity) {
-			return 100;
-		}
-
-		@Override
-		public double getMaxMana(Entity entity) {
-			return 100;
-		}
-
-		public double getSpeed(Entity entity) {
-			return 20;
-		}
-	};
 
 	public abstract int getAttribute(Attribute attr);
 
