@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 import rpg.BufferedImageResource;
 import rpg.element.Element;
 import rpg.geometry.Vector2D;
-import rpg.logic.Game;
 import rpg.logic.Grid;
+import rpg.logic.level.Game;
 
 public class ServerPanel extends JPanel {
 
@@ -24,6 +24,7 @@ public class ServerPanel extends JPanel {
 
 	private static BufferedImage bg = BufferedImageResource.get("img/tileset0.png").getImage().getSubimage(32 * 7,
 			32 * 15, 32, 32);
+
 	private static int limit(int min, int max, int value) {
 		if (min > value) {
 			return min;
@@ -33,6 +34,7 @@ public class ServerPanel extends JPanel {
 		}
 		return value;
 	}
+
 	private int sourceX, sourceY;
 
 	private Game game;
@@ -61,13 +63,13 @@ public class ServerPanel extends JPanel {
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		g2d.setPaint(prev);
 		Vector2D loc = new Vector2D(getWidth(), getHeight()).multiply(0.5);
-		Grid grid = game.getLevel().getGrid();
+		Grid grid = game.getGrid();
 		sourceX = limit(-32, grid.getWidth() - getWidth() + 32, (int) loc.getX() - getWidth() / 2);
 		sourceY = limit(-32, grid.getHeight() - getHeight() + 32, (int) loc.getY() - getHeight() / 2);
-		List<Element> dynamics = game.getLevel().getDynamicElements();
+		List<Element> dynamics = game.getDynamicElements();
 		dynamics.sort((a, b) -> a.getIndex() - b.getIndex());
 		Queue<Element> dyn = new ArrayDeque<>(dynamics);
-		List<Element> statics = game.getLevel().getStaticElements();
+		List<Element> statics = game.getStaticElements();
 		statics.sort((a, b) -> a.getIndex() - b.getIndex());
 		Queue<Element> stt = new ArrayDeque<>(statics);
 		while (!dyn.isEmpty() && !stt.isEmpty()) {

@@ -5,7 +5,7 @@ import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.DrawIcon;
 import rpg.graphics.Drawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class Portal extends Element implements Interactive {
 
@@ -41,7 +41,7 @@ public class Portal extends Element implements Interactive {
 	}
 
 	@Override
-	public boolean isInteractable(Level level, Entity entity) {
+	public boolean isInteractable(Game game, Entity entity) {
 		Rectangle entityRect = entity.getAbsoluteRect();
 		Rectangle myRect = this.getAbsoluteRect();
 		Rectangle intersect = Rectangle.intersect(entityRect, myRect);
@@ -50,22 +50,22 @@ public class Portal extends Element implements Interactive {
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Game game, Element other) {
 		return true;
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Game game, Element other) {
 
 	}
 
 	@Override
-	public void onInteract(Level level, Entity entity) {
-		level.tryMove(entity, target.add(entity.getLocation()).subtract(getLocation()));
+	public void onInteract(Game game, Entity entity) {
+		game.tryMove(entity, target.add(entity.getLocation()).subtract(getLocation()));
 	}
 
 	@Override
-	public void update(Level level, double dt) {
+	public void update(Game game, double dt) {
 
 	}
 

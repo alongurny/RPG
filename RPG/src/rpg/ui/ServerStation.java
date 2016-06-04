@@ -1,6 +1,6 @@
 package rpg.ui;
 
-import rpg.logic.Game;
+import rpg.logic.level.Game;
 
 public class ServerStation {
 
@@ -12,7 +12,7 @@ public class ServerStation {
 
 	public void start() {
 		new Thread(() -> {
-			while (!game.getLevel().isReady()) {
+			while (!game.isReady()) {
 				try {
 					Thread.sleep(50);
 				} catch (Exception e) {

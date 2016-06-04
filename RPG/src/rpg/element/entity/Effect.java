@@ -1,7 +1,7 @@
 package rpg.element.entity;
 
 import rpg.Mechanism;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class Effect implements Mechanism {
 
@@ -36,7 +36,7 @@ public class Effect implements Mechanism {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
+	public void update(Game game, double dt) {
 		reduceRemainingTime(dt);
 	}
 

@@ -1,7 +1,7 @@
 package rpg.element;
 
 import rpg.geometry.Vector2D;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public abstract class Bonus extends Element {
 
@@ -10,15 +10,15 @@ public abstract class Bonus extends Element {
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Game game, Element other) {
 		return true;
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Game game, Element other) {
 		if (other instanceof Entity) {
 			onPick((Entity) other);
-			level.removeDynamicElement(this);
+			game.removeDynamicElement(this);
 		}
 	}
 

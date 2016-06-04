@@ -10,7 +10,7 @@ import rpg.geometry.Vector2D;
 import rpg.item.MasterKey;
 import rpg.logic.Grid;
 
-public class Level2 extends Level {
+public class Level2 extends Game {
 
 	private static final int ROWS = 20;
 	private static final int COLUMNS = 20;

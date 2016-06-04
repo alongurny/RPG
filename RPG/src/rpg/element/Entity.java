@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.BooleanSupplier;
 
 import rpg.ability.Ability;
 import rpg.element.entity.Attribute;
@@ -19,7 +18,7 @@ import rpg.graphics.Drawer;
 import rpg.graphics.ScaleDrawer;
 import rpg.graphics.Translate;
 import rpg.item.Item;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 /**
  * This class represents an entity: something that is living and can move and
@@ -59,7 +58,7 @@ public abstract class Entity extends Element {
 		effects = new CopyOnWriteArrayList<>();
 	}
 
-	public abstract void act(Level level, double dt);
+	public abstract void act(Game game, double dt);
 
 	public void addAttribute(Attribute attr, double value) {
 		temporary.put(attr, temporary.get(attr) + value);
@@ -222,18 +221,18 @@ public abstract class Entity extends Element {
 		addMana(-value);
 	}
 
-	public boolean tryCast(Level level, Ability ability, Optional<Element> element) {
+	public boolean tryCast(Game game, Ability ability, Optional<Element> element) {
 		if (!ability.hasCooldown() && ability.isCastable(this, element)) {
-			ability.onCast(level, this, element);
+			ability.onCast(game, this, element);
 			ability.setCooldown(ability.getMaxCooldown());
 			return true;
 		}
 		return false;
 	}
 
-	public boolean tryCast(Level level, int index, Optional<Element> element) {
+	public boolean tryCast(Game game, int index, Optional<Element> element) {
 		List<Ability> abilities = getAbilities();
-		return 0 <= index && index < abilities.size() && tryCast(level, abilities.get(index), element);
+		return 0 <= index && index < abilities.size() && tryCast(game, abilities.get(index), element);
 	}
 
 	public boolean tryRequireMana(double value) {
@@ -245,19 +244,17 @@ public abstract class Entity extends Element {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
-		getAbilities().forEach(a -> a.update(level, dt));
-		effects.forEach(e -> e.update(level, dt));
-		effects.removeIf(e -> new BooleanSupplier() {
-			public boolean getAsBoolean() {
-				if (!e.isAffecting()) {
-					e.onEnd();
-					return true;
-				}
-				return false;
+	public void update(Game game, double dt) {
+		getAbilities().forEach(a -> a.update(game, dt));
+		effects.forEach(e -> e.update(game, dt));
+		effects.removeIf(e -> {
+			if (!e.isAffecting()) {
+				e.onEnd();
+				return true;
 			}
-		}.getAsBoolean());
-		act(level, dt);
+			return false;
+		});
+		act(game, dt);
 	}
 
 }

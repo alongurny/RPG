@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import rpg.element.Element;
 import rpg.element.Entity;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public abstract class SelfAbility extends Ability {
 
@@ -19,11 +19,11 @@ public abstract class SelfAbility extends Ability {
 		return isCastable(caster);
 	}
 
-	protected abstract void onCast(Level level, Entity caster);
+	protected abstract void onCast(Game game, Entity caster);
 
 	@Override
-	public void onCast(Level level, Entity caster, Optional<Element> element) {
-		onCast(level, caster);
+	public void onCast(Game game, Entity caster, Optional<Element> element) {
+		onCast(game, caster);
 	}
 
 }

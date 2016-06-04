@@ -9,7 +9,7 @@ import rpg.element.Entity;
 import rpg.element.entity.Attribute;
 import rpg.graphics.DrawIcon;
 import rpg.graphics.Drawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class HasteSpell extends DurationAbility {
 
@@ -31,12 +31,12 @@ public class HasteSpell extends DurationAbility {
 	}
 
 	@Override
-	public void onEnd(Level level, Entity caster, Optional<Element> element) {
+	public void onEnd(Game game, Entity caster, Optional<Element> element) {
 		caster.subtractAttribute(Attribute.DEX, 2);
 	}
 
 	@Override
-	public void onStart(Level level, Entity caster, Optional<Element> element) {
+	public void onStart(Game game, Entity caster, Optional<Element> element) {
 		caster.subtractMana(5);
 		caster.addAttribute(Attribute.DEX, 2);
 	}

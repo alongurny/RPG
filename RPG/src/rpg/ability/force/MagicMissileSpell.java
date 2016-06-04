@@ -8,7 +8,7 @@ import rpg.element.MagicMissile;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class MagicMissileSpell extends EnemySpell {
 
@@ -24,9 +24,9 @@ public class MagicMissileSpell extends EnemySpell {
 	}
 
 	@Override
-	public void afterCast(Level level, Entity caster, Entity entity) {
+	public void afterCast(Game game, Entity caster, Entity entity) {
 		Vector2D location = caster.getLocation();
-		level.addDynamicElement(new MagicMissile(caster, location, speed, entity, () -> (double) dice.roll()));
+		game.addDynamicElement(new MagicMissile(caster, location, speed, entity, () -> (double) dice.roll()));
 	}
 
 	@Override

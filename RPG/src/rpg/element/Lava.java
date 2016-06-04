@@ -5,7 +5,7 @@ import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.Sprite;
 import rpg.graphics.TileDrawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class Lava extends Element {
 
@@ -35,12 +35,12 @@ public class Lava extends Element {
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Game game, Element other) {
 		return true;
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Game game, Element other) {
 		if (other instanceof Entity) {
 			Entity entity = (Entity) other;
 			if (!caster.isFriendly(entity)) {
@@ -50,7 +50,7 @@ public class Lava extends Element {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
+	public void update(Game game, double dt) {
 		this.dt = dt;
 		count += dt;
 		if (count >= 0.12) {

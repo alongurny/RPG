@@ -6,7 +6,7 @@ import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
 import rpg.item.MasterKey;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class Door extends Element implements Interactive {
 
@@ -38,7 +38,7 @@ public class Door extends Element implements Interactive {
 	}
 
 	@Override
-	public boolean isInteractable(Level level, Entity other) {
+	public boolean isInteractable(Game game, Entity other) {
 		for (int i = 0; i < other.getInventory().size(); i++) {
 			if (other.getInventory().get(i) instanceof MasterKey) {
 				if (Element.distance(other, this) < 36) {
@@ -54,17 +54,17 @@ public class Door extends Element implements Interactive {
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Game game, Element other) {
 		return isOpen();
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Game game, Element other) {
 
 	}
 
 	@Override
-	public void onInteract(Level level, Entity other) {
+	public void onInteract(Game game, Entity other) {
 		for (int i = 0; i < other.getInventory().size(); i++) {
 			if (other.getInventory().get(i) instanceof MasterKey) {
 				open = true;
@@ -75,7 +75,7 @@ public class Door extends Element implements Interactive {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
+	public void update(Game game, double dt) {
 
 	}
 

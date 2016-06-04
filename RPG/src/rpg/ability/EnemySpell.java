@@ -1,7 +1,7 @@
 package rpg.ability;
 
 import rpg.element.Entity;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public abstract class EnemySpell extends EnemyAbility {
 
@@ -12,7 +12,7 @@ public abstract class EnemySpell extends EnemyAbility {
 		this.mana = mana;
 	}
 
-	protected abstract void afterCast(Level level, Entity caster, Entity entity);
+	protected abstract void afterCast(Game game, Entity caster, Entity entity);
 
 	@Override
 	protected boolean isCastable(Entity caster, Entity element) {
@@ -20,9 +20,9 @@ public abstract class EnemySpell extends EnemyAbility {
 	}
 
 	@Override
-	protected void onCast(Level level, Entity caster, Entity entity) {
+	protected void onCast(Game game, Entity caster, Entity entity) {
 		caster.subtractMana(mana);
-		afterCast(level, caster, entity);
+		afterCast(game, caster, entity);
 	}
 
 }

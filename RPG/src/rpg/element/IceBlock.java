@@ -4,7 +4,7 @@ import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class IceBlock extends Element {
 
@@ -33,19 +33,19 @@ public class IceBlock extends Element {
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Game game, Element other) {
 		return false;
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Game game, Element other) {
 		if (other instanceof Fireball) {
-			level.removeDynamicElement(this);
+			game.removeDynamicElement(this);
 		}
 	}
 
 	@Override
-	public void update(Level level, double dt) {
+	public void update(Game game, double dt) {
 
 	}
 

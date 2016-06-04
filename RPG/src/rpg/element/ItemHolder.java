@@ -5,7 +5,7 @@ import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.item.Item;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class ItemHolder extends Element implements Interactive {
 
@@ -32,28 +32,28 @@ public class ItemHolder extends Element implements Interactive {
 	}
 
 	@Override
-	public boolean isInteractable(Level level, Entity entity) {
+	public boolean isInteractable(Game game, Entity entity) {
 		return getAbsoluteRect().intersects(entity.getAbsoluteRect());
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Game game, Element other) {
 		return true;
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Game game, Element other) {
 
 	}
 
 	@Override
-	public void onInteract(Level level, Entity other) {
+	public void onInteract(Game game, Entity other) {
 		other.getInventory().add(item);
-		level.removeDynamicElement(this);
+		game.removeDynamicElement(this);
 	}
 
 	@Override
-	public void update(Level level, double dt) {
+	public void update(Game game, double dt) {
 
 	}
 

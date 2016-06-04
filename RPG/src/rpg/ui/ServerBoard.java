@@ -2,7 +2,7 @@ package rpg.ui;
 
 import javax.swing.JFrame;
 
-import rpg.logic.Game;
+import rpg.logic.level.Game;
 
 public class ServerBoard extends JFrame {
 

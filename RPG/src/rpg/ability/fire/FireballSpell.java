@@ -8,7 +8,7 @@ import rpg.element.Fireball;
 import rpg.geometry.Vector2D;
 import rpg.graphics.DrawIcon;
 import rpg.graphics.Drawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class FireballSpell extends EnemySpell {
 
@@ -24,10 +24,10 @@ public class FireballSpell extends EnemySpell {
 	}
 
 	@Override
-	public void afterCast(Level level, Entity caster, Entity entity) {
+	public void afterCast(Game game, Entity caster, Entity entity) {
 		Vector2D location = caster.getLocation();
 		Vector2D direction = entity.getLocation().subtract(location).getUnitalVector();
-		level.addDynamicElement(new Fireball(caster, location, direction.multiply(speed), () -> (double) dice.roll()));
+		game.addDynamicElement(new Fireball(caster, location, direction.multiply(speed), () -> (double) dice.roll()));
 	}
 
 	@Override

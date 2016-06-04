@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import rpg.element.Element;
 import rpg.element.Entity;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public abstract class DurationAbility extends Ability {
 
@@ -20,12 +20,12 @@ public abstract class DurationAbility extends Ability {
 	}
 
 	@Override
-	public void onCast(Level level, Entity caster, Optional<Element> element) {
-		onStart(level, caster, element);
-		level.addTimer(duration, () -> onEnd(level, caster, element));
+	public void onCast(Game game, Entity caster, Optional<Element> element) {
+		onStart(game, caster, element);
+		game.addTimer(duration, () -> onEnd(game, caster, element));
 	}
 
-	public abstract void onEnd(Level level, Entity caster, Optional<Element> element);
+	public abstract void onEnd(Game game, Entity caster, Optional<Element> element);
 
-	public abstract void onStart(Level level, Entity caster, Optional<Element> element);
+	public abstract void onStart(Game game, Entity caster, Optional<Element> element);
 }

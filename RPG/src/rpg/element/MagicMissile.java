@@ -7,7 +7,7 @@ import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class MagicMissile extends Element {
 
@@ -43,31 +43,31 @@ public class MagicMissile extends Element {
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Game game, Element other) {
 		return true;
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Game game, Element other) {
 		if (other instanceof Entity && caster != other) {
 			Entity entity = (Entity) other;
 			entity.damage(damageSupplier.get(), DamageType.FORCE);
-			level.removeDynamicElement(this);
-		} else if (!other.isPassable(level, this)) {
-			level.removeDynamicElement(this);
+			game.removeDynamicElement(this);
+		} else if (!other.isPassable(game, this)) {
+			game.removeDynamicElement(this);
 		}
 	}
 
 	@Override
-	public void update(Level level, double dt) {
+	public void update(Game game, double dt) {
 		Vector2D v = target.getLocation().subtract(getLocation());
 		if (v.getMagnitude() > 0) {
 			v = v.getUnitalVector().multiply(speed * dt);
 		}
-		List<Element> obstacles = level.tryMoveBy(this, v);
+		List<Element> obstacles = game.tryMoveBy(this, v);
 		obstacles.forEach(obstacle -> {
-			onCollision(level, obstacle);
-			obstacle.onCollision(level, this);
+			onCollision(game, obstacle);
+			obstacle.onCollision(game, this);
 		});
 	}
 

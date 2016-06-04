@@ -8,7 +8,7 @@ import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.Sprite;
 import rpg.graphics.TileDrawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 import tcp.TcpClient;
 
 public class Player extends Entity {
@@ -27,9 +27,9 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public void act(Level level, double dt) {
+	public void act(Game game, double dt) {
 		regenerate(dt);
-		move(level, dt);
+		move(game, dt);
 	}
 
 	@Override
@@ -70,23 +70,23 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public boolean isPassable(Level level, Element other) {
+	public boolean isPassable(Game game, Element other) {
 		return !(other instanceof Entity);
 	}
 
-	private void move(Level level, double dt) {
+	private void move(Game game, double dt) {
 		if (isAlive() && !getEffects().stream().anyMatch(e -> e.getKey().equals("disabled"))) {
 			Vector2D d = getVelocity().multiply(dt);
 			if (!d.equals(Vector2D.ZERO)) {
 				double x = d.getX();
 				double y = d.getY();
-				if (level.tryMoveBy(this, d).isEmpty()) {
+				if (game.tryMoveBy(this, d).isEmpty()) {
 					stepDraw();
 					setOrientation((x != 0 ? new Vector2D(x, 0) : new Vector2D(0, y)).getUnitalVector());
-				} else if (level.tryMoveBy(this, new Vector2D(x, 0)).isEmpty() && x != 0) {
+				} else if (game.tryMoveBy(this, new Vector2D(x, 0)).isEmpty() && x != 0) {
 					stepDraw();
 					setOrientation(new Vector2D(x, 0).getUnitalVector());
-				} else if (level.tryMoveBy(this, new Vector2D(0, y)).isEmpty() && y != 0) {
+				} else if (game.tryMoveBy(this, new Vector2D(0, y)).isEmpty() && y != 0) {
 					stepDraw();
 					setOrientation(new Vector2D(0, y).getUnitalVector());
 				}
@@ -95,7 +95,7 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public void onCollision(Level level, Element other) {
+	public void onCollision(Game game, Element other) {
 	}
 
 	private void regenerate(double dt) {

@@ -4,7 +4,7 @@ import rpg.element.Block;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;
 
-public class Level1 extends Level {
+public class Level1 extends Game {
 
 	private static final int ROWS = 20;
 	private static final int COLUMNS = 20;

@@ -4,7 +4,7 @@ import rpg.Mechanism;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 /**
  * This class represents an element of the game. An element is defined as
@@ -53,9 +53,9 @@ public abstract class Element implements Mechanism {
 
 	public abstract Rectangle getRelativeRect();
 
-	public abstract boolean isPassable(Level level, Element other);
+	public abstract boolean isPassable(Game game, Element other);
 
-	public abstract void onCollision(Level level, Element other);
+	public abstract void onCollision(Game game, Element other);
 
 	/**
 	 * Sets a new location to this element

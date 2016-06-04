@@ -14,15 +14,14 @@ import event.DisconnectListener;
 import protocol.Protocol;
 import rpg.element.Element;
 import rpg.element.Player;
-import rpg.element.entity.Profession;
+import rpg.element.entity.FireMage;
 import rpg.element.entity.Race;
 import rpg.graphics.Drawer;
 import rpg.graphics.MultiAbilityDrawer;
 import rpg.graphics.ShowInventory;
 import rpg.graphics.Translate;
-import rpg.logic.Game;
 import rpg.logic.Tuple;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 import rpg.logic.level.Level2;
 import rpg.ui.ServerStation;
 import tcp.Switchboard;
@@ -32,8 +31,7 @@ import tcp.message.Message;
 public class GameServer {
 
 	public static void main(String[] args) throws IOException {
-		Level level = new Level2();
-		Game game = new Game(level);
+		Game game = new Level2();
 		new GameServer(game).start();
 		SwingUtilities.invokeLater(() -> new ServerStation(game).start());
 	}
@@ -56,8 +54,8 @@ public class GameServer {
 			@Override
 			public void onConnect(ConnectionEvent e) {
 				TcpClient c = e.getClient();
-				game.getLevel().addPlayer(c, Race.HUMAN, Profession.FIRE_MAGE);
-				if (game.getLevel().isReady()) {
+				game.addPlayer(c, Race.HUMAN, new FireMage());
+				if (game.isReady()) {
 					firstConnection = true;
 				}
 			}
@@ -66,7 +64,7 @@ public class GameServer {
 
 			@Override
 			public void onDisconnect(ConnectionEvent e) {
-				game.getLevel().removePlayer(e.getClient());
+				game.removePlayer(e.getClient());
 			}
 		});
 		server.addMessageListener(e -> receivedCommands.add(Tuple.of(e.getMessage().getData(), e.getClient())));
@@ -81,14 +79,14 @@ public class GameServer {
 
 	private void send() {
 		server.send(Message.data("start"));
-		for (Element e : game.getLevel().getDynamicElements()) {
+		for (Element e : game.getDynamicElements()) {
 			Translate t = new Translate((int) e.getLocation().getX(), (int) e.getLocation().getY());
 			server.send(Message.data("dynamic " + protocol.encode(t)));
 			server.send(Message.data("dynamic " + e.getDrawer()));
 			server.send(Message.data("dynamic " + protocol.encode(t.negate())));
 		}
 		if (firstConnection) {
-			for (Element e : game.getLevel().getStaticElements()) {
+			for (Element e : game.getStaticElements()) {
 				String t1 = new Translate((int) e.getLocation().getX(), (int) e.getLocation().getY()).represent();
 				String t2 = new Translate((int) -e.getLocation().getX(), (int) -e.getLocation().getY()).represent();
 				server.send(Message.data("static " + t1));
@@ -99,7 +97,7 @@ public class GameServer {
 		}
 		server.forEach(c -> {
 			MultiAbilityDrawer mad = new MultiAbilityDrawer(120, 480);
-			Player p = game.getLevel().getPlayer(c).get();
+			Player p = game.getPlayer(c).get();
 			p.getAbilities().forEach(a -> mad.addAbility(p, a));
 			c.send(Message.data("absolute " + mad.getDrawer()));
 			c.send(Message.data("inventory " + new ShowInventory(160, 160, p).getDrawer()));
@@ -115,7 +113,7 @@ public class GameServer {
 			public void run() {
 				for (Tuple<String, TcpClient> command : receivedCommands) {
 					if (isAllowed(command.getFirst())) {
-						NetworkCommand.execute(command.getFirst(), game.getLevel(), command.getSecond());
+						NetworkCommand.execute(command.getFirst(), game, command.getSecond());
 					}
 				}
 				receivedCommands.clear();

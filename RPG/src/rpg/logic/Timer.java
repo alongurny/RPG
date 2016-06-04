@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import rpg.Mechanism;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class Timer implements Mechanism {
 
@@ -20,7 +20,7 @@ public class Timer implements Mechanism {
 		list.add(Tuple.of(this.time + time, run));
 	}
 
-	public void update(Level level, double dt) {
+	public void update(Game game, double dt) {
 		time += dt;
 		List<Tuple<Double, Runnable>> toRemove = new ArrayList<>();
 		for (Tuple<Double, Runnable> t : list) {

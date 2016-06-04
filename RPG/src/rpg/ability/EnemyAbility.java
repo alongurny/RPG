@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import rpg.element.Element;
 import rpg.element.Entity;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public abstract class EnemyAbility extends Ability {
 
@@ -20,11 +20,11 @@ public abstract class EnemyAbility extends Ability {
 				&& isCastable(caster, (Entity) element.get());
 	}
 
-	protected abstract void onCast(Level level, Entity caster, Entity entity);
+	protected abstract void onCast(Game game, Entity caster, Entity entity);
 
 	@Override
-	public final void onCast(Level level, Entity caster, Optional<Element> element) {
-		onCast(level, caster, (Entity) element.get());
+	public final void onCast(Game game, Entity caster, Optional<Element> element) {
+		onCast(game, caster, (Entity) element.get());
 	}
 
 }

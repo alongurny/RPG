@@ -22,20 +22,20 @@ import rpg.logic.Grid;
 import rpg.logic.Timer;
 import tcp.TcpClient;
 
-public class Level {
+public class Game {
 
 	private List<Element> elements;
 	private List<Element> toRemove;
 	private List<Element> toAdd;
 	private Grid grid;
 	private boolean finished;
-	private Level nextLevel;
+	private Game nextLevel;
 	private Timer timer;
 	private List<Vector2D> initialLocations;
 	private Set<Integer> boundIndices;
 	private Map<Integer, Player> players;
 
-	public Level(int rows, int cols) {
+	public Game(int rows, int cols) {
 		elements = new CopyOnWriteArrayList<>();
 		toRemove = new CopyOnWriteArrayList<>();
 		toAdd = new CopyOnWriteArrayList<>();
@@ -104,7 +104,7 @@ public class Level {
 		return grid;
 	}
 
-	public Level getNextLevel() {
+	public Game getNextLevel() {
 		return nextLevel;
 	}
 
@@ -170,7 +170,7 @@ public class Level {
 		toRemove.add(element);
 	}
 
-	public void setNextLevel(Level nextLevel) {
+	public void setNextLevel(Game nextLevel) {
 		this.nextLevel = nextLevel;
 	}
 
@@ -231,7 +231,7 @@ public class Level {
 	}
 
 	public boolean isReady() {
-		return boundIndices.size() >= 2;
+		return boundIndices.size() >= 1;
 	}
 
 	public void removePlayer(TcpClient c) {

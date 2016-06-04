@@ -8,7 +8,7 @@ import rpg.element.Entity;
 import rpg.element.Player;
 import rpg.graphics.AbilityDrawer;
 import rpg.graphics.Drawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 /**
  * This class represents an ability. Abilities can be cast to perform special
@@ -61,7 +61,7 @@ public abstract class Ability implements Mechanism {
 
 	public abstract boolean isCastable(Entity caster, Optional<Element> element);
 
-	public abstract void onCast(Level level, Entity caster, Optional<Element> element);
+	public abstract void onCast(Game game, Entity caster, Optional<Element> element);
 
 	private void reduceCooldown(double dcooldown) {
 		cooldown -= dcooldown;
@@ -72,7 +72,7 @@ public abstract class Ability implements Mechanism {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
+	public void update(Game game, double dt) {
 		reduceCooldown(dt);
 	}
 

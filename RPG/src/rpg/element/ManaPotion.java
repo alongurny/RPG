@@ -4,7 +4,7 @@ import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
-import rpg.logic.level.Level;
+import rpg.logic.level.Game;
 
 public class ManaPotion extends Bonus {
 
@@ -35,7 +35,7 @@ public class ManaPotion extends Bonus {
 	}
 
 	@Override
-	public void update(Level level, double dt) {
+	public void update(Game game, double dt) {
 
 	}
 
