@@ -12,6 +12,13 @@ public class ServerStation {
 
 	public void start() {
 		new Thread(() -> {
+			while (!game.getLevel().isReady()) {
+				try {
+					Thread.sleep(50);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			long last = System.nanoTime();
 			while (true) {
 				long now = System.nanoTime();

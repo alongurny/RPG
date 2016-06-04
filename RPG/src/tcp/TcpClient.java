@@ -9,6 +9,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import event.ConnectionEvent;
 import event.DisconnectListener;
@@ -18,10 +19,10 @@ import protocol.Protocol;
 import tcp.message.Message;
 import tcp.message.MessageDeliveryProtocol;
 
-public class ChatClient implements Closeable {
+public class TcpClient implements Closeable {
 
 	public enum State {
-		NOT_LISTENING, LISTENING, CLOSED
+		NOT_LISTENING, LISTENING
 	}
 
 	public static final int APPLICATION_PORT = 1234;
@@ -32,14 +33,13 @@ public class ChatClient implements Closeable {
 	private Protocol<Message, String> protocol = new MessageDeliveryProtocol();
 	private List<MessageListener> messageListeners;
 	private List<DisconnectListener> disconnectListeners;
-	private String name;
 	private State state;
 
-	public ChatClient(InetAddress host) throws IOException {
+	public TcpClient(InetAddress host) throws IOException {
 		this(new Socket(host, APPLICATION_PORT));
 	}
 
-	public ChatClient(Socket socket) throws IOException {
+	public TcpClient(Socket socket) throws IOException {
 		this.socket = socket;
 		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.out = new PrintWriter(socket.getOutputStream(), true);
@@ -48,7 +48,7 @@ public class ChatClient implements Closeable {
 		this.state = State.NOT_LISTENING;
 	}
 
-	public ChatClient(String host) throws IOException {
+	public TcpClient(String host) throws IOException {
 		this(new Socket(host, APPLICATION_PORT));
 	}
 
@@ -74,38 +74,32 @@ public class ChatClient implements Closeable {
 		return socket.getInetAddress();
 	}
 
-	public String getName() {
-		return name;
-	}
-
 	public void listen() {
 		if (state != State.NOT_LISTENING) {
 			throw new IllegalStateException("Already started");
 		}
 		state = State.LISTENING;
 		new Thread(() -> {
-			Message message;
-			do {
-				message = receive();
-				if (message == null) {
-					break;
-				}
+			Optional<Message> message = receive();
+			while (message.isPresent() && state == State.LISTENING) {
 				for (MessageListener listener : messageListeners) {
-					listener.onReceive(new MessageEvent(message));
+					listener.onReceive(new MessageEvent(this, message.get()));
 				}
-			} while (state == State.LISTENING);
-			disconnectListeners.forEach(cl -> cl.onDisconnect(new ConnectionEvent()));
-		} , Thread.currentThread().getName() + "/Client Listen Thread").start();
+				message = receive();
+			}
+			disconnectListeners.forEach(cl -> cl.onDisconnect(new ConnectionEvent(this)));
+			state = State.NOT_LISTENING;
+		}, Thread.currentThread().getName() + "/Client Listen Thread").start();
 	}
 
-	private Message receive() {
+	private Optional<Message> receive() {
 		Message res = null;
 		try {
 			String line = in.readLine();
 			res = line != null ? protocol.decode(line) : null;
 		} catch (IOException e) {
 		}
-		return res;
+		return Optional.ofNullable(res);
 	}
 
 	public void removeConnectionListener(DisconnectListener listener) {
@@ -126,15 +120,11 @@ public class ChatClient implements Closeable {
 		out.println(protocol.encode(message));
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public void stop() {
 		if (state != State.LISTENING) {
 			throw new IllegalStateException("Not started");
 		}
-		state = State.CLOSED;
+		state = State.NOT_LISTENING;
 	}
 
 }

@@ -9,6 +9,7 @@ import rpg.graphics.Drawer;
 import rpg.graphics.Sprite;
 import rpg.graphics.TileDrawer;
 import rpg.logic.level.Level;
+import tcp.TcpClient;
 
 public class Player extends Entity {
 
@@ -18,9 +19,11 @@ public class Player extends Entity {
 	private Sprite eastDrawer = TileDrawer.sprite(1, 2, 0, 2);
 
 	private int counter = 0;
+	private TcpClient client;
 
-	public Player(Vector2D location, Race race, Profession profession) {
+	public Player(TcpClient client, Vector2D location, Race race, Profession profession) {
 		super(location, race, profession);
+		this.client = client;
 	}
 
 	@Override
@@ -115,6 +118,10 @@ public class Player extends Entity {
 			southDrawer.step();
 			counter = 0;
 		}
+	}
+
+	public TcpClient getClient() {
+		return client;
 	}
 
 }

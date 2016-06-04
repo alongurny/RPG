@@ -2,18 +2,25 @@ package rpg.logic.level;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import rpg.Interactive;
 import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.Player;
-import rpg.exception.RPGException;
+import rpg.element.entity.Profession;
+import rpg.element.entity.Race;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;
 import rpg.logic.Timer;
+import tcp.TcpClient;
 
 public class Level {
 
@@ -25,7 +32,8 @@ public class Level {
 	private Level nextLevel;
 	private Timer timer;
 	private List<Vector2D> initialLocations;
-	private List<Player> players;
+	private Set<Integer> boundIndices;
+	private Map<Integer, Player> players;
 
 	public Level(int rows, int cols) {
 		elements = new CopyOnWriteArrayList<>();
@@ -34,7 +42,8 @@ public class Level {
 		grid = new Grid(rows, cols);
 		timer = new Timer();
 		initialLocations = new CopyOnWriteArrayList<>();
-		players = new CopyOnWriteArrayList<>();
+		players = new ConcurrentHashMap<>();
+		boundIndices = new ConcurrentSkipListSet<>();
 	}
 
 	public void addDynamicElement(Element element) {
@@ -45,13 +54,21 @@ public class Level {
 		initialLocations.add(location);
 	}
 
-	public void addPlayer(Player player) {
+	private int getFreeIndex() {
+		int i = 0;
+		while (boundIndices.contains(i)) {
+			i++;
+		}
+		return i;
+	}
+
+	public void addPlayer(TcpClient client, Race race, Profession profession) {
 		if (players.size() < initialLocations.size()) {
-			player.setLocation(initialLocations.get(players.size()));
-			players.add(player);
+			int index = getFreeIndex();
+			Player player = new Player(client, initialLocations.get(index), race, profession);
+			boundIndices.add(index);
+			players.put(index, player);
 			elements.add(player);
-		} else {
-			throw new RPGException("Cannot add player - not enough initial locations");
 		}
 	}
 
@@ -112,18 +129,6 @@ public class Level {
 			}
 		}
 		return obstacles;
-	}
-
-	public Player getPlayer(int index) {
-		for (Element e : elements) {
-			if (e instanceof Player) {
-				if (index == 0) {
-					return (Player) e;
-				}
-				index--;
-			}
-		}
-		throw new IndexOutOfBoundsException("No player " + index);
 	}
 
 	public List<Element> getStaticElements() {
@@ -209,7 +214,7 @@ public class Level {
 		timer.update(this, dt);
 		elements.addAll(toAdd);
 		elements.removeAll(toRemove);
-		players.forEach(p -> {
+		players.values().forEach(p -> {
 			if (p.getTarget().isPresent() && toRemove.contains(p.getTarget().get())) {
 				p.setTarget(Optional.empty());
 			}
@@ -219,5 +224,21 @@ public class Level {
 		}
 		toAdd.clear();
 		toRemove.clear();
+	}
+
+	public Optional<Player> getPlayer(TcpClient client) {
+		return players.values().stream().filter(p -> p.getClient() == client).findFirst();
+	}
+
+	public boolean isReady() {
+		return boundIndices.size() >= 2;
+	}
+
+	public void removePlayer(TcpClient c) {
+		Entry<Integer, Player> entry = players.entrySet().stream().filter(e -> e.getValue().getClient() == c)
+				.findFirst().get();
+		removeDynamicElement(entry.getValue());
+		players.remove(entry.getKey());
+		boundIndices.remove(entry.getKey());
 	}
 }

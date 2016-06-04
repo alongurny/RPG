@@ -1,5 +1,7 @@
 package event;
 
+import tcp.TcpClient;
+
 /**
  * This class represents a connection or disconnection of a client from the
  * server.
@@ -10,13 +12,14 @@ package event;
 public class ConnectionEvent {
 
 	private long time;
+	private TcpClient client;
 
 	/**
 	 * Creates a new ConnectionEvent with the current time in milliseconds as
 	 * time.
 	 */
-	public ConnectionEvent() {
-		this(System.currentTimeMillis());
+	public ConnectionEvent(TcpClient client) {
+		this(client, System.currentTimeMillis());
 	}
 
 	/**
@@ -25,7 +28,8 @@ public class ConnectionEvent {
 	 * @param time
 	 *            The time in milliseconds
 	 */
-	public ConnectionEvent(long time) {
+	public ConnectionEvent(TcpClient client, long time) {
+		this.client = client;
 		this.time = time;
 	}
 
@@ -36,5 +40,9 @@ public class ConnectionEvent {
 	 */
 	public long getTime() {
 		return time;
+	}
+
+	public TcpClient getClient() {
+		return client;
 	}
 }

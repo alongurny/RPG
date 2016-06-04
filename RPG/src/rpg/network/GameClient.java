@@ -3,7 +3,6 @@ package rpg.network;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.SwingUtilities;
@@ -15,9 +14,8 @@ import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.ui.GamePanel;
 import rpg.ui.GameStation;
-import tcp.ChatClient;
+import tcp.TcpClient;
 import tcp.message.Message;
-import tcp.message.Message.Type;
 
 public class GameClient {
 
@@ -30,32 +28,20 @@ public class GameClient {
 			}
 		});
 	}
-	private ChatClient chatClient;
-	private List<NetworkCommand> commands;
+
+	private TcpClient tcpClient;
+	private List<String> commands;
 	private Protocol<Drawer, String> protocol;
-	private Optional<Integer> num;
 	private GamePanel panel;
 
 	private boolean showInventory;
 
 	public GameClient(GamePanel panel, Socket toServer) throws IOException {
 		commands = new CopyOnWriteArrayList<>();
-		chatClient = new ChatClient(toServer);
+		tcpClient = new TcpClient(toServer);
 		protocol = new DrawerProtocol();
 		this.panel = panel;
-		num = Optional.empty();
-		chatClient.addMessageListener(new MessageListener() {
-			@Override
-			public void onReceive(MessageEvent e) {
-				if (e.getMessage().getType() == Type.METADATA) {
-					String data = e.getMessage().getData();
-					if (data.startsWith("number ") && !num.isPresent()) {
-						num = Optional.of(Integer.valueOf(data.replace("number ", "")));
-					}
-				}
-			}
-		});
-		chatClient.addMessageListener(new MessageListener() {
+		tcpClient.addMessageListener(new MessageListener() {
 			@Override
 			public void onReceive(MessageEvent e) {
 				String data = e.getMessage().getData();
@@ -79,15 +65,11 @@ public class GameClient {
 				}
 			}
 		});
-		chatClient.listen();
+		tcpClient.listen();
 	}
 
-	public void addCommand(NetworkCommand command) {
+	public void addCommand(String command) {
 		commands.add(command);
-	}
-
-	public int getNumber() {
-		return num.get();
 	}
 
 	public GamePanel getPanel() {
@@ -95,8 +77,8 @@ public class GameClient {
 	}
 
 	public void sendCommands() {
-		for (NetworkCommand command : commands) {
-			chatClient.send(Message.data(command.toString()));
+		for (String command : commands) {
+			tcpClient.send(Message.data(command));
 		}
 		commands.clear();
 	}

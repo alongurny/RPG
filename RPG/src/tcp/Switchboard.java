@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import event.ConnectListener;
 import event.ConnectionEvent;
@@ -13,16 +13,16 @@ import event.DisconnectListener;
 import event.MessageListener;
 import tcp.message.Message;
 
-public class ChatServer extends TcpServer {
+public class Switchboard extends TcpServer {
 
 	public static final int APPLICATION_PORT = 1234;
 
-	private List<ChatClient> clients;
+	private List<TcpClient> clients;
 	private List<MessageListener> messageListeners;
 	private List<ConnectListener> connectListeners;
 	private List<DisconnectListener> disconnectListeners;
 
-	public ChatServer() throws IOException {
+	public Switchboard() throws IOException {
 		super(APPLICATION_PORT);
 		clients = new CopyOnWriteArrayList<>();
 		messageListeners = new ArrayList<>();
@@ -42,23 +42,17 @@ public class ChatServer extends TcpServer {
 		messageListeners.add(listener);
 	}
 
-	public void forEach(BiConsumer<Integer, ChatClient> action) {
-		for (int i = 0; i < clients.size(); i++) {
-			action.accept(i, clients.get(i));
-		}
+	public void forEach(Consumer<TcpClient> action) {
+		clients.forEach(action);
 	}
 
-	private void handleMessage(ChatClient client, Message message) {
+	private void handleMessage(TcpClient client, Message message) {
 		String data = message.getData();
 		switch (message.getType()) {
 		case DATA:
-			clients.forEach(c -> c.send(message));
 			break;
 		case METADATA:
-			if (data.startsWith("connect ")) {
-				String name = data.replace("connect ", "");
-				client.setName(name);
-			} else if (data.equals("disconnect")) {
+			if (data.equals("disconnect")) {
 				client.stop();
 				clients.remove(client);
 			}
@@ -69,9 +63,9 @@ public class ChatServer extends TcpServer {
 	@Override
 	protected void handleSocket(Socket s) throws IOException {
 		System.out.println("Handling client " + s.getInetAddress());
-		ChatClient client = new ChatClient(s);
+		TcpClient client = new TcpClient(s);
 		clients.add(client);
-		connectListeners.forEach(cl -> cl.onConnect(new ConnectionEvent()));
+		connectListeners.forEach(cl -> cl.onConnect(new ConnectionEvent(client)));
 		client.addMessageListener(e -> {
 			handleMessage(client, e.getMessage());
 			messageListeners.forEach(ml -> ml.onReceive(e));
