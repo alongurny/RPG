@@ -1,12 +1,12 @@
 package rpg;
 
 import rpg.logic.level.Game;
-import rpg.ui.ServerStation;
+import rpg.network.GameServer;
 
 /**
  * Represents something that can be updated regularly.
  * {@link #update(Game, double) update} will be called repeatedly by the
- * {@link ServerStation}.
+ * {@link GameServer}.
  * 
  * @author Alon
  *

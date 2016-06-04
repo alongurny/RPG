@@ -21,7 +21,6 @@ import rpg.graphics.Translate;
 import rpg.logic.Tuple;
 import rpg.logic.level.Game;
 import rpg.logic.level.Level1;
-import rpg.ui.ServerStation;
 import tcp.Switchboard;
 import tcp.TcpClient;
 import tcp.message.Message;
@@ -30,7 +29,8 @@ public class GameServer {
 
 	public static void main(String[] args) throws IOException {
 		Game game = new Level1();
-		new ServerStation(new GameServer(game), game).start();
+		GameServer server = new GameServer(game);
+		server.start();
 	}
 
 	private boolean firstConnection;
@@ -103,8 +103,30 @@ public class GameServer {
 		server.send(Message.data("end"));
 	}
 
-	public void startReceiving() {
+	private void run() {
 		server.start();
+		startReceiving();
+		while (!game.isReady()) {
+			try {
+				Thread.sleep(50);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		startSending();
+		long last = System.nanoTime();
+		while (true) {
+			long now = System.nanoTime();
+			game.update((now - last) * 1e-9);
+			last = now;
+		}
+	}
+
+	public void start() {
+		new Thread(this::run).start();
+	}
+
+	public void startReceiving() {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
