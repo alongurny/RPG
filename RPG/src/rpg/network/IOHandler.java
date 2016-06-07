@@ -46,20 +46,17 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 
 	@Override
 	public void keysChange(MultiKeyEvent e) {
-		Vector2D velocity = Vector2D.ZERO;
 		if (e.get(KeyEvent.VK_UP) || e.get(KeyEvent.VK_W)) {
-			velocity = velocity.add(Vector2D.NORTH);
 		}
 		if (e.get(KeyEvent.VK_DOWN) || e.get(KeyEvent.VK_S)) {
-			velocity = velocity.add(Vector2D.SOUTH);
 		}
 		if (e.get(KeyEvent.VK_LEFT) || e.get(KeyEvent.VK_A)) {
-			velocity = velocity.add(Vector2D.WEST);
+			client.addCommand("moveLeft");
+			System.out.println("left");
 		}
 		if (e.get(KeyEvent.VK_RIGHT) || e.get(KeyEvent.VK_D)) {
-			velocity = velocity.add(Vector2D.EAST);
+			client.addCommand("moveRight");
 		}
-		client.addCommand("setDirection " + velocity);
 	}
 
 	@Override

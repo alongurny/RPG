@@ -63,7 +63,7 @@ public class Portal extends Element implements Interactive {
 
 	@Override
 	public void onInteract(Game game, Entity entity) {
-		game.tryMove(entity, target.add(entity.getLocation()).subtract(getLocation()));
+		game.getObstaclesFromMove(entity, target.add(entity.getLocation()).subtract(getLocation()));
 	}
 
 	@Override

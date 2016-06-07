@@ -64,7 +64,7 @@ public class MagicMissile extends Element {
 		if (v.getMagnitude() > 0) {
 			v = v.getUnitalVector().multiply(speed * dt);
 		}
-		List<Element> obstacles = game.tryMoveBy(this, v);
+		List<Element> obstacles = game.getObstaclesFromMoveBy(this, v);
 		obstacles.forEach(obstacle -> {
 			onCollision(game, obstacle);
 			obstacle.onCollision(game, this);

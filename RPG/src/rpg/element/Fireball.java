@@ -60,7 +60,7 @@ public class Fireball extends Element {
 
 	@Override
 	public void update(Game game, double dt) {
-		List<Element> obstacles = game.tryMoveBy(this, velocity.multiply(dt));
+		List<Element> obstacles = game.getObstaclesFromMoveBy(this, velocity.multiply(dt));
 		obstacles.forEach(obstacle -> {
 			onCollision(game, obstacle);
 			obstacle.onCollision(game, this);

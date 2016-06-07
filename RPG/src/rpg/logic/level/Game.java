@@ -196,7 +196,7 @@ public class Game {
 		return false;
 	}
 
-	public List<Element> tryMove(Element element, Vector2D target) {
+	public List<Element> getObstaclesFromMove(Element element, Vector2D target) {
 		List<Element> obstacles = getObstacles(element, target);
 		if (obstacles.isEmpty()) {
 			element.setLocation(target);
@@ -204,8 +204,16 @@ public class Game {
 		return obstacles;
 	}
 
-	public List<Element> tryMoveBy(Element element, Vector2D displacement) {
-		return tryMove(element, element.getLocation().add(displacement));
+	public List<Element> getObstaclesFromMoveBy(Element element, Vector2D displacement) {
+		return getObstaclesFromMove(element, element.getLocation().add(displacement));
+	}
+	
+	public boolean tryMove(Element element, Vector2D target) {
+		return getObstaclesFromMove(element, target).isEmpty();
+	}
+
+	public boolean tryMoveBy(Element element, Vector2D target) {
+		return getObstaclesFromMoveBy(element, target).isEmpty();
 	}
 
 	public void update(double dt) {

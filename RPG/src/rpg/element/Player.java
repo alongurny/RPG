@@ -13,7 +13,6 @@ import tcp.TcpClient;
 
 public class Player extends Entity {
 
-	private Sprite northDrawer = TileDrawer.sprite(1, 3, 0, 2);
 	private Sprite southDrawer = TileDrawer.sprite(1, 0, 0, 2);
 	private Sprite westDrawer = TileDrawer.sprite(1, 1, 0, 2);
 	private Sprite eastDrawer = TileDrawer.sprite(1, 2, 0, 2);
@@ -24,12 +23,16 @@ public class Player extends Entity {
 	public Player(TcpClient client, Vector2D location, Race race, Profession profession) {
 		super(location, race, profession);
 		this.client = client;
+		setAcceleration(new Vector2D(0, 10));
 	}
 
 	@Override
 	public void act(Game game, double dt) {
 		regenerate(dt);
 		move(game, dt);
+		if (getVelocity().getY() == 0) {
+			setVelocity(new Vector2D(0,0));
+		}
 	}
 
 	@Override
@@ -39,9 +42,6 @@ public class Player extends Entity {
 		}
 		if (getOrientation().getX() < 0) {
 			return westDrawer;
-		}
-		if (getOrientation().getY() < 0) {
-			return northDrawer;
 		}
 		return southDrawer;
 	}
@@ -76,21 +76,7 @@ public class Player extends Entity {
 
 	private void move(Game game, double dt) {
 		if (isAlive() && !getEffects().stream().anyMatch(e -> e.getKey().equals("disabled"))) {
-			Vector2D d = getVelocity().multiply(dt);
-			if (!d.equals(Vector2D.ZERO)) {
-				double x = d.getX();
-				double y = d.getY();
-				if (game.tryMoveBy(this, d).isEmpty()) {
-					stepDraw();
-					setOrientation((x != 0 ? new Vector2D(x, 0) : new Vector2D(0, y)).getUnitalVector());
-				} else if (game.tryMoveBy(this, new Vector2D(x, 0)).isEmpty() && x != 0) {
-					stepDraw();
-					setOrientation(new Vector2D(x, 0).getUnitalVector());
-				} else if (game.tryMoveBy(this, new Vector2D(0, y)).isEmpty() && y != 0) {
-					stepDraw();
-					setOrientation(new Vector2D(0, y).getUnitalVector());
-				}
-			}
+			stepDraw();
 		}
 	}
 
@@ -114,8 +100,6 @@ public class Player extends Entity {
 		if (counter >= 32) {
 			eastDrawer.step();
 			westDrawer.step();
-			northDrawer.step();
-			southDrawer.step();
 			counter = 0;
 		}
 	}

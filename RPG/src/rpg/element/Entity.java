@@ -35,10 +35,10 @@ public abstract class Entity extends Element {
 	private List<Item> inventory;
 
 	private double xp;
-
+	private Vector2D velocity;
+	private Vector2D acceleration;
 	private double health, mana;
 	private Vector2D orientation;
-	private Vector2D direction;
 	private Optional<Element> target;
 	private Map<Attribute, Double> attributes;
 	private Map<Attribute, Double> temporary;
@@ -50,10 +50,11 @@ public abstract class Entity extends Element {
 		this.profession = profession;
 		this.health = getMaxHealth();
 		this.mana = getMaxMana();
-		this.direction = Vector2D.ZERO;
 		this.orientation = Vector2D.SOUTH;
 		this.target = Optional.empty();
 		this.xp = 0;
+		this.velocity = Vector2D.ZERO;
+		this.acceleration = Vector2D.ZERO;
 		inventory = new ArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
 	}
@@ -99,9 +100,13 @@ public abstract class Entity extends Element {
 	public double getAttribute(Attribute attr) {
 		return attributes.get(attr) + race.getAttribute(attr) + temporary.get(attr);
 	}
+	
+	public void setAcceleration(Vector2D acceleration) {
+		this.acceleration = acceleration;
+	}
 
 	public Vector2D getDirection() {
-		return direction;
+		return velocity.getUnitalVector();
 	}
 
 	@Override
@@ -167,7 +172,7 @@ public abstract class Entity extends Element {
 	}
 
 	public Vector2D getVelocity() {
-		return direction.multiply(getSpeed());
+		return velocity;
 	}
 
 	private void initAttributes() {
@@ -195,10 +200,6 @@ public abstract class Entity extends Element {
 
 	public void pick(Item item) {
 		inventory.add(item);
-	}
-
-	public void setDirection(Vector2D direction) {
-		this.direction = direction;
 	}
 
 	public void setOrientation(Vector2D orientation) {
@@ -243,6 +244,25 @@ public abstract class Entity extends Element {
 		return true;
 	}
 
+	public void moveLeft() {
+		velocity = new Vector2D(-getSpeed(), velocity.getY());
+	}
+
+	public void moveRight() {
+		velocity = new Vector2D(getSpeed(), velocity.getY());
+	}
+
+	private void move(Game game, double dt) {
+		boolean xMoved = game.tryMoveBy(this, new Vector2D(velocity.getX() * dt, 0));
+		boolean yMoved = game.tryMoveBy(this, new Vector2D(0, velocity.getY() * dt));
+		Vector2D possibleV = velocity.add(acceleration.multiply(dt));
+		velocity = new Vector2D(xMoved ? possibleV.getX() : 0, yMoved ? possibleV.getY() : 0);
+	}
+
+	public void setVelocity(Vector2D velocity) {
+		this.velocity = velocity;
+	}
+	
 	@Override
 	public void update(Game game, double dt) {
 		getAbilities().forEach(a -> a.update(game, dt));
@@ -254,6 +274,7 @@ public abstract class Entity extends Element {
 			}
 			return false;
 		});
+		move(game, dt);
 		act(game, dt);
 	}
 

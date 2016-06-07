@@ -13,13 +13,16 @@ public class NetworkCommand {
 		String command = arr[0];
 		switch (command) {
 		case "moveBy":
-			game.tryMoveBy(player, Vector2D.valueOf(arr[1]));
+			game.getObstaclesFromMoveBy(player, Vector2D.valueOf(arr[1]));
 			break;
 		case "setLocation":
 			player.setLocation(Vector2D.valueOf(arr[1]));
 			break;
-		case "setDirection":
-			player.setDirection(Vector2D.valueOf(arr[1]));
+		case "moveLeft":
+			player.moveLeft();
+			break;
+		case "moveRight":
+			player.moveRight();
 			break;
 		case "onClick":
 			game.onClick(player, Vector2D.valueOf(arr[1]));
