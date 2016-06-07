@@ -23,16 +23,13 @@ public class Player extends Entity {
 	public Player(TcpClient client, Vector2D location, Race race, Profession profession) {
 		super(location, race, profession);
 		this.client = client;
-		setAcceleration(new Vector2D(0, 10));
+		setAcceleration(new Vector2D(0, 100));
 	}
 
 	@Override
 	public void act(Game game, double dt) {
 		regenerate(dt);
 		move(game, dt);
-		if (getVelocity().getY() == 0) {
-			setVelocity(new Vector2D(0,0));
-		}
 	}
 
 	@Override
@@ -93,6 +90,19 @@ public class Player extends Entity {
 
 	public void step() {
 
+	}
+
+	public boolean tryJump() {
+		// FIXME should be == 0
+		if (Math.abs(getVelocity().getY()) < 1) {
+			setVelocity(new Vector2D(getVelocity().getX(), -getSpeed()));
+			return true;
+		}
+		return false;
+	}
+
+	public void moveHorizontally(double direction) {
+		setVelocity(new Vector2D(direction * getSpeed(), getVelocity().getY()));
 	}
 
 	private void stepDraw() {

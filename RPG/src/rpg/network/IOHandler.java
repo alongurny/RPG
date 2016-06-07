@@ -34,7 +34,7 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		tracker.keyReleased(e);
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+		if (e.getKeyCode() == KeyEvent.VK_Z) {
 			client.addCommand("interact");
 		} else if (e.getKeyCode() - '0' >= 1 && e.getKeyCode() - '0' <= 9) {
 			client.addCommand("cast " + (e.getKeyCode() - '1'));
@@ -46,17 +46,19 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 
 	@Override
 	public void keysChange(MultiKeyEvent e) {
-		if (e.get(KeyEvent.VK_UP) || e.get(KeyEvent.VK_W)) {
+		if (e.get(KeyEvent.VK_UP) || e.get(KeyEvent.VK_W) || e.get(KeyEvent.VK_SPACE)) {
+			client.addCommand("jump");
 		}
 		if (e.get(KeyEvent.VK_DOWN) || e.get(KeyEvent.VK_S)) {
 		}
+		double direction = 0;
 		if (e.get(KeyEvent.VK_LEFT) || e.get(KeyEvent.VK_A)) {
-			client.addCommand("moveLeft");
-			System.out.println("left");
+			direction -= 1;
 		}
 		if (e.get(KeyEvent.VK_RIGHT) || e.get(KeyEvent.VK_D)) {
-			client.addCommand("moveRight");
+			direction += 1;
 		}
+		client.addCommand("moveHorizontally " + direction);
 	}
 
 	@Override

@@ -100,7 +100,7 @@ public abstract class Entity extends Element {
 	public double getAttribute(Attribute attr) {
 		return attributes.get(attr) + race.getAttribute(attr) + temporary.get(attr);
 	}
-	
+
 	public void setAcceleration(Vector2D acceleration) {
 		this.acceleration = acceleration;
 	}
@@ -244,14 +244,6 @@ public abstract class Entity extends Element {
 		return true;
 	}
 
-	public void moveLeft() {
-		velocity = new Vector2D(-getSpeed(), velocity.getY());
-	}
-
-	public void moveRight() {
-		velocity = new Vector2D(getSpeed(), velocity.getY());
-	}
-
 	private void move(Game game, double dt) {
 		boolean xMoved = game.tryMoveBy(this, new Vector2D(velocity.getX() * dt, 0));
 		boolean yMoved = game.tryMoveBy(this, new Vector2D(0, velocity.getY() * dt));
@@ -262,7 +254,7 @@ public abstract class Entity extends Element {
 	public void setVelocity(Vector2D velocity) {
 		this.velocity = velocity;
 	}
-	
+
 	@Override
 	public void update(Game game, double dt) {
 		getAbilities().forEach(a -> a.update(game, dt));

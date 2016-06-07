@@ -18,11 +18,11 @@ public class NetworkCommand {
 		case "setLocation":
 			player.setLocation(Vector2D.valueOf(arr[1]));
 			break;
-		case "moveLeft":
-			player.moveLeft();
+		case "jump":
+			player.tryJump();
 			break;
-		case "moveRight":
-			player.moveRight();
+		case "moveHorizontally":
+			player.moveHorizontally(Double.parseDouble(arr[1]));
 			break;
 		case "onClick":
 			game.onClick(player, Vector2D.valueOf(arr[1]));

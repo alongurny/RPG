@@ -62,6 +62,8 @@ public class GameClient {
 				} else if (data.startsWith("inventory ") && showInventory) {
 					Drawer drawer = protocol.decode(data.substring("inventory ".length()));
 					panel.addAbsoluteDrawer(drawer);
+				} else if (data.startsWith("dimensions ")) {
+					panel.setDimensions(Vector2D.valueOf(data.substring("dimensions ".length())));
 				}
 			}
 		});
