@@ -207,13 +207,21 @@ public class Game {
 	public List<Element> getObstaclesFromMoveBy(Element element, Vector2D displacement) {
 		return getObstaclesFromMove(element, element.getLocation().add(displacement));
 	}
-	
+
 	public boolean tryMove(Element element, Vector2D target) {
 		return getObstaclesFromMove(element, target).isEmpty();
 	}
 
-	public boolean tryMoveBy(Element element, Vector2D target) {
-		return getObstaclesFromMoveBy(element, target).isEmpty();
+	public boolean tryMoveBy(Element element, Vector2D displacement) {
+		return getObstaclesFromMoveBy(element, displacement).isEmpty();
+	}
+
+	public void moveByAndPush(Element element, Vector2D displacement) {
+		List<Element> obstacles = getObstacles(element, element.getLocation().add(displacement));
+		for (Element e : obstacles) {
+			tryMoveBy(e, displacement);
+		}
+		element.setLocation(element.getLocation().add(displacement));
 	}
 
 	public void update(double dt) {
@@ -236,6 +244,10 @@ public class Game {
 
 	public Optional<Player> getPlayer(TcpClient client) {
 		return players.values().stream().filter(p -> p.getClient() == client).findFirst();
+	}
+
+	public int getPlayersCount() {
+		return boundIndices.size();
 	}
 
 	public boolean isReady() {

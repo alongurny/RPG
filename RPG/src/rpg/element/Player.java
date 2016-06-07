@@ -19,6 +19,7 @@ public class Player extends Entity {
 
 	private int counter = 0;
 	private TcpClient client;
+	private double orientation;
 
 	public Player(TcpClient client, Vector2D location, Race race, Profession profession) {
 		super(location, race, profession);
@@ -29,15 +30,18 @@ public class Player extends Entity {
 	@Override
 	public void act(Game game, double dt) {
 		regenerate(dt);
-		move(game, dt);
+		if (getVelocity().getX() != 0) {
+			stepDraw();
+			orientation = getVelocity().getX();
+		}
 	}
 
 	@Override
 	public Drawer getEntityDrawer() {
-		if (getOrientation().getX() > 0) {
+		if (orientation > 0) {
 			return eastDrawer;
 		}
-		if (getOrientation().getX() < 0) {
+		if (orientation < 0) {
 			return westDrawer;
 		}
 		return southDrawer;
@@ -71,12 +75,6 @@ public class Player extends Entity {
 		return !(other instanceof Entity);
 	}
 
-	private void move(Game game, double dt) {
-		if (isAlive() && !getEffects().stream().anyMatch(e -> e.getKey().equals("disabled"))) {
-			stepDraw();
-		}
-	}
-
 	@Override
 	public void onCollision(Game game, Element other) {
 	}
@@ -106,11 +104,14 @@ public class Player extends Entity {
 	}
 
 	private void stepDraw() {
-		counter++;
-		if (counter >= 32) {
-			eastDrawer.step();
-			westDrawer.step();
-			counter = 0;
+		if (Math.abs(getVelocity().getY()) < 1 && isAlive()
+				&& !getEffects().stream().anyMatch(e -> e.getKey().equals("disabled"))) {
+			counter++;
+			if (counter >= 32) {
+				eastDrawer.step();
+				westDrawer.step();
+				counter = 0;
+			}
 		}
 	}
 

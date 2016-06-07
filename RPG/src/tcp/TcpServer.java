@@ -3,6 +3,9 @@ package tcp;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+
+import rpg.exception.RPGException;
 
 public abstract class TcpServer {
 
@@ -31,17 +34,23 @@ public abstract class TcpServer {
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-					} , "Handle " + s.getInetAddress() + " Thread").start();
+					}, "Handle " + s.getInetAddress() + " Thread").start();
+				} catch (SocketException e) {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-		} , "Main TCP Server Thread").start();
+		}, "Main TCP Server Thread").start();
 	}
 
 	public void stop() {
 		System.out.println("Server stopped!");
-		running = false;
+		try {
+			socket.close();
+			running = false;
+		} catch (IOException e) {
+			throw new RPGException(e);
+		}
 	}
 
 }

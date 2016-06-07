@@ -33,12 +33,10 @@ public abstract class Entity extends Element {
 	private Profession profession;
 	private List<Effect> effects;
 	private List<Item> inventory;
-
 	private double xp;
 	private Vector2D velocity;
 	private Vector2D acceleration;
 	private double health, mana;
-	private Vector2D orientation;
 	private Optional<Element> target;
 	private Map<Attribute, Double> attributes;
 	private Map<Attribute, Double> temporary;
@@ -50,7 +48,6 @@ public abstract class Entity extends Element {
 		this.profession = profession;
 		this.health = getMaxHealth();
 		this.mana = getMaxMana();
-		this.orientation = Vector2D.SOUTH;
 		this.target = Optional.empty();
 		this.xp = 0;
 		this.velocity = Vector2D.ZERO;
@@ -151,10 +148,6 @@ public abstract class Entity extends Element {
 		return getAttribute(attr) - 10;
 	}
 
-	public Vector2D getOrientation() {
-		return orientation;
-	}
-
 	public int getRank() {
 		return (int) (Math.log(1 + xp / 1000) / Math.log(Math.sqrt(10))) + 1;
 	}
@@ -200,10 +193,6 @@ public abstract class Entity extends Element {
 
 	public void pick(Item item) {
 		inventory.add(item);
-	}
-
-	public void setOrientation(Vector2D orientation) {
-		this.orientation = orientation;
 	}
 
 	public void setTarget(Optional<Element> target) {
