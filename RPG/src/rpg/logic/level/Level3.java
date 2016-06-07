@@ -4,7 +4,7 @@ import rpg.element.Block;
 
 public class Level3 extends Game {
 
-	private static final int ROWS = 8;
+	private static final int ROWS = 12;
 	private static final int COLUMNS = 64;
 
 	public Level3() {
@@ -14,6 +14,9 @@ public class Level3 extends Game {
 		}
 		for (int r = 0; r < ROWS - 1; r++) {
 			addDynamicElement(new Block(getGrid().getLocation(r, 0)));
+		}
+		for (int r = 0; r < ROWS - 1; r++) {
+			addDynamicElement(new Block(getGrid().getLocation(r, COLUMNS - 1)));
 		}
 		addInitialLocation(getGrid().getLocation(ROWS - 2, 3));
 	}

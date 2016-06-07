@@ -19,14 +19,12 @@ public class LavaSpell extends EntitySpell {
 
 	@Override
 	protected void afterCast(Game game, Entity caster, Entity entity) {
-		for (int y = -1; y <= 1; y++) {
-			for (int x = -1; x <= 1; x++) {
-				Vector2D v = entity.getLocation().add(new Vector2D(x, y).multiply(32));
-				if (game.getElements(v).stream().allMatch(e -> e.isPassable(game, entity))) {
-					Lava lava = new Lava(v, caster);
-					game.addDynamicElement(lava);
-					game.addTimer(5.0, () -> game.removeDynamicElement(lava));
-				}
+		for (int x = -1; x <= 1; x++) {
+			Vector2D v = entity.getLocation().add(new Vector2D(x, 0).multiply(32));
+			if (game.getElements(v).stream().allMatch(e -> e.isPassable(game, entity))) {
+				Lava lava = new Lava(v, caster);
+				game.addDynamicElement(lava);
+				game.addTimer(5.0, () -> game.removeDynamicElement(lava));
 			}
 		}
 	}

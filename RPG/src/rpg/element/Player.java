@@ -67,7 +67,7 @@ public class Player extends Entity {
 
 	@Override
 	public boolean isFriendly(Entity other) {
-		return other instanceof Player;
+		return other == this;
 	}
 
 	@Override
@@ -84,10 +84,6 @@ public class Player extends Entity {
 			addHealth(getHealthRegen() * dt);
 			addMana(getManaRegen() * dt);
 		}
-	}
-
-	public void step() {
-
 	}
 
 	public boolean tryJump() {
