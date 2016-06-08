@@ -16,11 +16,11 @@ public abstract class TcpServer {
 		socket = new ServerSocket(port);
 	}
 
+	protected abstract void handleSocket(Socket s) throws IOException;
+
 	public boolean isRunning() {
 		return running;
 	}
-
-	protected abstract void handleSocket(Socket s) throws IOException;
 
 	public void start() {
 		if (running) {

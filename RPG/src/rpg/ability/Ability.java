@@ -1,9 +1,6 @@
 package rpg.ability;
 
-import java.util.Optional;
-
 import rpg.Mechanism;
-import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.Player;
 import rpg.graphics.AbilityDrawer;
@@ -23,17 +20,27 @@ import rpg.logic.level.Game;
  */
 public abstract class Ability implements Mechanism {
 
-	public static final int WIDTH = 32;
-	public static final int HEIGHT = 32;
-
 	private double cooldown;
 	private double maxCooldown;
-	private TargetType targetType;
+	private double mana;
+	private boolean wasActive;
+	private Entity caster;
 
-	public Ability(double maxCooldown, TargetType targetType) {
+	protected Ability(double maxCooldown, double mana) {
 		this.cooldown = 0;
 		this.maxCooldown = maxCooldown;
-		this.targetType = targetType;
+		this.mana = mana;
+	}
+
+	public final boolean canCast(Entity caster) {
+		return cooldown <= 0 && hasEnoughMana(caster) && isCastable(caster);
+	}
+
+	public final void cast(Game game, Entity caster) {
+		this.caster = caster;
+		caster.subtractMana(mana);
+		cooldown = maxCooldown;
+		onCast(game, caster);
 	}
 
 	public double getCooldown() {
@@ -42,7 +49,7 @@ public abstract class Ability implements Mechanism {
 
 	public Drawer getDrawer(Player player) {
 		return getSelfDrawer()
-				.andThen(new AbilityDrawer(cooldown, maxCooldown, isCastable(player, player.getTarget())));
+				.andThen(new AbilityDrawer(cooldown, maxCooldown, hasEnoughMana(player), isCastable(player)));
 	}
 
 	public double getMaxCooldown() {
@@ -51,29 +58,30 @@ public abstract class Ability implements Mechanism {
 
 	public abstract Drawer getSelfDrawer();
 
-	public TargetType getTargetType() {
-		return targetType;
+	public boolean hasEnoughMana(Entity entity) {
+		return entity.getMana() >= mana;
 	}
 
-	public boolean hasCooldown() {
-		return cooldown > 0;
-	}
+	protected abstract boolean isActive(Game game, Entity caster);
 
-	public abstract boolean isCastable(Entity caster, Optional<Element> element);
+	protected abstract boolean isCastable(Entity caster);
 
-	public abstract void onCast(Game game, Entity caster, Optional<Element> element);
+	protected abstract void onCast(Game game, Entity caster);
 
-	private void reduceCooldown(double dcooldown) {
-		cooldown -= dcooldown;
-	}
+	protected abstract void onEnd(Game game, Entity caster);
 
-	public void setCooldown(double cooldown) {
-		this.cooldown = cooldown;
-	}
+	protected abstract void onUpdate(Game game, Entity caster);
 
 	@Override
 	public void update(Game game, double dt) {
-		reduceCooldown(dt);
+		cooldown = Math.max(0, cooldown - dt);
+		boolean active = isActive(game, caster);
+		if (active) {
+			onUpdate(game, caster);
+		} else if (wasActive) {
+			onEnd(game, caster);
+		}
+		wasActive = active;
 	}
 
 }

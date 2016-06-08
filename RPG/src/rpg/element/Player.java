@@ -36,6 +36,10 @@ public class Player extends Entity {
 		}
 	}
 
+	public TcpClient getClient() {
+		return client;
+	}
+
 	@Override
 	public Drawer getEntityDrawer() {
 		if (orientation > 0) {
@@ -75,6 +79,10 @@ public class Player extends Entity {
 		return true;
 	}
 
+	public void moveHorizontally(double direction) {
+		setVelocity(new Vector2D(direction * getSpeed(), getVelocity().getY()));
+	}
+
 	@Override
 	public void onCollision(Game game, Element other) {
 	}
@@ -84,19 +92,6 @@ public class Player extends Entity {
 			addHealth(getHealthRegen() * dt);
 			addMana(getManaRegen() * dt);
 		}
-	}
-
-	public boolean tryJump() {
-		// FIXME should be == 0
-		if (Math.abs(getVelocity().getY()) < 1) {
-			setVelocity(new Vector2D(getVelocity().getX(), -getSpeed()));
-			return true;
-		}
-		return false;
-	}
-
-	public void moveHorizontally(double direction) {
-		setVelocity(new Vector2D(direction * getSpeed(), getVelocity().getY()));
 	}
 
 	private void stepDraw() {
@@ -111,8 +106,13 @@ public class Player extends Entity {
 		}
 	}
 
-	public TcpClient getClient() {
-		return client;
+	public boolean tryJump() {
+		// FIXME should be == 0
+		if (Math.abs(getVelocity().getY()) < 1) {
+			setVelocity(new Vector2D(getVelocity().getX(), -getSpeed()));
+			return true;
+		}
+		return false;
 	}
 
 }

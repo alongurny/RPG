@@ -35,6 +35,10 @@ public class MessageEvent {
 		return arrival;
 	}
 
+	public TcpClient getClient() {
+		return client;
+	}
+
 	/**
 	 * Returns the message.
 	 * 
@@ -42,10 +46,6 @@ public class MessageEvent {
 	 */
 	public Message getMessage() {
 		return message;
-	}
-
-	public TcpClient getClient() {
-		return client;
 	}
 
 }

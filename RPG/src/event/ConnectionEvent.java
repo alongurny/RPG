@@ -33,6 +33,10 @@ public class ConnectionEvent {
 		this.time = time;
 	}
 
+	public TcpClient getClient() {
+		return client;
+	}
+
 	/**
 	 * Returns the time of this event.
 	 * 
@@ -40,9 +44,5 @@ public class ConnectionEvent {
 	 */
 	public long getTime() {
 		return time;
-	}
-
-	public TcpClient getClient() {
-		return client;
 	}
 }

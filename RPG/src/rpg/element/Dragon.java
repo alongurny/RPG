@@ -1,7 +1,5 @@
 package rpg.element;
 
-import java.util.Optional;
-
 import rpg.element.entity.DragonProfession;
 import rpg.element.entity.DragonRace;
 import rpg.geometry.Rectangle;
@@ -24,7 +22,7 @@ public class Dragon extends Entity {
 	public void act(Game game, double dt) {
 		if (isAlive()) {
 			game.getDynamicElements().stream().filter(p -> p instanceof Player).findFirst()
-					.ifPresent(p -> tryCast(game, 0, Optional.of(p)));
+					.ifPresent(p -> tryCast(game, 0));
 		} else {
 			game.addDynamicElement(new HealthPotion(getLocation()));
 			game.removeDynamicElement(this);

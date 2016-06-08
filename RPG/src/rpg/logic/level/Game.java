@@ -54,14 +54,6 @@ public class Game {
 		initialLocations.add(location);
 	}
 
-	private int getFreeIndex() {
-		int i = 0;
-		while (boundIndices.contains(i)) {
-			i++;
-		}
-		return i;
-	}
-
 	public void addPlayer(TcpClient client, Race race, Profession profession) {
 		if (players.size() < initialLocations.size()) {
 			int index = getFreeIndex();
@@ -100,6 +92,14 @@ public class Game {
 		return elements;
 	}
 
+	private int getFreeIndex() {
+		int i = 0;
+		while (boundIndices.contains(i)) {
+			i++;
+		}
+		return i;
+	}
+
 	public Grid getGrid() {
 		return grid;
 	}
@@ -129,6 +129,26 @@ public class Game {
 			}
 		}
 		return obstacles;
+	}
+
+	public List<Element> getObstaclesFromMove(Element element, Vector2D target) {
+		List<Element> obstacles = getObstacles(element, target);
+		if (obstacles.isEmpty()) {
+			element.setLocation(target);
+		}
+		return obstacles;
+	}
+
+	public List<Element> getObstaclesFromMoveBy(Element element, Vector2D displacement) {
+		return getObstaclesFromMove(element, element.getLocation().add(displacement));
+	}
+
+	public Optional<Player> getPlayer(TcpClient client) {
+		return players.values().stream().filter(p -> p.getClient() == client).findFirst();
+	}
+
+	public int getPlayersCount() {
+		return boundIndices.size();
 	}
 
 	public List<Element> getStaticElements() {
@@ -162,12 +182,32 @@ public class Game {
 		return finished;
 	}
 
+	public boolean isReady() {
+		return boundIndices.size() >= 1;
+	}
+
+	public void moveByAndPush(Element element, Vector2D displacement) {
+		List<Element> obstacles = getObstacles(element, element.getLocation().add(displacement));
+		for (Element e : obstacles) {
+			tryMoveBy(e, displacement);
+		}
+		element.setLocation(element.getLocation().add(displacement));
+	}
+
 	public void onClick(Player player, Vector2D target) {
 		player.setTarget(getElements(target).stream().findFirst());
 	}
 
 	public void removeDynamicElement(Element element) {
 		toRemove.add(element);
+	}
+
+	public void removePlayer(TcpClient c) {
+		Entry<Integer, Player> entry = players.entrySet().stream().filter(e -> e.getValue().getClient() == c)
+				.findFirst().get();
+		removeDynamicElement(entry.getValue());
+		players.remove(entry.getKey());
+		boundIndices.remove(entry.getKey());
 	}
 
 	public void setNextLevel(Game nextLevel) {
@@ -196,32 +236,12 @@ public class Game {
 		return false;
 	}
 
-	public List<Element> getObstaclesFromMove(Element element, Vector2D target) {
-		List<Element> obstacles = getObstacles(element, target);
-		if (obstacles.isEmpty()) {
-			element.setLocation(target);
-		}
-		return obstacles;
-	}
-
-	public List<Element> getObstaclesFromMoveBy(Element element, Vector2D displacement) {
-		return getObstaclesFromMove(element, element.getLocation().add(displacement));
-	}
-
 	public boolean tryMove(Element element, Vector2D target) {
 		return getObstaclesFromMove(element, target).isEmpty();
 	}
 
 	public boolean tryMoveBy(Element element, Vector2D displacement) {
 		return getObstaclesFromMoveBy(element, displacement).isEmpty();
-	}
-
-	public void moveByAndPush(Element element, Vector2D displacement) {
-		List<Element> obstacles = getObstacles(element, element.getLocation().add(displacement));
-		for (Element e : obstacles) {
-			tryMoveBy(e, displacement);
-		}
-		element.setLocation(element.getLocation().add(displacement));
 	}
 
 	public void update(double dt) {
@@ -240,25 +260,5 @@ public class Game {
 		}
 		toAdd.clear();
 		toRemove.clear();
-	}
-
-	public Optional<Player> getPlayer(TcpClient client) {
-		return players.values().stream().filter(p -> p.getClient() == client).findFirst();
-	}
-
-	public int getPlayersCount() {
-		return boundIndices.size();
-	}
-
-	public boolean isReady() {
-		return boundIndices.size() >= 1;
-	}
-
-	public void removePlayer(TcpClient c) {
-		Entry<Integer, Player> entry = players.entrySet().stream().filter(e -> e.getValue().getClient() == c)
-				.findFirst().get();
-		removeDynamicElement(entry.getValue());
-		players.remove(entry.getKey());
-		boundIndices.remove(entry.getKey());
 	}
 }

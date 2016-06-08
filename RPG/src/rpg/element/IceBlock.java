@@ -24,7 +24,7 @@ public class IceBlock extends Element {
 
 	@Override
 	public int getIndex() {
-		return 100;
+		return 10000;
 	}
 
 	@Override

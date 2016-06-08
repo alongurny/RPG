@@ -1,6 +1,6 @@
 package rpg.ability.fire;
 
-import rpg.ability.EntitySpell;
+import rpg.ability.EntityTargetAbility;
 import rpg.element.Entity;
 import rpg.element.Lava;
 import rpg.geometry.Vector2D;
@@ -9,7 +9,7 @@ import rpg.graphics.Sprite;
 import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
-public class LavaSpell extends EntitySpell {
+public class LavaSpell extends EntityTargetAbility {
 
 	private Sprite sprite = TileDrawer.sprite(0, 13, 49, 52);
 
@@ -18,7 +18,12 @@ public class LavaSpell extends EntitySpell {
 	}
 
 	@Override
-	protected void afterCast(Game game, Entity caster, Entity entity) {
+	protected boolean isCastable(Entity caster, Entity target) {
+		return true;
+	}
+
+	@Override
+	protected void onCast(Game game, Entity caster, Entity entity) {
 		for (int x = -1; x <= 1; x++) {
 			Vector2D v = entity.getLocation().add(new Vector2D(x, 0).multiply(32));
 			if (game.getElements(v).stream().allMatch(e -> e.isPassable(game, entity))) {

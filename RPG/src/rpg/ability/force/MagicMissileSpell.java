@@ -1,6 +1,6 @@
 package rpg.ability.force;
 
-import rpg.ability.EnemySpell;
+import rpg.ability.EntityTargetAbility;
 import rpg.element.Dice;
 import rpg.element.DiceSet;
 import rpg.element.Entity;
@@ -10,7 +10,7 @@ import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
-public class MagicMissileSpell extends EnemySpell {
+public class MagicMissileSpell extends EntityTargetAbility {
 
 	private Drawer drawer;
 	private double speed;
@@ -24,7 +24,12 @@ public class MagicMissileSpell extends EnemySpell {
 	}
 
 	@Override
-	public void afterCast(Game game, Entity caster, Entity entity) {
+	protected boolean isCastable(Entity caster, Entity target) {
+		return !caster.isFriendly(target);
+	}
+
+	@Override
+	public void onCast(Game game, Entity caster, Entity entity) {
 		Vector2D location = caster.getLocation();
 		game.addDynamicElement(new MagicMissile(caster, location, speed, entity, () -> (double) dice.roll()));
 	}

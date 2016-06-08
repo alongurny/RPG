@@ -12,7 +12,7 @@ import event.DisconnectListener;
 import protocol.Protocol;
 import rpg.element.Element;
 import rpg.element.Player;
-import rpg.element.entity.FireMage;
+import rpg.element.entity.Avatar;
 import rpg.element.entity.Human;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
@@ -52,7 +52,7 @@ public class GameServer {
 			@Override
 			public void onConnect(ConnectionEvent e) {
 				TcpClient c = e.getClient();
-				game.addPlayer(c, new Human(), new FireMage());
+				game.addPlayer(c, new Human(), new Avatar());
 				if (game.isReady()) {
 					firstConnection = true;
 				}
@@ -73,6 +73,25 @@ public class GameServer {
 			return true;
 		}
 		return true;
+	}
+
+	private void run() {
+		server.start();
+		startReceiving();
+		while (!game.isReady()) {
+			try {
+				Thread.sleep(50);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		startSending();
+		long last = System.nanoTime();
+		while (server.isRunning()) {
+			long now = System.nanoTime();
+			game.update((now - last) * 1e-9);
+			last = now;
+		}
 	}
 
 	private void send() {
@@ -103,25 +122,6 @@ public class GameServer {
 			c.send(Message.data("dimensions " + new Vector2D(game.getGrid().getWidth(), game.getGrid().getHeight())));
 		});
 		server.send(Message.data("end"));
-	}
-
-	private void run() {
-		server.start();
-		startReceiving();
-		while (!game.isReady()) {
-			try {
-				Thread.sleep(50);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		startSending();
-		long last = System.nanoTime();
-		while (server.isRunning()) {
-			long now = System.nanoTime();
-			game.update((now - last) * 1e-9);
-			last = now;
-		}
 	}
 
 	public void start() {

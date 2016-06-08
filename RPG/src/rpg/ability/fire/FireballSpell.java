@@ -1,6 +1,6 @@
 package rpg.ability.fire;
 
-import rpg.ability.EnemySpell;
+import rpg.ability.EntityTargetAbility;
 import rpg.element.Dice;
 import rpg.element.DiceSet;
 import rpg.element.Entity;
@@ -10,7 +10,7 @@ import rpg.graphics.DrawIcon;
 import rpg.graphics.Drawer;
 import rpg.logic.level.Game;
 
-public class FireballSpell extends EnemySpell {
+public class FireballSpell extends EntityTargetAbility {
 
 	private Drawer drawer;
 	private double speed;
@@ -24,14 +24,34 @@ public class FireballSpell extends EnemySpell {
 	}
 
 	@Override
-	public void afterCast(Game game, Entity caster, Entity entity) {
+	public Drawer getSelfDrawer() {
+		return drawer;
+	}
+
+	@Override
+	public void onCast(Game game, Entity caster, Entity target) {
 		Vector2D location = caster.getLocation().add(new Vector2D(0, -caster.getRelativeRect().getHeight() / 2));
-		Vector2D direction = entity.getLocation().subtract(location).getUnitalVector();
+		Vector2D direction = target.getLocation().subtract(location).getUnitalVector();
 		game.addDynamicElement(new Fireball(caster, location, direction.multiply(speed), () -> (double) dice.roll()));
 	}
 
 	@Override
-	public Drawer getSelfDrawer() {
-		return drawer;
+	protected void onUpdate(Game game, Entity caster, Entity target) {
+
+	}
+
+	@Override
+	protected void onEnd(Game game, Entity caster, Entity target) {
+
+	}
+
+	@Override
+	protected boolean isActive(Game game, Entity caster, Entity target) {
+		return false;
+	}
+
+	@Override
+	protected boolean isCastable(Entity caster, Entity target) {
+		return !caster.isFriendly(target);
 	}
 }

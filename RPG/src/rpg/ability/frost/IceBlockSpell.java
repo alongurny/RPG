@@ -1,10 +1,6 @@
 package rpg.ability.frost;
 
-import java.util.Optional;
-
-import rpg.ability.DurationAbility;
-import rpg.ability.TargetType;
-import rpg.element.Element;
+import rpg.ability.EntityTargetAbility;
 import rpg.element.Entity;
 import rpg.element.IceBlock;
 import rpg.geometry.Rectangle;
@@ -12,14 +8,17 @@ import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
-public class IceBlockSpell extends DurationAbility {
+public class IceBlockSpell extends EntityTargetAbility {
 
 	private IceBlock block;
 	private Drawer drawer;
+	private double duration;
+	private boolean active;
 
 	public IceBlockSpell() {
-		super(10, 2, TargetType.ANY_ENTITY);
+		super(10, 10);
 		drawer = new TileDrawer(0, 16, 27);
+		this.duration = 5;
 	}
 
 	@Override
@@ -28,22 +27,27 @@ public class IceBlockSpell extends DurationAbility {
 	}
 
 	@Override
-	public boolean isCastable(Entity caster, Optional<Element> element) {
-		return caster.isAlive() && element.isPresent() && caster.getMana() >= 1 && element.get() instanceof Entity;
+	public boolean isCastable(Entity caster, Entity target) {
+		return caster.isAlive();
 	}
 
 	@Override
-	public void onEnd(Game game, Entity caster, Optional<Element> element) {
-		game.removeDynamicElement(block);
-	}
-
-	@Override
-	public void onStart(Game game, Entity caster, Optional<Element> element) {
-		caster.subtractMana(1);
-		Entity target = (Entity) element.get();
+	public void onCast(Game game, Entity caster, Entity target) {
+		active = true;
 		Rectangle rect = target.getAbsoluteRect();
 		block = new IceBlock(target.getLocation(), Math.max(rect.getWidth(), rect.getHeight()) * 1.5);
 		game.addDynamicElement(block);
+		game.addTimer(duration, () -> active = false);
+	}
+
+	@Override
+	protected boolean isActive(Game game, Entity caster, Entity target) {
+		return active;
+	}
+
+	@Override
+	public void onEnd(Game game, Entity caster, Entity target) {
+		game.removeDynamicElement(block);
 	}
 
 }

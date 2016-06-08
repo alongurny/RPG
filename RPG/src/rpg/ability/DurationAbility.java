@@ -1,31 +1,29 @@
 package rpg.ability;
 
-import java.util.Optional;
-
-import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.logic.level.Game;
 
 public abstract class DurationAbility extends Ability {
 
 	private double duration;
+	private boolean expired;
 
-	public DurationAbility(double maxCooldown, double duration, TargetType targetType) {
-		super(maxCooldown, targetType);
+	public DurationAbility(double maxCooldown, double mana, double duration) {
+		super(maxCooldown, mana);
 		this.duration = duration;
 	}
 
-	public DurationAbility(double maxCooldown, TargetType targetType) {
-		this(maxCooldown, 0, targetType);
+	@Override
+	public void onCast(Game game, Entity caster) {
+		expired = false;
+		game.addTimer(duration, () -> expired = true);
+		onStart(game, caster);
 	}
 
 	@Override
-	public void onCast(Game game, Entity caster, Optional<Element> element) {
-		onStart(game, caster, element);
-		game.addTimer(duration, () -> onEnd(game, caster, element));
+	protected boolean isActive(Game game, Entity caster) {
+		return !expired;
 	}
 
-	public abstract void onEnd(Game game, Entity caster, Optional<Element> element);
-
-	public abstract void onStart(Game game, Entity caster, Optional<Element> element);
+	protected abstract void onStart(Game game, Entity caster);
 }

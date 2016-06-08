@@ -98,10 +98,6 @@ public abstract class Entity extends Element {
 		return attributes.get(attr) + race.getAttribute(attr) + temporary.get(attr);
 	}
 
-	public void setAcceleration(Vector2D acceleration) {
-		this.acceleration = acceleration;
-	}
-
 	public Vector2D getDirection() {
 		return velocity.getUnitalVector();
 	}
@@ -191,12 +187,27 @@ public abstract class Entity extends Element {
 		return mana >= value;
 	}
 
+	private void move(Game game, double dt) {
+		boolean xMoved = game.tryMoveBy(this, new Vector2D(velocity.getX() * dt, 0));
+		boolean yMoved = game.tryMoveBy(this, new Vector2D(0, velocity.getY() * dt));
+		Vector2D possibleV = velocity.add(acceleration.multiply(dt));
+		velocity = new Vector2D(xMoved ? possibleV.getX() : 0, yMoved ? possibleV.getY() : 0);
+	}
+
 	public void pick(Item item) {
 		inventory.add(item);
 	}
 
+	public void setAcceleration(Vector2D acceleration) {
+		this.acceleration = acceleration;
+	}
+
 	public void setTarget(Optional<Element> target) {
 		this.target = target;
+	}
+
+	public void setVelocity(Vector2D velocity) {
+		this.velocity = velocity;
 	}
 
 	public void subtractAttribute(Attribute attr, double value) {
@@ -211,18 +222,17 @@ public abstract class Entity extends Element {
 		addMana(-value);
 	}
 
-	public boolean tryCast(Game game, Ability ability, Optional<Element> element) {
-		if (!ability.hasCooldown() && ability.isCastable(this, element)) {
-			ability.onCast(game, this, element);
-			ability.setCooldown(ability.getMaxCooldown());
+	public boolean tryCast(Game game, Ability ability) {
+		if (ability.canCast(this)) {
+			ability.cast(game, this);
 			return true;
 		}
 		return false;
 	}
 
-	public boolean tryCast(Game game, int index, Optional<Element> element) {
+	public boolean tryCast(Game game, int index) {
 		List<Ability> abilities = getAbilities();
-		return 0 <= index && index < abilities.size() && tryCast(game, abilities.get(index), element);
+		return 0 <= index && index < abilities.size() && tryCast(game, abilities.get(index));
 	}
 
 	public boolean tryRequireMana(double value) {
@@ -231,17 +241,6 @@ public abstract class Entity extends Element {
 		}
 		subtractMana(value);
 		return true;
-	}
-
-	private void move(Game game, double dt) {
-		boolean xMoved = game.tryMoveBy(this, new Vector2D(velocity.getX() * dt, 0));
-		boolean yMoved = game.tryMoveBy(this, new Vector2D(0, velocity.getY() * dt));
-		Vector2D possibleV = velocity.add(acceleration.multiply(dt));
-		velocity = new Vector2D(xMoved ? possibleV.getX() : 0, yMoved ? possibleV.getY() : 0);
-	}
-
-	public void setVelocity(Vector2D velocity) {
-		this.velocity = velocity;
 	}
 
 	@Override

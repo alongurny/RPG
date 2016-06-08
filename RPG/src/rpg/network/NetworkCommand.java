@@ -28,7 +28,7 @@ public class NetworkCommand {
 			game.onClick(player, Vector2D.valueOf(arr[1]));
 			break;
 		case "cast":
-			player.tryCast(game, Integer.parseInt(arr[1]), player.getTarget());
+			player.tryCast(game, Integer.parseInt(arr[1]));
 			break;
 		case "interact":
 			game.tryInteract(player);

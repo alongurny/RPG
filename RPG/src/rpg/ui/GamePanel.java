@@ -94,12 +94,12 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	public void setOffset(Vector2D offset) {
-		this.offset = offset;
-	}
-
 	public void setDimensions(Vector2D dimensions) {
 		this.dimensions = dimensions;
+	}
+
+	public void setOffset(Vector2D offset) {
+		this.offset = offset;
 	}
 
 	public void setOffsetByPlayerLocation(Vector2D location) {

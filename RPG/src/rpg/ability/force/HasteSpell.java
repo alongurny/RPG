@@ -1,10 +1,6 @@
 package rpg.ability.force;
 
-import java.util.Optional;
-
 import rpg.ability.DurationAbility;
-import rpg.ability.TargetType;
-import rpg.element.Element;
 import rpg.element.Entity;
 import rpg.element.entity.Attribute;
 import rpg.graphics.DrawIcon;
@@ -16,7 +12,7 @@ public class HasteSpell extends DurationAbility {
 	private Drawer drawer;
 
 	public HasteSpell() {
-		super(8, 2, TargetType.SELF);
+		super(8, 5, 5);
 		drawer = new DrawIcon("img/haste.png", 32, 32);
 	}
 
@@ -26,19 +22,23 @@ public class HasteSpell extends DurationAbility {
 	}
 
 	@Override
-	public boolean isCastable(Entity caster, Optional<Element> element) {
-		return caster.isAlive() && caster.getMana() >= 5;
+	public boolean isCastable(Entity caster) {
+		return caster.isAlive();
 	}
 
 	@Override
-	public void onEnd(Game game, Entity caster, Optional<Element> element) {
+	public void onEnd(Game game, Entity caster) {
 		caster.subtractAttribute(Attribute.DEX, 2);
 	}
 
 	@Override
-	public void onStart(Game game, Entity caster, Optional<Element> element) {
-		caster.subtractMana(5);
+	public void onStart(Game game, Entity caster) {
 		caster.addAttribute(Attribute.DEX, 2);
+	}
+
+	@Override
+	protected void onUpdate(Game game, Entity caster) {
+
 	}
 
 }
