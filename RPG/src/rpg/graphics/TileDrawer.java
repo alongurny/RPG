@@ -20,21 +20,41 @@ public class TileDrawer extends Drawer {
 	private int row;
 
 	private int col;
+	private int width;
+	private int height;
+	private int x;
+	private int y;
 
 	public TileDrawer(int tileset, int row, int col) {
 		image = Tileset.get(tileset).subimage(row, col);
 		this.tileset = tileset;
 		this.row = row;
 		this.col = col;
+		this.width = image.getWidth();
+		this.height = image.getHeight();
+		this.x = -width / 2;
+		this.y = -height / 2;
+	}
+
+	public TileDrawer(int tileset, int row, int col, int x, int y, int width, int height) {
+		this.tileset = tileset;
+		this.row = row;
+		this.col = col;
+		this.width = width;
+		this.height = height;
+		this.x = x;
+		this.y = y;
+		image = Tileset.get(tileset).subimage(row, col).getSubimage(0, 0, width, height);
 	}
 
 	public void draw(Graphics2D g) {
-		g.drawImage(image, -image.getWidth() / 2, -image.getHeight() / 2, image.getWidth(), image.getHeight(), null);
+		g.drawImage(image, x, y, width, height, null);
 	}
 
 	@Override
 	public String represent() {
-		return String.format("%s %d:int %d:int %d:int", getClass().getName(), tileset, row, col);
+		return String.format("%s %d:int %d:int %d:int %d:int %d:int %d:int %d:int", getClass().getName(), tileset, row,
+				col, x, y, width, height);
 	}
 
 }

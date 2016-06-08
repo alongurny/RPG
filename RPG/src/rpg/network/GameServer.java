@@ -63,10 +63,6 @@ public class GameServer {
 			@Override
 			public void onDisconnect(ConnectionEvent e) {
 				game.removePlayer(e.getClient());
-				if (game.getPlayersCount() == 0) {
-					System.out.println("All clients have disconnected");
-					server.stop();
-				}
 			}
 		});
 		server.addMessageListener(e -> receivedCommands.add(Tuple.of(e.getMessage().getData(), e.getClient())));
@@ -121,7 +117,7 @@ public class GameServer {
 		}
 		startSending();
 		long last = System.nanoTime();
-		while (game.getPlayersCount() > 0) {
+		while (server.isRunning()) {
 			long now = System.nanoTime();
 			game.update((now - last) * 1e-9);
 			last = now;

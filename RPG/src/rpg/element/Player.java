@@ -53,7 +53,7 @@ public class Player extends Entity {
 
 	@Override
 	public int getIndex() {
-		return 10;
+		return 1000;
 	}
 
 	public double getManaRegen() {
@@ -62,7 +62,7 @@ public class Player extends Entity {
 
 	@Override
 	public Rectangle getRelativeRect() {
-		return new Rectangle(-14, -14, 28, 28);
+		return new Rectangle(-9, -15, 18, 30);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class Player extends Entity {
 
 	@Override
 	public boolean isPassable(Game game, Element other) {
-		return !(other instanceof Entity);
+		return true;
 	}
 
 	@Override

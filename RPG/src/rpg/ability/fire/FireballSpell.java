@@ -25,7 +25,7 @@ public class FireballSpell extends EnemySpell {
 
 	@Override
 	public void afterCast(Game game, Entity caster, Entity entity) {
-		Vector2D location = caster.getLocation();
+		Vector2D location = caster.getLocation().add(new Vector2D(0, -caster.getRelativeRect().getHeight() / 2));
 		Vector2D direction = entity.getLocation().subtract(location).getUnitalVector();
 		game.addDynamicElement(new Fireball(caster, location, direction.multiply(speed), () -> (double) dice.roll()));
 	}
