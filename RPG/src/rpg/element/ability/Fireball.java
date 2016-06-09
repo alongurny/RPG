@@ -3,7 +3,7 @@ package rpg.element.ability;
 import java.util.List;
 import java.util.function.Supplier;
 
-import rpg.Messages;
+import external.Messages;
 import rpg.ability.damage.DamageType;
 import rpg.element.Depth;
 import rpg.element.Element;

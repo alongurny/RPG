@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 
-import rpg.ImageResource;
+import external.ImageResource;
 
 public class DrawPaint extends Drawer {
 

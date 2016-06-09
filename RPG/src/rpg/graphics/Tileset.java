@@ -4,8 +4,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import rpg.BufferedImageResource;
-import rpg.Messages;
+import external.BufferedImageResource;
+import external.Messages;
 
 public class Tileset {
 

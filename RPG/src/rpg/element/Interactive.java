@@ -1,4 +1,4 @@
-package rpg;
+package rpg.element;
 
 import rpg.element.entity.Entity;
 import rpg.logic.level.Game;

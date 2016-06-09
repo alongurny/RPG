@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import network.TcpClient;
-import rpg.Interactive;
 import rpg.element.Element;
+import rpg.element.Interactive;
 import rpg.element.entity.Entity;
 import rpg.element.entity.Player;
 import rpg.element.entity.profession.Profession;

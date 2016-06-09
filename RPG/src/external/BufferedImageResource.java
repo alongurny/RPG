@@ -1,4 +1,4 @@
-package rpg;
+package external;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

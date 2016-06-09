@@ -1,6 +1,6 @@
 package rpg.element.bonus;
 
-import rpg.Messages;
+import external.Messages;
 import rpg.element.Depth;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;

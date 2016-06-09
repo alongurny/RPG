@@ -1,6 +1,6 @@
 package rpg.ability.fire;
 
-import rpg.Messages;
+import external.Messages;
 import rpg.ability.EntityTargetAbility;
 import rpg.ability.damage.Dice;
 import rpg.ability.damage.DiceSet;

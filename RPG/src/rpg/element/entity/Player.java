@@ -88,21 +88,24 @@ public class Player extends Entity {
 	public void onCollision(Game game, Element other) {
 	}
 
-	public boolean tryFall() {
-		if (hasEffect("flying")) {
+	public boolean tryFall(Game game) {
+		if (hasEffect("flying") && !isRestingAboveSometing(game)) {
 			setVelocity(new Vector2D(getVelocity().getX(), getSpeed()));
 			return true;
 		}
 		return false;
 	}
 
-	public boolean tryJump() {
-		// FIXME should be == 0
-		if (hasEffect("flying") || Math.abs(getVelocity().getY()) < 1) {
+	public boolean tryJump(Game game) {
+		if (hasEffect("flying") || isRestingAboveSometing(game)) {
 			setVelocity(new Vector2D(getVelocity().getX(), -getSpeed()));
 			return true;
 		}
 		return false;
+	}
+
+	public boolean isRestingAboveSometing(Game game) {
+		return !game.getObstacles(this, getLocation().add(new Vector2D(0, 1))).isEmpty();
 	}
 
 	private void regenerate(double dt) {

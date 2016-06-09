@@ -17,8 +17,14 @@ import network.event.MessageEvent;
 import network.event.MessageListener;
 import network.message.Message;
 import network.message.MessageDeliveryProtocol;
-import network.protocol.Protocol;
+import network.protocol.TwoWayProtocol;
 
+/**
+ * A TCP client.
+ * 
+ * @author Alon
+ *
+ */
 public class TcpClient implements Closeable {
 
 	public enum State {
@@ -28,11 +34,18 @@ public class TcpClient implements Closeable {
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
-	private Protocol<Message, String> protocol = new MessageDeliveryProtocol();
+	private TwoWayProtocol<Message, String> twoWayProtocol = new MessageDeliveryProtocol();
 	private List<MessageListener> messageListeners;
 	private List<DisconnectListener> disconnectListeners;
 	private State state;
 
+	/**
+	 * Constructs a new client wrapping the given socket.
+	 * 
+	 * @param socket
+	 *            a socket
+	 * @throws IOException
+	 */
 	public TcpClient(Socket socket) throws IOException {
 		this.socket = socket;
 		this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -42,36 +55,80 @@ public class TcpClient implements Closeable {
 		this.state = State.NOT_LISTENING;
 	}
 
+	/**
+	 * Constructs a new {@link Socket} with <code>host</code> and
+	 * <code>port</code> and then calls {@link #TcpClient(Socket)}.
+	 * 
+	 * @param host
+	 *            the server's host
+	 * @param port
+	 *            the server's port
+	 * @throws IOException
+	 */
 	public TcpClient(InetAddress host, int port) throws IOException {
 		this(new Socket(host, port));
 	}
 
+	/**
+	 * Constructs a new {@link Socket} with <code>host</code> and
+	 * <code>port</code> and then calls {@link #TcpClient(Socket)}.
+	 * 
+	 * @param host
+	 *            the server's host
+	 * @param port
+	 *            the server's port
+	 * @throws IOException
+	 */
 	public TcpClient(String host, int port) throws IOException {
 		this(new Socket(host, port));
 	}
 
-	public void addConnectionListener(DisconnectListener listener) {
+	/**
+	 * Add a new disconnect listener, which is fired when a client disconnects.
+	 * 
+	 * @param listener
+	 *            a disconnect listener
+	 */
+	public void addDisconnectListener(DisconnectListener listener) {
 		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("Client is already listening");
+			throw new IllegalStateException("client is listening");
 		}
 		disconnectListeners.add(listener);
 	}
 
+	/**
+	 * Add a new message listener, which is fired when a message is received.
+	 * 
+	 * @param listener
+	 *            a message listener
+	 */
 	public void addMessageListener(MessageListener listener) {
 		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("Client is already listening");
+			throw new IllegalStateException("client is listening");
 		}
 		messageListeners.add(listener);
 	}
 
+	/**
+	 * Closes the wrapped socket.
+	 */
 	public void close() throws IOException {
 		socket.close();
 	}
 
+	/**
+	 * Returns the IP address of the wrapped socket.
+	 * 
+	 * @return the IP address of the wrapped socket
+	 */
 	public InetAddress getInetAddress() {
 		return socket.getInetAddress();
 	}
 
+	/**
+	 * Invocation of this method will cause this client to start receiving
+	 * messages from the server.
+	 */
 	public void listen() {
 		if (state != State.NOT_LISTENING) {
 			throw new IllegalStateException("Already started");
@@ -90,24 +147,19 @@ public class TcpClient implements Closeable {
 		}, Thread.currentThread().getName() + "/Client Listen Thread").start();
 	}
 
-	public void removeConnectionListener(DisconnectListener listener) {
-		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("Client is already listening");
-		}
-		disconnectListeners.remove(listener);
-	}
-
-	public void removeMessageListener(MessageListener listener) {
-		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("Client is already listening");
-		}
-		messageListeners.remove(listener);
-	}
-
+	/**
+	 * Send a message to the server.
+	 * 
+	 * @param message
+	 *            the message to send
+	 */
 	public void send(Message message) {
-		out.println(protocol.encode(message));
+		out.println(twoWayProtocol.encode(message));
 	}
 
+	/**
+	 * Stops this client. It will no longer receive messages from the server.
+	 */
 	public void stop() {
 		if (state != State.LISTENING) {
 			throw new IllegalStateException("Not started");
@@ -119,7 +171,7 @@ public class TcpClient implements Closeable {
 		Message res = null;
 		try {
 			String line = in.readLine();
-			res = line != null ? protocol.decode(line) : null;
+			res = line != null ? twoWayProtocol.decode(line) : null;
 		} catch (IOException e) {
 		}
 		return Optional.ofNullable(res);

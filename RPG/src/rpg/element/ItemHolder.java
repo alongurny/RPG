@@ -1,6 +1,5 @@
 package rpg.element;
 
-import rpg.Interactive;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;

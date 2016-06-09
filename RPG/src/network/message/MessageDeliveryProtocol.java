@@ -1,8 +1,8 @@
 package network.message;
 
-import network.protocol.Protocol;
+import network.protocol.TwoWayProtocol;
 
-public class MessageDeliveryProtocol implements Protocol<Message, String> {
+public class MessageDeliveryProtocol implements TwoWayProtocol<Message, String> {
 
 	@Override
 	public Message decode(String data) {

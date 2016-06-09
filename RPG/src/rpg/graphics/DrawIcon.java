@@ -3,7 +3,7 @@ package rpg.graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
-import rpg.ImageResource;
+import external.ImageResource;
 
 public class DrawIcon extends Drawer {
 

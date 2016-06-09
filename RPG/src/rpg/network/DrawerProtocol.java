@@ -2,11 +2,11 @@ package rpg.network;
 
 import java.util.Arrays;
 
-import network.protocol.Protocol;
+import network.protocol.TwoWayProtocol;
 import rpg.exception.RPGException;
 import rpg.graphics.Drawer;
 
-public class DrawerProtocol implements Protocol<Drawer, String> {
+public class DrawerProtocol implements TwoWayProtocol<Drawer, String> {
 
 	@Override
 	public Drawer decode(String str) {

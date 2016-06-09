@@ -12,7 +12,7 @@ import network.event.ConnectListener;
 import network.event.ConnectionEvent;
 import network.event.DisconnectListener;
 import network.message.Message;
-import network.protocol.Protocol;
+import network.protocol.TwoWayProtocol;
 import rpg.element.Element;
 import rpg.element.entity.Avatar;
 import rpg.element.entity.Player;
@@ -48,10 +48,10 @@ public class GameServer {
 			player.setLocation(Vector2D.valueOf(arr[1]));
 			break;
 		case "jump":
-			player.tryJump();
+			player.tryJump(game);
 			break;
 		case "fall":
-			player.tryFall();
+			player.tryFall(game);
 			break;
 		case "moveHorizontally":
 			player.moveHorizontally(Double.parseDouble(arr[1]));
@@ -73,13 +73,13 @@ public class GameServer {
 	private Switchboard server;
 	private Timer timer;
 	private Game game;
-	private Protocol<Drawer, String> protocol;
+	private TwoWayProtocol<Drawer, String> twoWayProtocol;
 
 	public GameServer(Game game) throws IOException {
 		this.game = game;
 		receivedCommands = new CopyOnWriteArrayList<>();
 		timer = new Timer();
-		protocol = new DrawerProtocol();
+		twoWayProtocol = new DrawerProtocol();
 		server = new Switchboard(PORT);
 		server.addConnectListener(new ConnectListener() {
 
@@ -160,9 +160,9 @@ public class GameServer {
 		server.send(Message.data("start"));
 		for (Element e : game.getDynamicElements()) {
 			Translate t = new Translate((int) e.getLocation().getX(), (int) e.getLocation().getY());
-			server.send(Message.data("dynamic " + protocol.encode(t)));
+			server.send(Message.data("dynamic " + twoWayProtocol.encode(t)));
 			server.send(Message.data("dynamic " + e.getDrawer()));
-			server.send(Message.data("dynamic " + protocol.encode(t.negate())));
+			server.send(Message.data("dynamic " + twoWayProtocol.encode(t.negate())));
 		}
 		if (firstConnection) {
 			for (Element e : game.getStaticElements()) {

@@ -1,6 +1,6 @@
 package rpg.ability.force;
 
-import rpg.Messages;
+import external.Messages;
 import rpg.ability.Ability;
 import rpg.element.entity.Attribute;
 import rpg.element.entity.Entity;

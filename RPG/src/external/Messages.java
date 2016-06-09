@@ -1,10 +1,16 @@
-package rpg;
+package external;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * This class is used to externalize <code>String</code>s and integers.
+ * 
+ * @author Alon
+ *
+ */
 public class Messages {
-	private static final String BUNDLE_NAME = "rpg.messages";
+	private static final String BUNDLE_NAME = "external.messages";
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 

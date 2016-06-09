@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import rpg.Updatable;
+import rpg.element.Updatable;
 import rpg.logic.level.Game;
 
 public class Timer implements Updatable {

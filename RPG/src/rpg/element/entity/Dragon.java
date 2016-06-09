@@ -1,6 +1,6 @@
 package rpg.element.entity;
 
-import rpg.Messages;
+import external.Messages;
 import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.element.bonus.HealthPotion;

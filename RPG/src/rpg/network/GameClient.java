@@ -11,7 +11,7 @@ import network.TcpClient;
 import network.event.MessageEvent;
 import network.event.MessageListener;
 import network.message.Message;
-import network.protocol.Protocol;
+import network.protocol.TwoWayProtocol;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.ui.GamePanel;
@@ -31,14 +31,14 @@ public class GameClient {
 
 	private TcpClient tcpClient;
 	private List<String> commands;
-	private Protocol<Drawer, String> protocol;
+	private TwoWayProtocol<Drawer, String> twoWayProtocol;
 	private GamePanel panel;
 	private boolean showInventory;
 
 	public GameClient(GamePanel panel, Socket toServer) throws IOException {
 		commands = new CopyOnWriteArrayList<>();
 		tcpClient = new TcpClient(toServer);
-		protocol = new DrawerProtocol();
+		twoWayProtocol = new DrawerProtocol();
 		this.panel = panel;
 		tcpClient.addMessageListener(new MessageListener() {
 			@Override
@@ -48,18 +48,18 @@ public class GameClient {
 				} else if (data.equals("end")) {
 					panel.flush();
 				} else if (data.startsWith("dynamic ")) {
-					Drawer drawer = protocol.decode(data.substring("dynamic ".length()));
+					Drawer drawer = twoWayProtocol.decode(data.substring("dynamic ".length()));
 					panel.addDrawer(drawer);
 				} else if (data.startsWith("static ")) {
-					Drawer drawer = protocol.decode(data.substring("static ".length()));
+					Drawer drawer = twoWayProtocol.decode(data.substring("static ".length()));
 					panel.addStaticDrawer(drawer);
 				} else if (data.startsWith("location ")) {
 					panel.setOffsetByPlayerLocation(Vector2D.valueOf(data.substring("location ".length())));
 				} else if (data.startsWith("absolute ")) {
-					Drawer drawer = protocol.decode(data.substring("absolute ".length()));
+					Drawer drawer = twoWayProtocol.decode(data.substring("absolute ".length()));
 					panel.addAbsoluteDrawer(drawer);
 				} else if (data.startsWith("inventory ") && showInventory) {
-					Drawer drawer = protocol.decode(data.substring("inventory ".length()));
+					Drawer drawer = twoWayProtocol.decode(data.substring("inventory ".length()));
 					panel.addAbsoluteDrawer(drawer);
 				} else if (data.startsWith("dimensions ")) {
 					panel.setDimensions(Vector2D.valueOf(data.substring("dimensions ".length())));

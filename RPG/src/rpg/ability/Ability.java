@@ -1,6 +1,6 @@
 package rpg.ability;
 
-import rpg.Updatable;
+import rpg.element.Updatable;
 import rpg.element.entity.Entity;
 import rpg.element.entity.Player;
 import rpg.graphics.AbilityDrawer;

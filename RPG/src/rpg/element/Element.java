@@ -1,6 +1,5 @@
 package rpg.element;
 
-import rpg.Updatable;
 import rpg.element.ability.Fireball;
 import rpg.element.entity.Player;
 import rpg.geometry.Rectangle;

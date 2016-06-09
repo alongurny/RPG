@@ -1,4 +1,4 @@
-package rpg;
+package rpg.element;
 
 import rpg.logic.level.Game;
 import rpg.network.GameServer;
