@@ -1,8 +1,8 @@
 package rpg.network;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 import javax.swing.AbstractAction;
@@ -22,7 +23,7 @@ import javax.swing.SwingUtilities;
 
 import rpg.geometry.Vector2D;
 
-public class IOHandler implements MouseListener {
+public class IOHandler {
 
 	private GameClient client;
 	private Set<String> pressed;
@@ -33,7 +34,6 @@ public class IOHandler implements MouseListener {
 		this.client = client;
 		pressed = new HashSet<>();
 		typedMap = new HashMap<>();
-		client.getPanel().addMouseListener(this);
 		initialize();
 	}
 
@@ -44,29 +44,36 @@ public class IOHandler implements MouseListener {
 	}
 
 	private void initialize() {
-		bindPressed("Z", () -> client.addCommand("interact"));
-		bindPressed("E", () -> client.setShowInventory(true));
-		bindReleased("E", () -> client.setShowInventory(false));
+		bindMouseReleased(e -> {
+			if (SwingUtilities.isRightMouseButton(e)) {
+				Vector2D offset = client.getPanel().getOffset();
+				Vector2D target = new Vector2D(e.getX(), e.getY()).subtract(offset);
+				client.addCommand("onClick " + target);
+			}
+		});
+		bindKeyPressed("Z", () -> client.addCommand("interact"));
+		bindKeyPressed("E", () -> client.setShowInventory(true));
+		bindKeyReleased("E", () -> client.setShowInventory(false));
 		IntStream.rangeClosed(1, 9)
-				.forEach(i -> bindPressed(Integer.toString(i), () -> client.addCommand("cast " + (i - 1))));
-		Arrays.asList("UP", "W", "SPACE").forEach(s -> bindTyped(s, () -> client.addCommand("jump")));
-		Arrays.asList("DOWN", "S").forEach(s -> bindTyped(s, () -> client.addCommand("fall")));
-		Arrays.asList("LEFT", "A").forEach(s -> bindTyped(s, () -> direction += -1));
-		Arrays.asList("RIGHT", "D").forEach(s -> bindTyped(s, () -> direction += 1));
+				.forEach(i -> bindKeyPressed(Integer.toString(i), () -> client.addCommand("cast " + (i - 1))));
+		Arrays.asList("UP", "W", "SPACE").forEach(s -> bindKeyTyped(s, () -> client.addCommand("jump")));
+		Arrays.asList("DOWN", "S").forEach(s -> bindKeyTyped(s, () -> client.addCommand("fall")));
+		Arrays.asList("LEFT", "A").forEach(s -> bindKeyTyped(s, () -> direction += -1));
+		Arrays.asList("RIGHT", "D").forEach(s -> bindKeyTyped(s, () -> direction += 1));
 	}
 
-	public void bindTyped(String key, Runnable runnable) {
+	private void bindKeyTyped(String key, Runnable runnable) {
 		if (!typedMap.containsKey(key)) {
 			typedMap.put(key, new ArrayList<>());
 		}
-		bindPressed(key, () -> {
+		bindKeyPressed(key, () -> {
 		});
-		bindReleased(key, () -> {
+		bindKeyReleased(key, () -> {
 		});
 		typedMap.get(key).add(runnable);
 	}
 
-	public void bindPressed(String key, Runnable runnable) {
+	private void bindKeyPressed(String key, Runnable runnable) {
 		InputMap inputMap = client.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = client.getPanel().getActionMap();
 		inputMap.put(KeyStroke.getKeyStroke(key), key);
@@ -79,7 +86,7 @@ public class IOHandler implements MouseListener {
 		});
 	}
 
-	public void bindReleased(String key, Runnable runnable) {
+	public void bindKeyReleased(String key, Runnable runnable) {
 		InputMap inputMap = client.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = client.getPanel().getActionMap();
 		inputMap.put(KeyStroke.getKeyStroke("released " + key), "released " + key);
@@ -92,28 +99,12 @@ public class IOHandler implements MouseListener {
 		});
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		if (SwingUtilities.isRightMouseButton(e)) {
-			Vector2D offset = client.getPanel().getOffset();
-			Vector2D target = new Vector2D(e.getX(), e.getY()).subtract(offset);
-			client.addCommand("onClick " + target);
-		}
+	private void bindMouseReleased(Consumer<MouseEvent> action) {
+		client.getPanel().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				action.accept(e);
+			}
+		});
 	}
 }
