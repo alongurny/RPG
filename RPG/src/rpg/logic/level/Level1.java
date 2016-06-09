@@ -1,7 +1,7 @@
 package rpg.logic.level;
 
-import rpg.element.Block;
 import rpg.element.Door;
+import rpg.element.map.Block;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;
 

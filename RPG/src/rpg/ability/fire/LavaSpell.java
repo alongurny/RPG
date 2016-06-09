@@ -1,8 +1,8 @@
 package rpg.ability.fire;
 
 import rpg.ability.EntityTargetAbility;
-import rpg.element.Entity;
-import rpg.element.Lava;
+import rpg.element.ability.Lava;
+import rpg.element.entity.Entity;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.Sprite;
@@ -15,6 +15,11 @@ public class LavaSpell extends EntityTargetAbility {
 
 	public LavaSpell() {
 		super(15, 15);
+	}
+
+	@Override
+	public Drawer getSelfDrawer() {
+		return sprite;
 	}
 
 	@Override
@@ -32,11 +37,6 @@ public class LavaSpell extends EntityTargetAbility {
 				game.addTimer(5.0, () -> game.removeDynamicElement(lava));
 			}
 		}
-	}
-
-	@Override
-	public Drawer getSelfDrawer() {
-		return sprite;
 	}
 
 }

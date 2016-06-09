@@ -2,7 +2,7 @@ package rpg.network;
 
 import java.util.Arrays;
 
-import protocol.Protocol;
+import network.protocol.Protocol;
 import rpg.exception.RPGException;
 import rpg.graphics.Drawer;
 
@@ -11,6 +11,11 @@ public class DrawerProtocol implements Protocol<Drawer, String> {
 	@Override
 	public Drawer decode(String str) {
 		return Arrays.stream(str.split(";;")).map(this::decodeOne).reduce((a, b) -> a.andThen(b)).get();
+	}
+
+	@Override
+	public String encode(Drawer d) {
+		return d.toString();
 	}
 
 	private Drawer decodeOne(String str) {
@@ -35,11 +40,6 @@ public class DrawerProtocol implements Protocol<Drawer, String> {
 		} catch (Exception e) {
 			throw new RPGException(e);
 		}
-	}
-
-	@Override
-	public String encode(Drawer d) {
-		return d.toString();
 	}
 
 }

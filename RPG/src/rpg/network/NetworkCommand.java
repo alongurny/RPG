@@ -1,9 +1,9 @@
 package rpg.network;
 
-import rpg.element.Player;
+import network.TcpClient;
+import rpg.element.entity.Player;
 import rpg.geometry.Vector2D;
 import rpg.logic.level.Game;
-import tcp.TcpClient;
 
 public class NetworkCommand {
 
@@ -20,6 +20,9 @@ public class NetworkCommand {
 			break;
 		case "jump":
 			player.tryJump();
+			break;
+		case "fall":
+			player.tryFall();
 			break;
 		case "moveHorizontally":
 			player.moveHorizontally(Double.parseDouble(arr[1]));

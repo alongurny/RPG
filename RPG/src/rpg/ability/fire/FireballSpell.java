@@ -1,10 +1,10 @@
 package rpg.ability.fire;
 
 import rpg.ability.EntityTargetAbility;
-import rpg.element.Dice;
-import rpg.element.DiceSet;
-import rpg.element.Entity;
-import rpg.element.Fireball;
+import rpg.ability.damage.Dice;
+import rpg.ability.damage.DiceSet;
+import rpg.element.ability.Fireball;
+import rpg.element.entity.Entity;
 import rpg.geometry.Vector2D;
 import rpg.graphics.DrawIcon;
 import rpg.graphics.Drawer;
@@ -36,8 +36,13 @@ public class FireballSpell extends EntityTargetAbility {
 	}
 
 	@Override
-	protected void onUpdate(Game game, Entity caster, Entity target) {
+	protected boolean isActive(Game game, Entity caster, Entity target) {
+		return false;
+	}
 
+	@Override
+	protected boolean isCastable(Entity caster, Entity target) {
+		return !caster.isFriendly(target);
 	}
 
 	@Override
@@ -46,12 +51,7 @@ public class FireballSpell extends EntityTargetAbility {
 	}
 
 	@Override
-	protected boolean isActive(Game game, Entity caster, Entity target) {
-		return false;
-	}
+	protected void onUpdate(Game game, Entity caster, Entity target) {
 
-	@Override
-	protected boolean isCastable(Entity caster, Entity target) {
-		return !caster.isFriendly(target);
 	}
 }

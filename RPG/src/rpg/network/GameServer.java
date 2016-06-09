@@ -6,14 +6,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import event.ConnectListener;
-import event.ConnectionEvent;
-import event.DisconnectListener;
-import protocol.Protocol;
+import network.Switchboard;
+import network.TcpClient;
+import network.event.ConnectListener;
+import network.event.ConnectionEvent;
+import network.event.DisconnectListener;
+import network.message.Message;
+import network.protocol.Protocol;
 import rpg.element.Element;
-import rpg.element.Player;
 import rpg.element.entity.Avatar;
-import rpg.element.entity.Human;
+import rpg.element.entity.Player;
+import rpg.element.entity.race.Human;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.MultiAbilityDrawer;
@@ -22,9 +25,6 @@ import rpg.graphics.Translate;
 import rpg.logic.Tuple;
 import rpg.logic.level.Game;
 import rpg.logic.level.Level3;
-import tcp.Switchboard;
-import tcp.TcpClient;
-import tcp.message.Message;
 
 public class GameServer {
 
@@ -75,6 +75,34 @@ public class GameServer {
 		return true;
 	}
 
+	public void start() {
+		new Thread(this::run, "Wait for clients/Update game").start();
+	}
+
+	public void startReceiving() {
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				for (Tuple<String, TcpClient> command : receivedCommands) {
+					if (isAllowed(command.getFirst())) {
+						NetworkCommand.execute(command.getFirst(), game, command.getSecond());
+					}
+				}
+				receivedCommands.clear();
+			}
+		}, 0, 30);
+	}
+
+	public void startSending() {
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				send();
+			}
+		}, 0, 30);
+	}
+
 	private void run() {
 		server.start();
 		startReceiving();
@@ -122,34 +150,6 @@ public class GameServer {
 			c.send(Message.data("dimensions " + new Vector2D(game.getGrid().getWidth(), game.getGrid().getHeight())));
 		});
 		server.send(Message.data("end"));
-	}
-
-	public void start() {
-		new Thread(this::run, "Wait for clients/Update game").start();
-	}
-
-	public void startReceiving() {
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				for (Tuple<String, TcpClient> command : receivedCommands) {
-					if (isAllowed(command.getFirst())) {
-						NetworkCommand.execute(command.getFirst(), game, command.getSecond());
-					}
-				}
-				receivedCommands.clear();
-			}
-		}, 0, 30);
-	}
-
-	public void startSending() {
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				send();
-			}
-		}, 0, 30);
 	}
 
 }

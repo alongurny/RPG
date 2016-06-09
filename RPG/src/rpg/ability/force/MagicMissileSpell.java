@@ -1,10 +1,10 @@
 package rpg.ability.force;
 
 import rpg.ability.EntityTargetAbility;
-import rpg.element.Dice;
-import rpg.element.DiceSet;
-import rpg.element.Entity;
-import rpg.element.MagicMissile;
+import rpg.ability.damage.Dice;
+import rpg.ability.damage.DiceSet;
+import rpg.element.ability.MagicMissile;
+import rpg.element.entity.Entity;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
@@ -24,8 +24,8 @@ public class MagicMissileSpell extends EntityTargetAbility {
 	}
 
 	@Override
-	protected boolean isCastable(Entity caster, Entity target) {
-		return !caster.isFriendly(target);
+	public Drawer getSelfDrawer() {
+		return drawer;
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class MagicMissileSpell extends EntityTargetAbility {
 	}
 
 	@Override
-	public Drawer getSelfDrawer() {
-		return drawer;
+	protected boolean isCastable(Entity caster, Entity target) {
+		return !caster.isFriendly(target);
 	}
 }

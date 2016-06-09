@@ -54,14 +54,6 @@ public class GamePanel extends JPanel {
 		statics.add(drawer);
 	}
 
-	private void drawDrawer(Graphics2D g, Drawer drawer) {
-		int x = (int) (offset.getX());
-		int y = (int) (offset.getY());
-		g.translate(x, y);
-		drawer.draw(g);
-		g.translate(-x, -y);
-	}
-
 	public void flush() {
 		absoluteDrawers.clear();
 		absoluteDrawers.addAll(absoluteBuffer);
@@ -73,6 +65,20 @@ public class GamePanel extends JPanel {
 
 	public Vector2D getOffset() {
 		return offset;
+	}
+
+	public void setDimensions(Vector2D dimensions) {
+		this.dimensions = dimensions;
+	}
+
+	public void setOffset(Vector2D offset) {
+		this.offset = offset;
+	}
+
+	public void setOffsetByPlayerLocation(Vector2D location) {
+		double x = limit(-location.getX() + getWidth() / 2, -dimensions.getX() - 32 + getWidth(), 32);
+		double y = limit(-location.getY() + getHeight() / 2, -dimensions.getY() - 32 + getHeight(), 32);
+		setOffset(new Vector2D(x, y));
 	}
 
 	@Override
@@ -94,18 +100,12 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	public void setDimensions(Vector2D dimensions) {
-		this.dimensions = dimensions;
-	}
-
-	public void setOffset(Vector2D offset) {
-		this.offset = offset;
-	}
-
-	public void setOffsetByPlayerLocation(Vector2D location) {
-		double x = limit(-location.getX() + getWidth() / 2, -dimensions.getX() - 32 + getWidth(), 32);
-		double y = limit(-location.getY() + getHeight() / 2, -dimensions.getY() - 32 + getHeight(), 32);
-		setOffset(new Vector2D(x, y));
+	private void drawDrawer(Graphics2D g, Drawer drawer) {
+		int x = (int) (offset.getX());
+		int y = (int) (offset.getY());
+		g.translate(x, y);
+		drawer.draw(g);
+		g.translate(-x, -y);
 	}
 
 }

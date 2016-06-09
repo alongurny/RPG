@@ -1,8 +1,8 @@
 package rpg.logic.level;
 
-import rpg.element.Block;
-import rpg.element.BottomHalfBlock;
-import rpg.element.TopHalfBlock;
+import rpg.element.map.Block;
+import rpg.element.map.BottomHalfBlock;
+import rpg.element.map.TopHalfBlock;
 
 public class Level3 extends Game {
 

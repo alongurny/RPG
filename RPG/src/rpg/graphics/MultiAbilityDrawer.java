@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rpg.ability.Ability;
-import rpg.element.Player;
+import rpg.element.entity.Player;
 
 public class MultiAbilityDrawer {
 

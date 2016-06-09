@@ -8,13 +8,13 @@ import rpg.geometry.Vector2D;
 
 public class Grid {
 
-	private ElementContainer[][] elements;
+	private ElementArrayList[][] elements;
 
 	public Grid(int rows, int cols) {
-		elements = new ElementContainer[rows][cols];
+		elements = new ElementArrayList[rows][cols];
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				elements[i][j] = new ElementContainer();
+				elements[i][j] = new ElementArrayList();
 			}
 		}
 	}

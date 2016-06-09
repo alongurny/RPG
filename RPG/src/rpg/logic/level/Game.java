@@ -10,18 +10,24 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import network.TcpClient;
 import rpg.Interactive;
 import rpg.element.Element;
-import rpg.element.Entity;
-import rpg.element.Player;
-import rpg.element.entity.Profession;
-import rpg.element.entity.Race;
+import rpg.element.entity.Entity;
+import rpg.element.entity.Player;
+import rpg.element.entity.profession.Profession;
+import rpg.element.entity.race.Race;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;
 import rpg.logic.Timer;
-import tcp.TcpClient;
 
+/**
+ * <code>Game</code> is the main class that runs the whole game. It
+ * 
+ * @author Alon
+ *
+ */
 public class Game {
 
 	private List<Element> elements;
@@ -90,14 +96,6 @@ public class Game {
 		elements.sort((a, b) -> a.getIndex() - b.getIndex());
 		elements.removeIf(e -> !e.getAbsoluteRect().contains(target));
 		return elements;
-	}
-
-	private int getFreeIndex() {
-		int i = 0;
-		while (boundIndices.contains(i)) {
-			i++;
-		}
-		return i;
 	}
 
 	public Grid getGrid() {
@@ -260,5 +258,13 @@ public class Game {
 		}
 		toAdd.clear();
 		toRemove.clear();
+	}
+
+	private int getFreeIndex() {
+		int i = 0;
+		while (boundIndices.contains(i)) {
+			i++;
+		}
+		return i;
 	}
 }

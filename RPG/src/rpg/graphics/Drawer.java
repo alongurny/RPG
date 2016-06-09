@@ -23,11 +23,11 @@ public abstract class Drawer {
 
 	public abstract void draw(Graphics2D g);
 
-	protected abstract String represent();
-
 	@Override
 	public String toString() {
 		return represent();
 	}
+
+	protected abstract String represent();
 
 }

@@ -2,7 +2,7 @@ package rpg.graphics;
 
 import java.awt.Color;
 
-import rpg.element.Player;
+import rpg.element.entity.Player;
 import rpg.item.Item;
 
 public class ShowInventory {

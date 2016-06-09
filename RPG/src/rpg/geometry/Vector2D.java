@@ -9,6 +9,7 @@ public final class Vector2D {
 	public static final Vector2D SOUTH = new Vector2D(0, 1);
 	public static final Vector2D WEST = new Vector2D(-1, 0);
 	public static final Vector2D EAST = new Vector2D(1, 0);
+
 	public static double distance(Vector2D u, Vector2D v) {
 		return u.subtract(v).getMagnitude();
 	}
@@ -23,6 +24,7 @@ public final class Vector2D {
 		}
 		return res;
 	}
+
 	public static Vector2D valueOf(String string) {
 		if (string.startsWith("(") && string.endsWith(")")) {
 			string = string.substring(1, string.length() - 1);

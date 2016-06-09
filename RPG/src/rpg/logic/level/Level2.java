@@ -1,11 +1,11 @@
 package rpg.logic.level;
 
-import rpg.element.Block;
 import rpg.element.Door;
-import rpg.element.Dragon;
 import rpg.element.ItemHolder;
-import rpg.element.ManaPotion;
 import rpg.element.Portal;
+import rpg.element.bonus.ManaPotion;
+import rpg.element.entity.Dragon;
+import rpg.element.map.Block;
 import rpg.geometry.Vector2D;
 import rpg.item.MasterKey;
 import rpg.logic.Grid;

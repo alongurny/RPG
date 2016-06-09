@@ -1,17 +1,19 @@
 package rpg.element.entity;
 
+import rpg.ability.FlightSpell;
+import rpg.ability.damage.DamageType;
 import rpg.ability.fire.FireballSpell;
 import rpg.ability.fire.LavaSpell;
 import rpg.ability.force.HasteSpell;
 import rpg.ability.force.MagicMissileSpell;
 import rpg.ability.frost.IceBlockSpell;
-import rpg.element.DamageType;
-import rpg.element.Entity;
+import rpg.element.entity.profession.Profession;
 
 public class Avatar extends Profession {
 
 	public Avatar() {
-		super(new FireballSpell(), new LavaSpell(), new HasteSpell(), new MagicMissileSpell(), new IceBlockSpell());
+		super(new FlightSpell(), new FireballSpell(), new LavaSpell(), new HasteSpell(), new MagicMissileSpell(),
+				new IceBlockSpell());
 	}
 
 	@Override

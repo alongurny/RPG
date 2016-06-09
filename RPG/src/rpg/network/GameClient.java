@@ -7,15 +7,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.SwingUtilities;
 
-import event.MessageEvent;
-import event.MessageListener;
-import protocol.Protocol;
+import network.TcpClient;
+import network.event.MessageEvent;
+import network.event.MessageListener;
+import network.message.Message;
+import network.protocol.Protocol;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.ui.GamePanel;
 import rpg.ui.GameStation;
-import tcp.TcpClient;
-import tcp.message.Message;
 
 public class GameClient {
 
@@ -33,7 +33,6 @@ public class GameClient {
 	private List<String> commands;
 	private Protocol<Drawer, String> protocol;
 	private GamePanel panel;
-
 	private boolean showInventory;
 
 	public GameClient(GamePanel panel, Socket toServer) throws IOException {

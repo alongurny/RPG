@@ -50,6 +50,7 @@ public class IOHandler implements KeyListener, MultiKeyListener, MouseListener {
 			client.addCommand("jump");
 		}
 		if (e.get(KeyEvent.VK_DOWN) || e.get(KeyEvent.VK_S)) {
+			client.addCommand("fall");
 		}
 		double direction = 0;
 		if (e.get(KeyEvent.VK_LEFT) || e.get(KeyEvent.VK_A)) {

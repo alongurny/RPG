@@ -1,6 +1,6 @@
 package rpg.item;
 
-import rpg.element.Entity;
+import rpg.element.entity.Entity;
 import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
 

@@ -1,8 +1,8 @@
 package rpg.ability.frost;
 
 import rpg.ability.EntityTargetAbility;
-import rpg.element.Entity;
-import rpg.element.IceBlock;
+import rpg.element.ability.IceBlock;
+import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;
@@ -41,13 +41,13 @@ public class IceBlockSpell extends EntityTargetAbility {
 	}
 
 	@Override
-	protected boolean isActive(Game game, Entity caster, Entity target) {
-		return active;
+	public void onEnd(Game game, Entity caster, Entity target) {
+		game.removeDynamicElement(block);
 	}
 
 	@Override
-	public void onEnd(Game game, Entity caster, Entity target) {
-		game.removeDynamicElement(block);
+	protected boolean isActive(Game game, Entity caster, Entity target) {
+		return active;
 	}
 
 }
