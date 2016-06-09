@@ -24,7 +24,12 @@ import rpg.logic.Timer;
 
 /**
  * <code>Game</code> is the main class that runs the whole game. It consists of
- * several things. A grid, which contains <b>static elements</b>
+ * several things:
+ * <ul>
+ * <li>A grid, which contains <b>static elements</b>.</li>
+ * <li>Elements</li>
+ * <li>A timer: used to schedule events</li>
+ * </ul>
  * 
  * @author Alon
  *
@@ -185,12 +190,11 @@ public class Game {
 		return boundIndices.size() >= 1;
 	}
 
-	public void moveByAndPush(Element element, Vector2D displacement) {
+	public void tryMoveByAndPush(Element element, Vector2D displacement) {
 		List<Element> obstacles = getObstacles(element, element.getLocation().add(displacement));
-		for (Element e : obstacles) {
-			tryMoveBy(e, displacement);
+		if (obstacles.stream().map(e -> tryMoveBy(e, displacement)).reduce(true, Boolean::logicalAnd)) {
+			element.setLocation(element.getLocation().add(displacement));
 		}
-		element.setLocation(element.getLocation().add(displacement));
 	}
 
 	public void onClick(Player player, Vector2D target) {

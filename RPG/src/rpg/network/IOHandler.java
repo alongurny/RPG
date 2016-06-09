@@ -94,11 +94,6 @@ public class IOHandler implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (SwingUtilities.isRightMouseButton(e)) {
-			Vector2D offset = client.getPanel().getOffset();
-			Vector2D target = new Vector2D(e.getX(), e.getY()).subtract(offset);
-			client.addCommand("onClick " + target);
-		}
 	}
 
 	@Override
@@ -115,5 +110,10 @@ public class IOHandler implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (SwingUtilities.isRightMouseButton(e)) {
+			Vector2D offset = client.getPanel().getOffset();
+			Vector2D target = new Vector2D(e.getX(), e.getY()).subtract(offset);
+			client.addCommand("onClick " + target);
+		}
 	}
 }
