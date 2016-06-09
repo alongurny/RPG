@@ -1,6 +1,0 @@
-strength = 20 : number
-stamina = 20 : number
-dexterity = 20 : number
-intelligence = 20 : number
-maxHealth = 50 : number
-maxMana = 100 : number
