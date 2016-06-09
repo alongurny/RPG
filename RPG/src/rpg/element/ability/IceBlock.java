@@ -1,5 +1,6 @@
 package rpg.element.ability;
 
+import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
@@ -24,8 +25,8 @@ public class IceBlock extends Element {
 	}
 
 	@Override
-	public int getIndex() {
-		return 10000;
+	public Depth getDepth() {
+		return Depth.TOP;
 	}
 
 	@Override

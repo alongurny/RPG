@@ -8,16 +8,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JPanel;
 
-import rpg.BufferedImageResource;
+import rpg.Messages;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
+import rpg.graphics.Tileset;
 
 public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = -435064221993994993L;
 
-	private static BufferedImage bg = BufferedImageResource.get("img/tileset0.png").getImage().getSubimage(32 * 7,
-			32 * 15, 32, 32);
+	private static BufferedImage bg = Tileset.get(Messages.getInt("GamePanel.bg.tileset"))
+			.getTile(Messages.getInt("GamePanel.bg.row"), Messages.getInt("GamePanel.bg.column"));
 
 	private static double limit(double value, double min, double max) {
 		return Math.min(max, Math.max(min, value));

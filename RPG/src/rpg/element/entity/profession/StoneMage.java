@@ -1,13 +1,16 @@
-package rpg.element.entity.race;
+package rpg.element.entity.profession;
 
 import rpg.ability.damage.DamageType;
 import rpg.ability.fire.FireballSpell;
 import rpg.ability.fire.LavaSpell;
 import rpg.element.entity.Entity;
-import rpg.element.entity.profession.Mage;
 
 public class StoneMage extends Mage {
 
+	/**
+	 * Constructs a new instance of this class. Different instances of
+	 * {@link Entity} should NOT reference the same instance.
+	 */
 	public StoneMage() {
 		super(new FireballSpell(), new LavaSpell());
 	}

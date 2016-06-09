@@ -1,5 +1,6 @@
 package rpg.ability.fire;
 
+import rpg.Messages;
 import rpg.ability.EntityTargetAbility;
 import rpg.ability.damage.Dice;
 import rpg.ability.damage.DiceSet;
@@ -19,7 +20,7 @@ public class FireballSpell extends EntityTargetAbility {
 	public FireballSpell() {
 		super(2, 5);
 		this.speed = 192;
-		drawer = new DrawIcon("img/fireball.gif", 32, 32);
+		drawer = new DrawIcon(Messages.getString("FireballSpell.img"), 32, 32); //$NON-NLS-1$
 		dice = DiceSet.repeat(3, Dice.get(6));
 	}
 

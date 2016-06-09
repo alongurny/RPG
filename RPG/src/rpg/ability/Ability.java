@@ -1,6 +1,6 @@
 package rpg.ability;
 
-import rpg.Mechanism;
+import rpg.Updatable;
 import rpg.element.entity.Entity;
 import rpg.element.entity.Player;
 import rpg.graphics.AbilityDrawer;
@@ -18,7 +18,7 @@ import rpg.logic.level.Game;
  * @author Alon
  *
  */
-public abstract class Ability implements Mechanism {
+public abstract class Ability implements Updatable {
 
 	private double cooldown;
 	private double maxCooldown;

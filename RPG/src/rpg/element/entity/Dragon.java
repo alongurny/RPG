@@ -1,5 +1,7 @@
 package rpg.element.entity;
 
+import rpg.Messages;
+import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.element.bonus.HealthPotion;
 import rpg.element.entity.profession.DragonProfession;
@@ -17,7 +19,7 @@ public class Dragon extends Entity {
 
 	public Dragon(Vector2D location) {
 		super(location, new DragonRace(), new DragonProfession());
-		drawer = new DrawIcon("img/dragon.png", 32, 32);
+		drawer = new DrawIcon(Messages.getString("Dragon.img"), 32, 32); //$NON-NLS-1$
 	}
 
 	@Override
@@ -33,8 +35,8 @@ public class Dragon extends Entity {
 	}
 
 	@Override
-	public int getIndex() {
-		return 3;
+	public Depth getDepth() {
+		return Depth.TOP;
 	}
 
 	@Override

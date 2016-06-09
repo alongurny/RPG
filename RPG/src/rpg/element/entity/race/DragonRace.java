@@ -4,6 +4,14 @@ import rpg.element.entity.Attribute;
 import rpg.element.entity.Entity;
 
 public class DragonRace extends Race {
+
+	/**
+	 * Constructs a new instance of this class. Different instances of Entity
+	 * should NOT reference the same instance.
+	 */
+	public DragonRace() {
+	}
+
 	@Override
 	public int getAttribute(Attribute attr) {
 		return 10;

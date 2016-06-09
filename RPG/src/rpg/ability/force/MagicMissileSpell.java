@@ -1,5 +1,6 @@
 package rpg.ability.force;
 
+import rpg.Messages;
 import rpg.ability.EntityTargetAbility;
 import rpg.ability.damage.Dice;
 import rpg.ability.damage.DiceSet;
@@ -12,14 +13,15 @@ import rpg.logic.level.Game;
 
 public class MagicMissileSpell extends EntityTargetAbility {
 
-	private Drawer drawer;
+	private static final Drawer drawer = TileDrawer.sprite(Messages.getInt("MagicMissileSpell.tileset"),
+			Messages.getInt("MagicMissileSpell.row"), Messages.getInt("MagicMissileSpell.firstColumn"),
+			Messages.getInt("MagicMissileSpell.lastColumn"));
 	private double speed;
 	private DiceSet dice;
 
 	public MagicMissileSpell() {
 		super(2, 5);
 		this.speed = 96;
-		drawer = TileDrawer.sprite(0, 6, 34, 36);
 		dice = DiceSet.repeat(3, Dice.get(4));
 	}
 

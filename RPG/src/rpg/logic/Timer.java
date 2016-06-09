@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import rpg.Mechanism;
+import rpg.Updatable;
 import rpg.logic.level.Game;
 
-public class Timer implements Mechanism {
+public class Timer implements Updatable {
 
 	private List<Tuple<Double, Runnable>> list;
 	private double time;

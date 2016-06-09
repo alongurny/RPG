@@ -17,6 +17,11 @@ public class ForceMage extends Profession {
 		return 40 + entity.getAttribute(Attribute.INT);
 	}
 
+	/**
+	 * {@inheritDoc}<br/>
+	 * Returned value is positive if damageType is {@link DamageType#FORCE
+	 * FORCE}, and 0 otherwise.
+	 */
 	@Override
 	public double getResistance(Entity entity, DamageType type) {
 		return type == DamageType.FORCE ? entity.getRank() * 3 : 0;

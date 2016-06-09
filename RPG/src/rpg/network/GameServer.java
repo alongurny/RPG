@@ -28,10 +28,44 @@ import rpg.logic.level.Level3;
 
 public class GameServer {
 
+	public static final int PORT = 1234;
+
 	public static void main(String[] args) throws IOException {
 		Game game = new Level3();
 		GameServer server = new GameServer(game);
 		server.start();
+	}
+
+	private static void execute(String string, Game game, TcpClient client) {
+		String[] arr = string.split(" ");
+		Player player = game.getPlayer(client).get();
+		String command = arr[0];
+		switch (command) {
+		case "moveBy":
+			game.getObstaclesFromMoveBy(player, Vector2D.valueOf(arr[1]));
+			break;
+		case "setLocation":
+			player.setLocation(Vector2D.valueOf(arr[1]));
+			break;
+		case "jump":
+			player.tryJump();
+			break;
+		case "fall":
+			player.tryFall();
+			break;
+		case "moveHorizontally":
+			player.moveHorizontally(Double.parseDouble(arr[1]));
+			break;
+		case "onClick":
+			game.onClick(player, Vector2D.valueOf(arr[1]));
+			break;
+		case "cast":
+			player.tryCast(game, Integer.parseInt(arr[1]));
+			break;
+		case "interact":
+			game.tryInteract(player);
+			break;
+		}
 	}
 
 	private boolean firstConnection;
@@ -46,7 +80,7 @@ public class GameServer {
 		receivedCommands = new CopyOnWriteArrayList<>();
 		timer = new Timer();
 		protocol = new DrawerProtocol();
-		server = new Switchboard();
+		server = new Switchboard(PORT);
 		server.addConnectListener(new ConnectListener() {
 
 			@Override
@@ -85,7 +119,7 @@ public class GameServer {
 			public void run() {
 				for (Tuple<String, TcpClient> command : receivedCommands) {
 					if (isAllowed(command.getFirst())) {
-						NetworkCommand.execute(command.getFirst(), game, command.getSecond());
+						execute(command.getFirst(), game, command.getSecond());
 					}
 				}
 				receivedCommands.clear();

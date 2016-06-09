@@ -9,15 +9,16 @@ import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
-public class BufferedImageResource implements Resource {
+public class BufferedImageResource {
 
 	private static Map<String, BufferedImageResource> map = new HashMap<>();
+	private static String prefix = Messages.getString("BufferedImageResource.path");
 
 	public static BufferedImageResource get(String path) {
 		if (!map.containsKey(path)) {
 			try {
 				BufferedImageResource resource = new BufferedImageResource(
-						ImageIO.read(new File(path).toURI().toURL()));
+						ImageIO.read(new File(prefix + "/" + path).toURI().toURL()));
 				map.put(path, resource);
 				return resource;
 			} catch (IOException e) {

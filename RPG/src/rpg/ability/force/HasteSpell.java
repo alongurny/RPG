@@ -1,5 +1,6 @@
 package rpg.ability.force;
 
+import rpg.Messages;
 import rpg.ability.Ability;
 import rpg.element.entity.Attribute;
 import rpg.element.entity.Entity;
@@ -15,7 +16,7 @@ public class HasteSpell extends Ability {
 
 	public HasteSpell() {
 		super(8, 5);
-		drawer = new DrawIcon("img/haste.png", 32, 32);
+		drawer = new DrawIcon(Messages.getString("HasteSpell.img"), 32, 32); //$NON-NLS-1$
 		duration = 5;
 	}
 

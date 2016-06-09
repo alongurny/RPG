@@ -1,5 +1,6 @@
 package rpg.element.map;
 
+import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
@@ -22,8 +23,8 @@ public class BottomHalfBlock extends Element {
 	}
 
 	@Override
-	public int getIndex() {
-		return 100;
+	public Depth getDepth() {
+		return Depth.HIGH;
 	}
 
 	@Override

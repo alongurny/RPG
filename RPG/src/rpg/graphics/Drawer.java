@@ -4,6 +4,9 @@ import java.awt.Graphics2D;
 
 public abstract class Drawer {
 
+	protected Drawer() {
+	}
+
 	public Drawer andThen(Drawer other) {
 		Drawer obj = this;
 		return new Drawer() {

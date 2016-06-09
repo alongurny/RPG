@@ -1,6 +1,7 @@
 package rpg.element.entity;
 
 import network.TcpClient;
+import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.element.entity.profession.Profession;
 import rpg.element.entity.race.Race;
@@ -56,8 +57,8 @@ public class Player extends Entity {
 	}
 
 	@Override
-	public int getIndex() {
-		return 1000;
+	public Depth getDepth() {
+		return Depth.HIGH;
 	}
 
 	public double getManaRegen() {

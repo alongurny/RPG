@@ -17,9 +17,10 @@ import javax.swing.ImageIcon;
  * @author Alon
  *
  */
-public class ImageResource implements Resource {
+public class ImageResource {
 
 	private static Map<String, ImageResource> cache = new HashMap<>();
+	private static String prefix = Messages.getString("ImageResource.path");
 
 	/**
 	 * Returns a new <code>ImageResource</code> using this path.
@@ -31,7 +32,8 @@ public class ImageResource implements Resource {
 	public static ImageResource get(String path) {
 		if (!cache.containsKey(path)) {
 			try {
-				ImageResource resource = new ImageResource(new ImageIcon(new File(path).toURI().toURL()).getImage());
+				ImageResource resource = new ImageResource(
+						new ImageIcon(new File(prefix + "/" + path).toURI().toURL()).getImage());
 				cache.put(path, resource);
 				return resource;
 			} catch (IOException e) {

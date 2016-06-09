@@ -16,9 +16,14 @@ public class FrostMage extends Profession {
 		return 40 + entity.getAttribute(Attribute.INT);
 	}
 
+	/**
+	 * {@inheritDoc}<br/>
+	 * Returned value is positive if damageType is {@link DamageType#COLD COLD},
+	 * and 0 otherwise.
+	 */
 	@Override
-	public double getResistance(Entity entity, DamageType type) {
-		return type == DamageType.COLD ? entity.getRank() * 3 : 0;
+	public double getResistance(Entity entity, DamageType damageType) {
+		return damageType == DamageType.COLD ? entity.getRank() * 3 : 0;
 	}
 
 }

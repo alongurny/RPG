@@ -29,8 +29,8 @@ public class Door extends Element implements Interactive {
 	}
 
 	@Override
-	public int getIndex() {
-		return 3;
+	public Depth getDepth() {
+		return Depth.MEDIUM_HIGH;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package rpg.element;
 
 import rpg.Interactive;
+import rpg.Messages;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
@@ -25,7 +26,7 @@ public class Portal extends Element implements Interactive {
 	public Portal(Vector2D location, Vector2D target) {
 		super(location);
 		this.target = target;
-		drawer = new DrawIcon("img/portal.gif", width, height);
+		drawer = new DrawIcon(Messages.getString("Portal.img"), width, height); //$NON-NLS-1$
 	}
 
 	@Override
@@ -34,8 +35,8 @@ public class Portal extends Element implements Interactive {
 	}
 
 	@Override
-	public int getIndex() {
-		return 1;
+	public Depth getDepth() {
+		return Depth.MEDIUM_LOW;
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import rpg.ability.damage.DamageType;
+import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
@@ -36,8 +37,8 @@ public class MagicMissile extends Element {
 	}
 
 	@Override
-	public int getIndex() {
-		return 100;
+	public Depth getDepth() {
+		return Depth.MEDIUM;
 	}
 
 	@Override

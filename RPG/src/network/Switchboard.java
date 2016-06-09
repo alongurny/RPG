@@ -15,15 +15,13 @@ import network.message.Message;
 
 public class Switchboard extends TcpServer {
 
-	public static final int APPLICATION_PORT = 1234;
-
 	private List<TcpClient> clients;
 	private List<MessageListener> messageListeners;
 	private List<ConnectListener> connectListeners;
 	private List<DisconnectListener> disconnectListeners;
 
-	public Switchboard() throws IOException {
-		super(APPLICATION_PORT);
+	public Switchboard(int port) throws IOException {
+		super(port);
 		clients = new CopyOnWriteArrayList<>();
 		messageListeners = new ArrayList<>();
 		connectListeners = new ArrayList<>();

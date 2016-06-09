@@ -11,7 +11,7 @@ import rpg.network.GameServer;
  * @author Alon
  *
  */
-public interface Mechanism {
+public interface Updatable {
 
 	/**
 	 * This method will be called to update this instance.

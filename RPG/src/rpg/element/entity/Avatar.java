@@ -1,9 +1,9 @@
 package rpg.element.entity;
 
-import rpg.ability.FlightSpell;
 import rpg.ability.damage.DamageType;
 import rpg.ability.fire.FireballSpell;
 import rpg.ability.fire.LavaSpell;
+import rpg.ability.force.FlightSpell;
 import rpg.ability.force.HasteSpell;
 import rpg.ability.force.MagicMissileSpell;
 import rpg.ability.frost.IceBlockSpell;

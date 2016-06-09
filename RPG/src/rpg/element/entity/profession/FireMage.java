@@ -17,6 +17,11 @@ public class FireMage extends Profession {
 		return 40 + entity.getAttribute(Attribute.INT);
 	}
 
+	/**
+	 * {@inheritDoc}<br/>
+	 * Returned value is positive if damageType is {@link DamageType#FIRE FIRE},
+	 * and 0 otherwise.
+	 */
 	@Override
 	public double getResistance(Entity entity, DamageType type) {
 		return type == DamageType.COLD ? entity.getRank() * 3 : 0;

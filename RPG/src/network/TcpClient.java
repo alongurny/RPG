@@ -25,8 +25,6 @@ public class TcpClient implements Closeable {
 		NOT_LISTENING, LISTENING
 	}
 
-	public static final int APPLICATION_PORT = 1234;
-
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -34,10 +32,6 @@ public class TcpClient implements Closeable {
 	private List<MessageListener> messageListeners;
 	private List<DisconnectListener> disconnectListeners;
 	private State state;
-
-	public TcpClient(InetAddress host) throws IOException {
-		this(new Socket(host, APPLICATION_PORT));
-	}
 
 	public TcpClient(Socket socket) throws IOException {
 		this.socket = socket;
@@ -48,8 +42,12 @@ public class TcpClient implements Closeable {
 		this.state = State.NOT_LISTENING;
 	}
 
-	public TcpClient(String host) throws IOException {
-		this(new Socket(host, APPLICATION_PORT));
+	public TcpClient(InetAddress host, int port) throws IOException {
+		this(new Socket(host, port));
+	}
+
+	public TcpClient(String host, int port) throws IOException {
+		this(new Socket(host, port));
 	}
 
 	public void addConnectionListener(DisconnectListener listener) {

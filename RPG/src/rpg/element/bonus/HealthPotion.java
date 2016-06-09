@@ -1,5 +1,7 @@
 package rpg.element.bonus;
 
+import rpg.Messages;
+import rpg.element.Depth;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
@@ -9,7 +11,8 @@ import rpg.logic.level.Game;
 
 public class HealthPotion extends Bonus {
 
-	private static final Drawer sprite = new TileDrawer(0, 25, 2);
+	private static final Drawer sprite = new TileDrawer(Messages.getInt("HealthPotion.tileset"),
+			Messages.getInt("HealthPotion.row"), Messages.getInt("HealthPotion.column"));
 
 	public HealthPotion(Vector2D location) {
 		super(location);
@@ -21,8 +24,8 @@ public class HealthPotion extends Bonus {
 	}
 
 	@Override
-	public int getIndex() {
-		return 1;
+	public Depth getDepth() {
+		return Depth.LOW;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
-package rpg.ability;
+package rpg.ability.force;
 
+import rpg.ability.Ability;
 import rpg.element.entity.Entity;
 import rpg.graphics.Drawer;
 import rpg.graphics.TileDrawer;

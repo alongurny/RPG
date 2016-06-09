@@ -3,7 +3,9 @@ package rpg.element.ability;
 import java.util.List;
 import java.util.function.Supplier;
 
+import rpg.Messages;
 import rpg.ability.damage.DamageType;
+import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
@@ -32,12 +34,12 @@ public class Fireball extends Element {
 	@Override
 	public Drawer getDrawer() {
 		double angle = Math.atan2(velocity.getY(), velocity.getX()) + defaultAngle;
-		return new Rotate(angle).andThen(new DrawIcon("img/fireball.gif", width, height)).andThen(new Rotate(-angle));
+		return new Rotate(angle).andThen(new DrawIcon(Messages.getString("Fireball.img"), width, height)).andThen(new Rotate(-angle)); //$NON-NLS-1$
 	}
 
 	@Override
-	public int getIndex() {
-		return 100;
+	public Depth getDepth() {
+		return Depth.HIGH;
 	}
 
 	@Override

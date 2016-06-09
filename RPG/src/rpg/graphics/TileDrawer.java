@@ -26,7 +26,7 @@ public class TileDrawer extends Drawer {
 	private int y;
 
 	public TileDrawer(int tileset, int row, int col) {
-		image = Tileset.get(tileset).subimage(row, col);
+		image = Tileset.get(tileset).getTile(row, col);
 		this.tileset = tileset;
 		this.row = row;
 		this.col = col;
@@ -44,7 +44,7 @@ public class TileDrawer extends Drawer {
 		this.height = height;
 		this.x = x;
 		this.y = y;
-		image = Tileset.get(tileset).subimage(row, col).getSubimage(0, 0, width, height);
+		image = Tileset.get(tileset).getTile(row, col).getSubimage(0, 0, width, height);
 	}
 
 	public void draw(Graphics2D g) {

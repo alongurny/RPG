@@ -1,12 +1,11 @@
 package rpg.graphics;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
+import rpg.BufferedImageResource;
+import rpg.Messages;
 
 public class Tileset {
 
@@ -14,8 +13,8 @@ public class Tileset {
 
 	static {
 		tilesets = new ArrayList<>();
-		load("img/tileset0.png");
-		load("img/tileset1.png");
+		load(Messages.getString("Tileset.0")); //$NON-NLS-1$
+		load(Messages.getString("Tileset.1")); //$NON-NLS-1$
 	}
 
 	public static Tileset get(int index) {
@@ -23,11 +22,7 @@ public class Tileset {
 	}
 
 	private static void load(String pathname) {
-		try {
-			tilesets.add(new Tileset(ImageIO.read(new File(pathname))));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		tilesets.add(new Tileset(BufferedImageResource.get(pathname).getImage()));
 	}
 
 	private BufferedImage image;
@@ -36,7 +31,11 @@ public class Tileset {
 		this.image = image;
 	}
 
-	public BufferedImage subimage(int row, int column) {
+	public BufferedImage getSubimage(int x, int y, int width, int height) {
+		return image.getSubimage(x, y, width, height);
+	}
+
+	public BufferedImage getTile(int row, int column) {
 		return image.getSubimage(column * 32, row * 32, 32, 32);
 	}
 

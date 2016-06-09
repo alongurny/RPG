@@ -1,9 +1,11 @@
 package rpg.element;
 
-import rpg.Mechanism;
+import rpg.Updatable;
+import rpg.element.ability.Fireball;
+import rpg.element.entity.Player;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.Drawer;
+import rpg.graphics.Drawable;
 import rpg.logic.level.Game;
 
 /**
@@ -13,7 +15,7 @@ import rpg.logic.level.Game;
  * @author Alon
  *
  */
-public abstract class Element implements Mechanism {
+public abstract class Element implements Drawable, Updatable {
 
 	public static double distance(Element a, Element b) {
 		return Vector2D.distance(a.getLocation(), b.getLocation());
@@ -26,24 +28,38 @@ public abstract class Element implements Mechanism {
 	 * is abstract, this constructor cannot be called directly.
 	 * 
 	 * @param location
-	 *            the location of this element
+	 *            the initial location of this element
 	 */
-	public Element(Vector2D location) {
+	protected Element(Vector2D location) {
 		this.location = location;
 	}
 
-	public Rectangle getAbsoluteRect() {
+	/**
+	 * Returns a bounding rectangle of this element. Bounding rectangles are
+	 * used for a simple algorithm of collision detection.
+	 * 
+	 * @return the bounding rectangle of this element
+	 * @see #getRelativeRect()
+	 */
+	public final Rectangle getAbsoluteRect() {
 		Rectangle rel = getRelativeRect();
 		Vector2D location = getLocation();
 		return new Rectangle(location.getX() + rel.getX(), location.getY() + rel.getY(), rel.getWidth(),
 				rel.getHeight());
 	}
 
-	public abstract Drawer getDrawer();
-
-	public abstract int getIndex();
+	/**
+	 * Returns the depth at which this element will be drawn.
+	 * 
+	 * @return this element's depth
+	 * @see Depth
+	 */
+	public abstract Depth getDepth();
 
 	/**
+	 * Returns the current location of this element. For most elements, this is
+	 * a constant value. It is changed mostly for moving element such
+	 * {@link Player}, {@link Fireball}, etc.
 	 * 
 	 * @return the location of this element
 	 */
@@ -51,10 +67,39 @@ public abstract class Element implements Mechanism {
 		return location;
 	}
 
+	/**
+	 * Returns a bounding rectangle of this element, such that its x-y
+	 * coordinates are relative to this element's position. Bounding rectangles
+	 * are used for a simple algorithm of collision detection.
+	 * <p/>
+	 * The implementation is then used to find the absolute bounding rectangle.
+	 * 
+	 * @return the relative bounding rectangle
+	 * @see #getAbsoluteRect()
+	 */
 	public abstract Rectangle getRelativeRect();
 
+	/**
+	 * Returns <code>true</code> if the given element can pass through this one.
+	 * Otherwise returns false.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param other
+	 *            an element
+	 * @return whether <code>other</code> can pass through this element
+	 */
 	public abstract boolean isPassable(Game game, Element other);
 
+	/**
+	 * Determines what happens when this element collides with the given
+	 * element.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param other
+	 *            an element
+	 */
 	public abstract void onCollision(Game game, Element other);
 
 	/**
@@ -67,6 +112,15 @@ public abstract class Element implements Mechanism {
 		this.location = location;
 	}
 
+	/**
+	 * Returns a default string representation of this element in the following
+	 * format: {type}[location={location}], where {type} is this element's type
+	 * and {location} is its location. For example, assuming there is a class
+	 * <code>Ball</code> that <code>extends Element</code>: <br/>
+	 * <blockquote>Ball[location=(0.000,0.000)]</blockquote>
+	 * <p/>
+	 * It is highly recommended that subclasses override this method.
+	 */
 	@Override
 	public String toString() {
 		return String.format("%s[location=%s]", getClass().getName(), getLocation());

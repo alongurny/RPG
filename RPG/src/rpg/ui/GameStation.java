@@ -5,40 +5,49 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.Socket;
 
+import javax.swing.JFrame;
+
+import rpg.Messages;
 import rpg.network.GameClient;
 import rpg.network.IOHandler;
 
 public class GameStation {
 
-	private GameBoard gameBoard;
+	private JFrame frame;
+	private GamePanel panel;
 	private GameClient client;
 
 	public GameStation(Socket socket) throws IOException {
-		gameBoard = new GameBoard(480, 528);
-		gameBoard.setLocation(700, 40);
-		gameBoard.setAlwaysOnTop(true);
-		client = new GameClient(gameBoard.getPanel(), socket);
+		frame = new JFrame(Messages.getString("GameStation.title"));
+		frame.setLocation(700, 40);
+		frame.setAlwaysOnTop(true);
+		panel = new GamePanel();
+		frame.setSize(480, 540);
+		frame.add(panel);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		client = new GameClient(panel, socket);
 		IOHandler handler = new IOHandler(client);
 		addKeyListener(handler);
 		addMouseListener(handler);
 	}
 
 	public void addKeyListener(KeyListener listener) {
-		gameBoard.setFocusable(true);
-		gameBoard.addKeyListener(listener);
+		frame.setFocusable(true);
+		frame.addKeyListener(listener);
 	}
 
 	public void addMouseListener(MouseListener listener) {
-		gameBoard.setFocusable(true);
-		gameBoard.getPanel().addMouseListener(listener);
+		frame.setFocusable(true);
+		panel.addMouseListener(listener);
 	}
 
 	public void start() {
-		gameBoard.setVisible(true);
+		frame.setVisible(true);
 		new Thread(() -> {
 			while (true) {
 				client.sendCommands();
-				gameBoard.repaint();
+				frame.repaint();
 				try {
 					Thread.sleep(15);
 				} catch (Exception e) {

@@ -1,5 +1,7 @@
 package rpg.element.bonus;
 
+import rpg.Messages;
+import rpg.element.Depth;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
@@ -9,7 +11,8 @@ import rpg.logic.level.Game;
 
 public class ManaPotion extends Bonus {
 
-	private static final TileDrawer drawer = new TileDrawer(0, 24, 29);
+	private static final TileDrawer drawer = new TileDrawer(Messages.getInt("ManaPotion.tileset"),
+			Messages.getInt("ManaPotion.row"), Messages.getInt("ManaPotion.column"));
 
 	public ManaPotion(Vector2D location) {
 		super(location);
@@ -21,8 +24,8 @@ public class ManaPotion extends Bonus {
 	}
 
 	@Override
-	public int getIndex() {
-		return 1;
+	public Depth getDepth() {
+		return Depth.LOW;
 	}
 
 	@Override

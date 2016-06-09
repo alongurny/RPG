@@ -19,10 +19,24 @@ public abstract class Profession {
 
 	private List<Ability> abilities;
 
+	/**
+	 * 
+	 * Constructs a new instance of this class. An entity that has this
+	 * profession will be able to use the given abilities. Different instances
+	 * of {@link Entity} should NOT reference the same instance.
+	 * 
+	 * @param abilities
+	 *            an array of abilities that can be used with this profession
+	 */
 	protected Profession(Ability... abilities) {
 		this.abilities = Arrays.asList(abilities);
 	}
 
+	/**
+	 * Returns the abilities that the entity who has this profession can use.
+	 * 
+	 * @return the abilities associated with this profession
+	 */
 	public List<Ability> getAbilities() {
 		return abilities;
 	}

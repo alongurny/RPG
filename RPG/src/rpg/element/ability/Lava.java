@@ -1,6 +1,7 @@
 package rpg.element.ability;
 
 import rpg.ability.damage.DamageType;
+import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
@@ -28,8 +29,8 @@ public class Lava extends Element {
 	}
 
 	@Override
-	public int getIndex() {
-		return 1;
+	public Depth getDepth() {
+		return Depth.HIGH;
 	}
 
 	@Override

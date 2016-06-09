@@ -23,7 +23,8 @@ import rpg.logic.Grid;
 import rpg.logic.Timer;
 
 /**
- * <code>Game</code> is the main class that runs the whole game. It
+ * <code>Game</code> is the main class that runs the whole game. It consists of
+ * several things. A grid, which contains <b>static elements</b>
  * 
  * @author Alon
  *
@@ -93,7 +94,7 @@ public class Game {
 	public List<Element> getElements(Vector2D target) {
 		List<Element> elements = new ArrayList<>(this.elements);
 		elements.addAll(getStaticElements());
-		elements.sort((a, b) -> a.getIndex() - b.getIndex());
+		elements.sort((a, b) -> a.getDepth().compareTo(b.getDepth()));
 		elements.removeIf(e -> !e.getAbsoluteRect().contains(target));
 		return elements;
 	}
@@ -254,7 +255,7 @@ public class Game {
 			}
 		});
 		if (!toAdd.isEmpty() || !toRemove.isEmpty()) {
-			elements.sort((a, b) -> a.getIndex() - b.getIndex());
+			elements.sort((a, b) -> a.getDepth().compareTo(b.getDepth()));
 		}
 		toAdd.clear();
 		toRemove.clear();
