@@ -31,7 +31,7 @@ public class GameClient {
 
 	private TcpClient tcpClient;
 	private List<String> commands;
-	private TwoWayProtocol<Drawer, String> twoWayProtocol;
+	private TwoWayProtocol<Drawer, String> protocol;
 	private GamePanel panel;
 	private boolean showInventory;
 
@@ -39,7 +39,7 @@ public class GameClient {
 		commands = new CopyOnWriteArrayList<>();
 		tcpClient = new TcpClient(toServer);
 		tcpClient.send(Message.normal("selection " + profession));
-		twoWayProtocol = new DrawerProtocol();
+		protocol = new DrawerProtocol();
 		this.panel = panel;
 		tcpClient.addMessageListener(new MessageListener() {
 			@Override
@@ -49,18 +49,18 @@ public class GameClient {
 				} else if (data.equals("end")) {
 					panel.flush();
 				} else if (data.startsWith("dynamic ")) {
-					Drawer drawer = twoWayProtocol.decode(data.substring("dynamic ".length()));
+					Drawer drawer = protocol.decode(data.substring("dynamic ".length()));
 					panel.addDrawer(drawer);
 				} else if (data.startsWith("static ")) {
-					Drawer drawer = twoWayProtocol.decode(data.substring("static ".length()));
+					Drawer drawer = protocol.decode(data.substring("static ".length()));
 					panel.addStaticDrawer(drawer);
 				} else if (data.startsWith("location ")) {
 					panel.setOffsetByPlayerLocation(Vector2D.valueOf(data.substring("location ".length())));
 				} else if (data.startsWith("absolute ")) {
-					Drawer drawer = twoWayProtocol.decode(data.substring("absolute ".length()));
+					Drawer drawer = protocol.decode(data.substring("absolute ".length()));
 					panel.addAbsoluteDrawer(drawer);
 				} else if (data.startsWith("inventory ") && showInventory) {
-					Drawer drawer = twoWayProtocol.decode(data.substring("inventory ".length()));
+					Drawer drawer = protocol.decode(data.substring("inventory ".length()));
 					panel.addAbsoluteDrawer(drawer);
 				} else if (data.startsWith("dimensions ")) {
 					panel.setDimensions(Vector2D.valueOf(data.substring("dimensions ".length())));
