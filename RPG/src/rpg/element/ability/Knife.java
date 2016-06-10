@@ -28,6 +28,10 @@ public class Knife extends Element {
 		this.attacking = attacking;
 	}
 
+	public double getAngle() {
+		return angle;
+	}
+
 	public void setAngle(double angle) {
 		this.angle = angle;
 	}
@@ -47,7 +51,7 @@ public class Knife extends Element {
 
 	@Override
 	public void update(Game game, double dt) {
-		
+
 	}
 
 	@Override

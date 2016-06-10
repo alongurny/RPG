@@ -3,7 +3,6 @@ package rpg.network;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +78,8 @@ public class IOHandler {
 		ActionMap actionMap = client.getPanel().getActionMap();
 		inputMap.put(KeyStroke.getKeyStroke(key), key);
 		actionMap.put(key, new AbstractAction() {
+			private static final long serialVersionUID = -4714238509876241935L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				pressed.add(key);
@@ -92,6 +93,9 @@ public class IOHandler {
 		ActionMap actionMap = client.getPanel().getActionMap();
 		inputMap.put(KeyStroke.getKeyStroke("released " + key), "released " + key);
 		actionMap.put("released " + key, new AbstractAction() {
+
+			private static final long serialVersionUID = -4762110108621891896L;
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				pressed.remove(key);

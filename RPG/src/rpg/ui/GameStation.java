@@ -25,9 +25,9 @@ import rpg.network.IOHandler;
 public class GameStation {
 
 	private Map<String, String> professionsMap = new HashMap<>();
-	
-	private void load(Class<?> cls, Map<String, String> map) {
-		map.put(cls.getSimpleName(), cls.getName());
+
+	private void load(Class<?> cls) {
+		professionsMap.put(cls.getSimpleName(), cls.getName());
 	}
 
 	private JFrame frame;
@@ -37,10 +37,10 @@ public class GameStation {
 	private IOHandler handler;
 
 	public GameStation(Socket socket) {
-		load(FireMage.class, professionsMap);
-		load(FrostMage.class, professionsMap);
-		load(ForceMage.class, professionsMap);
-		load(AirMage.class, professionsMap);
+		load(FireMage.class);
+		load(FrostMage.class);
+		load(ForceMage.class);
+		load(AirMage.class);
 		panel = new GamePanel();
 		optionFrame = new JFrame("Last Bender");
 		optionFrame.setSize(600, 400);
