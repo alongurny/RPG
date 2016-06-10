@@ -140,7 +140,6 @@ public class Game {
 	public List<Element> getElements(Vector2D target) {
 		List<Element> elements = new ArrayList<>(this.elements);
 		elements.addAll(getStaticElements());
-		elements.sort((a, b) -> a.getDepth().compareTo(b.getDepth()));
 		elements.removeIf(e -> !e.getAbsoluteRect().contains(target));
 		return elements;
 	}

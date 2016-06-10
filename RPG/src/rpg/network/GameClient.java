@@ -22,7 +22,7 @@ public class GameClient {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {
 			try {
-				new GameStation(new Socket("localhost", 1234)).start();
+				new GameStation(new Socket("localhost", 1234));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

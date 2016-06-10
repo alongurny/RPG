@@ -24,7 +24,7 @@ public class TopHalfBlock extends Element {
 
 	@Override
 	public Depth getDepth() {
-		return Depth.HIGH;
+		return Depth.MEDIUM_HIGH;
 	}
 
 	@Override

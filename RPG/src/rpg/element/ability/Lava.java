@@ -30,7 +30,7 @@ public class Lava extends Element {
 
 	@Override
 	public Depth getDepth() {
-		return Depth.HIGH;
+		return Depth.MEDIUM;
 	}
 
 	@Override

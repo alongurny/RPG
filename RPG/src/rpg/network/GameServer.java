@@ -16,7 +16,6 @@ import network.event.MessageListener;
 import network.message.Message;
 import network.protocol.TwoWayProtocol;
 import rpg.element.Element;
-import rpg.element.entity.Player;
 import rpg.element.entity.profession.Profession;
 import rpg.element.entity.race.Race;
 import rpg.geometry.Vector2D;
@@ -26,48 +25,49 @@ import rpg.graphics.ShowInventory;
 import rpg.graphics.Translate;
 import rpg.logic.Tuple;
 import rpg.logic.level.Game;
-import rpg.logic.level.Level3;
+import rpg.logic.level.InterestingGame;
 
 public class GameServer {
 
 	public static final int PORT = 1234;
 
 	public static void main(String[] args) throws IOException {
-		Game game = new Level3();
+		Game game = new InterestingGame();
 		GameServer server = new GameServer(game);
 		server.start();
 	}
 
 	private static void execute(String string, Game game, TcpClient client) {
-		String[] arr = string.split(" ");
-		Player player = game.getPlayer(client).get();
-		String command = arr[0];
-		switch (command) {
-		case "moveBy":
-			game.tryMoveBy(player, Vector2D.valueOf(arr[1]));
-			break;
-		case "setLocation":
-			player.setLocation(Vector2D.valueOf(arr[1]));
-			break;
-		case "jump":
-			player.tryJump(game);
-			break;
-		case "fall":
-			player.tryFall(game);
-			break;
-		case "moveHorizontally":
-			player.moveHorizontally(Double.parseDouble(arr[1]));
-			break;
-		case "onClick":
-			game.onClick(player, Vector2D.valueOf(arr[1]));
-			break;
-		case "cast":
-			player.tryCast(game, Integer.parseInt(arr[1]));
-			break;
-		case "interact":
-			game.tryInteract(player);
-			break;
-		}
+		game.getPlayer(client).ifPresent(player -> {
+			String[] arr = string.split(" ");
+			String command = arr[0];
+			switch (command) {
+			case "moveBy":
+				game.tryMoveBy(player, Vector2D.valueOf(arr[1]));
+				break;
+			case "setLocation":
+				player.setLocation(Vector2D.valueOf(arr[1]));
+				break;
+			case "jump":
+				player.tryJump(game);
+				break;
+			case "fall":
+				player.tryFall(game);
+				break;
+			case "moveHorizontally":
+				player.moveHorizontally(Double.parseDouble(arr[1]));
+				break;
+			case "onClick":
+				game.onClick(player, Vector2D.valueOf(arr[1]));
+				break;
+			case "cast":
+				player.tryCast(game, Integer.parseInt(arr[1]));
+				break;
+			case "interact":
+				game.tryInteract(player);
+				break;
+			}
+		});
 	}
 
 	private boolean firstConnection;
@@ -197,12 +197,14 @@ public class GameServer {
 		}
 		server.forEach(c -> {
 			MultiAbilityDrawer mad = new MultiAbilityDrawer(120, 480);
-			Player p = game.getPlayer(c).get();
-			p.getAbilities().forEach(a -> mad.addAbility(p, a));
-			c.send(Message.data("absolute " + mad.getDrawer()));
-			c.send(Message.data("inventory " + new ShowInventory(160, 160, p).getDrawer()));
-			c.send(Message.data("location " + p.getLocation()));
-			c.send(Message.data("dimensions " + new Vector2D(game.getGrid().getWidth(), game.getGrid().getHeight())));
+			game.getPlayer(c).ifPresent(p -> {
+				p.getAbilities().forEach(a -> mad.addAbility(p, a));
+				c.send(Message.data("absolute " + mad.getDrawer()));
+				c.send(Message.data("inventory " + new ShowInventory(160, 160, p).getDrawer()));
+				c.send(Message.data("location " + p.getLocation()));
+				c.send(Message
+						.data("dimensions " + new Vector2D(game.getGrid().getWidth(), game.getGrid().getHeight())));
+			});
 		});
 		server.send(Message.data("end"));
 	}
