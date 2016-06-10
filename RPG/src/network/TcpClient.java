@@ -90,9 +90,7 @@ public class TcpClient implements Closeable {
 	 *            a disconnect listener
 	 */
 	public void addDisconnectListener(DisconnectListener listener) {
-		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("client is listening");
-		}
+		verifyNotListening();
 		disconnectListeners.add(listener);
 	}
 
@@ -103,9 +101,7 @@ public class TcpClient implements Closeable {
 	 *            a message listener
 	 */
 	public void addMessageListener(MessageListener listener) {
-		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("client is listening");
-		}
+		verifyNotListening();
 		messageListeners.add(listener);
 	}
 
@@ -130,9 +126,7 @@ public class TcpClient implements Closeable {
 	 * messages from the server.
 	 */
 	public void listen() {
-		if (state != State.NOT_LISTENING) {
-			throw new IllegalStateException("Already started");
-		}
+		verifyNotListening();
 		state = State.LISTENING;
 		new Thread(() -> {
 			Optional<Message> message = receive();
@@ -161,9 +155,7 @@ public class TcpClient implements Closeable {
 	 * Stops this client. It will no longer receive messages from the server.
 	 */
 	public void stop() {
-		if (state != State.LISTENING) {
-			throw new IllegalStateException("Not started");
-		}
+		verifyNotListening();
 		state = State.NOT_LISTENING;
 	}
 
@@ -175,6 +167,24 @@ public class TcpClient implements Closeable {
 		} catch (IOException e) {
 		}
 		return Optional.ofNullable(res);
+	}
+
+	/**
+	 * Removes a message listener that was added by
+	 * {@link #addMessageListener(MessageListener) addMessageListener}. If the
+	 * listener does not exist, does nothing.
+	 * 
+	 * @param messageListener
+	 */
+	public void removeMessageListener(MessageListener messageListener) {
+		verifyNotListening();
+		messageListeners.remove(messageListener);
+	}
+
+	private void verifyNotListening() {
+		if (state != State.LISTENING) {
+			throw new IllegalStateException("Not started");
+		}
 	}
 
 }

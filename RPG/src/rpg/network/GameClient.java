@@ -35,9 +35,10 @@ public class GameClient {
 	private GamePanel panel;
 	private boolean showInventory;
 
-	public GameClient(GamePanel panel, Socket toServer) throws IOException {
+	public GameClient(GamePanel panel, Socket toServer, String race, String profession) throws IOException {
 		commands = new CopyOnWriteArrayList<>();
 		tcpClient = new TcpClient(toServer);
+		tcpClient.send(Message.data("selection " + race + " " + profession));
 		twoWayProtocol = new DrawerProtocol();
 		this.panel = panel;
 		tcpClient.addMessageListener(new MessageListener() {

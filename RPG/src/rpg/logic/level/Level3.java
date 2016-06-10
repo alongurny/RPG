@@ -2,7 +2,6 @@ package rpg.logic.level;
 
 import rpg.element.map.Block;
 import rpg.element.map.BottomHalfBlock;
-import rpg.element.map.TopHalfBlock;
 
 public class Level3 extends Game {
 
@@ -12,7 +11,6 @@ public class Level3 extends Game {
 	public Level3() {
 		super(ROWS, COLUMNS);
 		addDynamicElement(new BottomHalfBlock(getGrid().getLocation(10, 5)));
-		addDynamicElement(new TopHalfBlock(getGrid().getLocation(10, 5)));
 		for (int c = 0; c < COLUMNS; c++) {
 			addDynamicElement(new Block(getGrid().getLocation(ROWS - 1, c)));
 		}

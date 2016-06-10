@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import external.Messages;
 import rpg.network.GameClient;
@@ -26,7 +27,8 @@ public class GameStation {
 		frame.add(panel);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		client = new GameClient(panel, socket);
+		client = new GameClient(panel, socket, JOptionPane.showInputDialog("race"),
+				JOptionPane.showInputDialog("profession"));
 		handler = new IOHandler(client);
 	}
 

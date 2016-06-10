@@ -11,12 +11,14 @@ import network.TcpClient;
 import network.event.ConnectListener;
 import network.event.ConnectionEvent;
 import network.event.DisconnectListener;
+import network.event.MessageEvent;
+import network.event.MessageListener;
 import network.message.Message;
 import network.protocol.TwoWayProtocol;
 import rpg.element.Element;
-import rpg.element.entity.Avatar;
 import rpg.element.entity.Player;
-import rpg.element.entity.race.Human;
+import rpg.element.entity.profession.Profession;
+import rpg.element.entity.race.Race;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.MultiAbilityDrawer;
@@ -86,10 +88,30 @@ public class GameServer {
 			@Override
 			public void onConnect(ConnectionEvent e) {
 				TcpClient c = e.getClient();
-				game.addPlayer(c, new Human(), new Avatar());
-				if (game.isReady()) {
-					firstConnection = true;
-				}
+				c.addMessageListener(new MessageListener() {
+					boolean received = false;
+
+					@Override
+					public void onReceive(MessageEvent e) {
+						if (!received && e.getMessage().getType() == Message.Type.DATA) {
+							String line = e.getMessage().getData();
+							if (line.startsWith("selection")) {
+								String[] arr = line.split(" ");
+								try {
+									game.addPlayer(c, (Race) Class.forName(arr[1]).newInstance(),
+											(Profession) Class.forName(arr[2]).newInstance());
+									if (game.isReady()) {
+										firstConnection = true;
+									}
+								} catch (Exception ex) {
+									ex.printStackTrace();
+								}
+							}
+							received = true;
+						}
+					}
+				});
+				c.addMessageListener(ev -> receivedCommands.add(Tuple.of(ev.getMessage().getData(), e.getClient())));
 			}
 		});
 		server.addDisconnectListener(new DisconnectListener() {
@@ -99,7 +121,6 @@ public class GameServer {
 				game.removePlayer(e.getClient());
 			}
 		});
-		server.addMessageListener(e -> receivedCommands.add(Tuple.of(e.getMessage().getData(), e.getClient())));
 	}
 
 	public boolean isAllowed(String command) {

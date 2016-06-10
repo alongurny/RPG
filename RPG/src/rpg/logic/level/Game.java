@@ -3,7 +3,6 @@ package rpg.logic.level;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -206,11 +205,11 @@ public class Game {
 	}
 
 	public void removePlayer(TcpClient c) {
-		Entry<Integer, Player> entry = players.entrySet().stream().filter(e -> e.getValue().getClient() == c)
-				.findFirst().get();
-		removeDynamicElement(entry.getValue());
-		players.remove(entry.getKey());
-		boundIndices.remove(entry.getKey());
+		players.entrySet().stream().filter(e -> e.getValue().getClient() == c).findFirst().ifPresent(entry -> {
+			removeDynamicElement(entry.getValue());
+			players.remove(entry.getKey());
+			boundIndices.remove(entry.getKey());
+		});
 	}
 
 	public void setNextLevel(Game nextLevel) {
