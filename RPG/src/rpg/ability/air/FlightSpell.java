@@ -1,4 +1,4 @@
-package rpg.ability.force;
+package rpg.ability.air;
 
 import rpg.ability.Ability;
 import rpg.element.entity.Entity;

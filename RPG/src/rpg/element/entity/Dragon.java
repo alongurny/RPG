@@ -1,32 +1,36 @@
 package rpg.element.entity;
 
-import external.Messages;
 import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.element.bonus.HealthPotion;
 import rpg.element.entity.profession.DragonProfession;
-import rpg.element.entity.race.DragonRace;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.DrawIcon;
 import rpg.graphics.Drawer;
 import rpg.logic.level.Game;
 
 public class Dragon extends Entity {
-	private static int width = 32, height = 32;
 
-	private Drawer drawer;
+	private Vector2D prevVelocity;
 
 	public Dragon(Vector2D location) {
-		super(location, new DragonRace(), new DragonProfession());
-		drawer = new DrawIcon(Messages.getString("Dragon.img"), 32, 32); //$NON-NLS-1$
+		super(location, new DragonProfession());
+		setVelocity(new Vector2D(-getSpeed(), 0));
 	}
 
 	@Override
 	public void act(Game game, double dt) {
+		if (getVelocity().getMagnitude() > 0) {
+			prevVelocity = getVelocity();
+			if (!game.getObstacles(this, getLocation().add(getVelocity().getUnitalVector().multiply(8))).isEmpty()) {
+				setVelocity(getVelocity().negate());
+			}
+		} else {
+			setVelocity(prevVelocity);
+		}
 		if (isAlive()) {
-			game.getDynamicElements().stream().filter(p -> p instanceof Player).findFirst()
-					.ifPresent(p -> tryCast(game, 0));
+			setTarget(game.getDynamicElements().stream().filter(p -> p instanceof Player).findFirst());
+			tryCast(game, 0);
 		} else {
 			game.addDynamicElement(new HealthPotion(getLocation()));
 			game.removeDynamicElement(this);
@@ -36,12 +40,12 @@ public class Dragon extends Entity {
 
 	@Override
 	public Depth getDepth() {
-		return Depth.TOP;
+		return Depth.HIGH;
 	}
 
 	@Override
 	public Rectangle getRelativeRect() {
-		return new Rectangle(-width / 2, -height / 2, width, height);
+		return new Rectangle(-60, -70, 120, 140);
 	}
 
 	@Override
@@ -51,9 +55,6 @@ public class Dragon extends Entity {
 
 	@Override
 	public boolean isPassable(Game game, Element other) {
-		if (other instanceof Entity) {
-			return false;
-		}
 		return true;
 	}
 
@@ -64,7 +65,7 @@ public class Dragon extends Entity {
 
 	@Override
 	protected Drawer getEntityDrawer() {
-		return drawer;
+		return getVelocity().getX() > 0 ? getProfession().getRightDrawer() : getProfession().getLeftDrawer();
 	}
 
 }

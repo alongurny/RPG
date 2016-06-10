@@ -1,20 +1,24 @@
 package rpg.element.entity.profession;
 
+import external.Messages;
 import rpg.ability.damage.DamageType;
 import rpg.ability.force.HasteSpell;
 import rpg.ability.force.MagicMissileSpell;
-import rpg.element.entity.Attribute;
 import rpg.element.entity.Entity;
+import rpg.graphics.Drawer;
+import rpg.graphics.TileDrawer;
 
-public class ForceMage extends Profession {
+public class ForceMage extends Mage {
+
+	private Drawer leftDrawer;
+	private Drawer rightDrawer;
 
 	public ForceMage() {
 		super(new HasteSpell(), new MagicMissileSpell());
-	}
-
-	@Override
-	public double getMaxMana(Entity entity) {
-		return 40 + entity.getAttribute(Attribute.INT);
+		leftDrawer = TileDrawer.sprite(Messages.getInt("ForceMage.tileset"), Messages.getInt("ForceMage.left.row"),
+				Messages.getInt("ForceMage.left.firstColumn"), Messages.getInt("ForceMage.left.lastColumn"));
+		rightDrawer = TileDrawer.sprite(Messages.getInt("ForceMage.tileset"), Messages.getInt("ForceMage.right.row"),
+				Messages.getInt("ForceMage.right.firstColumn"), Messages.getInt("ForceMage.right.lastColumn"));
 	}
 
 	/**
@@ -25,6 +29,16 @@ public class ForceMage extends Profession {
 	@Override
 	public double getResistance(Entity entity, DamageType type) {
 		return type == DamageType.FORCE ? entity.getRank() * 3 : 0;
+	}
+	
+	@Override
+	public Drawer getLeftDrawer() {
+		return leftDrawer;
+	}
+	
+	@Override
+	public Drawer getRightDrawer() {
+		return rightDrawer;
 	}
 
 }

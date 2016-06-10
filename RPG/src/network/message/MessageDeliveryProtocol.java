@@ -2,6 +2,12 @@ package network.message;
 
 import network.protocol.TwoWayProtocol;
 
+/**
+ * This protocol is used to encode and decode messages.
+ * 
+ * @author Alon
+ *
+ */
 public class MessageDeliveryProtocol implements TwoWayProtocol<Message, String> {
 
 	@Override

@@ -1,19 +1,56 @@
 package network.message;
 
+/**
+ * A message contains two primary fields: data, and a type. Messages are a way
+ * to wrap the string that is sent via the network.
+ * 
+ * @author Alon
+ *
+ */
 public class Message {
 
 	public enum Type {
-		DATA, METADATA
+
+		/**
+		 * The normal data that is sent through the network.
+		 */
+		NORMAL, /**
+				 * Metata: should not be used by regular clients.
+				 */
+		METADATA
 	}
 
+	/**
+	 * Creates a new message with the given type and data.
+	 * 
+	 * @param type
+	 *            a type
+	 * @param data
+	 *            data
+	 * @return a new message
+	 */
 	public static Message create(Type type, String data) {
 		return new Message(type, data);
 	}
 
-	public static Message data(String text) {
-		return new Message(Type.DATA, text);
+	/**
+	 * Creates a new message with type "normal" and data.
+	 * 
+	 * @param data
+	 *            data
+	 * @return a new message
+	 */
+	public static Message normal(String text) {
+		return new Message(Type.NORMAL, text);
 	}
 
+	/**
+	 * Creates a new message with type "metadata" and data.
+	 * 
+	 * @param data
+	 *            data
+	 * @return a new message
+	 */
 	public static Message metadata(String metadata) {
 		return new Message(Type.METADATA, metadata);
 	}
@@ -34,14 +71,29 @@ public class Message {
 		this.created = created;
 	}
 
+	/**
+	 * Returns the time at which this message was created.
+	 * 
+	 * @return the time at which this message was created
+	 */
 	public long getCreationTime() {
 		return created;
 	}
 
+	/**
+	 * Returns the data of the message.
+	 * 
+	 * @return the data of the message
+	 */
 	public String getData() {
 		return data;
 	}
 
+	/**
+	 * Returns the type of the message.
+	 * 
+	 * @return the type of the message
+	 */
 	public Type getType() {
 		return type;
 	}

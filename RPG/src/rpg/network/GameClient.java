@@ -35,10 +35,10 @@ public class GameClient {
 	private GamePanel panel;
 	private boolean showInventory;
 
-	public GameClient(GamePanel panel, Socket toServer, String race, String profession) throws IOException {
+	public GameClient(GamePanel panel, Socket toServer, String profession) throws IOException {
 		commands = new CopyOnWriteArrayList<>();
 		tcpClient = new TcpClient(toServer);
-		tcpClient.send(Message.data("selection " + race + " " + profession));
+		tcpClient.send(Message.normal("selection " + profession));
 		twoWayProtocol = new DrawerProtocol();
 		this.panel = panel;
 		tcpClient.addMessageListener(new MessageListener() {
@@ -80,7 +80,7 @@ public class GameClient {
 
 	public void sendCommands() {
 		for (String command : commands) {
-			tcpClient.send(Message.data(command));
+			tcpClient.send(Message.normal(command));
 		}
 		commands.clear();
 	}

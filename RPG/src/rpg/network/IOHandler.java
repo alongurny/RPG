@@ -5,12 +5,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
@@ -32,8 +33,8 @@ public class IOHandler {
 
 	public IOHandler(GameClient client) {
 		this.client = client;
-		pressed = new HashSet<>();
-		typedMap = new HashMap<>();
+		pressed = new ConcurrentSkipListSet<>();
+		typedMap = new ConcurrentHashMap<>();
 		initialize();
 	}
 
@@ -64,7 +65,7 @@ public class IOHandler {
 
 	private void bindKeyTyped(String key, Runnable runnable) {
 		if (!typedMap.containsKey(key)) {
-			typedMap.put(key, new ArrayList<>());
+			typedMap.put(key, new CopyOnWriteArrayList<>());
 		}
 		bindKeyPressed(key, () -> {
 		});

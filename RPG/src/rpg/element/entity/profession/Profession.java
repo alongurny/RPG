@@ -5,7 +5,9 @@ import java.util.List;
 
 import rpg.ability.Ability;
 import rpg.ability.damage.DamageType;
+import rpg.element.entity.Attribute;
 import rpg.element.entity.Entity;
+import rpg.graphics.Drawer;
 
 /**
  * A profession is what an individual does for living. One's profession includes
@@ -42,6 +44,16 @@ public abstract class Profession {
 	}
 
 	/**
+	 * Returns the addition to the given entity's maximum health, given by this
+	 * <code>Profession</code>.
+	 * 
+	 * @param entity
+	 *            an entity
+	 * @return the addition to <code>entity</code>'s maximum health
+	 */
+	public abstract double getMaxHealth(Entity entity);
+
+	/**
 	 * Returns the addition to the given entity's maximum mana, given by this
 	 * <code>Profession</code>.
 	 * 
@@ -63,5 +75,18 @@ public abstract class Profession {
 	 *         <code>DamageType</code>
 	 */
 	public abstract double getResistance(Entity entity, DamageType damageType);
+
+	/**
+	 * Returns the default value that is associated with this attribute.
+	 * 
+	 * @param attr
+	 *            an attribute
+	 * @return the value that is associated with this attribute
+	 */
+	public abstract int getAttribute(Attribute attr);
+
+	public abstract Drawer getLeftDrawer();
+
+	public abstract Drawer getRightDrawer();
 
 }

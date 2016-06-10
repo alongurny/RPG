@@ -13,8 +13,22 @@ package network.protocol;
  */
 public interface TwoWayProtocol<S, T> {
 
+	/**
+	 * Decodes a value.
+	 * 
+	 * @param the
+	 *            value to decode
+	 * @return the decoded value
+	 */
 	S decode(T n);
 
+	/**
+	 * Encodes a value.
+	 * 
+	 * @param the
+	 *            value to encode
+	 * @return the encoded value
+	 */
 	T encode(S d);
 
 }

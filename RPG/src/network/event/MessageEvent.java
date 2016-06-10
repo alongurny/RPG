@@ -16,10 +16,28 @@ public class MessageEvent {
 	private long arrival;
 	private TcpClient client;
 
+	/**
+	 * Constructs a new MessageEvent.
+	 * 
+	 * @param client
+	 *            the client that created this event
+	 * @param message
+	 *            the message that was sent
+	 */
 	public MessageEvent(TcpClient client, Message message) {
 		this(client, message, System.currentTimeMillis());
 	}
 
+	/**
+	 * Constructs a new MessageEvent.
+	 * 
+	 * @param client
+	 *            the client that created this event
+	 * @param message
+	 *            the message that was sent
+	 * @param arrival
+	 *            the time of arrival
+	 */
 	public MessageEvent(TcpClient client, Message message, long arrival) {
 		this.message = message;
 		this.arrival = arrival;
@@ -35,6 +53,11 @@ public class MessageEvent {
 		return arrival;
 	}
 
+	/**
+	 * Returns the client that created this event.
+	 * 
+	 * @return the client that created this event
+	 */
 	public TcpClient getClient() {
 		return client;
 	}

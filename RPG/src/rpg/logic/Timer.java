@@ -7,15 +7,33 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import rpg.element.Updatable;
 import rpg.logic.level.Game;
 
+/**
+ * This class is used by {@link Game} to schedule events.
+ * 
+ * @author Alon
+ *
+ */
 public class Timer implements Updatable {
 
 	private List<Tuple<Double, Runnable>> list;
 	private double time;
 
+	/**
+	 * Constructs a new timer.
+	 */
 	public Timer() {
 		list = new CopyOnWriteArrayList<>();
 	}
 
+	/**
+	 * Adds a new Runnable to this timer. The Runnable will be executed after
+	 * the given amount of time.
+	 * 
+	 * @param time
+	 *            the delay that after it the runnable will be executed
+	 * @param run
+	 *            the runnable
+	 */
 	public void add(double time, Runnable run) {
 		list.add(Tuple.of(this.time + time, run));
 	}

@@ -1,9 +1,26 @@
 package rpg.logic;
 
-import java.util.function.Function;
-
+/**
+ * This class represents a heterogeneous pair of two types.
+ * 
+ * @author Alon
+ *
+ * @param <A>
+ *            the first type
+ * @param <B>
+ *            the second type
+ */
 public class Tuple<A, B> {
 
+	/**
+	 * Constructs a new pair.
+	 * 
+	 * @param a
+	 *            the first entry
+	 * @param b
+	 *            the second entry
+	 * @return a new tuple
+	 */
 	public static <A, B> Tuple<A, B> of(A a, B b) {
 		return new Tuple<A, B>(a, b);
 	}
@@ -16,16 +33,19 @@ public class Tuple<A, B> {
 		this.second = second;
 	}
 
+	/**
+	 * Returns the first entry.
+	 * @return the first entry
+	 */
 	public A getFirst() {
 		return first;
 	}
-
+	/**
+	 * Returns the second entry.
+	 * @return the second entry
+	 */
 	public B getSecond() {
 		return second;
-	}
-
-	public <C> C match(Function<A, Function<B, C>> f) {
-		return f.apply(getFirst()).apply(getSecond());
 	}
 
 }

@@ -18,7 +18,7 @@ public class FireballSpell extends EntityTargetAbility {
 	private DiceSet dice;
 
 	public FireballSpell() {
-		super(2, 5);
+		super(12, 5);
 		this.speed = 192;
 		drawer = new DrawIcon(Messages.getString("FireballSpell.img"), 32, 32); //$NON-NLS-1$
 		dice = DiceSet.repeat(3, Dice.get(6));

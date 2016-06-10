@@ -15,7 +15,6 @@ import rpg.element.Interactive;
 import rpg.element.entity.Entity;
 import rpg.element.entity.Player;
 import rpg.element.entity.profession.Profession;
-import rpg.element.entity.race.Race;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;
@@ -100,10 +99,10 @@ public class Game {
 	 * @param profession
 	 *            the new player's profession
 	 */
-	public void addPlayer(TcpClient client, Race race, Profession profession) {
+	public void addPlayer(TcpClient client, Profession profession) {
 		if (players.size() < initialLocations.size()) {
 			int index = getFreeIndex();
-			Player player = new Player(client, initialLocations.get(index), race, profession);
+			Player player = new Player(client, initialLocations.get(index), profession);
 			boundIndices.add(index);
 			players.put(index, player);
 			elements.add(player);

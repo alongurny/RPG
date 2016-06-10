@@ -17,7 +17,6 @@ import network.message.Message;
 import network.protocol.TwoWayProtocol;
 import rpg.element.Element;
 import rpg.element.entity.profession.Profession;
-import rpg.element.entity.race.Race;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.MultiAbilityDrawer;
@@ -93,13 +92,12 @@ public class GameServer {
 
 					@Override
 					public void onReceive(MessageEvent e) {
-						if (!received && e.getMessage().getType() == Message.Type.DATA) {
+						if (!received && e.getMessage().getType() == Message.Type.NORMAL) {
 							String line = e.getMessage().getData();
 							if (line.startsWith("selection")) {
 								String[] arr = line.split(" ");
 								try {
-									game.addPlayer(c, (Race) Class.forName(arr[1]).newInstance(),
-											(Profession) Class.forName(arr[2]).newInstance());
+									game.addPlayer(c, (Profession) Class.forName(arr[1]).newInstance());
 									if (game.isReady()) {
 										firstConnection = true;
 									}
@@ -178,20 +176,20 @@ public class GameServer {
 	}
 
 	private void send() {
-		server.send(Message.data("start"));
+		server.send(Message.normal("start"));
 		for (Element e : game.getDynamicElements()) {
 			Translate t = new Translate((int) e.getLocation().getX(), (int) e.getLocation().getY());
-			server.send(Message.data("dynamic " + twoWayProtocol.encode(t)));
-			server.send(Message.data("dynamic " + e.getDrawer()));
-			server.send(Message.data("dynamic " + twoWayProtocol.encode(t.negate())));
+			server.send(Message.normal("dynamic " + twoWayProtocol.encode(t)));
+			server.send(Message.normal("dynamic " + e.getDrawer()));
+			server.send(Message.normal("dynamic " + twoWayProtocol.encode(t.negate())));
 		}
 		if (firstConnection) {
 			for (Element e : game.getStaticElements()) {
 				String t1 = new Translate((int) e.getLocation().getX(), (int) e.getLocation().getY()).represent();
 				String t2 = new Translate((int) -e.getLocation().getX(), (int) -e.getLocation().getY()).represent();
-				server.send(Message.data("static " + t1));
-				server.send(Message.data("static " + e.getDrawer()));
-				server.send(Message.data("static " + t2));
+				server.send(Message.normal("static " + t1));
+				server.send(Message.normal("static " + e.getDrawer()));
+				server.send(Message.normal("static " + t2));
 			}
 			firstConnection = false;
 		}
@@ -199,14 +197,14 @@ public class GameServer {
 			MultiAbilityDrawer mad = new MultiAbilityDrawer(120, 480);
 			game.getPlayer(c).ifPresent(p -> {
 				p.getAbilities().forEach(a -> mad.addAbility(p, a));
-				c.send(Message.data("absolute " + mad.getDrawer()));
-				c.send(Message.data("inventory " + new ShowInventory(160, 160, p).getDrawer()));
-				c.send(Message.data("location " + p.getLocation()));
+				c.send(Message.normal("absolute " + mad.getDrawer()));
+				c.send(Message.normal("inventory " + new ShowInventory(160, 160, p).getDrawer()));
+				c.send(Message.normal("location " + p.getLocation()));
 				c.send(Message
-						.data("dimensions " + new Vector2D(game.getGrid().getWidth(), game.getGrid().getHeight())));
+						.normal("dimensions " + new Vector2D(game.getGrid().getWidth(), game.getGrid().getHeight())));
 			});
 		});
-		server.send(Message.data("end"));
+		server.send(Message.normal("end"));
 	}
 
 }

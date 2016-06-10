@@ -5,12 +5,10 @@ import rpg.element.Element;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
+import rpg.graphics.StretchedTileDrawer;
 import rpg.logic.level.Game;
 
 public class IceBlock extends Element {
-
-	public static final Drawer sprite = new TileDrawer(0, 16, 27);
 
 	private double size;
 
@@ -21,7 +19,7 @@ public class IceBlock extends Element {
 
 	@Override
 	public Drawer getDrawer() {
-		return sprite;
+		return new StretchedTileDrawer(0, 16, 27, (int) size, (int) size);
 	}
 
 	@Override

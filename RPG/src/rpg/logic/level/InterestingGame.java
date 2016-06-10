@@ -28,7 +28,7 @@ public class InterestingGame extends Game {
 		addInitialLocation(getGrid().getLocation(ROWS - 2, 19));
 		addInitialLocation(getGrid().getLocation(ROWS - 2, 35));
 		addInitialLocation(getGrid().getLocation(ROWS - 2, 51));
-		addDynamicElement(new Dragon(getGrid().getLocation(ROWS - 2, 12)));
+		addDynamicElement(new Dragon(getGrid().getLocation(ROWS - 7, 12)));
 		Arrays.stream(Portal.getPair(getGrid().getLocation(ROWS - 2, 24), getGrid().getLocation(ROWS - 2, 32)))
 				.forEach(this::addDynamicElement);
 

@@ -32,7 +32,7 @@ public class MagicMissileSpell extends EntityTargetAbility {
 
 	@Override
 	public void onCast(Game game, Entity caster, Entity entity) {
-		Vector2D location = caster.getLocation();
+		Vector2D location = caster.getLocation().add(new Vector2D(0, -caster.getRelativeRect().getHeight() / 2));
 		game.addDynamicElement(new MagicMissile(caster, location, speed, entity, () -> (double) dice.roll()));
 	}
 

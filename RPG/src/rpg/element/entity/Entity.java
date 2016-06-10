@@ -12,7 +12,6 @@ import rpg.ability.Ability;
 import rpg.ability.damage.DamageType;
 import rpg.element.Element;
 import rpg.element.entity.profession.Profession;
-import rpg.element.entity.race.Race;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.ScaleDrawer;
@@ -29,7 +28,6 @@ import rpg.logic.level.Game;
  */
 public abstract class Entity extends Element {
 
-	private Race race;
 	private Profession profession;
 	private List<String> effects;
 	private List<Item> inventory;
@@ -41,10 +39,9 @@ public abstract class Entity extends Element {
 	private Map<Attribute, Double> attributes;
 	private Map<Attribute, Double> temporary;
 
-	public Entity(Vector2D location, Race race, Profession profession) {
+	public Entity(Vector2D location, Profession profession) {
 		super(location);
 		initAttributes();
-		this.race = race;
 		this.profession = profession;
 		this.health = getMaxHealth();
 		this.mana = getMaxMana();
@@ -54,6 +51,10 @@ public abstract class Entity extends Element {
 		this.acceleration = Vector2D.ZERO;
 		inventory = new ArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
+	}
+
+	public Profession getProfession() {
+		return profession;
 	}
 
 	public abstract void act(Game game, double dt);
@@ -99,7 +100,7 @@ public abstract class Entity extends Element {
 	}
 
 	public double getAttribute(Attribute attr) {
-		return attributes.get(attr) + race.getAttribute(attr) + temporary.get(attr);
+		return attributes.get(attr) + profession.getAttribute(attr) + temporary.get(attr);
 	}
 
 	public Vector2D getDirection() {
@@ -131,15 +132,11 @@ public abstract class Entity extends Element {
 	}
 
 	public double getMaxHealth() {
-		return race.getMaxHealth(this);
+		return profession.getMaxHealth(this);
 	}
 
 	public double getMaxMana() {
-		return race.getMaxMana(this) + profession.getMaxMana(this);
-	}
-
-	public double getModifier(Attribute attr) {
-		return getAttribute(attr) - 10;
+		return profession.getMaxMana(this);
 	}
 
 	public int getRank() {
@@ -151,7 +148,7 @@ public abstract class Entity extends Element {
 	}
 
 	public double getSpeed() {
-		return race.getSpeed(this) + 16 * getModifier(Attribute.DEX);
+		return 10 * getAttribute(Attribute.DEX) - 36;
 	}
 
 	public Optional<Element> getTarget() {
@@ -232,8 +229,10 @@ public abstract class Entity extends Element {
 	@Override
 	public void update(Game game, double dt) {
 		getAbilities().forEach(a -> a.update(game, dt));
-		move(game, dt);
-		act(game, dt);
+		if (isAlive()) {
+			move(game, dt);
+			act(game, dt);
+		}
 	}
 
 	protected abstract Drawer getEntityDrawer();

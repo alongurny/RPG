@@ -1,7 +1,22 @@
 package rpg.geometry;
 
+/**
+ * This class represents a rectangle.
+ * 
+ * @author Alon
+ *
+ */
 public class Rectangle {
 
+	/**
+	 * Returns the intersection of two rectangle.
+	 * 
+	 * @param a
+	 *            a rectangle
+	 * @param b
+	 *            another rectangle
+	 * @return the intersection rectangle
+	 */
 	public static Rectangle intersect(Rectangle a, Rectangle b) {
 		double x1 = Math.max(a.getMinX(), b.getMinX());
 		double y1 = Math.max(a.getMinY(), b.getMinY());
@@ -14,6 +29,19 @@ public class Rectangle {
 
 	private double width, height;
 
+	/**
+	 * Constructs a new rectangle such that its upper-left corner is (x, y) and
+	 * its dimensions are (width, height).
+	 * 
+	 * @param x
+	 *            left coordinate
+	 * @param y
+	 *            top coordinate
+	 * @param width
+	 *            the width
+	 * @param height
+	 *            the height
+	 */
 	public Rectangle(double x, double y, double width, double height) {
 		this.x = x;
 		this.y = y;
@@ -21,42 +49,79 @@ public class Rectangle {
 		this.height = height;
 	}
 
-	public boolean contains(Vector2D v) {
-		return getMinX() <= v.getX() && v.getX() <= getMaxX() && getMinY() <= v.getY() && v.getY() <= getMaxY();
+	/**
+	 * Returns <code>true</code> if the given point is contained in this
+	 * rectangle.
+	 * 
+	 * @param point
+	 * @return
+	 */
+	public boolean contains(Vector2D point) {
+		return getMinX() <= point.getX() && point.getX() <= getMaxX() && getMinY() <= point.getY()
+				&& point.getY() <= getMaxY();
 	}
 
+	/**
+	 * Returns the height.
+	 * 
+	 * @return the height
+	 */
 	public double getHeight() {
 		return height;
 	}
 
-	public double getMaxX() {
+	private double getMaxX() {
 		return getX() + getWidth();
 	}
 
-	public double getMaxY() {
+	private double getMaxY() {
 		return getY() + getHeight();
 	}
 
-	public double getMinX() {
+	private double getMinX() {
 		return getX();
 	}
 
-	public double getMinY() {
+	private double getMinY() {
 		return getY();
 	}
 
+	/**
+	 * Returns the width.
+	 * 
+	 * @return the width.
+	 */
 	public double getWidth() {
 		return width;
 	}
 
+	/**
+	 * Returns the x-coordinate.
+	 * 
+	 * @return the x-coordinate
+	 */
 	public double getX() {
 		return x;
 	}
 
+	/**
+	 * Returns the y-coordinate.
+	 * 
+	 * @return the y-coordinate
+	 */
 	public double getY() {
 		return y;
 	}
 
+	/**
+	 * Returns <code>true</code> if the rectangles intersect, and
+	 * <code>false</code> otherwise.
+	 * 
+	 * @param r
+	 *            another rectangle
+	 * @return <code>true</code> if the rectangles intersect, and
+	 *         <code>false</code> otherwise
+	 */
 	public boolean intersects(Rectangle r) {
 		double tw = this.width + this.x;
 		double th = this.height + this.y;

@@ -5,7 +5,14 @@ import java.util.List;
 
 import rpg.element.Element;
 import rpg.geometry.Vector2D;
+import rpg.logic.level.Game;
 
+/**
+ * The grid is used to contain all the static elements of a {@link Game}.
+ * 
+ * @author Alon
+ *
+ */
 public class Grid {
 
 	private ElementArrayList[][] elements;

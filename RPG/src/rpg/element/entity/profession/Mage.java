@@ -28,5 +28,16 @@ public abstract class Mage extends Profession {
 	public double getMaxMana(Entity entity) {
 		return 40 + entity.getAttribute(Attribute.INT);
 	}
+	
+	@Override
+	public double getMaxHealth(Entity entity) {
+		return 42 + 0.5 * entity.getAttribute(Attribute.CON);
+	}
+	
+	@Override
+	public int getAttribute(Attribute attr) {
+		return attr == Attribute.INT ? 2 : 0;
+	}
+	
 
 }
