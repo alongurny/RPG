@@ -44,7 +44,7 @@ public class GameServer {
 		String command = arr[0];
 		switch (command) {
 		case "moveBy":
-			game.getObstaclesFromMoveBy(player, Vector2D.valueOf(arr[1]));
+			game.tryMoveBy(player, Vector2D.valueOf(arr[1]));
 			break;
 		case "setLocation":
 			player.setLocation(Vector2D.valueOf(arr[1]));

@@ -182,8 +182,8 @@ public class TcpClient implements Closeable {
 	}
 
 	private void verifyNotListening() {
-		if (state != State.LISTENING) {
-			throw new IllegalStateException("Not started");
+		if (state != State.NOT_LISTENING) {
+			throw new IllegalStateException("Listening already");
 		}
 	}
 

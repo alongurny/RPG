@@ -46,6 +46,15 @@ public class Game {
 	private Set<Integer> boundIndices;
 	private Map<Integer, Player> players;
 
+	/**
+	 * Constructs a new game with a new grid.
+	 * 
+	 * @param rows
+	 *            the number of rows of the grid.
+	 * @param cols
+	 *            the number of columns of the grid.
+	 * @see Grid
+	 */
 	public Game(int rows, int cols) {
 		elements = new CopyOnWriteArrayList<>();
 		toRemove = new CopyOnWriteArrayList<>();
@@ -57,14 +66,40 @@ public class Game {
 		boundIndices = new ConcurrentSkipListSet<>();
 	}
 
+	/**
+	 * Add a new dynamic element. Dynamic elements are not guaranteed to be
+	 * static - they can move.
+	 * 
+	 * @param element
+	 *            the element to add
+	 */
 	public void addDynamicElement(Element element) {
 		toAdd.add(element);
 	}
 
+	/**
+	 * Add a new location in which the next player will be placed. This class
+	 * tracks these initial locations, so if, for example, players A, B and C
+	 * are placed in locations X, Y and Z and then B disconnects, the next
+	 * player D will be placed at Y.
+	 * 
+	 * @param location
+	 */
 	public void addInitialLocation(Vector2D location) {
 		initialLocations.add(location);
 	}
 
+	/**
+	 * Add a new player to the game, given the client that wants to create it, a
+	 * race and a profession.
+	 * 
+	 * @param client
+	 *            the client that created this player
+	 * @param race
+	 *            the new player's race
+	 * @param profession
+	 *            the new player's profession
+	 */
 	public void addPlayer(TcpClient client, Race race, Profession profession) {
 		if (players.size() < initialLocations.size()) {
 			int index = getFreeIndex();
@@ -75,8 +110,15 @@ public class Game {
 		}
 	}
 
-	public void addStaticElement(Element e) {
-		grid.add(e);
+	/**
+	 * Add a new static element to the game. Static elements are guaranteed not
+	 * to move after being added to the game.
+	 * 
+	 * @param element
+	 *            a static element to add
+	 */
+	public void addStaticElement(Element element) {
+		grid.add(element);
 	}
 
 	public void addTimer(double time, Runnable run) {
@@ -111,6 +153,20 @@ public class Game {
 		return nextLevel;
 	}
 
+	/**
+	 * Returns the obstacles that block an element's way to a target. More
+	 * specifically, it returns all the elements that have their bounding
+	 * rectangle intersect with the given element's one, and are not passable
+	 * for this element.
+	 * 
+	 * @param element
+	 *            the element
+	 * @param target
+	 *            the target
+	 * @return all the obstacles in the element's way
+	 * @see Element#getAbsoluteRect()
+	 * @see Element#isPassable(Game, Element)
+	 */
 	public List<Element> getObstacles(Element element, Vector2D target) {
 		Rectangle oldRect = element.getAbsoluteRect();
 		double x = target.getX() - element.getLocation().getX() + oldRect.getX();
@@ -132,18 +188,6 @@ public class Game {
 			}
 		}
 		return obstacles;
-	}
-
-	public List<Element> getObstaclesFromMove(Element element, Vector2D target) {
-		List<Element> obstacles = getObstacles(element, target);
-		if (obstacles.isEmpty()) {
-			element.setLocation(target);
-		}
-		return obstacles;
-	}
-
-	public List<Element> getObstaclesFromMoveBy(Element element, Vector2D displacement) {
-		return getObstaclesFromMove(element, element.getLocation().add(displacement));
 	}
 
 	public Optional<Player> getPlayer(TcpClient client) {
@@ -204,8 +248,14 @@ public class Game {
 		toRemove.add(element);
 	}
 
-	public void removePlayer(TcpClient c) {
-		players.entrySet().stream().filter(e -> e.getValue().getClient() == c).findFirst().ifPresent(entry -> {
+	/**
+	 * Removes any player that is associated with this client.
+	 * 
+	 * @param client
+	 *            The client
+	 */
+	public void removePlayer(TcpClient client) {
+		players.entrySet().stream().filter(e -> e.getValue().getClient() == client).findFirst().ifPresent(entry -> {
 			removeDynamicElement(entry.getValue());
 			players.remove(entry.getKey());
 			boundIndices.remove(entry.getKey());
@@ -239,11 +289,25 @@ public class Game {
 	}
 
 	public boolean tryMove(Element element, Vector2D target) {
-		return getObstaclesFromMove(element, target).isEmpty();
+		List<Element> obstacles = getObstacles(element, target);
+		if (obstacles.isEmpty()) {
+			element.setLocation(target);
+			return true;
+		}
+		return false;
 	}
 
 	public boolean tryMoveBy(Element element, Vector2D displacement) {
 		return getObstaclesFromMoveBy(element, displacement).isEmpty();
+	}
+
+	public List<Element> getObstaclesFromMoveBy(Element element, Vector2D displacement) {
+		Vector2D target = element.getLocation().add(displacement);
+		List<Element> obstacles = getObstacles(element, target);
+		if (obstacles.isEmpty()) {
+			element.setLocation(target);
+		}
+		return obstacles;
 	}
 
 	public void update(double dt) {
@@ -271,4 +335,5 @@ public class Game {
 		}
 		return i;
 	}
+
 }
