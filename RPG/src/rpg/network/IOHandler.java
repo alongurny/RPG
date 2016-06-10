@@ -87,7 +87,7 @@ public class IOHandler {
 		});
 	}
 
-	public void bindKeyReleased(String key, Runnable runnable) {
+	private void bindKeyReleased(String key, Runnable runnable) {
 		InputMap inputMap = client.getPanel().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = client.getPanel().getActionMap();
 		inputMap.put(KeyStroke.getKeyStroke("released " + key), "released " + key);
