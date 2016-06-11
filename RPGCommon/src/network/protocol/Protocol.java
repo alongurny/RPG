@@ -11,7 +11,7 @@ package network.protocol;
  * @param <T>
  *            the type that is received after encoding
  */
-public interface TwoWayProtocol<S, T> {
+public interface Protocol<S, T> {
 
 	/**
 	 * Decodes a value.

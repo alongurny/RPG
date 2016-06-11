@@ -54,6 +54,7 @@ public class GameStation {
 		optionFrame = new JFrame("Last Bender");
 		optionFrame.setSize(600, 400);
 		optionFrame.setLayout(new FlowLayout());
+		optionFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		optionFrame.add(new JLabel("Choose your profession: "));
 		ButtonGroup professionsGroup = new ButtonGroup();
 		for (String profession : professionsMap.keySet()) {
@@ -83,10 +84,10 @@ public class GameStation {
 					}
 				}
 				if (profession.isPresent()) {
-					optionFrame.setVisible(false);
 					client = new GameClient(panel, socket, profession.get());
 					handler = new IOHandler(client);
 					frame.setVisible(true);
+					optionFrame.setVisible(false);
 					new Thread(() -> {
 						while (true) {
 							client.sendCommands();

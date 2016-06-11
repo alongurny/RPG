@@ -4,10 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 
 import external.ImageResource;
+import rpg.logic.Lazy;
 
 public class DrawIcon extends Drawer {
 
-	private Image image;
+	private Lazy<Image> image;
 	private String path;
 	private int width, height;
 
@@ -15,12 +16,12 @@ public class DrawIcon extends Drawer {
 		this.width = width;
 		this.height = height;
 		this.path = path;
-		this.image = ImageResource.get(path).getImage();
+		this.image = new Lazy<>(() -> ImageResource.get(path).getImage());
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.drawImage(image, -width / 2, -height / 2, width, height, null);
+		g.drawImage(image.get(), -width / 2, -height / 2, width, height, null);
 	}
 
 	@Override

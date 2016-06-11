@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" always-add-relationships="true" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="rpg.ability.Ability" project="RPGServer" 
+    file="/RPGServer/src/rpg/ability/Ability.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="60" x="489" y="191"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <enumeration id="2" language="java" name="rpg.ability.damage.DamageType" project="RPGServer" 
+    file="/RPGServer/src/rpg/ability/damage/DamageType.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="97" x="591" y="499"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </enumeration>  
+  <class id="3" language="java" name="rpg.element.Depth" project="RPGServer" 
+    file="/RPGServer/src/rpg/element/Depth.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="59" x="673" y="422"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="network.TcpClient" project="RPGCommon" 
+    file="/RPGCommon/src/network/TcpClient.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="76" x="494" y="422"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <interface id="5" language="java" name="rpg.graphics.Drawable" project="RPGCommon" 
+    file="/RPGCommon/src/rpg/graphics/Drawable.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="78" x="104" y="268"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </interface>  
+  <class id="6" language="java" name="network.Switchboard" project="RPGCommon" 
+    file="/RPGCommon/src/network/Switchboard.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="96" x="327" y="345"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="rpg.geometry.Vector2D" project="RPGCommon" 
+    file="/RPGCommon/src/rpg/geometry/Vector2D.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="76" x="1061" y="499"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="network.TcpServer" project="RPGCommon" 
+    file="/RPGCommon/src/network/TcpServer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="84" x="327" y="268"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="rpg.geometry.Rectangle" project="RPGCommon" 
+    file="/RPGCommon/src/rpg/geometry/Rectangle.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="81" x="1061" y="422"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="rpg.graphics.Drawer" project="RPGCommon" 
+    file="/RPGCommon/src/rpg/graphics/Drawer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="67" x="104" y="499"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="rpg.logic.level.Game" project="RPGServer" 
+    file="/RPGServer/src/rpg/logic/level/Game.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="68" x="633" y="268"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="rpg.logic.Grid" project="RPGServer" file="/RPGServer/src/rpg/logic/Grid.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="47" x="770" y="345"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="rpg.logic.Timer" project="RPGServer" file="/RPGServer/src/rpg/logic/Timer.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="57" x="673" y="345"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="rpg.logic.Tuple" project="RPGServer" file="/RPGServer/src/rpg/logic/Tuple.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="87" x="772" y="422"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="rpg.logic.ElementArrayList" project="RPGServer" 
+    file="/RPGServer/src/rpg/logic/ElementArrayList.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="122" x="899" y="422"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="rpg.item.Item" project="RPGServer" file="/RPGServer/src/rpg/item/Item.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="49" x="133" y="191"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="rpg.graphics.MultiAbilityDrawer" project="RPGServer" 
+    file="/RPGServer/src/rpg/graphics/MultiAbilityDrawer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="127" x="403" y="114"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="rpg.graphics.ShowInventory" project="RPGServer" 
+    file="/RPGServer/src/rpg/graphics/ShowInventory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="108" x="133" y="114"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="rpg.element.entity.profession.Profession" project="RPGServer" 
+    file="/RPGServer/src/rpg/element/entity/profession/Profession.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="132" x="259" y="422"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="rpg.element.ItemHolder" project="RPGServer" 
+    file="/RPGServer/src/rpg/element/ItemHolder.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="86" x="677" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="rpg.exception.RPGException" project="RPGServer" 
+    file="/RPGServer/src/rpg/exception/RPGException.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="104" x="287" y="37"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="rpg.element.entity.Player" project="RPGServer" 
+    file="/RPGServer/src/rpg/element/entity/Player.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="86" x="484" y="345"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="rpg.element.entity.Entity" project="RPGServer" 
+    file="/RPGServer/src/rpg/element/entity/Entity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="86" x="570" y="114"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </class>  
+  <enumeration id="24" language="java" name="rpg.element.entity.Attribute" project="RPGServer" 
+    file="/RPGServer/src/rpg/element/entity/Attribute.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="37" width="86" x="259" y="499"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
+      <operations public="false" package="false" protected="false" private="false" static="false"/>    
+    </display>  
+  </enumeration>  
+  <dependency id="25">    
+    <bendpoint x="31" y="114"/>    
+    <bendpoint x="31" y="191"/>    
+    <bendpoint x="31" y="268"/>    
+    <bendpoint x="31" y="345"/>    
+    <bendpoint x="31" y="422"/>    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <association id="26">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="27" name="players"/>      
+      <multiplicity id="28" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="29">    
+    <bendpoint x="421" y="422"/>    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <dependency id="30">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <association id="31">    
+    <bendpoint x="372" y="114"/>    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="32" name="item"/>      
+      <multiplicity id="33" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="34">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="35" name="grid"/>      
+      <multiplicity id="36" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="37">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="24"/>  
+  </dependency>  
+  <dependency id="38">    
+    <bendpoint x="621" y="191"/>    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <association id="39">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="40" name="list"/>      
+      <multiplicity id="41" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="42">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="43" name="caster"/>      
+      <multiplicity id="44" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <realization id="45">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <dependency id="46">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <association id="47">    
+    <bendpoint x="233" y="191"/>    
+    <bendpoint x="441" y="268"/>    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="48" name="player"/>      
+      <multiplicity id="49" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="50">    
+    <bendpoint x="856" y="345"/>    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <association id="51">    
+    <bendpoint x="73" y="191"/>    
+    <bendpoint x="73" y="268"/>    
+    <bendpoint x="73" y="345"/>    
+    <bendpoint x="73" y="422"/>    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="52" name="drawers"/>      
+      <multiplicity id="53" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="54">    
+    <bendpoint x="296" y="345"/>    
+    <bendpoint x="462" y="268"/>    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="55" name="abilities"/>      
+      <multiplicity id="56" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="57">    
+    <bendpoint x="463" y="422"/>    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="58">    
+    <bendpoint x="600" y="191"/>    
+    <bendpoint x="600" y="268"/>    
+    <bendpoint x="600" y="345"/>    
+    <bendpoint x="600" y="422"/>    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="59">    
+    <bendpoint x="504" y="268"/>    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="22"/>  
+  </dependency>  
+  <dependency id="60">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <association id="61">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="62" name="inventory"/>      
+      <multiplicity id="63" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="64">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="65" name="client"/>      
+      <multiplicity id="66" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="67">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="68">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="69">    
+    <bendpoint x="621" y="345"/>    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <association id="70">    
+    <bendpoint x="642" y="345"/>    
+    <bendpoint x="621" y="422"/>    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="71" name="initialLocations"/>      
+      <multiplicity id="72" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <generalization id="73">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <dependency id="74">    
+    <bendpoint x="254" y="191"/>    
+    <bendpoint x="233" y="268"/>    
+    <bendpoint x="212" y="345"/>    
+    <bendpoint x="228" y="422"/>    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="24"/>  
+  </dependency>  
+  <dependency id="75">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="76">    
+    <bendpoint x="1067" y="191"/>    
+    <bendpoint x="1067" y="268"/>    
+    <bendpoint x="1067" y="345"/>    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <dependency id="77">    
+    <bendpoint x="642" y="191"/>    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="23"/>  
+  </dependency>  
+  <dependency id="78">    
+    <bendpoint x="1214" y="114"/>    
+    <bendpoint x="1214" y="191"/>    
+    <bendpoint x="1214" y="268"/>    
+    <bendpoint x="1214" y="345"/>    
+    <bendpoint x="1214" y="422"/>    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="79">    
+    <bendpoint x="275" y="345"/>    
+    <bendpoint x="275" y="268"/>    
+    <bendpoint x="296" y="191"/>    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="23"/>  
+  </dependency>  
+  <dependency id="80">    
+    <bendpoint x="113" y="345"/>    
+    <bendpoint x="113" y="422"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <dependency id="81">    
+    <bendpoint x="212" y="191"/>    
+    <bendpoint x="212" y="268"/>    
+    <bendpoint x="191" y="345"/>    
+    <bendpoint x="186" y="422"/>    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <dependency id="82">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="23"/>  
+  </dependency>  
+  <dependency id="83">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="19"/>  
+  </dependency>  
+  <dependency id="84">    
+    <bendpoint x="1151" y="114"/>    
+    <bendpoint x="1151" y="191"/>    
+    <bendpoint x="1151" y="268"/>    
+    <bendpoint x="1151" y="345"/>    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <association id="85">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="86" name="clients"/>      
+      <multiplicity id="87" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="88">    
+    <bendpoint x="642" y="422"/>    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <association id="89">    
+    <bendpoint x="1088" y="191"/>    
+    <bendpoint x="1130" y="268"/>    
+    <bendpoint x="1172" y="345"/>    
+    <bendpoint x="1172" y="422"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="90" name="velocity"/>      
+      <multiplicity id="91" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="92">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="93">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <association id="94">    
+    <bendpoint x="275" y="191"/>    
+    <bendpoint x="254" y="268"/>    
+    <bendpoint x="254" y="345"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="95" name="profession"/>      
+      <multiplicity id="96" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="97">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="23"/>  
+  </dependency>  
+  <dependency id="98">    
+    <bendpoint x="296" y="268"/>    
+    <bendpoint x="233" y="345"/>    
+    <bendpoint x="207" y="422"/>    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <association id="99">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="100" name="timer"/>      
+      <multiplicity id="101" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="102">    
+    <bendpoint x="686" y="114"/>    
+    <bendpoint x="686" y="191"/>    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="103">    
+    <bendpoint x="52" y="191"/>    
+    <bendpoint x="52" y="268"/>    
+    <bendpoint x="52" y="345"/>    
+    <bendpoint x="52" y="422"/>    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <generalization id="104">    
+    <bendpoint x="579" y="268"/>    
+    <bendpoint x="579" y="191"/>    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="23"/>  
+  </generalization>  
+  <association id="105">    
+    <bendpoint x="1130" y="191"/>    
+    <bendpoint x="1172" y="268"/>    
+    <bendpoint x="1193" y="345"/>    
+    <bendpoint x="1193" y="422"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="106" name="acceleration"/>      
+      <multiplicity id="107" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <dependency id="108">    
+    <bendpoint x="1109" y="114"/>    
+    <bendpoint x="1109" y="191"/>    
+    <bendpoint x="1046" y="268"/>    
+    <bendpoint x="1046" y="345"/>    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="109">    
+    <bendpoint x="453" y="345"/>    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="19"/>  
+  </dependency>  
+  <dependency id="110">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="111">    
+    <bendpoint x="458" y="191"/>    
+    <bendpoint x="483" y="268"/>    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="22"/>  
+  </dependency>  
+  <dependency id="112">    
+    <bendpoint x="442" y="422"/>    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="24"/>  
+  </dependency>  
+  <dependency id="113">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="16"/>  
+  </dependency>  
+  <dependency id="114">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <association id="115">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="116" name="elements"/>      
+      <multiplicity id="117" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="false" package="false" protected="false" private="false" static="false"/>    
+    <operations public="false" package="false" protected="false" private="false" static="false"/>  
+  </classifier-display>  
+  <association-display labels="false" multiplicity="false"/>
+</class-diagram>

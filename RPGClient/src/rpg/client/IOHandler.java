@@ -59,7 +59,7 @@ public class IOHandler {
 	public void update() {
 		direction = 0;
 		pressed.forEach(s -> Optional.ofNullable(typedMap.get(s)).ifPresent(list -> list.forEach(Runnable::run)));
-		client.addCommand("moveHorizontally " + direction);
+		client.addCommand("moveHorizontally " + Math.signum(direction));
 	}
 
 	private void initialize() {

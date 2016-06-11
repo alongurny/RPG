@@ -17,7 +17,7 @@ import network.event.MessageEvent;
 import network.event.MessageListener;
 import network.message.Message;
 import network.message.MessageDeliveryProtocol;
-import network.protocol.TwoWayProtocol;
+import network.protocol.Protocol;
 
 /**
  * A TCP client.
@@ -34,7 +34,7 @@ public class TcpClient implements Closeable {
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
-	private TwoWayProtocol<Message, String> twoWayProtocol = new MessageDeliveryProtocol();
+	private Protocol<Message, String> protocol = new MessageDeliveryProtocol();
 	private List<MessageListener> messageListeners;
 	private List<DisconnectListener> disconnectListeners;
 	private State state;
@@ -148,7 +148,7 @@ public class TcpClient implements Closeable {
 	 *            the message to send
 	 */
 	public void send(Message message) {
-		out.println(twoWayProtocol.encode(message));
+		out.println(protocol.encode(message));
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class TcpClient implements Closeable {
 		Message res = null;
 		try {
 			String line = in.readLine();
-			res = line != null ? twoWayProtocol.decode(line) : null;
+			res = line != null ? protocol.decode(line) : null;
 		} catch (IOException e) {
 		}
 		return Optional.ofNullable(res);

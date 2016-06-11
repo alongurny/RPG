@@ -28,6 +28,7 @@ public class Player extends Entity {
 
 	private int spriteCounter = 0;
 	private TcpClient client;
+	private double orientation;
 
 	/**
 	 * Constructs a new player using a client, a location and a profession.
@@ -48,8 +49,10 @@ public class Player extends Entity {
 	@Override
 	public void act(Game game, double dt) {
 		regenerate(dt);
-		if (getVelocity().getX() != 0) {
+		double vx = getVelocity().getX();
+		if (vx != 0) {
 			stepDraw(game);
+			orientation = vx;
 		}
 	}
 
@@ -64,14 +67,14 @@ public class Player extends Entity {
 
 	@Override
 	public Drawer getEntityDrawer() {
-		if (getVelocity().getX() > 0) {
+		if (orientation > 0) {
 			return getProfession().getRightDrawer();
 		}
 		return getProfession().getLeftDrawer();
 	}
 
 	private double getHealthRegen() {
-		return 0.05 * getAttribute(Attribute.CON);
+		return 0.02 * getAttribute(Attribute.CON);
 	}
 
 	@Override
@@ -80,7 +83,7 @@ public class Player extends Entity {
 	}
 
 	private double getManaRegen() {
-		return 0.03 * getAttribute(Attribute.INT);
+		return 0.02 * getAttribute(Attribute.INT);
 	}
 
 	@Override

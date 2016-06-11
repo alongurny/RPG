@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import rpg.logic.Lazy;
+
 public class TileDrawer extends Drawer {
 
 	public static Sprite sprite(int tileset, int row, int firstColumn, int lastColumn) {
@@ -15,7 +17,7 @@ public class TileDrawer extends Drawer {
 		return new Sprite(list);
 	}
 
-	private BufferedImage image;
+	private Lazy<BufferedImage> image;
 	private int tileset;
 	private int row;
 
@@ -26,12 +28,12 @@ public class TileDrawer extends Drawer {
 	private int y;
 
 	public TileDrawer(int tileset, int row, int col) {
-		image = Tileset.get(tileset).getTile(row, col);
+		image = new Lazy<>(Tileset.get(tileset).getTile(row, col));
 		this.tileset = tileset;
 		this.row = row;
 		this.col = col;
-		this.width = image.getWidth();
-		this.height = image.getHeight();
+		this.width = 32;
+		this.height = 32;
 		this.x = -width / 2;
 		this.y = -height / 2;
 	}
@@ -44,11 +46,11 @@ public class TileDrawer extends Drawer {
 		this.height = height;
 		this.x = x;
 		this.y = y;
-		image = Tileset.get(tileset).getTile(row, col).getSubimage(0, 0, width, height);
+		image = new Lazy<>(() -> Tileset.get(tileset).getTile(row, col).getSubimage(0, 0, width, height));
 	}
 
 	public void draw(Graphics2D g) {
-		g.drawImage(image, x, y, width, height, null);
+		g.drawImage(image.get(), x, y, width, height, null);
 	}
 
 	@Override

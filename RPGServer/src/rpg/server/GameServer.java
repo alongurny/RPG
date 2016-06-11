@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import external.Messages;
 import network.Switchboard;
 import network.TcpClient;
 import network.event.ConnectListener;
@@ -14,7 +15,7 @@ import network.event.DisconnectListener;
 import network.event.MessageEvent;
 import network.event.MessageListener;
 import network.message.Message;
-import network.protocol.TwoWayProtocol;
+import network.protocol.Protocol;
 import rpg.element.Element;
 import rpg.element.entity.profession.Profession;
 import rpg.geometry.Vector2D;
@@ -32,8 +33,6 @@ import rpg.logic.level.Game;
  *
  */
 public class GameServer {
-
-	public static final int PORT = 1234;
 
 	private static void execute(String string, Game game, TcpClient client) {
 		game.getPlayer(client).ifPresent(player -> {
@@ -73,14 +72,14 @@ public class GameServer {
 	private Switchboard server;
 	private Timer timer;
 	private Game game;
-	private TwoWayProtocol<Drawer, String> twoWayProtocol;
+	private Protocol<Drawer, String> protocol;
 
 	public GameServer(Game game) throws IOException {
 		this.game = game;
 		receivedCommands = new CopyOnWriteArrayList<>();
 		timer = new Timer();
-		twoWayProtocol = new DrawerProtocol();
-		server = new Switchboard(PORT);
+		protocol = new DrawerProtocol();
+		server = new Switchboard(Messages.getInt("TCP.port"));
 		server.addConnectListener(new ConnectListener() {
 
 			@Override
@@ -178,9 +177,9 @@ public class GameServer {
 		server.send(Message.normal("start"));
 		for (Element e : game.getDynamicElements()) {
 			Translate t = new Translate((int) e.getLocation().getX(), (int) e.getLocation().getY());
-			server.send(Message.normal("dynamic " + twoWayProtocol.encode(t)));
+			server.send(Message.normal("dynamic " + protocol.encode(t)));
 			server.send(Message.normal("dynamic " + e.getDrawer()));
-			server.send(Message.normal("dynamic " + twoWayProtocol.encode(t.negate())));
+			server.send(Message.normal("dynamic " + protocol.encode(t.negate())));
 		}
 		if (firstConnection) {
 			for (Element e : game.getStaticElements()) {

@@ -8,10 +8,11 @@ import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 
 import external.ImageResource;
+import rpg.logic.Lazy;
 
 public class DrawPaint extends Drawer {
 
-	private TexturePaint paint;
+	private Lazy<TexturePaint> paint;
 	private String path;
 	private int width, height;
 
@@ -24,13 +25,13 @@ public class DrawPaint extends Drawer {
 		Graphics2D g = bi.createGraphics();
 		g.drawImage(image, 0, 0, bi.getWidth(), bi.getHeight(), null);
 		g.dispose();
-		this.paint = new TexturePaint(bi, new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));
+		this.paint = new Lazy<>(() -> new TexturePaint(bi, new Rectangle(0, 0, bi.getWidth(), bi.getHeight())));
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
 		Paint prev = g.getPaint();
-		g.setPaint(paint);
+		g.setPaint(paint.get());
 		g.fillRect(0, 0, width, height);
 		g.setPaint(prev);
 	}

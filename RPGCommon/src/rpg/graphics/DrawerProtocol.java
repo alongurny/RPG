@@ -2,9 +2,9 @@ package rpg.graphics;
 
 import java.util.Arrays;
 
-import network.protocol.TwoWayProtocol;
+import network.protocol.Protocol;
 
-public class DrawerProtocol implements TwoWayProtocol<Drawer, String> {
+public class DrawerProtocol implements Protocol<Drawer, String> {
 
 	@Override
 	public Drawer decode(String str) {

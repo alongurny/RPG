@@ -13,8 +13,8 @@ public class Tileset {
 
 	static {
 		tilesets = new ArrayList<>();
-		load(Messages.getString("Tileset.0")); //$NON-NLS-1$
-		load(Messages.getString("Tileset.1")); //$NON-NLS-1$
+		load(Messages.getString("Tileset.0"));
+		load(Messages.getString("Tileset.1"));
 	}
 
 	public static Tileset get(int index) {

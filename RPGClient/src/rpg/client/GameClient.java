@@ -9,7 +9,7 @@ import network.TcpClient;
 import network.event.MessageEvent;
 import network.event.MessageListener;
 import network.message.Message;
-import network.protocol.TwoWayProtocol;
+import network.protocol.Protocol;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.DrawerProtocol;
@@ -25,7 +25,7 @@ public class GameClient {
 
 	private TcpClient tcpClient;
 	private List<String> commands;
-	private TwoWayProtocol<Drawer, String> protocol;
+	private Protocol<Drawer, String> protocol;
 	private GamePanel panel;
 	private boolean showInventory;
 
