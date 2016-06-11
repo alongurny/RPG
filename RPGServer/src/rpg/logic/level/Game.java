@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import network.TcpClient;
+import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.element.Interactive;
 import rpg.element.entity.Entity;
@@ -19,6 +20,7 @@ import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.logic.Grid;
 import rpg.logic.Timer;
+import rpg.server.GameServer;
 
 /**
  * <code>Game</code> is the main class that runs the whole game. It consists of
@@ -38,8 +40,6 @@ public class Game {
 	private List<Element> toRemove;
 	private List<Element> toAdd;
 	private Grid grid;
-	private boolean finished;
-	private Game nextLevel;
 	private Timer timer;
 	private List<Vector2D> initialLocations;
 	private Set<Integer> boundIndices;
@@ -128,27 +128,34 @@ public class Game {
 		return e.getAbsoluteRect().intersects(f.getAbsoluteRect());
 	}
 
-	public void finish() {
-		finished = true;
-	}
-
 	public List<Element> getDynamicElements() {
 		return new ArrayList<>(elements);
 	}
 
-	public List<Element> getElements(Vector2D target) {
+	/**
+	 * Returns all the elements (dynamic and static) at the given location. More
+	 * specifically, Returns all the elements that have their bounding rectangle
+	 * contains the target.
+	 * 
+	 * @param target
+	 *            the location
+	 * @return all the elements e such that e.getAbsoluteRect().contains(target)
+	 */
+	public List<Element> getElementsAt(Vector2D target) {
 		List<Element> elements = new ArrayList<>(this.elements);
 		elements.addAll(getStaticElements());
 		elements.removeIf(e -> !e.getAbsoluteRect().contains(target));
 		return elements;
 	}
 
+	/**
+	 * Returns the grid of this game. All the static elements are contained in
+	 * the grid.
+	 * 
+	 * @return the grid
+	 */
 	public Grid getGrid() {
 		return grid;
-	}
-
-	public Game getNextLevel() {
-		return nextLevel;
 	}
 
 	/**
@@ -188,19 +195,31 @@ public class Game {
 		return obstacles;
 	}
 
+	/**
+	 * Returns the player that represents the given client, wrapped in an
+	 * optional, or nothing if no player is found.
+	 * 
+	 * @param client
+	 *            the client
+	 * @return an optional containing the player that represents the client, or
+	 *         nothing if there is no such player
+	 */
 	public Optional<Player> getPlayer(TcpClient client) {
 		return players.values().stream().filter(p -> p.getClient() == client).findFirst();
 	}
 
-	public int getPlayersCount() {
-		return boundIndices.size();
-	}
-
+	/**
+	 * Returns all the static elements of this game. Static elements are
+	 * guaranteed not to move or change through the game and so, their drawables
+	 * are sent only once to the client, and they are added to the {@link Grid}.
+	 * 
+	 * @return all the static elements of this game
+	 */
 	public List<Element> getStaticElements() {
 		return grid.getElements();
 	}
 
-	public void handleCollisions() {
+	private void handleCollisions() {
 		for (Element e : elements) {
 			for (Element f : elements) {
 				if (e != f) {
@@ -219,29 +238,36 @@ public class Game {
 		}
 	}
 
-	public void interact(Entity entity, Interactive interactive) {
-		interactive.onInteract(this, entity);
-	}
-
-	public boolean isFinished() {
-		return finished;
-	}
-
+	/**
+	 * Indicates if this game is ready to play. Implementation may be different
+	 * for different games, but normally it will indicate if at least one player
+	 * has connected.
+	 * 
+	 * @return <code>true</code> if there are enough players to start the game,
+	 *         <code>false</code> otherwise
+	 */
 	public boolean isReady() {
 		return boundIndices.size() >= 1;
 	}
 
-	public void tryMoveByAndPush(Element element, Vector2D displacement) {
-		List<Element> obstacles = getObstacles(element, element.getLocation().add(displacement));
-		if (obstacles.stream().map(e -> tryMoveBy(e, displacement)).reduce(true, Boolean::logicalAnd)) {
-			element.setLocation(element.getLocation().add(displacement));
-		}
-	}
-
+	/**
+	 * Called when in the client side, the client clicked on the screen.
+	 * 
+	 * @param player
+	 *            the player that its client clicked on the screen
+	 * @param target
+	 *            the location of the click, relative to this game
+	 */
 	public void onClick(Player player, Vector2D target) {
-		player.setTarget(getElements(target).stream().findFirst());
+		player.setTarget(getElementsAt(target).stream().findFirst());
 	}
 
+	/**
+	 * Removes a dynamic element from the game.
+	 * 
+	 * @param element
+	 *            the dynamic element to remove
+	 */
 	public void removeDynamicElement(Element element) {
 		toRemove.add(element);
 	}
@@ -260,10 +286,20 @@ public class Game {
 		});
 	}
 
-	public void setNextLevel(Game nextLevel) {
-		this.nextLevel = nextLevel;
-	}
-
+	/**
+	 * Tries to perform an interaction for the given entity. An interaction can
+	 * occur only for {@link Interactive} elements. The first interactive that
+	 * will be {@link Interactive#isInteractable(Game, Entity) interactable}
+	 * will have its {@link Interactive#onInteract(Game, Entity) onInteract}
+	 * method called and cause this method to return <code>true</code>. If no
+	 * such interactive is found, this method will return <code>false</code>.
+	 * otherwise.
+	 * 
+	 * @param entity
+	 *            the entity that performs the interaction
+	 * @return <code>true</code> if the interaction succeeded and
+	 *         <code>false</code> otherwise
+	 */
 	public boolean tryInteract(Entity entity) {
 		for (Element e : elements) {
 			if (e instanceof Interactive) {
@@ -286,6 +322,17 @@ public class Game {
 		return false;
 	}
 
+	/**
+	 * Tries to move this element to the given target. This is possible only if
+	 * there are no obstacles in the way.
+	 * 
+	 * @param element
+	 *            the element to move
+	 * @param target
+	 *            the target location
+	 * @return <code>true</code> if the trial succeeded and <code>false</code>
+	 *         if there were obstacles
+	 */
 	public boolean tryMove(Element element, Vector2D target) {
 		List<Element> obstacles = getObstacles(element, target);
 		if (obstacles.isEmpty()) {
@@ -295,10 +342,32 @@ public class Game {
 		return false;
 	}
 
+	/**
+	 * Tries to move this element by the given displacement. This is possible
+	 * only if there are no obstacles in the way.
+	 * 
+	 * @param element
+	 *            the element to move
+	 * @param displacement
+	 *            the displacement
+	 * @return <code>true</code> if the trial succeeded and <code>false</code>
+	 *         if there were obstacles
+	 */
 	public boolean tryMoveBy(Element element, Vector2D displacement) {
 		return getObstaclesFromMoveBy(element, displacement).isEmpty();
 	}
 
+	/**
+	 * Tries to move this element by the given displacement. This is possible
+	 * only if there are no obstacles in the way. Returns a list of the
+	 * obstacles.
+	 * 
+	 * @param element
+	 *            the element to move
+	 * @param displacement
+	 *            the displacement
+	 * @return a {@link List} of the obstacles.
+	 */
 	public List<Element> getObstaclesFromMoveBy(Element element, Vector2D displacement) {
 		Vector2D target = element.getLocation().add(displacement);
 		List<Element> obstacles = getObstacles(element, target);
@@ -308,13 +377,25 @@ public class Game {
 		return obstacles;
 	}
 
+	/**
+	 * This method is called repeatedly by the {@link GameServer}. It updates
+	 * many things: it calls {@link Element#update(Game, double) update} on its
+	 * elements, it actually starts drawing the elements that were added by
+	 * {@link #addDynamicElement(Element) addDynamicElement} and
+	 * {@link #addStaticElement(Element) addStaticElement}, it updates the
+	 * timer, checks that entities do not reference missing elements and sorts
+	 * the elements by their {@link Depth}.
+	 * 
+	 * @param dt
+	 *            the time that passed since the last invocation of this method
+	 */
 	public void update(double dt) {
 		elements.forEach(e -> e.update(this, dt));
 		handleCollisions();
 		timer.update(this, dt);
 		elements.addAll(toAdd);
 		elements.removeAll(toRemove);
-		players.values().forEach(p -> {
+		elements.stream().filter(e -> e instanceof Entity).map(e -> (Entity) e).forEach(p -> {
 			if (p.getTarget().isPresent() && toRemove.contains(p.getTarget().get())) {
 				p.setTarget(Optional.empty());
 			}

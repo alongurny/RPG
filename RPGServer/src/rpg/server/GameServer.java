@@ -26,6 +26,11 @@ import rpg.graphics.Translate;
 import rpg.logic.Tuple;
 import rpg.logic.level.Game;
 
+/**
+ * 
+ * @author Alon
+ *
+ */
 public class GameServer {
 
 	public static final int PORT = 1234;
@@ -126,7 +131,7 @@ public class GameServer {
 		new Thread(this::run, "Wait for clients/Update game").start();
 	}
 
-	public void startReceiving() {
+	private void startReceiving() {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -140,7 +145,7 @@ public class GameServer {
 		}, 0, 30);
 	}
 
-	public void startSending() {
+	private void startSending() {
 		timer.schedule(new TimerTask() {
 
 			@Override

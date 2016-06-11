@@ -5,15 +5,16 @@ import rpg.element.entity.Entity;
 import rpg.logic.level.Game;
 
 /**
- * An ability that has a target which is an element.
- * 
- * @author Alon
+ * An ability that has a target which is an entity.
  *
  */
 public abstract class TargetAbility extends Ability {
 
 	private Element target;
 
+	/**
+	 * Constructs a new ability with a target.
+	 */
 	protected TargetAbility(double maxCooldown, double mana) {
 		super(maxCooldown, mana);
 	}
@@ -23,14 +24,39 @@ public abstract class TargetAbility extends Ability {
 		return isActive(game, caster, target);
 	}
 
-	protected abstract boolean isActive(Game game, Entity caster, Element target);
-
-	protected abstract boolean isCastable(Element target);
+	/**
+	 * Called by {@link #isActive(Game, Entity)} with the caster's target as a
+	 * parameter.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param caster
+	 *            the caster
+	 * @param target
+	 *            the caster's target
+	 */
+	protected boolean isActive(Game game, Entity caster, Element target) {
+		return false;
+	}
 
 	@Override
 	protected final boolean isCastable(Entity caster) {
-		return caster.getTarget().isPresent() && isCastable(caster.getTarget().get());
+		return caster.getTarget().filter(t -> t instanceof Entity).isPresent()
+				&& isCastable(caster, caster.getTarget().get());
 	}
+
+	/**
+	 * Called by {@link #isCastable(Entity)} with the caster's target as a
+	 * parameter.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param caster
+	 *            the caster
+	 * @param target
+	 *            the caster's target
+	 */
+	protected abstract boolean isCastable(Entity caster, Element target);
 
 	@Override
 	protected final void onCast(Game game, Entity caster) {
@@ -38,6 +64,17 @@ public abstract class TargetAbility extends Ability {
 		onCast(game, caster, target);
 	}
 
+	/**
+	 * Called by {@link #onCast(Game, Entity)} with the caster's target as a
+	 * parameter.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param caster
+	 *            the caster
+	 * @param target
+	 *            the caster's target
+	 */
 	protected abstract void onCast(Game game, Entity caster, Element target);
 
 	@Override
@@ -45,13 +82,38 @@ public abstract class TargetAbility extends Ability {
 		onEnd(game, caster, target);
 	}
 
-	protected abstract void onEnd(Game game, Entity caster, Element target);
+	/**
+	 * Called by {@link #onEnd(Game, Entity)} with the caster's target as a
+	 * parameter.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param caster
+	 *            the caster
+	 * @param target
+	 *            the caster's target
+	 */
+	protected void onEnd(Game game, Entity caster, Element target) {
+
+	}
 
 	@Override
 	protected final void onUpdate(Game game, Entity caster) {
 		onUpdate(game, caster, target);
 	}
 
-	protected abstract void onUpdate(Game game, Entity caster, Element target);
+	/**
+	 * Called by {@link #onUpdate(Game, Entity)} with the caster's target as a
+	 * parameter.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param caster
+	 *            the caster
+	 * @param target
+	 *            the caster's target
+	 */
+	protected void onUpdate(Game game, Entity caster, Element target) {
 
+	}
 }

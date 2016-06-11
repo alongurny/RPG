@@ -23,6 +23,15 @@ import javax.swing.SwingUtilities;
 
 import rpg.geometry.Vector2D;
 
+/**
+ * This class is used by {@link GameClient} to handle IO events: mouse clicks
+ * and keyboard events. The logic that needs to be applied when such events
+ * occur is already defined here. After being constructed, the only worry of the
+ * client needs to be calling the {@link #update() update} method regularly.
+ * 
+ * @author Alon
+ *
+ */
 public class IOHandler {
 
 	private GameClient client;
@@ -30,6 +39,12 @@ public class IOHandler {
 	private Map<String, List<Runnable>> typedMap;
 	private double direction;
 
+	/**
+	 * Constructs a new IO handler for the given client.
+	 * 
+	 * @param client
+	 *            a game client
+	 */
 	public IOHandler(GameClient client) {
 		this.client = client;
 		pressed = new ConcurrentSkipListSet<>();
@@ -37,6 +52,10 @@ public class IOHandler {
 		initialize();
 	}
 
+	/**
+	 * This method needs to be called regularly for the key bindings to behave
+	 * normally.
+	 */
 	public void update() {
 		direction = 0;
 		pressed.forEach(s -> Optional.ofNullable(typedMap.get(s)).ifPresent(list -> list.forEach(Runnable::run)));

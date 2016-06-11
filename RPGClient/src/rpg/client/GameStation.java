@@ -16,6 +16,15 @@ import javax.swing.JRadioButton;
 
 import external.Messages;
 
+/**
+ * The game station has two roles: the first is to provide sufficient GUI. It
+ * provides a frame that the client can use to choose their profession, and then
+ * the game runs in another {@link JFrame} that contains the {@link GamePanel}.
+ * The second is to send commands to the server regularly.
+ * 
+ * @author Alon
+ *
+ */
 public class GameStation {
 
 	private Map<String, String> professionsMap = new HashMap<>();
@@ -30,6 +39,12 @@ public class GameStation {
 	private GameClient client;
 	private IOHandler handler;
 
+	/**
+	 * Constructs a new <code>GameStation</code> with the given socket.
+	 * 
+	 * @param socket
+	 *            a socket to connect to the server
+	 */
 	public GameStation(Socket socket) {
 		load("Air Mage", "AirMage");
 		load("Fire Mage", "FireMage");

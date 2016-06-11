@@ -12,7 +12,7 @@ public abstract class EntityTargetAbility extends Ability {
 	private Entity target;
 
 	/**
-	 * 
+	 * Constructs a new ability with an entity target.
 	 */
 	protected EntityTargetAbility(double maxCooldown, double mana) {
 		super(maxCooldown, mana);
@@ -24,11 +24,15 @@ public abstract class EntityTargetAbility extends Ability {
 	}
 
 	/**
+	 * Called by {@link #isActive(Game, Entity)} with the caster's target as a
+	 * parameter.
 	 * 
 	 * @param game
+	 *            the game
 	 * @param caster
+	 *            the caster
 	 * @param target
-	 * @return
+	 *            the caster's target
 	 */
 	protected boolean isActive(Game game, Entity caster, Entity target) {
 		return false;
@@ -40,6 +44,17 @@ public abstract class EntityTargetAbility extends Ability {
 				&& isCastable(caster, (Entity) caster.getTarget().get());
 	}
 
+	/**
+	 * Called by {@link #isCastable(Entity)} with the caster's target as a
+	 * parameter.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param caster
+	 *            the caster
+	 * @param target
+	 *            the caster's target
+	 */
 	protected abstract boolean isCastable(Entity caster, Entity target);
 
 	@Override
@@ -48,6 +63,17 @@ public abstract class EntityTargetAbility extends Ability {
 		onCast(game, caster, target);
 	}
 
+	/**
+	 * Called by {@link #onCast(Game, Entity)} with the caster's target as a
+	 * parameter.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param caster
+	 *            the caster
+	 * @param target
+	 *            the caster's target
+	 */
 	protected abstract void onCast(Game game, Entity caster, Entity target);
 
 	@Override
@@ -56,10 +82,15 @@ public abstract class EntityTargetAbility extends Ability {
 	}
 
 	/**
+	 * Called by {@link #onEnd(Game, Entity)} with the caster's target as a
+	 * parameter.
 	 * 
 	 * @param game
+	 *            the game
 	 * @param caster
+	 *            the caster
 	 * @param target
+	 *            the caster's target
 	 */
 	protected void onEnd(Game game, Entity caster, Entity target) {
 
@@ -71,10 +102,15 @@ public abstract class EntityTargetAbility extends Ability {
 	}
 
 	/**
+	 * Called by {@link #onUpdate(Game, Entity)} with the caster's target as a
+	 * parameter.
 	 * 
 	 * @param game
+	 *            the game
 	 * @param caster
+	 *            the caster
 	 * @param target
+	 *            the caster's target
 	 */
 	protected void onUpdate(Game game, Entity caster, Entity target) {
 

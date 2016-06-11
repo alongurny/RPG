@@ -34,7 +34,6 @@ public class Dragon extends Entity {
 		} else {
 			game.addDynamicElement(new HealthPotion(getLocation()));
 			game.removeDynamicElement(this);
-			game.finish();
 		}
 	}
 

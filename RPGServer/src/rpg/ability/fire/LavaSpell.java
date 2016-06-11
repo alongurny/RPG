@@ -31,7 +31,7 @@ public class LavaSpell extends EntityTargetAbility {
 	protected void onCast(Game game, Entity caster, Entity entity) {
 		for (int x = -1; x <= 1; x++) {
 			Vector2D v = entity.getLocation().add(new Vector2D(x, 0).multiply(32));
-			if (game.getElements(v).stream().allMatch(e -> e.isPassable(game, entity))) {
+			if (game.getElementsAt(v).stream().allMatch(e -> e.isPassable(game, entity))) {
 				Lava lava = new Lava(v, caster);
 				game.addDynamicElement(lava);
 				game.addTimer(5.0, () -> game.removeDynamicElement(lava));

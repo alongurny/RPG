@@ -39,6 +39,14 @@ public abstract class Entity extends Element {
 	private Map<Attribute, Double> attributes;
 	private Map<Attribute, Double> temporary;
 
+	/**
+	 * Constructs a new entity at the given location with the given profession
+	 * 
+	 * @param location
+	 *            the initial location
+	 * @param profession
+	 *            the profession
+	 */
 	public Entity(Vector2D location, Profession profession) {
 		super(location);
 		initAttributes();
@@ -53,11 +61,24 @@ public abstract class Entity extends Element {
 		effects = new CopyOnWriteArrayList<>();
 	}
 
+	/**
+	 * Returns the profession of this entity
+	 * 
+	 * @return the profession of this entity
+	 */
 	public Profession getProfession() {
 		return profession;
 	}
 
-	public abstract void act(Game game, double dt);
+	/**
+	 * Performs an action. This action is left to subclasses to implement.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param dt
+	 *            the time passed since the last update
+	 */
+	protected abstract void act(Game game, double dt);
 
 	public void addAttribute(Attribute attr, double value) {
 		temporary.put(attr, temporary.get(attr) + value);
@@ -95,16 +116,17 @@ public abstract class Entity extends Element {
 		return getAbilities().size();
 	}
 
+	/**
+	 * Returns the acceleration of this entity
+	 * 
+	 * @return the acceleration of this entity
+	 */
 	public Vector2D getAcceleration() {
 		return acceleration;
 	}
 
 	public double getAttribute(Attribute attr) {
 		return attributes.get(attr) + profession.getAttribute(attr) + temporary.get(attr);
-	}
-
-	public Vector2D getDirection() {
-		return velocity.getUnitalVector();
 	}
 
 	@Override
@@ -123,6 +145,11 @@ public abstract class Entity extends Element {
 		return health;
 	}
 
+	/**
+	 * Returns a list of the items that this entity has.
+	 * 
+	 * @return a list of the items that this entity has
+	 */
 	public List<Item> getInventory() {
 		return inventory;
 	}
@@ -151,60 +178,155 @@ public abstract class Entity extends Element {
 		return 10 * getAttribute(Attribute.DEX) - 36;
 	}
 
+	/**
+	 * Returns the (optional) target of this entity. Targets are used by many
+	 * abilities.
+	 * 
+	 * @return the (optional) target of this entity
+	 */
 	public Optional<Element> getTarget() {
 		return target;
 	}
 
+	/**
+	 * Returns the velocity of this entity.
+	 * 
+	 * @return the velocity of this entity
+	 */
 	public Vector2D getVelocity() {
 		return velocity;
 	}
 
+	/**
+	 * Returns <code>true</code> if the effect has been applied to this entity,
+	 * <code>false</code> otherwise.
+	 * 
+	 * @param effect
+	 *            an effect
+	 * @return <code>true</code> if the effect has been applied to this entity,
+	 *         <code>false</code> otherwise
+	 */
 	public boolean hasEffect(String effect) {
 		return effects.contains(effect);
 	}
 
+	/**
+	 * Returns <code>true</code> if there is more than 0 health and
+	 * <code>false</code> otherwise.
+	 * 
+	 * @return <code>true</code> if there is more than 0 health and
+	 *         <code>false</code> otherwise
+	 */
 	public boolean isAlive() {
 		return health > 0;
 	}
 
+	/**
+	 * Returns <code>true</code> if this entity is friendly to the other entity,
+	 * and <code>false</code> otherwise. The main classes {@link Game},
+	 * <code>Entity</code>, etc. provide no use for this method. It can be used
+	 * by abilities for example.
+	 * 
+	 * @param other
+	 *            the other entity
+	 * @return <code>true</code> if this entity is friendly to the other entity,
+	 *         and <code>false</code> otherwise
+	 */
 	public abstract boolean isFriendly(Entity other);
 
-	public boolean isRequireable(double value) {
-		return mana >= value;
-	}
-
+	/**
+	 * Adds a new item to the inventory.
+	 * 
+	 * @param item
+	 *            a new item to add
+	 */
 	public void pick(Item item) {
 		inventory.add(item);
 	}
 
+	/**
+	 * Removes an effect from this entity. Possible effects for example: flying,
+	 * disabled, etc.
+	 * 
+	 * @param effect
+	 *            the effect to remove
+	 */
 	public void removeEffect(String effect) {
 		effects.remove(effect);
 	}
 
+	/**
+	 * Sets the acceleration of this entity.
+	 * 
+	 * @param acceleration
+	 *            the new acceleration to set
+	 */
 	public void setAcceleration(Vector2D acceleration) {
 		this.acceleration = acceleration;
 	}
 
+	/**
+	 * Sets a new target to this entity. Will be {@link Optional#empty()} if
+	 * there is no target.
+	 * 
+	 * @param target
+	 */
 	public void setTarget(Optional<Element> target) {
 		this.target = target;
 	}
 
+	/**
+	 * Sets the velocity of this entity
+	 * 
+	 * @param velocity
+	 *            the new velocity to set
+	 */
 	public void setVelocity(Vector2D velocity) {
 		this.velocity = velocity;
 	}
 
+	/**
+	 * Add a temporary subtracting to an attribute.
+	 * 
+	 * @param attr
+	 *            the attribute
+	 * @param value
+	 *            the subtracting
+	 */
 	public void subtractAttribute(Attribute attr, double value) {
 		temporary.put(attr, temporary.get(attr) - value);
 	}
 
+	/**
+	 * Subtracts a certain amount of health from this entity's health bar.
+	 * 
+	 * @param value
+	 *            the value to subtract
+	 */
 	public void subtractHealth(double value) {
 		addHealth(-value);
 	}
 
+	/**
+	 * Subtracts a certain amount of mana from this entity's mana pool.
+	 * 
+	 * @param value
+	 *            the value to subtract
+	 */
 	public void subtractMana(double value) {
 		addMana(-value);
 	}
 
+	/**
+	 * Tries to cast the ability in the given index.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param ability
+	 *            the ability to cast
+	 * @return <code>true</code> if the casting was successful and
+	 *         <code>false</code> otherwise.
+	 */
 	public boolean tryCast(Game game, Ability ability) {
 		if (ability.canCast(this)) {
 			ability.cast(game, this);
@@ -213,19 +335,26 @@ public abstract class Entity extends Element {
 		return false;
 	}
 
+	/**
+	 * Tries to cast the ability in the given index.
+	 * 
+	 * @param game
+	 *            the game
+	 * @param index
+	 *            the index of the ability
+	 * @return <code>true</code> if the casting was successful and
+	 *         <code>false</code> otherwise.
+	 */
 	public boolean tryCast(Game game, int index) {
 		List<Ability> abilities = getAbilities();
 		return 0 <= index && index < abilities.size() && tryCast(game, abilities.get(index));
 	}
 
-	public boolean tryRequireMana(double value) {
-		if (!isRequireable(value)) {
-			return false;
-		}
-		subtractMana(value);
-		return true;
-	}
-
+	/**
+	 * {@inheritDoc} <br/>
+	 * Updates this entity's abilities, moves it and calls
+	 * {@link #act(Game, double) act}.
+	 */
 	@Override
 	public void update(Game game, double dt) {
 		getAbilities().forEach(a -> a.update(game, dt));

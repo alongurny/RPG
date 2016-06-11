@@ -14,6 +14,13 @@ import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.DrawerProtocol;
 
+/**
+ * This class represents a client of the game. It wraps {@link TcpClient} and
+ * has many methods to get and receive information from the server.
+ * 
+ * @author Alon
+ *
+ */
 public class GameClient {
 
 	private TcpClient tcpClient;
@@ -22,6 +29,17 @@ public class GameClient {
 	private GamePanel panel;
 	private boolean showInventory;
 
+	/**
+	 * Constructs a new client, using a game panel, a socket and a profession.
+	 * 
+	 * @param panel
+	 *            the panel that will draw the game for this client
+	 * @param toServer
+	 *            the socket which this client connects through
+	 * @param profession
+	 *            a string representation of the player's profession
+	 * @throws IOException
+	 */
 	public GameClient(GamePanel panel, Socket toServer, String profession) throws IOException {
 		commands = new CopyOnWriteArrayList<>();
 		tcpClient = new TcpClient(toServer);
@@ -57,14 +75,31 @@ public class GameClient {
 		tcpClient.listen();
 	}
 
+	/**
+	 * Add a new string command to this client. Commands are not sent
+	 * immediately to the server, but rather, are sent together by the
+	 * {@link #sendCommands() sendCommand} method.
+	 * 
+	 * @param command
+	 *            a command to send to the server
+	 */
 	public void addCommand(String command) {
 		commands.add(command);
 	}
 
+	/**
+	 * Returns the game panel that draws the game for this client
+	 * 
+	 * @return the game panel that draws the game for this client
+	 */
 	public GamePanel getPanel() {
 		return panel;
 	}
 
+	/**
+	 * Sends all the commands that were added using {@link #addCommand(String)
+	 * addCommand} to the server.
+	 */
 	public void sendCommands() {
 		for (String command : commands) {
 			tcpClient.send(Message.normal(command));
@@ -72,6 +107,13 @@ public class GameClient {
 		commands.clear();
 	}
 
+	/**
+	 * Sets the showInventory field: whether inventory should be shown or not.
+	 * 
+	 * @param showInventory
+	 *            <code>true</code> if inventory should be shown,
+	 *            <code>false</code> otherwise
+	 */
 	public void setShowInventory(boolean showInventory) {
 		this.showInventory = showInventory;
 	}
