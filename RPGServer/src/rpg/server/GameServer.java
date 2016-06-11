@@ -21,7 +21,7 @@ import rpg.element.entity.profession.Profession;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
 import rpg.graphics.DrawerProtocol;
-import rpg.graphics.MultiAbilityDrawer;
+import rpg.graphics.PlayerInfoPanel;
 import rpg.graphics.ShowInventory;
 import rpg.graphics.Translate;
 import rpg.logic.Tuple;
@@ -192,8 +192,8 @@ public class GameServer {
 			firstConnection = false;
 		}
 		server.forEach(c -> {
-			MultiAbilityDrawer mad = new MultiAbilityDrawer(120, 480);
 			game.getPlayer(c).ifPresent(p -> {
+				PlayerInfoPanel mad = new PlayerInfoPanel(p.getXP(), 120, 490);
 				p.getAbilities().forEach(a -> mad.addAbility(p, a));
 				c.send(Message.normal("absolute " + mad.getDrawer()));
 				c.send(Message.normal("inventory " + new ShowInventory(160, 160, p).getDrawer()));

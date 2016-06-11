@@ -27,12 +27,24 @@ public class DrawerProtocol implements Protocol<Drawer, String> {
 			paramValues = new Object[arr.length - 1];
 			for (int i = 0; i < arr.length - 1; i++) {
 				String[] s = arr[i + 1].split(":");
-				paramTypes[i] = s[1].equals("int") ? int.class
-						: s[1].equals("double") ? double.class
-								: s[1].equals("boolean") ? boolean.class : Class.forName(s[1]);
-				paramValues[i] = paramTypes[i] == int.class ? Integer.parseInt(s[0])
-						: paramTypes[i] == double.class ? Double.parseDouble(s[0])
-								: paramTypes[i] == boolean.class ? Boolean.parseBoolean(s[0]) : s[0];
+				switch (s[1]) {
+				case "int":
+					paramTypes[i] = int.class;
+					paramValues[i] = Integer.parseInt(s[0]);
+					break;
+				case "double":
+					paramTypes[i] = double.class;
+					paramValues[i] = Double.parseDouble(s[0]);
+					break;
+				case "boolean":
+					paramTypes[i] = boolean.class;
+					paramValues[i] = Boolean.parseBoolean(s[0]);
+					break;
+				default:
+					paramTypes[i] = String.class;
+					paramValues[i] = s[0];
+					break;
+				}
 			}
 			return (Drawer) cls.getConstructor(paramTypes).newInstance(paramValues);
 		} catch (Exception e) {

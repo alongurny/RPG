@@ -50,6 +50,7 @@ public class GameStation {
 		load("Fire Mage", "FireMage");
 		load("Force Mage", "ForceMage");
 		load("Frost Mage", "FrostMage");
+		load("Warrior", "Warrior");
 		panel = new GamePanel();
 		optionFrame = new JFrame("Last Bender");
 		optionFrame.setSize(600, 400);

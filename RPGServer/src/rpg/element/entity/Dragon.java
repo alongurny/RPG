@@ -29,7 +29,9 @@ public class Dragon extends Entity {
 			setVelocity(prevVelocity);
 		}
 		if (isAlive()) {
-			setTarget(game.getDynamicElements().stream().filter(p -> p instanceof Player).findFirst());
+			setTarget(game.getDynamicElements().stream().filter(p -> p instanceof Player)
+					.sorted((a, b) -> Double.compare(Element.distance(a, this), Element.distance(b, this)))
+					.findFirst());
 			tryCast(game, 0);
 		} else {
 			game.addDynamicElement(new HealthPotion(getLocation()));

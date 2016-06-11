@@ -20,5 +20,4 @@ public class FillRect extends Drawer {
 	public String represent() {
 		return String.format("%s %f:double %f:double", getClass().getName(), width, height);
 	}
-
 }

@@ -28,7 +28,7 @@ public class TileDrawer extends Drawer {
 	private int y;
 
 	public TileDrawer(int tileset, int row, int col) {
-		image = new Lazy<>(Tileset.get(tileset).getTile(row, col));
+		image = new Lazy<>(() -> Tileset.get(tileset).getTile(row, col));
 		this.tileset = tileset;
 		this.row = row;
 		this.col = col;

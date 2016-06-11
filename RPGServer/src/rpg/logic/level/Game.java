@@ -407,6 +407,11 @@ public class Game {
 		toRemove.clear();
 	}
 
+	/**
+	 * Returns a free index for a player to join.
+	 * 
+	 * @return a free index for a player to join
+	 */
 	private int getFreeIndex() {
 		int i = 0;
 		while (boundIndices.contains(i)) {

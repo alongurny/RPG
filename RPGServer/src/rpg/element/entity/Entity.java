@@ -62,6 +62,15 @@ public abstract class Entity extends Element {
 	}
 
 	/**
+	 * Returns this entity's experience points
+	 * 
+	 * @return this entity's experience points
+	 */
+	public double getXP() {
+		return xp;
+	}
+
+	/**
 	 * Returns the profession of this entity
 	 * 
 	 * @return the profession of this entity

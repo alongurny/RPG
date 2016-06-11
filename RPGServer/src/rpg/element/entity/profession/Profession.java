@@ -1,10 +1,12 @@
 package rpg.element.entity.profession;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import rpg.ability.Ability;
 import rpg.ability.damage.DamageType;
+import rpg.ability.physical.BasicAttack;
 import rpg.element.entity.Attribute;
 import rpg.element.entity.Entity;
 import rpg.graphics.Drawer;
@@ -31,7 +33,9 @@ public abstract class Profession {
 	 *            an array of abilities that can be used with this profession
 	 */
 	protected Profession(Ability... abilities) {
-		this.abilities = Arrays.asList(abilities);
+		this.abilities = new ArrayList<>();
+		this.abilities.add(new BasicAttack());
+		this.abilities.addAll(Arrays.asList(abilities));
 	}
 
 	/**
