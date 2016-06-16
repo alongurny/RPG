@@ -21,7 +21,7 @@ public class ShowInventory {
 	}
 
 	private Drawer getIn() {
-		Drawer d = new Popup(200, 200, new Color(100, 100, 100, 255), "Inventory").getDrawer();
+		Drawer d = new Popup(200, 200, new Color(100, 100, 100, 155), "Inventory").getDrawer();
 		for (Item i : player.getInventory()) {
 			d = d.andThen(new Translate(40, 40).andThen(i.getDrawer()));
 		}

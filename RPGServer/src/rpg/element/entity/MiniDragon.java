@@ -11,15 +11,31 @@ import rpg.logic.level.Game;
 
 public class MiniDragon extends Entity {
 
+	private double orientation;
+	private Vector2D prevVelocity;
+
 	public MiniDragon(Vector2D location) {
 		super(location, new MiniDragonProfession());
 		setVelocity(new Vector2D(-getSpeed(), 0));
+		orientation = getVelocity().getX();
+		prevVelocity = Vector2D.ZERO;
 	}
 
 	@Override
 	public void act(Game game, double dt) {
+		if (getVelocity().getMagnitude() > 0) {
+			prevVelocity = getVelocity();
+			if (!game.getObstacles(this, getLocation().add(getVelocity().getUnitalVector().multiply(8))).isEmpty()) {
+				setVelocity(getVelocity().negate());
+			}
+		} else {
+			setVelocity(prevVelocity);
+		}
 		if (getVelocity().getMagnitude() >= 32) {
 			setVelocity(getVelocity().getUnitalVector().multiply(32));
+		}
+		if (getVelocity().getX() != 0) {
+			orientation = getVelocity().getX();
 		}
 		if (isAlive()) {
 			setTarget(game.getDynamicElements().stream().filter(p -> p instanceof Player)
@@ -65,7 +81,7 @@ public class MiniDragon extends Entity {
 
 	@Override
 	protected Drawer getEntityDrawer() {
-		return getVelocity().getX() > 0 ? getProfession().getRightDrawer() : getProfession().getLeftDrawer();
+		return orientation > 0 ? getProfession().getRightDrawer() : getProfession().getLeftDrawer();
 	}
 
 }

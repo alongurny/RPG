@@ -330,6 +330,7 @@ public abstract class Entity extends Element {
 		getAbilities().forEach(a -> a.update(game, dt));
 		move(game, dt);
 		act(game, dt);
+		addXP(10 * dt);
 	}
 
 	protected abstract Drawer getEntityDrawer();
