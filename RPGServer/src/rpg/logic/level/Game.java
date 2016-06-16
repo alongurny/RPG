@@ -262,15 +262,6 @@ public class Game {
 		return boundIndices.size() >= 1;
 	}
 
-	public void addRepeating(double delay, double repeat, Runnable run) {
-		addTimer(delay, new Runnable() {
-			public void run() {
-				run.run();
-				addTimer(repeat, this);
-			}
-		});
-	}
-
 	/**
 	 * Called when in the client side, the client clicked on the screen (left
 	 * click).
@@ -282,6 +273,7 @@ public class Game {
 	 */
 	public void onLeftClick(Player player, Vector2D target) {
 		player.setTarget(getElementsAt(target).stream().findFirst());
+		player.tryCast(this, 0);
 	}
 
 	/**
@@ -295,7 +287,6 @@ public class Game {
 	 */
 	public void onRightClick(Player player, Vector2D target) {
 		player.setTarget(getElementsAt(target).stream().findFirst());
-		player.tryCast(this, 0);
 	}
 
 	/**
