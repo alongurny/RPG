@@ -10,6 +10,7 @@ public abstract class Bonus extends Element implements Interactive {
 
 	public Bonus(Vector2D location) {
 		super(location);
+		setAcceleration(new Vector2D(0, 100));
 	}
 
 	@Override
@@ -33,4 +34,9 @@ public abstract class Bonus extends Element implements Interactive {
 	}
 
 	protected abstract void onPick(Entity picker);
+
+	@Override
+	public void update(Game game, double dt) {
+		move(game, dt);
+	}
 }

@@ -49,6 +49,7 @@ public class Lava extends Element {
 			Entity entity = (Entity) other;
 			if (!caster.isFriendly(entity)) {
 				entity.damage(2.5 * dt, DamageType.FIRE);
+				caster.addXP(35 * dt);
 			}
 		}
 	}

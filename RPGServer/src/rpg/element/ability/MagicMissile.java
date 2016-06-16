@@ -59,6 +59,7 @@ public class MagicMissile extends Element {
 			Entity entity = (Entity) other;
 			entity.damage(damageSupplier.get(), DamageType.FORCE);
 			game.removeDynamicElement(this);
+			caster.addXP(100);
 		} else if (!other.isPassable(game, this)) {
 			game.removeDynamicElement(this);
 		}

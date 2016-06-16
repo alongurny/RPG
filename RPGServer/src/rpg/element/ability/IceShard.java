@@ -60,6 +60,7 @@ public class IceShard extends Element {
 			Entity entity = (Entity) other;
 			entity.damage(damageSupplier.get(), DamageType.COLD);
 			game.removeDynamicElement(this);
+			caster.addXP(50);
 		} else if (!other.isPassable(game, this)) {
 			game.removeDynamicElement(this);
 		}

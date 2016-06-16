@@ -60,6 +60,7 @@ public class Fireball extends Element {
 			if (!caster.isFriendly(entity)) {
 				entity.damage(damageSupplier.get(), DamageType.FIRE);
 				game.removeDynamicElement(this);
+				caster.addXP(100);
 			}
 		} else if (!other.isPassable(game, this)) {
 			game.removeDynamicElement(this);
