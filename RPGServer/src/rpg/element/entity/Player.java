@@ -43,7 +43,7 @@ public class Player extends Entity {
 	public Player(TcpClient client, Vector2D location, Profession profession) {
 		super(location, profession);
 		this.client = client;
-		setAcceleration(new Vector2D(0, 100));
+		getAbilities().forEach(a -> a.setCooldown(0));
 	}
 
 	@Override
@@ -109,7 +109,9 @@ public class Player extends Entity {
 	 *            either -1, 0 or 1: indicates the direction on the x axis
 	 */
 	public void moveHorizontally(double direction) {
-		setVelocity(new Vector2D(direction * getSpeed(), getVelocity().getY()));
+		if (isAlive()) {
+			setVelocity(new Vector2D(direction * getSpeed(), getVelocity().getY()));
+		}
 	}
 
 	@Override
@@ -125,7 +127,7 @@ public class Player extends Entity {
 	 * @return <code>true</code> if this player
 	 */
 	public boolean tryFall(Game game) {
-		if (hasEffect("flying") && !isRestingAboveSometing(game)) {
+		if (isAlive() && hasEffect("flying") && !isRestingAboveSometing(game)) {
 			setVelocity(new Vector2D(getVelocity().getX(), getSpeed()));
 			return true;
 		}
@@ -141,7 +143,7 @@ public class Player extends Entity {
 	 * @return <code>true</code> if this player
 	 */
 	public boolean tryJump(Game game) {
-		if (hasEffect("flying") || isRestingAboveSometing(game)) {
+		if (isAlive() && (hasEffect("flying") || isRestingAboveSometing(game))) {
 			setVelocity(new Vector2D(getVelocity().getX(), -getSpeed()));
 			return true;
 		}
@@ -178,8 +180,8 @@ public class Player extends Entity {
 	private void stepDraw(Game game) {
 		if (isRestingAboveSometing(game) && isAlive() && !hasEffect("disabled")) {
 			spriteCounter++;
-			if (spriteCounter >= 32) {
-				Drawer drawer = getDrawer();
+			if (spriteCounter >= 6) {
+				Drawer drawer = getEntityDrawer();
 				if (drawer instanceof Sprite) {
 					Sprite sprite = (Sprite) drawer;
 					sprite.step();

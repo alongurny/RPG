@@ -15,12 +15,4 @@ public abstract class Item implements Drawable {
 	protected Item() {
 	}
 
-	/**
-	 * Called when an entity uses this item.
-	 * 
-	 * @param user
-	 *            the entity who uses this item.
-	 */
-	public abstract void onUse(Entity user);
-
 }

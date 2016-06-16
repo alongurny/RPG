@@ -7,13 +7,11 @@ import rpg.element.Element;
 import rpg.element.entity.Attribute;
 import rpg.element.entity.Entity;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
 public class BasicAttack extends EntityTargetAbility {
 
-	private static final Drawer drawer = new TileDrawer(Messages.getInt("BasicAttack.tileset"),
-			Messages.getInt("BasicAttack.row"), Messages.getInt("BasicAttack.column"));
+	private static final Drawer drawer = Messages.getTileDrawer("BasicAttack");
 
 	public BasicAttack() {
 		super(1, 0);

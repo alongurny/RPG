@@ -6,7 +6,6 @@ import rpg.ability.force.HasteSpell;
 import rpg.ability.force.MagicMissileSpell;
 import rpg.element.entity.Entity;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 
 public class ForceMage extends Mage {
 
@@ -15,10 +14,8 @@ public class ForceMage extends Mage {
 
 	public ForceMage() {
 		super(new HasteSpell(), new MagicMissileSpell());
-		leftDrawer = TileDrawer.sprite(Messages.getInt("ForceMage.tileset"), Messages.getInt("ForceMage.left.row"),
-				Messages.getInt("ForceMage.left.firstColumn"), Messages.getInt("ForceMage.left.lastColumn"));
-		rightDrawer = TileDrawer.sprite(Messages.getInt("ForceMage.tileset"), Messages.getInt("ForceMage.right.row"),
-				Messages.getInt("ForceMage.right.firstColumn"), Messages.getInt("ForceMage.right.lastColumn"));
+		leftDrawer = Messages.getSprite("ForceMage.left");
+		rightDrawer = Messages.getSprite("ForceMage.right");
 	}
 
 	/**

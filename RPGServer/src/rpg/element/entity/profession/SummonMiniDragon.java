@@ -1,29 +1,26 @@
-package rpg.ability.air;
+package rpg.element.entity.profession;
 
 import external.Messages;
 import rpg.ability.Ability;
 import rpg.element.entity.Entity;
+import rpg.element.entity.MiniDragon;
 import rpg.graphics.Drawer;
 import rpg.logic.level.Game;
 
-public class FlightSpell extends Ability {
+public class SummonMiniDragon extends Ability {
 
-	private Drawer drawer = Messages.getTileDrawer("FlightSpell");
-	private boolean active;
-	private double duration = 10;
-
-	public FlightSpell() {
-		super(12, 8);
+	protected SummonMiniDragon() {
+		super(27, 20);
 	}
 
 	@Override
-	public Drawer getSelfDrawer() {
-		return drawer;
+	protected Drawer getSelfDrawer() {
+		return Messages.getTileDrawer("Dragon.img");
 	}
 
 	@Override
 	protected boolean isActive(Game game, Entity caster) {
-		return active;
+		return false;
 	}
 
 	@Override
@@ -33,14 +30,12 @@ public class FlightSpell extends Ability {
 
 	@Override
 	protected void onCast(Game game, Entity caster) {
-		active = true;
-		caster.addEffect("flying");
-		game.addTimer(duration, () -> active = false);
+		game.addDynamicElement(new MiniDragon(caster.getLocation().add(game.getGrid().getLocation(2, 0))));
 	}
 
 	@Override
 	protected void onEnd(Game game, Entity caster) {
-		caster.removeEffect("flying");
+
 	}
 
 	@Override

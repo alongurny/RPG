@@ -1,26 +1,26 @@
 package rpg.element.map;
 
+import external.Messages;
 import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
 public class Block extends Element {
 
-	private Drawer sprite;
+	private Drawer drawer;
 
 	public Block(Vector2D location) {
 		super(location);
-		sprite = new TileDrawer(0, 13, 23);
+		drawer = Messages.getTileDrawer("Block");
 
 	}
 
 	@Override
 	public Drawer getDrawer() {
-		return sprite;
+		return drawer;
 	}
 
 	@Override

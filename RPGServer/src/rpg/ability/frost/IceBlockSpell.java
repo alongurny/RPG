@@ -1,11 +1,12 @@
 package rpg.ability.frost;
 
+import external.Messages;
 import rpg.ability.EntityTargetAbility;
+import rpg.element.Element;
 import rpg.element.ability.IceBlock;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
 public class IceBlockSpell extends EntityTargetAbility {
@@ -17,7 +18,7 @@ public class IceBlockSpell extends EntityTargetAbility {
 
 	public IceBlockSpell() {
 		super(10, 10);
-		drawer = new TileDrawer(0, 16, 27);
+		drawer = Messages.getTileDrawer("IceBlock");
 		this.duration = 5;
 	}
 
@@ -28,7 +29,7 @@ public class IceBlockSpell extends EntityTargetAbility {
 
 	@Override
 	public boolean isCastable(Entity caster, Entity target) {
-		return caster.isAlive();
+		return Element.distance(caster, target) <= 180 && caster.isAlive();
 	}
 
 	@Override

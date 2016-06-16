@@ -4,18 +4,16 @@ import external.Messages;
 import rpg.ability.EntityTargetAbility;
 import rpg.ability.damage.Dice;
 import rpg.ability.damage.DiceSet;
+import rpg.element.Element;
 import rpg.element.ability.MagicMissile;
 import rpg.element.entity.Entity;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
 public class MagicMissileSpell extends EntityTargetAbility {
 
-	private static final Drawer drawer = TileDrawer.sprite(Messages.getInt("MagicMissileSpell.tileset"),
-			Messages.getInt("MagicMissileSpell.row"), Messages.getInt("MagicMissileSpell.firstColumn"),
-			Messages.getInt("MagicMissileSpell.lastColumn"));
+	private Drawer drawer = Messages.getSprite("MagicMissile");
 	private double speed;
 	private DiceSet dice;
 
@@ -38,6 +36,6 @@ public class MagicMissileSpell extends EntityTargetAbility {
 
 	@Override
 	protected boolean isCastable(Entity caster, Entity target) {
-		return !caster.isFriendly(target);
+		return Element.distance(caster, target) <= 360 && !caster.isFriendly(target);
 	}
 }

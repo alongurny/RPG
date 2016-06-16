@@ -208,6 +208,20 @@ public final class Vector2D {
 		return this.add(v.negate());
 	}
 
+	/**
+	 * Returns the phase of this vector. The phase is the angle with the x-axis,
+	 * so it satisfies Math.tan(phase) == y / x for non-zero x.
+	 * 
+	 * @return the phase of this vector
+	 */
+	public double getPhase() {
+		return Math.atan2(y, x);
+	}
+
+	public static Vector2D fromPolar(double magnitude, double phase) {
+		return new Vector2D(magnitude * Math.cos(phase), magnitude * Math.sin(phase));
+	}
+
 	@Override
 	public String toString() {
 		return String.format("(%.4g,%.4g)", x, y);

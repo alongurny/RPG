@@ -21,6 +21,8 @@ public abstract class Element implements Drawable, Updatable {
 	}
 
 	private Vector2D location;
+	private Vector2D velocity;
+	private Vector2D acceleration;
 
 	/**
 	 * Creates a new element in the given location. Note that since this class
@@ -31,6 +33,8 @@ public abstract class Element implements Drawable, Updatable {
 	 */
 	protected Element(Vector2D location) {
 		this.location = location;
+		this.velocity = Vector2D.ZERO;
+		this.acceleration = Vector2D.ZERO;
 	}
 
 	/**
@@ -45,6 +49,13 @@ public abstract class Element implements Drawable, Updatable {
 		Vector2D location = getLocation();
 		return new Rectangle(location.getX() + rel.getX(), location.getY() + rel.getY(), rel.getWidth(),
 				rel.getHeight());
+	}
+
+	public void move(Game game, double dt) {
+		boolean xMoved = game.tryMoveBy(this, new Vector2D(velocity.getX() * dt, 0));
+		boolean yMoved = game.tryMoveBy(this, new Vector2D(0, velocity.getY() * dt));
+		Vector2D possibleV = velocity.add(acceleration.multiply(dt));
+		velocity = new Vector2D(xMoved ? possibleV.getX() : 0, yMoved ? possibleV.getY() : 0);
 	}
 
 	/**
@@ -127,6 +138,44 @@ public abstract class Element implements Drawable, Updatable {
 	@Override
 	public String toString() {
 		return String.format("%s[location=%s]", getClass().getName(), getLocation());
+	}
+
+	/**
+	 * Sets the velocity of this entity
+	 * 
+	 * @param velocity
+	 *            the new velocity to set
+	 */
+	public void setVelocity(Vector2D velocity) {
+		this.velocity = velocity;
+	}
+
+	/**
+	 * Sets the acceleration of this entity.
+	 * 
+	 * @param acceleration
+	 *            the new acceleration to set
+	 */
+	public void setAcceleration(Vector2D acceleration) {
+		this.acceleration = acceleration;
+	}
+
+	/**
+	 * Returns the velocity of this entity.
+	 * 
+	 * @return the velocity of this entity
+	 */
+	public Vector2D getVelocity() {
+		return velocity;
+	}
+
+	/**
+	 * Returns the acceleration of this entity
+	 * 
+	 * @return the acceleration of this entity
+	 */
+	public Vector2D getAcceleration() {
+		return acceleration;
 	}
 
 }

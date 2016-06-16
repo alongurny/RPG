@@ -32,8 +32,6 @@ public abstract class Entity extends Element {
 	private List<String> effects;
 	private List<Item> inventory;
 	private double xp;
-	private Vector2D velocity;
-	private Vector2D acceleration;
 	private double health, mana;
 	private Optional<Element> target;
 	private Map<Attribute, Double> attributes;
@@ -55,8 +53,6 @@ public abstract class Entity extends Element {
 		this.mana = getMaxMana();
 		this.target = Optional.empty();
 		this.xp = 0;
-		this.velocity = Vector2D.ZERO;
-		this.acceleration = Vector2D.ZERO;
 		inventory = new ArrayList<>();
 		effects = new CopyOnWriteArrayList<>();
 	}
@@ -125,15 +121,6 @@ public abstract class Entity extends Element {
 		return getAbilities().size();
 	}
 
-	/**
-	 * Returns the acceleration of this entity
-	 * 
-	 * @return the acceleration of this entity
-	 */
-	public Vector2D getAcceleration() {
-		return acceleration;
-	}
-
 	public double getAttribute(Attribute attr) {
 		return attributes.get(attr) + profession.getAttribute(attr) + temporary.get(attr);
 	}
@@ -184,7 +171,7 @@ public abstract class Entity extends Element {
 	}
 
 	public double getSpeed() {
-		return 10 * getAttribute(Attribute.DEX) - 36;
+		return 14 * getAttribute(Attribute.DEX) - 54;
 	}
 
 	/**
@@ -195,15 +182,6 @@ public abstract class Entity extends Element {
 	 */
 	public Optional<Element> getTarget() {
 		return target;
-	}
-
-	/**
-	 * Returns the velocity of this entity.
-	 * 
-	 * @return the velocity of this entity
-	 */
-	public Vector2D getVelocity() {
-		return velocity;
 	}
 
 	/**
@@ -265,16 +243,6 @@ public abstract class Entity extends Element {
 	}
 
 	/**
-	 * Sets the acceleration of this entity.
-	 * 
-	 * @param acceleration
-	 *            the new acceleration to set
-	 */
-	public void setAcceleration(Vector2D acceleration) {
-		this.acceleration = acceleration;
-	}
-
-	/**
 	 * Sets a new target to this entity. Will be {@link Optional#empty()} if
 	 * there is no target.
 	 * 
@@ -283,16 +251,6 @@ public abstract class Entity extends Element {
 	 */
 	public void setTarget(Optional<Element> target) {
 		this.target = target;
-	}
-
-	/**
-	 * Sets the velocity of this entity
-	 * 
-	 * @param velocity
-	 *            the new velocity to set
-	 */
-	public void setVelocity(Vector2D velocity) {
-		this.velocity = velocity;
 	}
 
 	/**
@@ -370,10 +328,8 @@ public abstract class Entity extends Element {
 	@Override
 	public void update(Game game, double dt) {
 		getAbilities().forEach(a -> a.update(game, dt));
-		if (isAlive()) {
-			move(game, dt);
-			act(game, dt);
-		}
+		move(game, dt);
+		act(game, dt);
 	}
 
 	protected abstract Drawer getEntityDrawer();
@@ -389,13 +345,6 @@ public abstract class Entity extends Element {
 		temporary.put(Attribute.DEX, 0.0);
 		temporary.put(Attribute.INT, 0.0);
 		temporary.put(Attribute.CON, 0.0);
-	}
-
-	private void move(Game game, double dt) {
-		boolean xMoved = game.tryMoveBy(this, new Vector2D(velocity.getX() * dt, 0));
-		boolean yMoved = game.tryMoveBy(this, new Vector2D(0, velocity.getY() * dt));
-		Vector2D possibleV = velocity.add(acceleration.multiply(dt));
-		velocity = new Vector2D(xMoved ? possibleV.getX() : 0, yMoved ? possibleV.getY() : 0);
 	}
 
 }

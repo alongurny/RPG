@@ -1,16 +1,20 @@
 package rpg.element.entity.profession;
 
+import external.Messages;
 import rpg.ability.damage.DamageType;
 import rpg.ability.fire.FireballSpell;
 import rpg.ability.fire.LavaSpell;
 import rpg.element.entity.Entity;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 
 public class FireMage extends Mage {
 
+	private Drawer leftDrawer, rightDrawer;
+
 	public FireMage() {
 		super(new FireballSpell(), new LavaSpell());
+		leftDrawer = Messages.getSprite("FireMage.left");
+		rightDrawer = Messages.getSprite("FireMage.right");
 	}
 
 	/**
@@ -27,12 +31,12 @@ public class FireMage extends Mage {
 
 	@Override
 	public Drawer getLeftDrawer() {
-		return TileDrawer.sprite(1, 1, 0, 2);
+		return leftDrawer;
 	}
 
 	@Override
 	public Drawer getRightDrawer() {
-		return TileDrawer.sprite(1, 2, 0, 2);
+		return rightDrawer;
 	}
 
 }

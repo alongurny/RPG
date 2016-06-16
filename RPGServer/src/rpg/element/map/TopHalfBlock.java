@@ -1,11 +1,11 @@
 package rpg.element.map;
 
+import external.Messages;
 import rpg.element.Depth;
 import rpg.element.Element;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
 public class TopHalfBlock extends Element {
@@ -14,7 +14,7 @@ public class TopHalfBlock extends Element {
 
 	public TopHalfBlock(Vector2D location) {
 		super(location);
-		sprite = new TileDrawer(0, 13, 23, -16, -16, 32, 16);
+		sprite = Messages.getTileDrawer("Block", -16, -16, 32, 16);
 	}
 
 	@Override

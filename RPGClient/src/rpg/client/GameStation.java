@@ -63,7 +63,7 @@ public class GameStation {
 			professionsGroup.add(b);
 			optionFrame.add(b);
 		}
-		JButton button = new JButton("Send");
+		JButton button = new JButton("Play!");
 		optionFrame.add(button);
 		frame = new JFrame(Messages.getString("GameStation.title"));
 		frame.setLocation(700, 40);

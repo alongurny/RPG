@@ -6,13 +6,11 @@ import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
 public class ManaPotion extends Bonus {
 
-	private static final TileDrawer drawer = new TileDrawer(Messages.getInt("ManaPotion.tileset"),
-			Messages.getInt("ManaPotion.row"), Messages.getInt("ManaPotion.column"));
+	private static final Drawer drawer = Messages.getTileDrawer("ManaPotion");
 
 	public ManaPotion(Vector2D location) {
 		super(location);

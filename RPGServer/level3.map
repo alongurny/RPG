@@ -1,0 +1,24 @@
+bind rpg.element.entity.Dragon &
+static rpg.element.map.Block #
+static rpg.element.map.BottomHalfBlock o
+static rpg.element.map.TopHalfBlock t
+bind rpg.element.bonus.HealthPotion H
+bind rpg.element.bonus.ManaPotion M
+bind rpg.element.Door D
+item rpg.item.MasterKey K
+##########|##########|##########|##########|##########|##########|##########|##########|##########|##########
+#         |          |          |          |          |#         |          |          |          |         #
+#         |          |          |          |          |D         |          |          |          |         #
+#         |          |    &     |          |        ot|#too      |          |          |          |         #
+#         |          |          |          |      ot  |#   ttoo  |          |          |          |         #
+#         |          |          |          |    ot    |#        t|too H  MM |          |          |         #
+#         |          |          |          |  ot      |#         |    tt oo |          |          |         #
+#         |          |          |          |ot        |#         |          |tt oo  M  |          |         #
+#         |          |          |        oD|          |#         |          |      tt o|o    K    |         #
+##########|##########|##########|##########|##########|#       MM|          |          |  tt oo   |         #
+#         |          |          |          |          |     oo tt|          |          |        tt| ooo     #
+#         |          |          |          |         o|o tt      |          |          |          |     oott#
+#         |          |          |          |   oo tt  |          |          |          |          | ooot    #
+#         |          |          |  ooooo###|##        |          |          |          |       oot|t        #
+# i i i i |          |  ooooo###|##########|##        |          |          |          |   oott   |         #
+##########|##########|##########|##########|##########|##########|##########|##########|##########|##########

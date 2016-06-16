@@ -39,6 +39,7 @@ public class Game {
 	private List<Element> elements;
 	private List<Element> toRemove;
 	private List<Element> toAdd;
+	private Vector2D defaultGravity;
 	private Grid grid;
 	private Timer timer;
 	private List<Vector2D> initialLocations;
@@ -63,6 +64,7 @@ public class Game {
 		initialLocations = new CopyOnWriteArrayList<>();
 		players = new ConcurrentHashMap<>();
 		boundIndices = new ConcurrentSkipListSet<>();
+		defaultGravity = new Vector2D(0, 100);
 	}
 
 	/**
@@ -103,10 +105,20 @@ public class Game {
 		if (players.size() < initialLocations.size()) {
 			int index = getFreeIndex();
 			Player player = new Player(client, initialLocations.get(index), profession);
+			player.setAcceleration(defaultGravity);
 			boundIndices.add(index);
 			players.put(index, player);
 			elements.add(player);
 		}
+	}
+
+	/**
+	 * Returns the default gravity for objects in this game.
+	 * 
+	 * @return the default gravity for objects in this game
+	 */
+	public Vector2D getDefaultGravity() {
+		return defaultGravity;
 	}
 
 	/**
@@ -250,16 +262,40 @@ public class Game {
 		return boundIndices.size() >= 1;
 	}
 
+	public void addRepeating(double delay, double repeat, Runnable run) {
+		addTimer(delay, new Runnable() {
+			public void run() {
+				run.run();
+				addTimer(repeat, this);
+			}
+		});
+	}
+
 	/**
-	 * Called when in the client side, the client clicked on the screen.
+	 * Called when in the client side, the client clicked on the screen (left
+	 * click).
 	 * 
 	 * @param player
 	 *            the player that its client clicked on the screen
 	 * @param target
 	 *            the location of the click, relative to this game
 	 */
-	public void onClick(Player player, Vector2D target) {
+	public void onLeftClick(Player player, Vector2D target) {
 		player.setTarget(getElementsAt(target).stream().findFirst());
+	}
+
+	/**
+	 * Called when in the client side, the client clicked on the screen (right
+	 * click).
+	 * 
+	 * @param player
+	 *            the player that its client clicked on the screen
+	 * @param target
+	 *            the location of the click, relative to this game
+	 */
+	public void onRightClick(Player player, Vector2D target) {
+		player.setTarget(getElementsAt(target).stream().findFirst());
+		player.tryCast(this, 0);
 	}
 
 	/**

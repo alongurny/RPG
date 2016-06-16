@@ -5,7 +5,6 @@ import rpg.ability.damage.DamageType;
 import rpg.element.entity.Attribute;
 import rpg.element.entity.Entity;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 
 public class Warrior extends Profession {
 
@@ -14,10 +13,8 @@ public class Warrior extends Profession {
 
 	public Warrior() {
 		super();
-		leftDrawer = TileDrawer.sprite(Messages.getInt("Warrior.tileset"), Messages.getInt("Warrior.left.row"),
-				Messages.getInt("Warrior.left.firstColumn"), Messages.getInt("Warrior.left.lastColumn"));
-		rightDrawer = TileDrawer.sprite(Messages.getInt("Warrior.tileset"), Messages.getInt("Warrior.right.row"),
-				Messages.getInt("Warrior.right.firstColumn"), Messages.getInt("Warrior.right.lastColumn"));
+		leftDrawer = Messages.getSprite("Warrior.left");
+		rightDrawer = Messages.getSprite("Warrior.right");
 	}
 
 	@Override
@@ -31,9 +28,9 @@ public class Warrior extends Profession {
 		case CON:
 			return 2;
 		case DEX:
-			return -2;
+			return 0;
 		case INT:
-			return -2;
+			return -4;
 		case STR:
 			return 6;
 		default:

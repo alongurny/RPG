@@ -5,7 +5,6 @@ import rpg.ability.air.FlightSpell;
 import rpg.ability.damage.DamageType;
 import rpg.element.entity.Entity;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 
 public class AirMage extends Mage {
 
@@ -14,10 +13,8 @@ public class AirMage extends Mage {
 
 	public AirMage() {
 		super(new FlightSpell());
-		leftDrawer = TileDrawer.sprite(Messages.getInt("AirMage.tileset"), Messages.getInt("AirMage.left.row"),
-				Messages.getInt("AirMage.left.firstColumn"), Messages.getInt("AirMage.left.lastColumn"));
-		rightDrawer = TileDrawer.sprite(Messages.getInt("AirMage.tileset"), Messages.getInt("AirMage.right.row"),
-				Messages.getInt("AirMage.right.firstColumn"), Messages.getInt("AirMage.right.lastColumn"));
+		leftDrawer = Messages.getSprite("AirMage.left");
+		rightDrawer = Messages.getSprite("AirMage.right");
 	}
 
 	@Override

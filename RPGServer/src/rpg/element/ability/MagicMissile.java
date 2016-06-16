@@ -3,6 +3,7 @@ package rpg.element.ability;
 import java.util.List;
 import java.util.function.Supplier;
 
+import external.Messages;
 import rpg.ability.damage.DamageType;
 import rpg.element.Depth;
 import rpg.element.Element;
@@ -10,7 +11,6 @@ import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
 public class MagicMissile extends Element {
@@ -21,6 +21,7 @@ public class MagicMissile extends Element {
 	private Entity target;
 	private Supplier<Double> damageSupplier;
 	private double speed;
+	private Drawer drawer;
 
 	public MagicMissile(Entity caster, Vector2D location, double speed, Entity target,
 			Supplier<Double> damageSupplier) {
@@ -29,11 +30,12 @@ public class MagicMissile extends Element {
 		this.target = target;
 		this.speed = speed;
 		this.damageSupplier = damageSupplier;
+		this.drawer = Messages.getTileDrawer("MagicMissile");
 	}
 
 	@Override
 	public Drawer getDrawer() {
-		return TileDrawer.sprite(0, 6, 34, 36);
+		return drawer;
 	}
 
 	@Override

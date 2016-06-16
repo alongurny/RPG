@@ -1,10 +1,10 @@
 package rpg.element;
 
+import external.Messages;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 import rpg.item.MasterKey;
 import rpg.logic.level.Game;
 
@@ -18,8 +18,8 @@ public class Door extends Element implements Interactive {
 	public Door(Vector2D location) {
 		super(location);
 		this.open = false;
-		openDrawer = new TileDrawer(0, 11, 27);
-		closedDrawer = new TileDrawer(0, 11, 23);
+		openDrawer = Messages.getTileDrawer("Door.open");
+		closedDrawer = Messages.getTileDrawer("Door.closed");
 	}
 
 	@Override

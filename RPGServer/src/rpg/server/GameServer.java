@@ -54,8 +54,11 @@ public class GameServer {
 			case "moveHorizontally":
 				player.moveHorizontally(Double.parseDouble(arr[1]));
 				break;
-			case "onClick":
-				game.onClick(player, Vector2D.valueOf(arr[1]));
+			case "leftClick":
+				game.onLeftClick(player, Vector2D.valueOf(arr[1]));
+				break;
+			case "rightClick":
+				game.onRightClick(player, Vector2D.valueOf(arr[1]));
 				break;
 			case "cast":
 				player.tryCast(game, Integer.parseInt(arr[1]));

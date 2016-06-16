@@ -3,9 +3,9 @@ package rpg.element.entity.profession;
 import external.Messages;
 import rpg.ability.damage.DamageType;
 import rpg.ability.frost.IceBlockSpell;
+import rpg.ability.frost.IceShardsSpell;
 import rpg.element.entity.Entity;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 
 public class FrostMage extends Mage {
 
@@ -13,11 +13,9 @@ public class FrostMage extends Mage {
 	private Drawer rightDrawer;
 
 	public FrostMage() {
-		super(new IceBlockSpell());
-		leftDrawer = TileDrawer.sprite(Messages.getInt("FrostMage.tileset"), Messages.getInt("FrostMage.left.row"),
-				Messages.getInt("FrostMage.left.firstColumn"), Messages.getInt("FrostMage.left.lastColumn"));
-		rightDrawer = TileDrawer.sprite(Messages.getInt("FrostMage.tileset"), Messages.getInt("FrostMage.right.row"),
-				Messages.getInt("FrostMage.right.firstColumn"), Messages.getInt("FrostMage.right.lastColumn"));
+		super(new IceBlockSpell(), new IceShardsSpell());
+		leftDrawer = Messages.getSprite("FrostMage.left");
+		rightDrawer = Messages.getSprite("FrostMage.right");
 	}
 
 	/**

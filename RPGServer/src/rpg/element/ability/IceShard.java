@@ -10,32 +10,33 @@ import rpg.element.Element;
 import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
-import rpg.graphics.DrawIcon;
 import rpg.graphics.Drawer;
 import rpg.graphics.Rotate;
 import rpg.logic.level.Game;
 
-public class Fireball extends Element {
+public class IceShard extends Element {
 
 	private static int width = 32, height = 32;
 
 	private static double defaultAngle = Math.toRadians(-90);
 	private Entity caster;
-	private Vector2D velocity;
 	private Supplier<Double> damageSupplier;
 
-	public Fireball(Entity caster, Vector2D location, Vector2D velocity, Supplier<Double> damageSupplier) {
+	private static final Drawer drawer = Messages.getTileDrawer("IceShard");
+
+	public IceShard(Entity caster, Vector2D location, Vector2D velocity, Vector2D acceleration,
+			Supplier<Double> damageSupplier) {
 		super(location);
 		this.caster = caster;
-		this.velocity = velocity;
 		this.damageSupplier = damageSupplier;
+		setVelocity(velocity);
+		setAcceleration(acceleration);
 	}
 
 	@Override
 	public Drawer getDrawer() {
-		double angle = Math.atan2(velocity.getY(), velocity.getX()) + defaultAngle;
-		return new Rotate(angle).andThen(new DrawIcon(Messages.getString("Fireball.img"), width, height)) //$NON-NLS-1$
-				.andThen(new Rotate(-angle));
+		double angle = Math.atan2(getVelocity().getY(), getVelocity().getX()) + defaultAngle;
+		return new Rotate(angle).andThen(drawer).andThen(new Rotate(-angle));
 	}
 
 	@Override
@@ -55,12 +56,10 @@ public class Fireball extends Element {
 
 	@Override
 	public void onCollision(Game game, Element other) {
-		if (other instanceof Entity) {
+		if (other instanceof Entity && caster != other) {
 			Entity entity = (Entity) other;
-			if (!caster.isFriendly(entity)) {
-				entity.damage(damageSupplier.get(), DamageType.FIRE);
-				game.removeDynamicElement(this);
-			}
+			entity.damage(damageSupplier.get(), DamageType.COLD);
+			game.removeDynamicElement(this);
 		} else if (!other.isPassable(game, this)) {
 			game.removeDynamicElement(this);
 		}
@@ -68,11 +67,12 @@ public class Fireball extends Element {
 
 	@Override
 	public void update(Game game, double dt) {
-		List<Element> obstacles = game.getObstaclesFromMoveBy(this, velocity.multiply(dt));
+		List<Element> obstacles = game.getObstaclesFromMoveBy(this, getVelocity().multiply(dt));
 		obstacles.forEach(obstacle -> {
 			onCollision(game, obstacle);
 			obstacle.onCollision(game, this);
 		});
+		setAcceleration(getAcceleration().add(getVelocity().multiply(dt)));
 	}
 
 }

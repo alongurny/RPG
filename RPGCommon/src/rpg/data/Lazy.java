@@ -13,10 +13,6 @@ public class Lazy<T> {
 		this.value = Optional.empty();
 	}
 
-	public Lazy(T value) {
-		this.value = Optional.of(value);
-	}
-
 	public T get() {
 		if (!value.isPresent()) {
 			value = Optional.of(initializer.get());

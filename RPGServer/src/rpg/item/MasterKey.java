@@ -1,12 +1,11 @@
 package rpg.item;
 
-import rpg.element.entity.Entity;
+import external.Messages;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 
 public class MasterKey extends Item {
 
-	private Drawer drawer = new TileDrawer(0, 45, 54);
+	private Drawer drawer = Messages.getTileDrawer("MasterKey");
 
 	public MasterKey() {
 	}
@@ -14,11 +13,6 @@ public class MasterKey extends Item {
 	@Override
 	public Drawer getDrawer() {
 		return drawer;
-	}
-
-	@Override
-	public void onUse(Entity user) {
-
 	}
 
 }

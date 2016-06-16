@@ -64,17 +64,19 @@ public class IOHandler {
 
 	private void initialize() {
 		bindMouseReleased(e -> {
-			if (SwingUtilities.isRightMouseButton(e)) {
-				Vector2D offset = client.getPanel().getOffset();
-				Vector2D target = new Vector2D(e.getX(), e.getY()).subtract(offset);
-				client.addCommand("onClick " + target);
+			Vector2D offset = client.getPanel().getOffset();
+			Vector2D target = new Vector2D(e.getX(), e.getY()).subtract(offset);
+			if (SwingUtilities.isLeftMouseButton(e)) {
+				client.addCommand("leftClick " + target);
+			} else if (SwingUtilities.isRightMouseButton(e)) {
+				client.addCommand("rightClick " + target);
 			}
 		});
 		bindKeyPressed("Z", () -> client.addCommand("interact"));
 		bindKeyPressed("E", () -> client.setShowInventory(true));
 		bindKeyReleased("E", () -> client.setShowInventory(false));
 		IntStream.rangeClosed(1, 9)
-				.forEach(i -> bindKeyPressed(Integer.toString(i), () -> client.addCommand("cast " + (i - 1))));
+				.forEach(i -> bindKeyPressed(Integer.toString(i), () -> client.addCommand("cast " + i)));
 		Arrays.asList("UP", "W", "SPACE").forEach(s -> bindKeyTyped(s, () -> client.addCommand("jump")));
 		Arrays.asList("DOWN", "S").forEach(s -> bindKeyTyped(s, () -> client.addCommand("fall")));
 		Arrays.asList("LEFT", "A").forEach(s -> bindKeyTyped(s, () -> direction += -1));

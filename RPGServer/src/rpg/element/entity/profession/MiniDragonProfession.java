@@ -8,16 +8,16 @@ import rpg.element.entity.Entity;
 import rpg.graphics.DrawIcon;
 import rpg.graphics.Drawer;
 
-public class DragonProfession extends Profession {
+public class MiniDragonProfession extends Profession {
 
 	private Drawer leftDrawer;
 	private Drawer rightDrawer;
 
-	public DragonProfession() {
-		super(new FireballSpell(), new SummonMiniDragon());
+	public MiniDragonProfession() {
+		super(new FireballSpell());
 		String path = Messages.getString("DragonRace.img");
-		leftDrawer = new DrawIcon(path, -160, 154);
-		rightDrawer = new DrawIcon(path, 160, 154);
+		leftDrawer = new DrawIcon(path, -66, 50);
+		rightDrawer = new DrawIcon(path, 66, 50);
 	}
 
 	@Override
@@ -39,16 +39,16 @@ public class DragonProfession extends Profession {
 	 */
 	@Override
 	public double getResistance(Entity entity, DamageType type) {
-		return type == DamageType.FIRE ? 20 : 0;
+		return type == DamageType.FIRE ? 2 : 0;
 	}
 
 	@Override
 	public int getAttribute(Attribute attr) {
 		switch (attr) {
 		case CON:
-			return 20;
+			return 2;
 		case INT:
-			return 30;
+			return 3;
 		default:
 			return 0;
 		}

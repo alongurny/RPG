@@ -35,7 +35,7 @@ public abstract class Ability implements Updatable {
 	 *            the mana cost of this ability
 	 */
 	protected Ability(double maxCooldown, double mana) {
-		this.cooldown = 0;
+		this.cooldown = maxCooldown;
 		this.maxCooldown = maxCooldown;
 		this.mana = mana;
 	}
@@ -190,5 +190,15 @@ public abstract class Ability implements Updatable {
 	 *            the caster
 	 */
 	protected abstract void onUpdate(Game game, Entity caster);
+
+	/**
+	 * Sets the cooldown.
+	 * 
+	 * @param cooldown
+	 *            the new cooldown to set
+	 */
+	public void setCooldown(double cooldown) {
+		this.cooldown = cooldown;
+	}
 
 }

@@ -1,6 +1,7 @@
 package rpg.ability.fire;
 
 import rpg.ability.EntityTargetAbility;
+import rpg.element.Element;
 import rpg.element.ability.Lava;
 import rpg.element.entity.Entity;
 import rpg.geometry.Vector2D;
@@ -24,7 +25,7 @@ public class LavaSpell extends EntityTargetAbility {
 
 	@Override
 	protected boolean isCastable(Entity caster, Entity target) {
-		return true;
+		return Element.distance(caster, target) <= 120;
 	}
 
 	@Override

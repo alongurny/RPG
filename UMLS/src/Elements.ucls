@@ -73,16 +73,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="rpg.element.ability.Knife" project="RPGServer" 
-    file="/RPGServer/src/rpg/element/ability/Knife.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="479" y="70"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="false" package="false" protected="false" private="false" static="false"/>      
-      <operations public="false" package="false" protected="false" private="false" static="false"/>    
-    </display>  
-  </class>  
-  <class id="10" language="java" name="rpg.element.ability.MagicMissile" project="RPGServer" 
+  <class id="9" language="java" name="rpg.element.ability.MagicMissile" project="RPGServer" 
     file="/RPGServer/src/rpg/element/ability/MagicMissile.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="692" y="242"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
@@ -91,7 +82,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="rpg.element.bonus.ManaPotion" project="RPGServer" 
+  <class id="10" language="java" name="rpg.element.bonus.ManaPotion" project="RPGServer" 
     file="/RPGServer/src/rpg/element/bonus/ManaPotion.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="289" y="163"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
@@ -100,7 +91,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="rpg.element.bonus.HealthPotion" project="RPGServer" 
+  <class id="11" language="java" name="rpg.element.bonus.HealthPotion" project="RPGServer" 
     file="/RPGServer/src/rpg/element/bonus/HealthPotion.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="423" y="163"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
@@ -109,7 +100,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="rpg.element.bonus.Bonus" project="RPGServer" 
+  <class id="12" language="java" name="rpg.element.bonus.Bonus" project="RPGServer" 
     file="/RPGServer/src/rpg/element/bonus/Bonus.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="352" y="70"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
@@ -118,7 +109,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="rpg.element.entity.Entity" project="RPGServer" 
+  <class id="13" language="java" name="rpg.element.entity.Entity" project="RPGServer" 
     file="/RPGServer/src/rpg/element/entity/Entity.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="686" y="335"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
@@ -127,7 +118,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="rpg.element.entity.Player" project="RPGServer" 
+  <class id="14" language="java" name="rpg.element.entity.Player" project="RPGServer" 
     file="/RPGServer/src/rpg/element/entity/Player.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="718" y="428"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
@@ -136,7 +127,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="rpg.element.entity.Dragon" project="RPGServer" 
+  <class id="15" language="java" name="rpg.element.entity.Dragon" project="RPGServer" 
     file="/RPGServer/src/rpg/element/entity/Dragon.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="591" y="428"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
@@ -145,7 +136,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="rpg.element.map.Block" project="RPGServer" 
+  <class id="16" language="java" name="rpg.element.map.Block" project="RPGServer" 
     file="/RPGServer/src/rpg/element/map/Block.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="733" y="70"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
@@ -154,7 +145,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="rpg.element.map.BottomHalfBlock" project="RPGServer" 
+  <class id="17" language="java" name="rpg.element.map.BottomHalfBlock" project="RPGServer" 
     file="/RPGServer/src/rpg/element/map/BottomHalfBlock.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="209" y="70"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
@@ -163,7 +154,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="rpg.element.map.TopHalfBlock" project="RPGServer" 
+  <class id="18" language="java" name="rpg.element.map.TopHalfBlock" project="RPGServer" 
     file="/RPGServer/src/rpg/element/map/TopHalfBlock.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="61" y="70"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
@@ -172,69 +163,77 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <generalization id="20">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="13"/>  
-  </generalization>  
-  <generalization id="21">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <generalization id="22">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <generalization id="23">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <generalization id="24">    
+  <realization id="19">    
     <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="13"/>  
-  </generalization>  
-  <generalization id="25">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="14"/>  
-  </generalization>  
-  <realization id="26">    
-    <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="1"/>  
   </realization>  
-  <realization id="27">    
+  <generalization id="20">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="21">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="22">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="23" name="caster">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="24" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <generalization id="25">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="26">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="27" name="target">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="28" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <generalization id="29">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <realization id="30">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="1"/>  
   </realization>  
-  <association id="28">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="29" name="target"/>      
-      <multiplicity id="30" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
-  <realization id="31">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <generalization id="32">    
+  <generalization id="31">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
+  <realization id="32">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
   <generalization id="33">    
-    <end type="SOURCE" refId="9"/>    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
   <generalization id="34">    
-    <end type="SOURCE" refId="13"/>    
+    <end type="SOURCE" refId="9"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
   <generalization id="35">    
-    <end type="SOURCE" refId="18"/>    
+    <end type="SOURCE" refId="17"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
   <generalization id="36">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="4"/>  
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="13"/>  
   </generalization>  
   <generalization id="37">    
     <end type="SOURCE" refId="6"/>    
@@ -242,46 +241,54 @@
   </generalization>  
   <association id="38">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="39" name="caster"/>      
-      <multiplicity id="40" minimum="0" maximum="1"/>    
+      <attribute id="39" name="caster">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="40" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <association id="41">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="42" name="caster"/>      
-      <multiplicity id="43" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="false" multiplicity="false"/>  
-  </association>  
+  <generalization id="41">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <generalization id="42">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <realization id="43">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
   <generalization id="44">    
-    <end type="SOURCE" refId="16"/>    
-    <end type="TARGET" refId="14"/>  
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="4"/>  
   </generalization>  
   <generalization id="45">    
-    <end type="SOURCE" refId="5"/>    
+    <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
-  <generalization id="46">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <generalization id="47">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <association id="48">    
+  <association id="46">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="49" name="caster"/>      
-      <multiplicity id="50" minimum="0" maximum="1"/>    
+      <attribute id="47" name="caster">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="48" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="false" multiplicity="false"/>  
   </association>  
-  <generalization id="51">    
-    <end type="SOURCE" refId="7"/>    
+  <generalization id="49">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="50">    
+    <end type="SOURCE" refId="16"/>    
     <end type="TARGET" refId="4"/>  
   </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 

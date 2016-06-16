@@ -48,6 +48,7 @@ public class DrawerProtocol implements Protocol<Drawer, String> {
 			}
 			return (Drawer) cls.getConstructor(paramTypes).newInstance(paramValues);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}

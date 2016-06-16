@@ -6,13 +6,11 @@ import rpg.element.entity.Entity;
 import rpg.geometry.Rectangle;
 import rpg.geometry.Vector2D;
 import rpg.graphics.Drawer;
-import rpg.graphics.TileDrawer;
 import rpg.logic.level.Game;
 
 public class HealthPotion extends Bonus {
 
-	private static final Drawer sprite = new TileDrawer(Messages.getInt("HealthPotion.tileset"),
-			Messages.getInt("HealthPotion.row"), Messages.getInt("HealthPotion.column"));
+	private static final Drawer drawer = Messages.getTileDrawer("HealthPotion");
 
 	public HealthPotion(Vector2D location) {
 		super(location);
@@ -20,7 +18,7 @@ public class HealthPotion extends Bonus {
 
 	@Override
 	public Drawer getDrawer() {
-		return sprite;
+		return drawer;
 	}
 
 	@Override

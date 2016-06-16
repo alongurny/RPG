@@ -21,7 +21,7 @@ public class StretchedTileDrawer extends Drawer {
 		this.col = col;
 		this.width = width;
 		this.height = height;
-		image = new Lazy<>(Tileset.get(tileset).getTile(row, col));
+		image = new Lazy<>(() -> Tileset.get(tileset).getTile(row, col));
 	}
 
 	public void draw(Graphics2D g) {
