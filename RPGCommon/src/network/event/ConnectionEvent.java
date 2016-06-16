@@ -17,6 +17,9 @@ public class ConnectionEvent {
 	/**
 	 * Creates a new ConnectionEvent with the current time in milliseconds as
 	 * time.
+	 * 
+	 * @param client
+	 *            the client that caused this event
 	 */
 	public ConnectionEvent(TcpClient client) {
 		this(client, System.currentTimeMillis());
@@ -25,6 +28,8 @@ public class ConnectionEvent {
 	/**
 	 * Creates a new ConnectionEvent with the given time in milliseconds.
 	 * 
+	 * @param client
+	 *            the client that caused this event
 	 * @param time
 	 *            The time in milliseconds
 	 */

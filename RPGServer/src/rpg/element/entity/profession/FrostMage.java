@@ -21,9 +21,12 @@ public class FrostMage extends Mage {
 	}
 
 	/**
-	 * {@inheritDoc}<br/>
+	 * {@inheritDoc}
+	 * <p>
+	 * 
 	 * Returned value is positive if damageType is {@link DamageType#COLD COLD},
 	 * and 0 otherwise.
+	 * </p>
 	 */
 	@Override
 	public double getResistance(Entity entity, DamageType damageType) {

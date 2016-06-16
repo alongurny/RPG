@@ -26,8 +26,8 @@ public class RPGException extends RuntimeException {
 	 * Constructs a new <code>RPGException</code> that was cause by another
 	 * instance of {@link Throwable}.
 	 * 
-	 * @param message
-	 *            a detailed message
+	 * @param t
+	 *            the throwable that caused this exception
 	 */
 	public RPGException(Throwable t) {
 		super(t);

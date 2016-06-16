@@ -54,7 +54,8 @@ public class Rectangle {
 	 * rectangle.
 	 * 
 	 * @param point
-	 * @return
+	 *            a point
+	 * @return whether the point is contained in this rectangle
 	 */
 	public boolean contains(Vector2D point) {
 		return getMinX() <= point.getX() && point.getX() <= getMaxX() && getMinY() <= point.getY()

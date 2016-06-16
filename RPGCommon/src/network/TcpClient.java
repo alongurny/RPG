@@ -45,6 +45,7 @@ public class TcpClient implements Closeable {
 	 * @param socket
 	 *            a socket
 	 * @throws IOException
+	 *             if an I/O exception occurs
 	 */
 	public TcpClient(Socket socket) throws IOException {
 		this.socket = socket;
@@ -64,6 +65,7 @@ public class TcpClient implements Closeable {
 	 * @param port
 	 *            the server's port
 	 * @throws IOException
+	 *             if an I/O error occurs
 	 */
 	public TcpClient(InetAddress host, int port) throws IOException {
 		this(new Socket(host, port));
@@ -78,6 +80,7 @@ public class TcpClient implements Closeable {
 	 * @param port
 	 *            the server's port
 	 * @throws IOException
+	 *             if an I/O error occurs
 	 */
 	public TcpClient(String host, int port) throws IOException {
 		this(new Socket(host, port));
@@ -175,6 +178,7 @@ public class TcpClient implements Closeable {
 	 * listener does not exist, does nothing.
 	 * 
 	 * @param messageListener
+	 *            a message listener
 	 */
 	public void removeMessageListener(MessageListener messageListener) {
 		verifyNotListening();

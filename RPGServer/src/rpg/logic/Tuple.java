@@ -19,6 +19,10 @@ public class Tuple<A, B> {
 	 *            the first entry
 	 * @param b
 	 *            the second entry
+	 * @param <A>
+	 *            the first entry's type
+	 * @param <B>
+	 *            the second entry's type
 	 * @return a new tuple
 	 */
 	public static <A, B> Tuple<A, B> of(A a, B b) {
@@ -35,13 +39,16 @@ public class Tuple<A, B> {
 
 	/**
 	 * Returns the first entry.
+	 * 
 	 * @return the first entry
 	 */
 	public A getFirst() {
 		return first;
 	}
+
 	/**
 	 * Returns the second entry.
+	 * 
 	 * @return the second entry
 	 */
 	public B getSecond() {

@@ -37,7 +37,7 @@ public abstract class Entity extends Element {
 	private double health, mana;
 	private Optional<Element> target;
 	private Map<Attribute, Double> attributes;
-	private Map<Attribute, Double> temporaryAttributes;
+	private Map<Attribute, Double> temporary;
 
 	/**
 	 * Constructs a new entity at the given location with the given profession
@@ -90,7 +90,7 @@ public abstract class Entity extends Element {
 	protected abstract void act(Game game, double dt);
 
 	public void addAttribute(Attribute attr, double value) {
-		temporaryAttributes.put(attr, temporaryAttributes.get(attr) + value);
+		temporary.put(attr, temporary.get(attr) + value);
 	}
 
 	public void addEffect(String effect) {
@@ -135,7 +135,7 @@ public abstract class Entity extends Element {
 	}
 
 	public double getAttribute(Attribute attr) {
-		return attributes.get(attr) + profession.getAttribute(attr) + temporaryAttributes.get(attr);
+		return attributes.get(attr) + profession.getAttribute(attr) + temporary.get(attr);
 	}
 
 	@Override
@@ -279,6 +279,7 @@ public abstract class Entity extends Element {
 	 * there is no target.
 	 * 
 	 * @param target
+	 *            the target to set
 	 */
 	public void setTarget(Optional<Element> target) {
 		this.target = target;
@@ -303,7 +304,7 @@ public abstract class Entity extends Element {
 	 *            the subtracting
 	 */
 	public void subtractAttribute(Attribute attr, double value) {
-		temporaryAttributes.put(attr, temporaryAttributes.get(attr) - value);
+		temporary.put(attr, temporary.get(attr) - value);
 	}
 
 	/**
@@ -360,9 +361,11 @@ public abstract class Entity extends Element {
 	}
 
 	/**
-	 * {@inheritDoc} <br/>
+	 * {@inheritDoc}
+	 * <p>
 	 * Updates this entity's abilities, moves it and calls
 	 * {@link #act(Game, double) act}.
+	 * </p>
 	 */
 	@Override
 	public void update(Game game, double dt) {
@@ -377,15 +380,15 @@ public abstract class Entity extends Element {
 
 	private void initAttributes() {
 		attributes = new HashMap<>();
-		temporaryAttributes = new HashMap<>();
+		temporary = new HashMap<>();
 		attributes.put(Attribute.STR, 10.0);
 		attributes.put(Attribute.DEX, 10.0);
 		attributes.put(Attribute.INT, 10.0);
 		attributes.put(Attribute.CON, 10.0);
-		temporaryAttributes.put(Attribute.STR, 0.0);
-		temporaryAttributes.put(Attribute.DEX, 0.0);
-		temporaryAttributes.put(Attribute.INT, 0.0);
-		temporaryAttributes.put(Attribute.CON, 0.0);
+		temporary.put(Attribute.STR, 0.0);
+		temporary.put(Attribute.DEX, 0.0);
+		temporary.put(Attribute.INT, 0.0);
+		temporary.put(Attribute.CON, 0.0);
 	}
 
 	private void move(Game game, double dt) {

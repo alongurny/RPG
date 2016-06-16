@@ -39,6 +39,7 @@ public class Switchboard extends TcpServer {
 	 * @param port
 	 *            the port
 	 * @throws IOException
+	 *             if an I/O error occurs
 	 */
 	public Switchboard(int port) throws IOException {
 		super(port);

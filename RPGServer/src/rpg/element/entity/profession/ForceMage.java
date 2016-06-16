@@ -22,20 +22,22 @@ public class ForceMage extends Mage {
 	}
 
 	/**
-	 * {@inheritDoc}<br/>
+	 * {@inheritDoc}
+	 * <p>
 	 * Returned value is positive if damageType is {@link DamageType#FORCE
 	 * FORCE}, and 0 otherwise.
+	 * </p>
 	 */
 	@Override
 	public double getResistance(Entity entity, DamageType type) {
 		return type == DamageType.FORCE ? entity.getRank() * 3 : 0;
 	}
-	
+
 	@Override
 	public Drawer getLeftDrawer() {
 		return leftDrawer;
 	}
-	
+
 	@Override
 	public Drawer getRightDrawer() {
 		return rightDrawer;

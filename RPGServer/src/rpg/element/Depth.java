@@ -42,7 +42,7 @@ public class Depth implements Comparable<Depth> {
 	 * The value of this depth. Higher values means that it will be painted
 	 * above others.
 	 * 
-	 * @return
+	 * @return the integer value of this depth object
 	 */
 	public int getValue() {
 		return value;

@@ -40,8 +40,8 @@ public class Message {
 	 *            data
 	 * @return a new message
 	 */
-	public static Message normal(String text) {
-		return new Message(Type.NORMAL, text);
+	public static Message normal(String data) {
+		return new Message(Type.NORMAL, data);
 	}
 
 	/**
@@ -51,8 +51,8 @@ public class Message {
 	 *            data
 	 * @return a new message
 	 */
-	public static Message metadata(String metadata) {
-		return new Message(Type.METADATA, metadata);
+	public static Message metadata(String data) {
+		return new Message(Type.METADATA, data);
 	}
 
 	private String data;

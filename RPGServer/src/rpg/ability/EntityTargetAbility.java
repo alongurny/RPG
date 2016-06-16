@@ -48,12 +48,11 @@ public abstract class EntityTargetAbility extends Ability {
 	 * Called by {@link #isCastable(Entity)} with the caster's target as a
 	 * parameter.
 	 * 
-	 * @param game
-	 *            the game
 	 * @param caster
 	 *            the caster
 	 * @param target
 	 *            the caster's target
+	 * @return if this ability is castable
 	 */
 	protected abstract boolean isCastable(Entity caster, Entity target);
 

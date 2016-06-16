@@ -45,7 +45,7 @@ public abstract class Ability implements Updatable {
 	 * {@link Entity}. Returns true if all the following conditions are
 	 * fulfilled:
 	 * <ul>
-	 * <li>{@link #getCooldown getCooldown()} <= 0</li>
+	 * <li>{@link #getCooldown getCooldown()} &lt;= 0</li>
 	 * <li>{@link #hasEnoughMana(Entity) hasEnoughMana(caster)}</li>
 	 * <li>{@link #isCastable(Entity) isCastable(caster)}</li>
 	 * </ul>
@@ -154,8 +154,6 @@ public abstract class Ability implements Updatable {
 	 * Returns <code>true</code> if this method can be cast for the given
 	 * caster, <code>false</code> otherwise.
 	 * 
-	 * @param game
-	 *            the game
 	 * @param caster
 	 *            the caster
 	 * @return <code>true</code> if this ability is castable, <code>false</code>

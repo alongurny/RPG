@@ -31,15 +31,17 @@ public class DragonProfession extends Profession {
 	}
 
 	/**
-	 * {@inheritDoc}<br/>
+	 * {@inheritDoc}
+	 * <p>
 	 * Returned value is very high if damageType is {@link DamageType#FIRE FIRE}
 	 * , and 0 otherwise.
+	 * </p>
 	 */
 	@Override
 	public double getResistance(Entity entity, DamageType type) {
 		return type == DamageType.FIRE ? 2000 : 0;
 	}
-	
+
 	@Override
 	public int getAttribute(Attribute attr) {
 		switch (attr) {

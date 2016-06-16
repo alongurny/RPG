@@ -14,9 +14,11 @@ public class FireMage extends Mage {
 	}
 
 	/**
-	 * {@inheritDoc}<br/>
+	 * {@inheritDoc}
+	 * <p>
 	 * Returned value is positive if damageType is {@link DamageType#FIRE FIRE},
 	 * and 0 otherwise.
+	 * </p>
 	 */
 	@Override
 	public double getResistance(Entity entity, DamageType type) {

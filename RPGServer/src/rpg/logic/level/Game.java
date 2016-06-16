@@ -83,6 +83,7 @@ public class Game {
 	 * player D will be placed at Y.
 	 * 
 	 * @param location
+	 *            the initial location to add
 	 */
 	public void addInitialLocation(Vector2D location) {
 		initialLocations.add(location);
@@ -94,8 +95,7 @@ public class Game {
 	 * 
 	 * @param client
 	 *            the client that created this player
-	 * @param race
-	 *            the new player's race
+	 * 
 	 * @param profession
 	 *            the new player's profession
 	 */

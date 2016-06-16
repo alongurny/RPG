@@ -70,8 +70,9 @@ public abstract class Element implements Drawable, Updatable {
 	 * Returns a bounding rectangle of this element, such that its x-y
 	 * coordinates are relative to this element's position. Bounding rectangles
 	 * are used for a simple algorithm of collision detection.
-	 * <p/>
+	 * <p>
 	 * The implementation is then used to find the absolute bounding rectangle.
+	 * </p>
 	 * 
 	 * @return the relative bounding rectangle
 	 * @see #getAbsoluteRect()
@@ -112,13 +113,16 @@ public abstract class Element implements Drawable, Updatable {
 	}
 
 	/**
+	 * <p>
 	 * Returns a default string representation of this element in the following
 	 * format: {type}[location={location}], where {type} is this element's type
 	 * and {location} is its location. For example, assuming there is a class
-	 * <code>Ball</code> that <code>extends Element</code>: <br/>
+	 * <code>Ball</code> that <code>extends Element</code>: <br>
+	 * </p>
 	 * <blockquote>Ball[location=(0.000,0.000)]</blockquote>
-	 * <p/>
+	 * <p>
 	 * It is highly recommended that subclasses override this method.
+	 * </p>
 	 */
 	@Override
 	public String toString() {

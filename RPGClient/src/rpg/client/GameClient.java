@@ -39,6 +39,7 @@ public class GameClient {
 	 * @param profession
 	 *            a string representation of the player's profession
 	 * @throws IOException
+	 *             if an I/O exception occurs
 	 */
 	public GameClient(GamePanel panel, Socket toServer, String profession) throws IOException {
 		commands = new CopyOnWriteArrayList<>();

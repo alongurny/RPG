@@ -16,7 +16,7 @@ public interface Protocol<S, T> {
 	/**
 	 * Decodes a value.
 	 * 
-	 * @param the
+	 * @param n
 	 *            value to decode
 	 * @return the decoded value
 	 */
@@ -25,7 +25,7 @@ public interface Protocol<S, T> {
 	/**
 	 * Encodes a value.
 	 * 
-	 * @param the
+	 * @param d
 	 *            value to encode
 	 * @return the encoded value
 	 */
