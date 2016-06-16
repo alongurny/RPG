@@ -8,7 +8,7 @@ import java.awt.TexturePaint;
 import java.awt.image.BufferedImage;
 
 import external.ImageResource;
-import rpg.logic.Lazy;
+import rpg.data.Lazy;
 
 public class DrawPaint extends Drawer {
 

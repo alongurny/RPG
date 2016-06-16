@@ -1,4 +1,4 @@
-package rpg.logic;
+package rpg.data;
 
 /**
  * This class represents a heterogeneous pair of two types.

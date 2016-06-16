@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 
 import external.ImageResource;
-import rpg.logic.Lazy;
+import rpg.data.Lazy;
 
 public class DrawIcon extends Drawer {
 

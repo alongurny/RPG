@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import rpg.data.Tuple;
 import rpg.element.Updatable;
 import rpg.logic.level.Game;
 

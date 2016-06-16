@@ -3,7 +3,7 @@ package rpg.graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import rpg.logic.Lazy;
+import rpg.data.Lazy;
 
 public class StretchedTileDrawer extends Drawer {
 

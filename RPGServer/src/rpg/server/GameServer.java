@@ -16,6 +16,7 @@ import network.event.MessageEvent;
 import network.event.MessageListener;
 import network.message.Message;
 import network.protocol.Protocol;
+import rpg.data.Tuple;
 import rpg.element.Element;
 import rpg.element.entity.profession.Profession;
 import rpg.geometry.Vector2D;
@@ -24,7 +25,6 @@ import rpg.graphics.DrawerProtocol;
 import rpg.graphics.PlayerInfoPanel;
 import rpg.graphics.ShowInventory;
 import rpg.graphics.Translate;
-import rpg.logic.Tuple;
 import rpg.logic.level.Game;
 
 /**

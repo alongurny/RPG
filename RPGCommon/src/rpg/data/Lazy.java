@@ -1,4 +1,4 @@
-package rpg.logic;
+package rpg.data;
 
 import java.util.Optional;
 import java.util.function.Supplier;

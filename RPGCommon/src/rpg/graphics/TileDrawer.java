@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import rpg.logic.Lazy;
+import rpg.data.Lazy;
 
 public class TileDrawer extends Drawer {
 
