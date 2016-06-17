@@ -32,7 +32,8 @@ public class Dragon extends Entity {
 			setTarget(game.getDynamicElements().stream().filter(p -> p instanceof Player)
 					.sorted((a, b) -> Double.compare(Element.distance(a, this), Element.distance(b, this)))
 					.findFirst());
-			getAbilities().forEach(a -> tryCast(game, a));
+			tryCast(game, 1);
+			tryCast(game, 2);
 		} else {
 			game.addDynamicElement(new HealthPotion(getLocation()));
 			game.removeDynamicElement(this);
